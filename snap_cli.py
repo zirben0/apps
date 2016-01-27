@@ -18,7 +18,7 @@ _SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,'interface','arp'],'version':[''], 'in
 _IP_HELP = {'summary':'Display summarized information of BGP state',
 			'interface':'Display IP related interface information',
 			'route':'Display routing information',
-			'arp':'Display ARP table and statistics'
+			'arp  ':'Display ARP table and statistics'
 					}
 _SHOW_HELP = {'version':'Show the software version',
 			'interface':'Display IP related interface information',
@@ -34,8 +34,8 @@ _INVENT_HELP = {'detail':'Display detailed information for device inventory '
 					}
 _ROUTE_HELP = 	{'summary':'Display summarized information of routes',
 				'interface':'Display routes with this output interface only',
-				'bgp':'Display routes owned by bgp',
-				'ospf':'Display routes owned by ospf',
+				'bgp  ':'Display routes owned by bgp',
+				'ospf ':'Display routes owned by ospf',
 				'static':'Display routes owned by static'
 					}	
 								
