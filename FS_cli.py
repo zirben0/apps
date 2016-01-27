@@ -10,8 +10,37 @@ import rlcompleter
 _SHOW_BGP_NEIGH={'neighbors':['detail']}
 _SHOW_BGP={'bgp':[_SHOW_BGP_NEIGH,'summary']}
 _SHOW_ROUTE={'route':['summary', 'interface', 'bgp', 'ospf', 'static']}
-_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,'interface'],'version':[''], 'inventory':['detail'], 'chassis':['detail']}
+_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,'interface'],'version':[''], 'inventory':['detail'], 'interface':['']}
 
+_IP_HELP = {'summary':'Display summarized information of BGP state',
+			'interface':'Display IP related interface information',
+			'route':'Display routing information'
+					}
+_SHOW_HELP = {'version':'Show the software version',
+			'interface':'Display IP related interface information',
+			'inventory':'Show physical inventory'
+					}
+_BGP_HELP = {'summary':'Display summarized information of BGP state',
+			'neighbors':'Display all configured BGP neighbors',
+					}	
+_BGP_NEIGH = {'detail':'Display detailed information for BGP neighbors'
+					}
+_INVENT_HELP = {'detail':'Display detailed information for device inventory '
+					}
+_ROUTE_HELP = 	{'summary':'Display summarized information of routes',
+				'interface':'Display routes with this output interface only',
+				'bgp':'Display routes owned by bgp',
+				'ospf':'Display routes owned by ospf',
+				'static':'Display routes owned by static'
+					}	
+								
+_COMMAND_HELP = {'ip':_IP_HELP,
+				'show':_SHOW_HELP, 
+				'bgp':_BGP_HELP,
+				'route':_ROUTE_HELP,
+				'bgp_neigh':_BGP_NEIGH,
+				'inventory':_INVENT_HELP
+				}
     
 USING_READLINE = True
 try:
@@ -50,7 +79,7 @@ class CmdLine(Cmd):
         if not USING_READLINE:
             self.completekey = None
         self.prompt = socket.gethostname()+"#"
-        self.intro = "FlexSwitch Console"
+        self.intro = "FlexSwitch Console Version 1.0"
     def default(self, line):
         cmd, arg, line = self.parseline(line)
         cmds = self.completenames(cmd)
@@ -73,7 +102,7 @@ class CmdLine(Cmd):
             for i in dir(self) if i.startswith('do_') ]
         doc_strings = [ '  %s\t%s\n' % (i, j)
             for i, j in doc_strings if j is not None ]
-        sys.stdout.write('Commands:\n%s\n' % ''.join(doc_strings))
+        sys.stdout.write('%s\n' % ''.join(doc_strings))
  
     def do_configure(self, args):
 		" Global configuration mode "
@@ -84,6 +113,8 @@ class CmdLine(Cmd):
     def do_show(self, arg):
         " Show running system information "
         #BGP
+        if "?" in self.lastcmd:
+        	return 
         if 'ip' in arg:
         	if 'bgp' in arg:
         		#print bgp table
@@ -177,20 +208,38 @@ class CmdLine(Cmd):
     			if 'ip' in line:
     				if 'bgp' in line:
 	    				if 'neighbors' in line:
-	    					print "show ip bgp neighbor help....TBD"
+	    					sys.stdout.write('   <CR>\n')
+	    					for keys in _COMMAND_HELP.get('bgp_neigh'):
+	    						sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('bgp_neigh').get(keys)) ) 
 	    					return line
 	    				elif 'summary' in line:
-	    					print "show ip bgp summary help....TBD"
+	    					sys.stdout.write('   <CR>\n')	    					
 	    					return line
 	    				else:
-	    					print "show ip bgp help....TBD"
+	    					sys.stdout.write('   <CR>\n')
+	    					for keys in _COMMAND_HELP.get('bgp'):
+	    						sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('bgp').get(keys)) ) 	    					
     						return line
-	    				
-	    			else:
-    					print "show ip help....TBD"
+	    			elif 'route' in line:
+	    				sys.stdout.write('   <CR>\n')
+	    				for keys in _COMMAND_HELP.get('route'):
+	    					sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('route').get(keys)) ) 	    					
     					return line
+	    			else:
+	    				for keys in _COMMAND_HELP.get('ip'):
+	    					sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('ip').get(keys)) )
+    					return line
+    			elif 'interface' in line:
+    				sys.stdout.write('   <CR>\n')
+    				return line
+    			elif 'inventory' in line:
+    				sys.stdout.write('   <CR>\n')
+    				for keys in _COMMAND_HELP.get('inventory'):
+	    				sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('inventory').get(keys)) )
+    				return line
     			else:
-    				print "show help...TBD"
+    				for keys in _COMMAND_HELP.get('show'):
+	    				sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('show').get(keys)) )
     				return line
         return line           
  
