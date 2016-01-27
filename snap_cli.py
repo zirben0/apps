@@ -2,23 +2,28 @@
 
 import sys
 import socket
+from snap_global import Global_CmdLine
+from snap_interface import Interface_CmdLine
 from cmd import Cmd
-import cmd
 import readline
 import rlcompleter
+from flexswitch import FlexSwitch
+
 
 _SHOW_BGP_NEIGH={'neighbors':['detail']}
 _SHOW_BGP={'bgp':[_SHOW_BGP_NEIGH,'summary']}
 _SHOW_ROUTE={'route':['summary', 'interface', 'bgp', 'ospf', 'static']}
-_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,'interface'],'version':[''], 'inventory':['detail'], 'interface':['']}
+_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,'interface','arp'],'version':[''], 'inventory':['detail'], 'interface':['']}
 
 _IP_HELP = {'summary':'Display summarized information of BGP state',
 			'interface':'Display IP related interface information',
-			'route':'Display routing information'
+			'route':'Display routing information',
+			'arp':'Display ARP table and statistics'
 					}
 _SHOW_HELP = {'version':'Show the software version',
 			'interface':'Display IP related interface information',
-			'inventory':'Show physical inventory'
+			'inventory':'Show physical inventory',
+			'ip':'Display IP information'
 					}
 _BGP_HELP = {'summary':'Display summarized information of BGP state',
 			'neighbors':'Display all configured BGP neighbors',
@@ -59,6 +64,63 @@ except:
         import pyreadline
     except:
         USING_READLINE = False
+
+class FlexSwitch_info():
+
+   def displayBGPPeers(self):
+   		   switch_ip='10.1.10.240'
+		   self.swtch = FlexSwitch(switch_ip,8080)
+		   sessionState=  {  0: "Idle",
+							 1: "Connect",
+							 2: "Active",
+							 3: "OpenSent",
+							 4: "OpenConfirm",
+							 5: "Established"
+						   } 
+	
+		   peers = self.swtch.getObjects('BGPNeighborStates')
+		   if len(peers)>=0: 
+			   print '---- BGP Peers ----'
+			   print 'Neighbor   LocalAS   PeerAS     State      RxNotifications    RxUpdates   TxNotifications TxUpdates'
+		   for pr in peers:
+			   print '%s    %s      %s     %s       %s              %s              %s           %s' %(pr['NeighborAddress'],
+																				  pr['LocalAS'],
+																				  pr['PeerAS'],
+																				  sessionState[int(pr['SessionState'] -1)],
+																				  pr['Messages']['Received']['Notification'],
+																				  pr['Messages']['Received']['Update'],
+																				  pr['Messages']['Sent']['Notification'],
+																				  pr['Messages']['Sent']['Update'])
+
+
+   def displayRoutes(self):
+     	switch_ip='10.1.10.240'
+     	self.swtch = FlexSwitch(switch_ip,8080)
+     	routes = self.swtch.getObjects('IPV4Routes')
+     	if len(routes)>=0:
+     	    print '---- Routes ----'
+     	    print 'Network            Mask         NextHop         Cost       Protocol   IfType IfIndex'
+     	for rt in routes:
+     	    print '%s %s %s %4d   %9s    %5s   %4s' %(rt['DestinationNw'].ljust(15), 
+     	                                                    rt['NetworkMask'].ljust(15),
+     	                                                    rt['NextHopIp'].ljust(15), 
+     	                                                    rt['Cost'], 
+     	                                                    rt['Protocol'], 
+     	                                                    rt['OutgoingIntfType'], 
+     	                                                    rt['OutgoingInterface'])
+   def displayARPEntries(self):
+     	switch_ip='10.1.10.240'
+     	self.swtch = FlexSwitch(switch_ip,8080)
+        arps = self.swtch.getObjects('ArpEntrys')
+        if len(arps)>=0:
+            print '---- ARPS ----'
+            print 'IP Address	MacAddress   	    TimeRemaining  	Vlan 	  Intf'
+        for d in arps:
+            print  '%s	%s    %s	 %s	%s' %(d['IpAddr'],
+						d['MacAddr'],
+						d['ExpiryTimeLeft'],
+						d['Vlan'],
+						d['Intf'])
 
 class CmdLine(Cmd):
     """
@@ -110,9 +172,11 @@ class CmdLine(Cmd):
 		gconf.prompt = self.prompt[:-1] + "(config)#"
 		gconf.cmdloop()
 		
+    
+    
     def do_show(self, arg):
         " Show running system information "
-        #BGP
+        fs_info = FlexSwitch_info()
         if "?" in self.lastcmd:
         	return 
         if 'ip' in arg:
@@ -122,7 +186,12 @@ class CmdLine(Cmd):
         			#print BGP neighbors
         			sys.stdout.write("neighbor\n")
         		elif 'summary' in arg:
-        			sys.stdout.write("summary\n")
+        			fs_info.displayBGPPeers()
+        	elif 'route' in arg:
+        		fs_info.displayRoutes()
+        	elif 'arp' in arg:
+        		fs_info.displayARPEntries()
+        		
         else:
         	sys.stdout.write('% Incomplete command\n')
 	    	
@@ -241,125 +310,7 @@ class CmdLine(Cmd):
     				for keys in _COMMAND_HELP.get('show'):
 	    				sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('show').get(keys)) )
     				return line
-        return line           
- 
-class Global_CmdLine(Cmd):  
-    """
-    Global Configuration Mode.  Place where Global configuration for the device 
-    can be applied. 
-    
-    Help may be requested at any point in a command by entering
-    a question mark '?'.  If nothing matches, the help list will
-    be empty and you must backup until entering a '?' shows the
-    available options.
-    Two styles of help are provided:
-    1. Full help is available when you are ready to enter a
-       command argument (e.g. 'show ?') and describes each possible
-       argument.
-    2. Partial help is provided when an abbreviated argument is entered
-       and you want to know what arguments match the input
-       (e.g. 'show pr?'.)
-    """ 
-    def __init__(self):
-        Cmd.__init__(self)
-        if not USING_READLINE:
-            self.completekey = None
-        self.prompt = "(config)#"
-    def default(self, line):
-        cmd, arg, line = self.parseline(line)
-        cmds = self.completenames(cmd)
-        num_cmds = len(cmds)
-        if num_cmds == 1:
-            getattr(self, 'do_'+cmds[0])(arg)
-        elif num_cmds > 1:
-            sys.stdout.write('%% Ambiguous command:\t"%s"\n' % cmd)
-        else:
-            sys.stdout.write('% Unrecognized command\n')
- 
-    def emptyline(self):
-        pass
-        
-    def do_exit(self, line):
-		" exit Interface Configuration mode and return to Global Configuration mode"
-		return True
-
-    def do_end(self, line):
-		" Return to enable mode"
-		return True
-    	   
-    def do_interface(self, args):
-		" Global configuration mode "
-		intconf = Interface_CmdLine()
-		intconf.prompt = self.prompt[:-2] + "-if)#"
-		intconf.cmdloop()
-		if "end" in intconf.lastcmd:
-			return True
-
-    def precmd(self, line):
-        if line.strip() == 'help':
-            sys.stdout.write('%s\n' % self.__doc__)
-            return ''
-        cmd, arg, line = self.parseline(line)
-        if arg == '?':
-            cmds = self.completenames(cmd)
-            if cmds:
-                self.columnize(cmds)
-                sys.stdout.write('\n')
-            return ''
-        return line           
-class Interface_CmdLine(Cmd):  
-    """
-     Interace Configuration Mode.  Place where interface configuration for the device 
-     can be applied. 
-     
-     Help may be requested at any point in a command by entering
-     a question mark '?'.  If nothing matches, the help list will
-     be empty and you must backup until entering a '?' shows the
-     available options.
-     Two styles of help are provided:
-     1. Full help is available when you are ready to enter a
-        command argument (e.g. 'show ?') and describes each possible
-        argument.
-     2. Partial help is provided when an abbreviated argument is entered
-        and you want to know what arguments match the input
-        (e.g. 'show pr?'.)
-	""" 
-    def __init__(self):
-        Cmd.__init__(self)
-        if not USING_READLINE:
-            self.completekey = None
-        self.prompt = "(config-if)#"
-    def default(self, line):
-        cmd, arg, line = self.parseline(line)
-        cmds = self.completenames(cmd)
-        num_cmds = len(cmds)
-        if num_cmds == 1:
-            getattr(self, 'do_'+cmds[0])(arg)
-        elif num_cmds > 1:
-            sys.stdout.write('%% Ambiguous command:\t"%s"\n' % cmd)
-        else:
-            sys.stdout.write('% Unrecognized command\n')
-    
-    def emptyline(self):
-        pass    
-    def do_exit(self, line):
-    	" exit Interface Configuration mode and return to Global Configuration mode"
-    	return True
-    def do_end(self, line):
-    	" Return to enable mode"
-    	return True
-    def precmd(self, line):
-        if line.strip() == 'help':
-            sys.stdout.write('%s\n' % self.__doc__)
-            return ''
-        cmd, arg, line = self.parseline(line)
-        if arg == '?':
-            cmds = self.completenames(cmd)
-            if cmds:
-                self.columnize(cmds)
-                sys.stdout.write('\n')
-            return ''
-        return line           
+        return line            
     	
 # *** MAIN LOOP ***
 if __name__ == '__main__':
