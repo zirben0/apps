@@ -1,6 +1,8 @@
 from cmd import Cmd
+import sys
 import readline
 import rlcompleter
+#from snap_cli import CmdLine
 
 USING_READLINE = True
 try:
@@ -37,11 +39,20 @@ class Interface_CmdLine(Cmd):
         and you want to know what arguments match the input
         (e.g. 'show pr?'.)
 	""" 
-    def __init__(self):
+    def __init__(self, CmdLine,FlexSwitch_info):
         Cmd.__init__(self)
         if not USING_READLINE:
             self.completekey = None
         self.prompt = "(config-if)#"
+        self.enable = CmdLine
+        self.fs_info = FlexSwitch_info
+    
+    def cmdloop(self):
+        try:
+        	Cmd.cmdloop(self)
+        except KeyboardInterrupt as e:
+        	self.intro = '\n'
+        	self.cmdloop() 
     def default(self, line):
         cmd, arg, line = self.parseline(line)
         cmds = self.completenames(cmd)
@@ -61,6 +72,14 @@ class Interface_CmdLine(Cmd):
     def do_end(self, line):
     	" Return to enable mode"
     	return True
+    
+    def do_show(self, line):
+        " Show running system information "
+        self.enable.do_show(line)
+        
+    def complete_show(self, text, line, begidx, endidx):
+    	self.enable.complete_show(text, line, begidx, endidx)
+		
     def precmd(self, line):
         if line.strip() == 'help':
             sys.stdout.write('%s\n' % self.__doc__)
