@@ -1,6 +1,7 @@
 from cmd import Cmd
 import readline
 import rlcompleter
+import sys
 from snap_interface import Interface_CmdLine
 
 
@@ -39,11 +40,20 @@ class Global_CmdLine(Cmd):
        and you want to know what arguments match the input
        (e.g. 'show pr?'.)
     """ 
-    def __init__(self):
+    def __init__(self,CmdLine,FlexSwitch_info):
         Cmd.__init__(self)
         if not USING_READLINE:
             self.completekey = None
         self.prompt = "(config)#"
+        self.enable = CmdLine
+        self.fs_info = FlexSwitch_info
+
+    def cmdloop(self):
+        try:
+        	Cmd.cmdloop(self)
+        except KeyboardInterrupt as e:
+        	self.intro = '\n'
+        	self.cmdloop() 
     def default(self, line):
         cmd, arg, line = self.parseline(line)
         cmds = self.completenames(cmd)
@@ -67,13 +77,19 @@ class Global_CmdLine(Cmd):
 		return True
     	   
     def do_interface(self, args):
-		" Global configuration mode "
-		intconf = Interface_CmdLine()
-		intconf.prompt = self.prompt[:-2] + "-if)#"
-		intconf.cmdloop()
-		if "end" in intconf.lastcmd:
-			return True
-
+    	" Global configuration mode "
+    	intconf = Interface_CmdLine(self.enable,self.fs_info)
+    	intconf.prompt = self.prompt[:-2] + "-if)#"
+    	intconf.cmdloop()
+    	if "end" in intconf.lastcmd:
+    		return True
+    		
+    def do_show(self, line):
+        " Show running system information "
+        self.enable.do_show(line)
+    def complete_show(self, text, line, begidx, endidx):
+    	self.enable.complete_show(text, line, begidx, endidx)
+    	
     def precmd(self, line):
         if line.strip() == 'help':
             sys.stdout.write('%s\n' % self.__doc__)
