@@ -22,6 +22,16 @@ except:
     except:
         USING_READLINE = False
         
+
+class FlexSwitch_info():
+	def __init__(self,switch_ip):
+		self.switch_ip=switch_ip
+		self.swtch = FlexSwitch(self.switch_ip,8080)
+
+	#def createVlan(self, vlanid, ports, taggedports):
+	#	result = self.swtch.createVlan(vlanid, ports, taggedports)
+	#	print result
+        
 class Interface_CmdLine(Cmd):  
     """
      Interace Configuration Mode.  Place where interface configuration for the device 
@@ -39,12 +49,13 @@ class Interface_CmdLine(Cmd):
         and you want to know what arguments match the input
         (e.g. 'show pr?'.)
 	""" 
-    def __init__(self, CmdLine,FlexSwitch_info):
+    def __init__(self, Global_Cmdline,CmdLine,FlexSwitch_info):
         Cmd.__init__(self)
         if not USING_READLINE:
             self.completekey = None
         self.prompt = "(config-if)#"
         self.enable = CmdLine
+        self.gconf = Global_Cmdline
         self.fs_info = FlexSwitch_info
     
     def cmdloop(self):
@@ -76,9 +87,13 @@ class Interface_CmdLine(Cmd):
     def do_show(self, line):
         " Show running system information "
         self.enable.do_show(line)
-        
+     
+    def do_where(self, line):
+    	"Shows the cli context you are in"    
+    	sys.stdout.write("%s\n" % self.gconf.lastcmd())
+    	
     def complete_show(self, text, line, begidx, endidx):
-    	self.enable.complete_show(text, line, begidx, endidx)
+    	return self.enable.complete_show(text, line, begidx, endidx)
 		
     def precmd(self, line):
         if line.strip() == 'help':
