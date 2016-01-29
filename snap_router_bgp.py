@@ -2,8 +2,8 @@ from cmd import Cmd
 import readline
 import rlcompleter
 import sys
-#from snap_interface import Interface_CmdLine
-
+from snap_commands import Commands
+from snap_help_commands import Command_help
 
 USING_READLINE = True
 try:
@@ -40,14 +40,14 @@ class Router_bgp_CmdLine(Cmd):
        and you want to know what arguments match the input
        (e.g. 'show pr?'.)
     """ 
-    def __init__(self,CmdLine,FlexSwitch_info,Interface_CmdLine):
+    def __init__(self,CmdLine,switch_ip,Interface_CmdLine):
         Cmd.__init__(self)
         if not USING_READLINE:
             self.completekey = None
         self.prompt = "(config-router)#"
         self.enable = CmdLine
         self.interface = Interface_CmdLine
-        self.fs_info = FlexSwitch_info
+        self.commands = Commands(switch_ip)
 
     def cmdloop(self):
         try:
@@ -71,7 +71,7 @@ class Router_bgp_CmdLine(Cmd):
         
     def do_exit(self, line):
 		" exit Interface Configuration mode and return to Global Configuration mode"
-		return True
+		return
 
     def do_end(self, line):
 		" Return to enable mode"
@@ -82,19 +82,14 @@ class Router_bgp_CmdLine(Cmd):
     		
     def do_show(self, line):
         " Show running system information "
-        self.enable.do_show(line)
+        self.commands.show_commands(line)
     def complete_show(self, text, line, begidx, endidx):
-    	return self.enable.complete_show(text, line, begidx, endidx)
+    	return self.commands.auto_show(text, line, begidx, endidx)
     	
     def precmd(self, line):
         if line.strip() == 'help':
             sys.stdout.write('%s\n' % self.__doc__)
             return ''
-        cmd, arg, line = self.parseline(line)
-        if arg == '?':
-            cmds = self.completenames(cmd)
-            if cmds:
-                self.columnize(cmds)
-                sys.stdout.write('\n')
-            return ''
-        return line         
+        elif line.endswith('?'):
+	        return self.command_help.show_help(line)  
+        return line      
