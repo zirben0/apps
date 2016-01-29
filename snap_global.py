@@ -5,7 +5,8 @@ import sys
 from snap_interface import Interface_CmdLine
 from snap_router_ospf import Router_ospf_CmdLine
 from snap_router_bgp import Router_bgp_CmdLine
-from flexswitch import FlexSwitch
+from snap_commands import Commands
+from snap_help_commands import Command_help
 
 USING_READLINE = True
 try:
@@ -24,17 +25,7 @@ except:
         import pyreadline
     except:
         USING_READLINE = False
-        
-class FlexSwitch_info():
-	def __init__(self,switch_ip):
-		self.switch_ip=switch_ip
-		self.swtch = FlexSwitch(self.switch_ip,8080)
-
-	def createVlan(self, vlanid, ports, taggedports):
-		result = self.swtch.createVlan(vlanid, ports, taggedports)
-		print result
 		
-   	
     
 class Global_CmdLine(Cmd):  
     """
@@ -53,16 +44,16 @@ class Global_CmdLine(Cmd):
        and you want to know what arguments match the input
        (e.g. 'show pr?'.)
     """ 
-    def __init__(self,CmdLine,FlexSwitch_info):
+    def __init__(self,CmdLine,switch_ip):
         Cmd.__init__(self)
         if not USING_READLINE:
             self.completekey = None
         self.prompt = "(config)#"
         self.enable = CmdLine
-        self.fs_info = FlexSwitch_info
-        self.intconf = Interface_CmdLine(self,self.enable,self.fs_info)
-        self.routerospf = Router_ospf_CmdLine(self.enable,self.fs_info, self.intconf)
-        self.routerbgp = Router_bgp_CmdLine(self.enable,self.fs_info, self.intconf)
+        self.commands = Commands(switch_ip)
+        self.intconf = Interface_CmdLine(self,self.enable,switch_ip)
+        self.routerospf = Router_ospf_CmdLine(self.enable,switch_ip, self.intconf)
+        self.routerbgp = Router_bgp_CmdLine(self.enable,switch_ip, self.intconf)
 
     def cmdloop(self):
         try:
@@ -116,14 +107,15 @@ class Global_CmdLine(Cmd):
     	except IndexError:
     		sys.stdout.write('% Incomplete command\n')
     	
-    	print 	self.routerbgp.lastcmd, self.routerbgp.lastcmd
+    	print 	self.routerbgp.lastcmd, self.routerospf.lastcmd
     		  		    	
     	if "end" in self.routerbgp.lastcmd or self.routerbgp.lastcmd:
     		return True
     		
     def do_show(self, line):
         " Show running system information "
-        self.enable.do_show(line)
+        self.commands.show_commands(line)
+        #self.enable.do_show(line)
     def complete_show(self, text, line, begidx, endidx):
     	return self.enable.complete_show(text, line, begidx, endidx)
     	
@@ -131,11 +123,6 @@ class Global_CmdLine(Cmd):
         if line.strip() == 'help':
             sys.stdout.write('%s\n' % self.__doc__)
             return ''
-        cmd, arg, line = self.parseline(line)
-        if arg == '?':
-            cmds = self.completenames(cmd)
-            if cmds:
-                self.columnize(cmds)
-                sys.stdout.write('\n')
-            return ''
-        return line         
+        elif line.endswith('?'):
+	        return self.command_help.show_help(line)
+        return line 
