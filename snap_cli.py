@@ -139,8 +139,28 @@ class FlexSwitch_info():
             print '\n'
             print 'Port         InOctets   InUcastPkts   InDiscards  InErrors     InUnknownProtos   OutOctets OutUcastPkts   OutDiscards   OutErrors'
         for d in ports:
+            if d['IfIndex'] == 0:
+        		continue
             #if sum(d['PortStats']):
             print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['IfIndex']),
+                                                                d['PortStats'][0],
+                                                                d['PortStats'][1],
+                                                                d['PortStats'][2],
+                                                                d['PortStats'][3],
+                                                                d['PortStats'][4],
+                                                                d['PortStats'][5],
+                                                                d['PortStats'][6],
+                                                                d['PortStats'][7],
+                                                                d['PortStats'][8])
+        print "\n"
+   def displayCPUPortObjects(self):
+        ports = self.swtch.getObjects('PortStates')
+        if len(ports):
+            print '\n'
+            print 'Port         InOctets   InUcastPkts   InDiscards  InErrors     InUnknownProtos   OutOctets OutUcastPkts   OutDiscards   OutErrors'
+        for d in ports:
+            if d['IfIndex'] == 0:
+            	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['IfIndex']),
                                                                 d['PortStats'][0],
                                                                 d['PortStats'][1],
                                                                 d['PortStats'][2],
@@ -376,7 +396,6 @@ class CmdLine(Cmd):
 		gconf.cmdloop()
 		
     
-    
     def do_show(self, arg):
         " Show running system information "
         if "?" in self.lastcmd:
@@ -386,7 +405,6 @@ class CmdLine(Cmd):
         if len(args):
         	try:
         		if 'ip' in args[0]:
-        	
         			if 'bgp' in args[1]:
         				#print bgp table
         				if 'neighbors' in args[2]:
@@ -409,7 +427,13 @@ class CmdLine(Cmd):
         				sys.stdout.write("% Invalid command \n")
         		elif 'interface' in args[0]:
         			if 'counters' in args[1]:
-        				self.fs_info.displayPortObjects()
+        				if len(args) == 2:
+        					self.fs_info.displayPortObjects()
+        				else:
+        					if 'cpu' in args[2]:
+        						self.fs_info.displayCPUPortObjects()
+        					else:
+        						sys.stdout.write('% Invalid command\n')  
         			else:
         				sys.stdout.write("% Invalid command \n")	
         		elif 'vlan' in args[0]:
@@ -437,6 +461,9 @@ class CmdLine(Cmd):
         			sys.stdout.write('% Incomplete command\n')
         	except IndexError:
         		sys.stdout.write('% Incomplete command\n')
+        		
+        	except :
+        		sys.stdout.write('% Loss connectivity to %s \n' % switch_name )
         else:
         	sys.stdout.write('% Incomplete command\n')
 
@@ -455,7 +482,6 @@ class CmdLine(Cmd):
 	    					if type(keys) is dict:
 	    						for var in keys:
 	    							list.append(var)
-	    			
 	    				return [i for i in list if i.startswith(text)]
 	    				
 	    			elif 'summary' in lines:
@@ -647,4 +673,3 @@ if __name__ == '__main__':
     else:
    		print "FlexSwitch not reachable, Please ensure daemon is up."  
    		sys.exit(2)
-
