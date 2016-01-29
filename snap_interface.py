@@ -2,7 +2,8 @@ from cmd import Cmd
 import sys
 import readline
 import rlcompleter
-#from snap_cli import CmdLine
+from snap_commands import Commands
+from snap_help_commands import Command_help
 
 USING_READLINE = True
 try:
@@ -23,14 +24,6 @@ except:
         USING_READLINE = False
         
 
-class FlexSwitch_info():
-	def __init__(self,switch_ip):
-		self.switch_ip=switch_ip
-		self.swtch = FlexSwitch(self.switch_ip,8080)
-
-	#def createVlan(self, vlanid, ports, taggedports):
-	#	result = self.swtch.createVlan(vlanid, ports, taggedports)
-	#	print result
         
 class Interface_CmdLine(Cmd):  
     """
@@ -49,14 +42,14 @@ class Interface_CmdLine(Cmd):
         and you want to know what arguments match the input
         (e.g. 'show pr?'.)
 	""" 
-    def __init__(self, Global_Cmdline,CmdLine,FlexSwitch_info):
+    def __init__(self, Global_Cmdline,CmdLine,switch_ip):
         Cmd.__init__(self)
         if not USING_READLINE:
             self.completekey = None
         self.prompt = "(config-if)#"
         self.enable = CmdLine
         self.gconf = Global_Cmdline
-        self.fs_info = FlexSwitch_info
+        self.commands = Commands(switch_ip)
     
     def cmdloop(self):
         try:
@@ -86,24 +79,19 @@ class Interface_CmdLine(Cmd):
     
     def do_show(self, line):
         " Show running system information "
-        self.enable.do_show(line)
+        self.commands.show_commands(line)
      
     def do_where(self, line):
     	"Shows the cli context you are in"    
     	sys.stdout.write("%s\n" % self.gconf.lastcmd())
     	
     def complete_show(self, text, line, begidx, endidx):
-    	return self.enable.complete_show(text, line, begidx, endidx)
+    	return self.commands.auto_show(text, line, begidx, endidx)
 		
     def precmd(self, line):
         if line.strip() == 'help':
             sys.stdout.write('%s\n' % self.__doc__)
             return ''
-        cmd, arg, line = self.parseline(line)
-        if arg == '?':
-            cmds = self.completenames(cmd)
-            if cmds:
-                self.columnize(cmds)
-                sys.stdout.write('\n')
-            return ''
-        return line          
+        elif line.endswith('?'):
+	        return self.command_help.show_help(line)
+        return line        
