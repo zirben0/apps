@@ -3,7 +3,9 @@ import readline
 import rlcompleter
 import sys
 from snap_interface import Interface_CmdLine
-
+from snap_router_ospf import Router_ospf_CmdLine
+from snap_router_bgp import Router_bgp_CmdLine
+from flexswitch import FlexSwitch
 
 USING_READLINE = True
 try:
@@ -23,6 +25,17 @@ except:
     except:
         USING_READLINE = False
         
+class FlexSwitch_info():
+	def __init__(self,switch_ip):
+		self.switch_ip=switch_ip
+		self.swtch = FlexSwitch(self.switch_ip,8080)
+
+	def createVlan(self, vlanid, ports, taggedports):
+		result = self.swtch.createVlan(vlanid, ports, taggedports)
+		print result
+		
+   	
+    
 class Global_CmdLine(Cmd):  
     """
     Global Configuration Mode.  Place where Global configuration for the device 
@@ -47,6 +60,9 @@ class Global_CmdLine(Cmd):
         self.prompt = "(config)#"
         self.enable = CmdLine
         self.fs_info = FlexSwitch_info
+        self.intconf = Interface_CmdLine(self,self.enable,self.fs_info)
+        self.routerospf = Router_ospf_CmdLine(self.enable,self.fs_info, self.intconf)
+        self.routerbgp = Router_bgp_CmdLine(self.enable,self.fs_info, self.intconf)
 
     def cmdloop(self):
         try:
@@ -63,7 +79,7 @@ class Global_CmdLine(Cmd):
         elif num_cmds > 1:
             sys.stdout.write('%% Ambiguous command:\t"%s"\n' % cmd)
         else:
-            sys.stdout.write('% Unrecognized command\n')
+            sys.stdout.write('%% Unrecognized command\n')
  
     def emptyline(self):
         pass
@@ -76,19 +92,40 @@ class Global_CmdLine(Cmd):
 		" Return to enable mode"
 		return True
     	   
-    def do_interface(self, args):
-    	" Global configuration mode "
-    	intconf = Interface_CmdLine(self.enable,self.fs_info)
-    	intconf.prompt = self.prompt[:-2] + "-if)#"
-    	intconf.cmdloop()
-    	if "end" in intconf.lastcmd:
+    def do_interface(self, arg):
+    	" Interface configuration mode "
+    	args = arg.split()
+    	if 'fpPort-' not in args[0]:
+    		sys.stdout.write('% Invalid interface\n')
+    	else:
+    		self.intconf.prompt = self.prompt[:-2] + "-if)#"
+    		self.intconf.cmdloop()
+    	if "end" in self.intconf.lastcmd:
+    		return True
+    def do_router(self, arg):
+    	" Router configuration mode "
+    	args=arg.split()
+    	try:
+    		if 'bgp' in args[0]:
+    			self.routerbgp.prompt = self.prompt[:-2] + "-router)#"
+    			self.routerbgp.cmdloop()
+    		
+    		elif 'ospf' in args[0]:
+    			self.routerospf.prompt = self.prompt[:-2] + "-router)#"
+    			self.routerospf.cmdloop()
+    	except IndexError:
+    		sys.stdout.write('% Incomplete command\n')
+    	
+    	print 	self.routerbgp.lastcmd, self.routerbgp.lastcmd
+    		  		    	
+    	if "end" in self.routerbgp.lastcmd or self.routerbgp.lastcmd:
     		return True
     		
     def do_show(self, line):
         " Show running system information "
         self.enable.do_show(line)
     def complete_show(self, text, line, begidx, endidx):
-    	self.enable.complete_show(text, line, begidx, endidx)
+    	return self.enable.complete_show(text, line, begidx, endidx)
     	
     def precmd(self, line):
         if line.strip() == 'help':
