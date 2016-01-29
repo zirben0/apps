@@ -33,7 +33,7 @@ class FlexSwitch( object):
         return r
 
 
-   def addPortVlan (self, vlanId, ports, taggedports):
+    def addPortVlan (self, vlanId, ports, taggedports):
         obj =  { 'VlanId': int(vlanId),
                  'IfIndexList' : ports,
                  'UntagIfIndexList': taggedports 
