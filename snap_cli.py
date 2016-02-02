@@ -65,13 +65,11 @@ class CmdLine(Cmd):
         	self.cmdloop()      
               
     def default(self, line):
-    	print "goog"
         cmd, arg, line = self.parseline(line)
         cmds = self.completenames(cmd)
         #print cmds, arg
         num_cmds = len(cmds)
         if num_cmds == 1:
-        	print arg
         	getattr(self, 'do_'+cmds[0])(arg)
         elif num_cmds > 1:
             sys.stdout.write('%% Ambiguous command:\t"%s"\n' % cmd)
@@ -102,7 +100,6 @@ class CmdLine(Cmd):
         	return 
         return self.commands.show_commands(arg)
 
-#Auto Completion for show commands in Enable mode	    	
     def complete_show(self, text, line, begidx, endidx):
 		return self.commands.auto_show(text, line, begidx, endidx)
 
@@ -119,25 +116,17 @@ class CmdLine(Cmd):
     def do_end(self, args):
         " Return to enable  mode"
     	return
-    	
-    def do_shell(self, args):
-       sys.stdout.write("")
         
     def precmd(self, line):
         if line.strip() == 'help':
             sys.stdout.write('%s\n' % self.__doc__)
             return ''
         elif line.endswith('?'):
-	        return self.command_help.show_help(line)
+	    	self.command_help.show_help(line)
+	    	return line
+        
         return line
-       # cmd, arg, line = self.parseline(line)
-        #if line.strip() == '?':
-         #   cmds = self.completenames(cmd)
-          #  if cmds:
-            	#sys.stdout.write('%s\n' % self.__doc__)
-           #     self.columnize(cmds)
-            #    sys.stdout.write('\n')
-            #return ''    
+    
 
 def usage():
     usage = """
