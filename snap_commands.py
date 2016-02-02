@@ -1,5 +1,24 @@
-import sys
+import sys, types
 from flexswitch import FlexSwitch
+
+
+
+
+########## Port/vlan Ranges#################
+fpp_min = 1
+fpp_max = 72
+
+svi_min = 1
+svi_max = 4094
+
+pc_min = 1
+pc_max = 255
+
+loop_min = 1
+loop_max = 255
+
+vlan_min = 1
+vlan_max = 4094
 
 ########## Command auto-completion dictionaries/tree##############
 
@@ -8,17 +27,28 @@ from flexswitch import FlexSwitch
 _SHOW_BGP_NEIGH={'neighbors':['detail']}
 _SHOW_BGP={'bgp':[_SHOW_BGP_NEIGH,'summary']}
 _SHOW_OSPF_NEIGH={'neighbors':['detail']}
-_SHOW_OSPF={'ospf':[_SHOW_BGP_NEIGH,'interface']}
-_SHOW_ROUTE={'route':['summary', 'interface', 'bgp', 'ospf', 'static']
-			}
-_SHOW_PCHANNEL={'summary':['interface'], 'load-balance':[''], 'interface':['detail']
-}
 
+_SHOW_OSPF={'ospf':[_SHOW_OSPF_NEIGH, 'interface','database']}
+
+_SHOW_ROUTE={'route':['summary','interface','bgp','ospf','static']
+			}
+_SHOW_PCHANNEL={'summary':['interface'], 
+				'load-balance':[''], 
+				'interface':['detail']
+				}
+_INTERFACES=('fpPort','loopback','mgmt','svi','port-channel','cpu')
+
+_SHOW_INTERFACE={_INTERFACES:['counters','detail', 'status']
+  				}
+
+_SHOW_ARP={'arp':['summary','detail']}
+
+_SHOW_VLAN={'vlan':['summary','id']}
 #BASE for all show commands			
 
-_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,_SHOW_OSPF,'interface','arp'],
-			'version':[''], 'inventory':['detail'], 'interface':['counters'],
-			'port-channel':_SHOW_PCHANNEL,'bfd':['interface','summary']
+_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,_SHOW_OSPF,_SHOW_INTERFACE,_SHOW_ARP],
+			'version':[''], 'inventory':['detail'], 'interface':[_SHOW_INTERFACE,'counters', 'status'],
+			'port-channel':_SHOW_PCHANNEL,'bfd':['interface','summary'],'vlan':[_SHOW_VLAN]
 			}
 
 
@@ -29,12 +59,248 @@ class Commands():
 	def __init__(self,switch_ip):
    		"""init class """
    		self.fs_info = FlexSwitch_info(switch_ip)
-   		
+
+   	def parser(self, list, line):
+   		match=[]  
+   		#Passed get of dictionary for commands, which should be a list. Loop through that list
+   		#Items in list could be another dictionary or just a string (could also be a list of strings, but going to try and prevent that)
+   		#Dictionary Key in that list could be a tuple (Like interfaces, which could have multiple matches for the same key, hence a tuple).
+   		#Check to see if it is a dictionary or list or value.  Check if key is string or tuple of strings.   
+   		#loop through strings and compare to user input, checking what the strings start with. 
+   		#if multiple matches found print items are ambiguous and return 
+   		#else return match with command string from dictionary and use it to proceed down the tree. 
+		for key in list:
+			if type(key) is types.DictType:
+				for command, val in key.items():
+					if type(command) is types.TupleType:
+						for tup_com in command:
+							if tup_com.startswith(line):
+								match.append(tup_com)
+					elif  command.startswith(line):
+						match.append(command)
+			elif type(key) is types.ListType:
+				for command in key:
+					if command.startswith(line):
+						match.append(command)
+			else: 
+				if key.startswith(line):
+					match.append(key)
+		if len(match):
+			if len(match) > 1:
+				sys.stdout.write('% Ambiguous Command\n')
+				return str(False),match
+			else:
+				return str(True),match
+		else:
+			sys.stdout.write('   % Invalid Command\n') 
+			return str(False),match
+			
 	def show_commands(self, arg):
 		" Show running system information "
-		args=arg.split()
-		#print args[0], args[1]
-		if len(args):
+		line=arg.split()
+		if len(line)>=1:
+			bool, arg1 = self.parser(_SHOW_BASE,line[0] )
+			if bool == "True":
+				bool=None
+				if 'ip' in arg1:
+				   if len(line) >= 2:
+					   bool, arg2 = self.parser(_SHOW_BASE.get('ip'),line[1])
+					   if bool == "True":
+						   bool=None
+						   if 'bgp' in arg2:
+							   if len(line) >=3:
+								   bool, arg3 = self.parser(_SHOW_BGP.get('bgp'),line[2])
+								   if bool == "True":
+									   bool=None
+									   if 'neighbors' in arg3:
+										  sys.stdout.write("print bgp neighbor\n")
+									   elif 'summary' in arg3:
+										  self.fs_info.displayBGPPeers()	    				
+								   	   else:
+								   	  	  sys.stdout.write("% Invalid Command\n")
+		  
+							   else:
+									sys.stdout.write("print bgp table\n")	
+						   elif 'route' in arg2:
+							   if len(line) >=3:
+								   bool, arg3 = self.parser(_SHOW_ROUTE.get('route'),line[2])
+								   if bool == "True":
+								      bool=None
+								      if 'summary' in arg3:
+								      	sys.stdout.write("print route summary\n")
+								      elif 'interface' in arg3:
+								      	sys.stdout.write("print route interface stuff\n")								      
+								      elif 'bgp' in arg3:
+								      	sys.stdout.write("print bgp routes\n")								      
+								      elif 'ospf' in arg3:
+								      	sys.stdout.write("print ospf routes\n")
+								      elif 'static' in arg3:
+								      	sys.stdout.write("print static routes\n")
+								      elif 'connected' in arg3:
+								      	sys.stdout.write("print connected routes\n")	
+								      else:
+								      	sys.stdout.write("% Invalid Command\n")							      								      
+							   else:
+							       self.fs_info.displayRoutes()
+						   elif 'arp' in arg2:
+							   if len(line) >=3:
+								   bool, arg3 = self.parser(_SHOW_ARP.get('arp'),line[2])
+								   if bool == "True":
+								      bool=None
+								      if 'summary' in arg3:
+								      	sys.stdout.write("print arp summary\n")
+								      elif 'interface' in arg3:
+								      	sys.stdout.write("print arp interface goo\n")
+								      else:
+								   	  	sys.stdout.write("% Invalid Command\n")
+							   else:
+									self.fs_info.displayARPEntries()
+						   elif 'ospf' in arg2:
+							   if len(line) >=3:
+								   bool, arg3 = self.parser(_SHOW_OSPF.get('ospf'),line[2])
+								   if bool == "True":
+								      bool=None
+								      if 'interface' in arg3:
+								   		self.fs_info.verifyDRElectionResult()
+								      elif 'database' in arg3:
+								   	    sys.stdout.write("print ospf database\n")
+								      elif 'neighbor' in arg3:
+								   	  	sys.stdout.write("print ospf neighbors\n")
+								      else:
+								   	  	sys.stdout.write("% Invalid Command\n")
+							   else:
+							   		sys.stdout.write("% Incomplete Command\n")
+
+				elif 'interface' in arg1:
+				   if len(line) >= 2:
+					   bool, arg2 = self.parser(_SHOW_BASE.get('interface'),line[1])
+					   if bool == "True":
+						   bool=None
+						   if 'fpPort' in arg2:
+							   if len(line) >=3:
+							       if fpp_min <= int(line[2]) <= fpp_max:
+									   bool, arg3 = self.parser(_SHOW_INTERFACE.get(_INTERFACES),line[3])
+									   if bool == "True":
+										   bool=None
+										   if 'counters' in arg3:
+											  sys.stdout.write("fpPort Counters \n")	
+										   elif 'status' in arg3:
+											  sys.stdout.write("fpPort status \n")
+										   elif 'details' in arg3:
+											  sys.stdout.write("fpPort details \n")
+							       else:
+								       sys.stdout.write("% Invalid interface range \n")
+										
+						   elif 'svi' in arg2:
+							   if len(line) >=3:
+							       if svi_min <= int(line[2]) <= svi_max:
+									   bool, arg3 = self.parser(_SHOW_INTERFACE.get(_INTERFACES),line[3])
+									   if bool == "True":
+										   bool=None
+										   if 'counters' in arg3:
+											  sys.stdout.write("svi Counters \n")	
+										   elif 'status' in arg3:
+											  sys.stdout.write("svi status \n")
+										   elif 'details' in arg3:
+											  sys.stdout.write("svi details \n")
+							       else:
+								       sys.stdout.write("% Invalid svi value \n")											
+						   elif 'loopback' in arg2:
+							   if len(line) >=3:
+							       if loop_min <= int(line[2]) <= loop_max:
+									   bool, arg3 = self.parser(_SHOW_INTERFACE.get(_INTERFACES),line[3])
+									   if bool == "True":
+										   bool=None
+										   if 'counters' in arg3:
+											  sys.stdout.write("loopback Counters \n")	
+										   elif 'status' in arg3:
+											  sys.stdout.write("loopback status \n")
+										   elif 'details' in arg3:
+											  sys.stdout.write("loopback details \n")
+							       else:
+								       sys.stdout.write("% Invalid loopback value \n")	
+						   elif 'port-channel' in arg2:
+							   if len(line) >=3:
+							       if pc_min <= int(line[2]) <= pc_max:
+									   bool, arg3 = self.parser(_SHOW_INTERFACE.get(_INTERFACES),line[3])
+									   if bool == "True":
+										   bool=None
+										   if 'counters' in arg3:
+											  sys.stdout.write("port-channel Counters \n")	
+										   elif 'status' in arg3:
+											  sys.stdout.write("port-channel status \n")
+										   elif 'details' in arg3:
+											  sys.stdout.write("port-channel details \n")
+							       else:
+								       sys.stdout.write("% Invalid port-channel value \n")	
+						   elif 'eth0' in arg2:
+							   if len(line) >=3:
+								   bool, arg3 = self.parser(_SHOW_INTERFACE.get(_INTERFACES),line[2])
+								   if bool == "True":
+									   bool=None
+							           if 'counters' in arg3:
+							              sys.stdout.write("eth0 Counters \n")	
+							           elif 'status' in arg3:
+							              sys.stdout.write("eth0 status \n")
+							           elif 'details' in arg3:
+							              sys.stdout.write("eth0 details \n")
+						   elif 'counters' in arg2:
+							  self.fs_info.displayPortObjects()
+						   elif 'cpu' in arg2:
+							   if len(line) >=3:
+								   bool, arg3 = self.parser(_SHOW_INTERFACE.get(_INTERFACES),line[2])
+								   if bool == "True":
+									   bool=None
+							           if 'counters' in arg3:
+									       self.fs_info.displayCPUPortObjects()						
+						   elif 'status' in arg2:
+						       sys.stdout.write("interface status display \n")
+							
+				   else: 
+				      sys.stdout.write("% Incomplete command \n")	
+				      
+				      
+				elif 'vlan' in arg1:
+				   if len(line) >= 2:
+					   bool, arg2 = self.parser(_SHOW_VLAN.get('vlan'),line[1])
+					   if bool == "True":
+						   bool=None
+						   if 'summary' in arg2:
+						       sys.stdout.write('Print summary vlan Info\n')
+						       #self.fs_info.getVlanInfo()
+						   elif 'id' in arg2:
+						      sys.stdout.write('Print Vlan Info for specific VLAN\n')
+						      #if 1 <= int(arg2) <= 4094:
+						      	#self.fs_info.getVlanInfo(args[1]
+							
+					   else:
+							sys.stdout.write("% Invalid command \n")
+				   else:
+				   		print arg1
+						self.fs_info.getVlanInfo(arg1)
+						#sys.stdout.write('% Incomplete command\n')
+				elif 'port-channel' in arg1:
+				   if len(line) >= 2:
+					   bool, arg2 = self.parser(_SHOW_PCHANNEL.get('interface'),line[1])
+					   if bool == "True":
+						   bool=None
+						   if 'summary' in args[1]:
+							   self.fs_info.getLagGroups()
+						   elif 'interface' in args[1]:       				
+							   if len(args) == 2:
+								   self.fs_info.getLagMembers()
+							   else:
+								   if 'detail' in args[2]:
+									   self.fs_info.getLagMembers_detail()
+								   else:
+									   sys.stdout.write('% Invalid Command\n')     
+
+		else:
+			sys.stdout.write("% Incomplete Command\n")
+	'''
+		if len(args)>=2:
+			if [value for key, value in _SHOW_BASE.items() if args[0] in key.lower()]:
+				print args[0],"=",key
 			try:
 				if 'ip' in args[0]:
 					if 'bgp' in args[1]:
@@ -86,19 +352,20 @@ class Commands():
 							if 'detail' in args[2]:
 								self.fs_info.getLagMembers_detail()
 							else:
-								sys.stdout.write('% Invalid command\n')     				
+								sys.stdout.write('% Invalid Command\n')     				
 					else:
-						sys.stdout.write('% Invalid command\n')
+						sys.stdout.write('% Invalid Command\n')
 				else:
-					sys.stdout.write('% Incomplete command\n')
+					sys.stdout.write('% Incomplete Command\n')
 			except IndexError:
-				sys.stdout.write('% Incomplete command\n')
+				sys.stdout.write('% Incomplete Command\n')
 				
 			except :
 				sys.stdout.write('% Loss connectivity to %s \n' % switch_name )
 		else:
-			sys.stdout.write('% Incomplete command\n')
-
+			sys.stdout.write('% Incomplete Command\n')
+	'''
+	
 	def auto_show(self, text, line, begidx, endidx):
 		lines=line.strip()
 		list=[]
@@ -189,6 +456,13 @@ class Commands():
 			else:
 				return [i for i in _SHOW_BASE if i.startswith(text)]
 
+
+	def global_commands(self, arg):
+		""" Global Configuration Commands """
+	
+	def interface_commands(self, arg):
+		"""Interface configuration Commands"""
+		
    		
 class FlexSwitch_info():
 
@@ -276,7 +550,7 @@ class FlexSwitch_info():
             print 'Port         InOctets   InUcastPkts   InDiscards  InErrors     InUnknownProtos   OutOctets OutUcastPkts   OutDiscards   OutErrors'
         for d in ports:
             if d['IfIndex'] == 0:
-            	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['IfIndex']),
+            	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("CPU",
                                                                 d['PortStats'][0],
                                                                 d['PortStats'][1],
                                                                 d['PortStats'][2],
