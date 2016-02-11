@@ -51,6 +51,7 @@ class Global_CmdLine(Cmd):
         self.prompt = "(config)#"
         self.enable = CmdLine
         self.commands = Commands(switch_ip)
+        self.command_help = Command_help()
         self.intconf = Interface_CmdLine(self,self.enable,switch_ip)
         self.routerospf = Router_ospf_CmdLine(self.enable,switch_ip, self.intconf)
         self.routerbgp = Router_bgp_CmdLine(self.enable,switch_ip, self.intconf)
@@ -86,13 +87,17 @@ class Global_CmdLine(Cmd):
     def do_interface(self, arg):
     	" Interface configuration mode "
     	args = arg.split()
-    	if 'fpPort-' not in args[0]:
-    		sys.stdout.write('% Invalid interface\n')
-    	else:
-    		self.intconf.prompt = self.prompt[:-2] + "-if)#"
-    		self.intconf.cmdloop()
-    	if "end" in self.intconf.lastcmd:
-    		return True
+    	try:
+    		if 'fpPort-' not in args[0]:
+    			sys.stdout.write('% Invalid interface\n')
+    		else:
+    			self.intconf.prompt = self.prompt[:-2] + "-if)#"
+    			self.intconf.cmdloop()
+    		if "end" in self.intconf.lastcmd:
+    			return True
+    	except IndexError:
+    		sys.stdout.write('% Please specify interface\n')
+    		
     def do_router(self, arg):
     	" Router configuration mode "
     	args=arg.split()
