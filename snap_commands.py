@@ -94,6 +94,35 @@ class Commands():
 		else:
 			sys.stdout.write('   % Invalid Command\n') 
 			return str(False),match
+
+   	def autocomp_parser(self, list, line):
+   		match=[]  
+   		all=[]
+   		#Passed get of dictionary for commands, which should be a list. Loop through that list
+   		#Items in list could be another dictionary or just a string (could also be a list of strings, but going to try and prevent that)
+   		#Dictionary Key in that list could be a tuple (Like interfaces, which could have multiple matches for the same key, hence a tuple).
+   		#Check to see if it is a dictionary or list or value.  Check if key is string or tuple of strings.   
+   		#loop through strings and compare to user input, checking what the strings start with. 
+   		#if multiple matches found print items are ambiguous and return 
+   		#else return match with command string from dictionary and use it to proceed down the tree. 
+		for key in list:
+			if type(key) is types.DictType:
+				for command, val in key.items():
+					if type(command) is types.TupleType:
+						for tup_com in command:
+							if tup_com.startswith(line):
+								match.append(tup_com)
+					elif  command.startswith(line):
+						match.append(command)
+			elif type(key) is types.ListType:
+				for command in key:
+					if command.startswith(line):
+						match.append(command)
+			else: 
+				if key.startswith(line):
+					match.append(key)
+		if len(match):
+			return match
 			
 	def show_commands(self, arg):
 		" Show running system information "
@@ -252,7 +281,9 @@ class Commands():
 								   if bool == "True":
 									   bool=None
 							           if 'counters' in arg3:
-									       self.fs_info.displayCPUPortObjects()						
+									       self.fs_info.displayCPUPortObjects()	
+								   else:
+								       sys.stdout.write("% Invalid command \n")					
 						   elif 'status' in arg2:
 						       sys.stdout.write("interface status display \n")
 							
@@ -269,106 +300,72 @@ class Commands():
 						       sys.stdout.write('Print summary vlan Info\n')
 						       #self.fs_info.getVlanInfo()
 						   elif 'id' in arg2:
-						      sys.stdout.write('Print Vlan Info for specific VLAN\n')
-						      #if 1 <= int(arg2) <= 4094:
-						      	#self.fs_info.getVlanInfo(args[1]
-							
-					   else:
-							sys.stdout.write("% Invalid command \n")
+						      if vlan_min <= int(line[2]) <= vlan_max:
+						      	 self.fs_info.getVlanInfo(line[2])
 				   else:
-				   		print arg1
 						self.fs_info.getVlanInfo(arg1)
+						sys.stdout.write("% print all vlans \n")
+
 						#sys.stdout.write('% Incomplete command\n')
 				elif 'port-channel' in arg1:
 				   if len(line) >= 2:
 					   bool, arg2 = self.parser(_SHOW_PCHANNEL.get('interface'),line[1])
 					   if bool == "True":
 						   bool=None
-						   if 'summary' in args[1]:
+						   if 'summary' in arg2:
 							   self.fs_info.getLagGroups()
-						   elif 'interface' in args[1]:       				
-							   if len(args) == 2:
+						   elif 'interface' in arg2:       				
+							   if len(args) >= 3:
 								   self.fs_info.getLagMembers()
 							   else:
-								   if 'detail' in args[2]:
-									   self.fs_info.getLagMembers_detail()
-								   else:
-									   sys.stdout.write('% Invalid Command\n')     
+							       bool, arg2 = self.parser(_SHOW_PCHANNEL.get('interface'),line[1])
+							       if bool == "True":
+							          bool=None
+							          if 'detail' in arg3:
+									     self.fs_info.getLagMembers_detail()
+							          else:
+									     sys.stdout.write('% Invalid Command\n')     
 
 		else:
 			sys.stdout.write("% Incomplete Command\n")
-	'''
-		if len(args)>=2:
-			if [value for key, value in _SHOW_BASE.items() if args[0] in key.lower()]:
-				print args[0],"=",key
-			try:
-				if 'ip' in args[0]:
-					if 'bgp' in args[1]:
-						#print bgp table
-						if 'neighbors' in args[2]:
-							#print BGP neighbors
-							sys.stdout.write("neighbor\n")
-						elif 'summary' in args[2]:
-							self.fs_info.displayBGPPeers()
-						else:
-							sys.stdout.write("% Invalid command \n")	
-					elif 'route' in args[1]:
-						self.fs_info.displayRoutes()
-					elif 'arp' in args[1]:
-						self.fs_info.displayARPEntries()
-					elif 'ospf' in args[1]:
-						if 'interface' in args[2]:
-							self.fs_info.verifyDRElectionResult()
-						else:
-							sys.stdout.write("% Invalid command \n")
-					else:
-						sys.stdout.write("% Invalid command \n")
-				elif 'interface' in args[0]:
-					if 'counters' in args[1]:
-						if len(args) == 2:
-							self.fs_info.displayPortObjects()
-						else:
-							if 'cpu' in args[2]:
-								self.fs_info.displayCPUPortObjects()
-							else:
-								sys.stdout.write('% Invalid command\n')  
-					else:
-						sys.stdout.write("% Invalid command \n")	
-				elif 'vlan' in args[0]:
-					if len(args) >=2:
-						if 1 <= int(args[1]) <= 4094:
-							self.fs_info.getVlanInfo(args[1])
-						else:
-							sys.stdout.write("% Invalid command \n")
-					else:
-						sys.stdout.write('% Incomplete command\n')
-				elif 'port-channel' in args[0]:
-					if 'summary' in args[1]:
-						self.fs_info.getLagGroups()
-					elif 'interface' in args[1]:       				
-						if len(args) == 2:
-							self.fs_info.getLagMembers()
-						else:
-							if 'detail' in args[2]:
-								self.fs_info.getLagMembers_detail()
-							else:
-								sys.stdout.write('% Invalid Command\n')     				
-					else:
-						sys.stdout.write('% Invalid Command\n')
-				else:
-					sys.stdout.write('% Incomplete Command\n')
-			except IndexError:
-				sys.stdout.write('% Incomplete Command\n')
-				
-			except :
-				sys.stdout.write('% Loss connectivity to %s \n' % switch_name )
-		else:
-			sys.stdout.write('% Incomplete Command\n')
-	'''
-	
+
 	def auto_show(self, text, line, begidx, endidx):
-		lines=line.strip()
-		list=[]
+		lines=line.split()
+		list=[]	
+		
+		if len(lines)>=1:
+			arg1 = self.autocomp_parser(_SHOW_BASE,lines[1] )
+			
+			print arg1
+			if len(arg1)==1:
+				return [i for i in arg1 if i.startswith(text)]
+			else:	
+				return [i for i in arg1 if i.startswith(text)]
+				if 'ip' in arg1:
+				   if len(lines)==2:
+				   	   return [i for i in arg1 if i.startswith(text)]
+				   else:
+					   arg2 = self.autocomp_parser(_SHOW_BASE.get('ip'),lines[2])
+					   return [i for i in arg2 if i.startswith(text)]
+					   if 'bgp' in arg2:
+						   if len(lines)<=3:
+						   	return [i for i in arg2 if i.startswith(text)]
+						   else:
+							   arg3 = self.autocomp_parser(_SHOW_BGP.get('bgp'),lines[3])
+							   if 'neighbors' in arg3:
+							       if len(lines)<=4:
+							          return [i for i in arg3 if i.startswith(text)]
+							       else:
+							       	print "foof"
+							   elif 'summary' in arg3:
+								   return
+					   else:
+						   return [i for i in _SHOW_BASE.get('ip') if i.startswith(text)]	
+				else:
+					return [i for i in _SHOW_BASE if i.startswith(text)]
+		
+		
+		'''				       
 		if 'show' in lines:
 			if 'ip' in lines:
 				if 'bgp' in lines:
@@ -455,7 +452,7 @@ class Commands():
 				return [i for i in _SHOW_BASE.get('interface') if i.startswith(text)]
 			else:
 				return [i for i in _SHOW_BASE if i.startswith(text)]
-
+			'''
 
 	def global_commands(self, arg):
 		""" Global Configuration Commands """
