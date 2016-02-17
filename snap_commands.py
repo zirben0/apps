@@ -205,7 +205,6 @@ class Commands():
 						   elif 'interface' in arg2:
 							   if len(line) >=3:
 								   bool, arg3 = self.parser(_SHOW_IP_INT.get('interface'),line[2])
-								   print bool, arg3
 								   if bool == "True":
 								      bool=None
 								      if 'brief' in arg3:
