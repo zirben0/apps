@@ -171,3 +171,4 @@ if __name__ == '__main__':
     else:
    		print "FlexSwitch not reachable, Please ensure daemon is up."  
    		sys.exit(2)
+

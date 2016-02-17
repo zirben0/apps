@@ -1,4 +1,4 @@
-import sys, types
+import sys, types, json
 from flexswitch import FlexSwitch
 
 
@@ -38,17 +38,20 @@ _SHOW_PCHANNEL={'summary':['interface'],
 				}
 _INTERFACES=('fpPort','loopback','mgmt','svi','port-channel','cpu')
 
-_SHOW_INTERFACE={_INTERFACES:['counters','detail', 'status']
-  				}
+_SHOW_INTERFACE={_INTERFACES:['counters','detail', 'status']}
+
+_SHOW_IP_INT={'interface':['brief']}
+
+_SHOW_RUN={'run':['bgp','ospf','interface','port-channel']}
 
 _SHOW_ARP={'arp':['summary','detail']}
 
 _SHOW_VLAN={'vlan':['summary','id']}
 #BASE for all show commands			
 
-_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,_SHOW_OSPF,_SHOW_INTERFACE,_SHOW_ARP],
+_SHOW_BASE = {'ip':[_SHOW_BGP,_SHOW_ROUTE,_SHOW_OSPF,_SHOW_IP_INT,_SHOW_ARP],
 			'version':[''], 'inventory':['detail'], 'interface':[_SHOW_INTERFACE,'counters', 'status'],
-			'port-channel':_SHOW_PCHANNEL,'bfd':['interface','summary'],'vlan':[_SHOW_VLAN]
+			'port-channel':_SHOW_PCHANNEL,'bfd':['interface','summary'],'vlan':[_SHOW_VLAN],'run':[_SHOW_RUN]
 			}
 
 
@@ -149,7 +152,7 @@ class Commands():
 								   	  	  sys.stdout.write("% Invalid Command\n")
 		  
 							   else:
-									sys.stdout.write("print bgp table\n")	
+									self.fs_info.displayBGPtable()	
 						   elif 'route' in arg2:
 							   if len(line) >=3:
 								   bool, arg3 = self.parser(_SHOW_ROUTE.get('route'),line[2])
@@ -197,6 +200,16 @@ class Commands():
 								   	  	sys.stdout.write("print ospf neighbors\n")
 								      else:
 								   	  	sys.stdout.write("% Invalid Command\n")
+							   else:
+							   		sys.stdout.write("% Incomplete Command\n")
+						   elif 'interface' in arg2:
+							   if len(line) >=3:
+								   bool, arg3 = self.parser(_SHOW_IP_INT.get('interface'),line[2])
+								   print bool, arg3
+								   if bool == "True":
+								      bool=None
+								      if 'brief' in arg3:
+								   		self.fs_info.IPv4Intfstatus()
 							   else:
 							   		sys.stdout.write("% Incomplete Command\n")
 
@@ -285,7 +298,7 @@ class Commands():
 								   else:
 								       sys.stdout.write("% Invalid command \n")					
 						   elif 'status' in arg2:
-						       sys.stdout.write("interface status display \n")
+						       self.fs_info.displayPortStatus()
 							
 				   else: 
 				      sys.stdout.write("% Incomplete command \n")	
@@ -324,7 +337,14 @@ class Commands():
 							          if 'detail' in arg3:
 									     self.fs_info.getLagMembers_detail()
 							          else:
-									     sys.stdout.write('% Invalid Command\n')     
+									     sys.stdout.write('% Invalid Command\n')  
+				elif 'run' in arg1:
+				   if len(line) >= 2:
+					   bool, arg2 = self.parser(_SHOW_RUN.get('run'),line[1])
+					   if bool == "True":
+						   bool=None
+						   if 'bgp' in arg2:
+						   	  print "Running BGP JSON"
 
 		else:
 			sys.stdout.write("% Incomplete Command\n")
@@ -466,6 +486,15 @@ class FlexSwitch_info():
    def __init__(self,switch_ip):
    		self.switch_ip=switch_ip
    		self.swtch = FlexSwitch(self.switch_ip,8080)
+
+
+   def displayRunBGP(self):
+     	routes = self.swtch.getObjects('BGPNeighborStates')
+     	if len(routes)>=0:
+     	    print '\n'
+     	    print 'Network            Mask         NextHop         Cost       Protocol   IfType IfIndex'
+     	for rt in routes:
+     	    print '%s %s %s %4d   %9s    %5s   %4s' %(rt['DestinationNw'].ljust(15),) 
    		
    def displayBGPPeers(self):	   
 		   sessionState=  {  0: "Idle",
@@ -481,8 +510,8 @@ class FlexSwitch_info():
 			   print '\n'
 			   print 'Neighbor   LocalAS   PeerAS     State      RxNotifications    RxUpdates   TxNotifications TxUpdates'
 		   for pr in peers:
-			   print '%s    %s      %s     %s       %s              %s              %s           %s' %(pr['NeighborAddress'],
-																				  pr['LocalAS'],
+			   print '%s %s %s     %s       %s              %s              %s           %s' %(pr['NeighborAddress'].ljust(12),
+																				  str(pr['LocalAS']).ljust(8),
 																				  pr['PeerAS'],
 																				  sessionState[int(pr['SessionState'] -1)],
 																				  pr['Messages']['Received']['Notification'],
@@ -490,8 +519,8 @@ class FlexSwitch_info():
 																				  pr['Messages']['Sent']['Notification'],
 																				  pr['Messages']['Sent']['Update'])
 
-		   print "\n"
-			   
+		   print "\n" 
+	   
    def displayRoutes(self):
      	routes = self.swtch.getObjects('IPV4Routes')
      	if len(routes)>=0:
@@ -507,6 +536,21 @@ class FlexSwitch_info():
      	                                                    rt['OutgoingInterface'])
         print "\n"
 
+   def displayBGPtable(self):
+     	routes = self.swtch.getObjects('BGPRoutes')
+     	if len(routes)>=0:
+     	    print '\n'
+     	    print 'Network          Mask           NextHop          Metric     LocalPref      Path   		Updated'
+     	for rt in routes:
+     	    print '%s %s %s %4d   %9d    %10s   %30s' %(rt['Network'].ljust(15), 
+     	                                                    rt['Mask'].ljust(15),
+     	                                                    rt['NextHop'].ljust(15), 
+     	                                                    rt['Metric'], 
+     	                                                    rt['LocalPref'], 
+     	                                                    rt['Path'], 
+     	                                                    rt['Updated'])
+        print "\n"
+
    def displayARPEntries(self):
         arps = self.swtch.getObjects('ArpEntrys')
         if len(arps)>=0:
@@ -520,6 +564,59 @@ class FlexSwitch_info():
 						d['Intf'])
         print "\n"
 
+   def IPv4Intfstatus(self):
+     	ip_int = self.swtch.getObjects('IPv4Intfs')
+     	if len(ip_int)>=0:
+     	    print '\n'
+     	    print 'IPv4              IfIndex        Interface'
+     	for d in ip_int:
+     		if len(str(d['IfIndex'])) < 8:
+     			if d['IfIndex'] < 73:
+     				index = self.swtch.getObjects('PortStates')
+     				for e in index:
+     					if e['IfIndex'] == d['IfIndex']:
+     						port=e['Name']
+     						break
+     					else:
+     						port='N/A'
+     			else:
+     				index = self.swtch.getObjects('Vlans')
+     				for e in index:
+     					if e['IfIndex'] == d['IfIndex']:
+     						port=e['VlanName']
+     						break
+     					else:
+     						port='N/A'
+     							
+     			print '%s %5s %21s' %(d['IpAddr'], 
+     		               d['IfIndex'],
+     		               port
+     		               )
+     		elif len(str(d['IfIndex'])) >= 8:
+     			if d['IfIndex'] < 73:
+     				index = self.swtch.getObjects('PortStates')
+     				for e in index:
+     					if e['IfIndex'] == d['IfIndex']:
+     						port=e['Name']
+     						break
+     					else:
+     						port='N/A'
+     			else:
+     				index = self.swtch.getObjects('Vlans')
+     				for e in index:
+     					if e['IfIndex'] == d['IfIndex']:
+     						port=e['VlanName']
+     						break
+     					else:
+     						port='N/A'
+     							
+     			print '%s %13s %13s' %(d['IpAddr'], 
+     		               d['IfIndex'],
+     		               port
+     		               )     			
+     		     	       
+        print "\n"  
+        
    def displayPortObjects(self):
         ports = self.swtch.getObjects('PortStates')
         if len(ports):
@@ -528,17 +625,28 @@ class FlexSwitch_info():
         for d in ports:
             if d['IfIndex'] == 0:
         		continue
-            #if sum(d['PortStats']):
-            print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['IfIndex']),
-                                                                d['PortStats'][0],
-                                                                d['PortStats'][1],
-                                                                d['PortStats'][2],
-                                                                d['PortStats'][3],
-                                                                d['PortStats'][4],
-                                                                d['PortStats'][5],
-                                                                d['PortStats'][6],
-                                                                d['PortStats'][7],
-                                                                d['PortStats'][8])
+            elif d['IfIndex'] < 10:
+            	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['IfIndex']),
+                                                                d['IfInOctets'],
+                                                                d['IfInUcastPkts'],
+                                                                d['IfInDiscards'],
+                                                                d['IfInErrors'],
+                                                                d['IfInUnknownProtos'],
+                                                                d['IfOutOctets'],
+                                                                d['IfOutUcastPkts'],
+                                                                d['IfOutDiscards'],
+                                                                d['IfOutErrors'])
+            else:
+            	print '%s  %7d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['IfIndex']),
+                                                                d['IfInOctets'],
+                                                                d['IfInUcastPkts'],
+                                                                d['IfInDiscards'],
+                                                                d['IfInErrors'],
+                                                                d['IfInUnknownProtos'],
+                                                                d['IfOutOctets'],
+                                                                d['IfOutUcastPkts'],
+                                                                d['IfOutDiscards'],
+                                                                d['IfOutErrors'])
         print "\n"
    def displayCPUPortObjects(self):
         ports = self.swtch.getObjects('PortStates')
@@ -548,16 +656,38 @@ class FlexSwitch_info():
         for d in ports:
             if d['IfIndex'] == 0:
             	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("CPU",
-                                                                d['PortStats'][0],
-                                                                d['PortStats'][1],
-                                                                d['PortStats'][2],
-                                                                d['PortStats'][3],
-                                                                d['PortStats'][4],
-                                                                d['PortStats'][5],
-                                                                d['PortStats'][6],
-                                                                d['PortStats'][7],
-                                                                d['PortStats'][8])
-        print "\n"
+                                                                d['IfInOctets'],
+                                                                d['IfInUcastPkts'],
+                                                                d['IfInDiscards'],
+                                                                d['IfInErrors'],
+                                                                d['IfInUnknownProtos'],
+                                                                d['IfOutOctets'],
+                                                                d['IfOutUcastPkts'],
+                                                                d['IfOutDiscards'],
+                                                                d['IfOutErrors'])
+
+   def displayPortStatus(self):
+        ports = self.swtch.getObjects('PortStates')
+        if len(ports):
+            print '\n'
+            print 'Port         Status   IFIndex   Duplex   Speed     Type'
+        for d in ports: 
+            if d['IfIndex'] == 0:
+        		continue
+            elif d['IfIndex'] < 10:
+            	print '%s  %8s %6s %10s %8s %9s' %("fpPort-"+str(d['IfIndex']),
+                                                            d['OperState'],
+                                                             d['IfIndex'],
+                                                             'N/A',
+                                                             'N/A',
+                                                             'N/A')
+            else:
+            	print '%s  %7s %6s %10s %8s %9s' %("fpPort-"+str(d['IfIndex']),
+                                                            d['OperState'],
+                                                             d['IfIndex'],
+                                                             'N/A',
+                                                             'N/A',
+                                                             'N/A')
 
    def verifyDRElectionResult(self):
         ospfIntfs = self.swtch.getObjects('OspfIfEntryStates')
