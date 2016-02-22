@@ -285,17 +285,22 @@ class Commands():
 							              sys.stdout.write("eth0 status \n")
 							           elif 'details' in arg3:
 							              sys.stdout.write("eth0 details \n")
-						   elif 'counters' in arg2:
-							  self.fs_info.displayPortObjects()
 						   elif 'cpu' in arg2:
 							   if len(line) >=3:
 								   bool, arg3 = self.parser(_SHOW_INTERFACE.get(_INTERFACES),line[2])
 								   if bool == "True":
 									   bool=None
 							           if 'counters' in arg3:
-									       self.fs_info.displayCPUPortObjects()	
-								   else:
-								       sys.stdout.write("% Invalid command \n")					
+							              self.fs_info.displayCPUPortObjects()	
+							           elif 'status' in arg3:
+							              sys.stdout.write("CPU status \n")
+							           elif 'details' in arg3:
+							              sys.stdout.write("CPU details \n")
+						   elif 'counters' in arg2:
+						       if len(line) >=3:
+								   sys.stdout.write("% Invalid command \n")
+						       else:
+								   self.fs_info.displayPortObjects()				
 						   elif 'status' in arg2:
 						       self.fs_info.displayPortStatus()
 							
@@ -321,22 +326,25 @@ class Commands():
 						#sys.stdout.write('% Incomplete command\n')
 				elif 'port-channel' in arg1:
 				   if len(line) >= 2:
-					   bool, arg2 = self.parser(_SHOW_PCHANNEL.get('interface'),line[1])
+					   bool, arg2 = self.parser(_SHOW_PCHANNEL,line[1])
 					   if bool == "True":
 						   bool=None
 						   if 'summary' in arg2:
-							   self.fs_info.getLagGroups()
+							     self.fs_info.getLagGroups()
 						   elif 'interface' in arg2:       				
-							   if len(args) >= 3:
-								   self.fs_info.getLagMembers()
-							   else:
-							       bool, arg2 = self.parser(_SHOW_PCHANNEL.get('interface'),line[1])
+							   if len(line) >= 3:
+							       bool, arg3 = self.parser(_SHOW_PCHANNEL.get('interface'),line[1])
+							       print bool
 							       if bool == "True":
-							          bool=None
+							          bool=None 
 							          if 'detail' in arg3:
-									     self.fs_info.getLagMembers_detail()
-							          else:
-									     sys.stdout.write('% Invalid Command\n')  
+							             print  "Running LACP detail"
+							             self.fs_info.getLagMembers_detail()
+							   else:
+								   self.fs_info.getLagMembers()  
+					  		  
+				   else: 
+				      sys.stdout.write("% Incomplete command \n")	
 				elif 'run' in arg1:
 				   if len(line) >= 2:
 					   bool, arg2 = self.parser(_SHOW_RUN.get('run'),line[1])
@@ -355,7 +363,6 @@ class Commands():
 		if len(lines)>=1:
 			arg1 = self.autocomp_parser(_SHOW_BASE,lines[1] )
 			
-			print arg1
 			if len(arg1)==1:
 				return [i for i in arg1 if i.startswith(text)]
 			else:	
@@ -374,8 +381,8 @@ class Commands():
 							   if 'neighbors' in arg3:
 							       if len(lines)<=4:
 							          return [i for i in arg3 if i.startswith(text)]
-							       else:
-							       	print "foof"
+							       #else:
+							       
 							   elif 'summary' in arg3:
 								   return
 					   else:
@@ -519,6 +526,21 @@ class FlexSwitch_info():
 																				  pr['Messages']['Sent']['Update'])
 
 		   print "\n" 
+		   
+   def displayBGPtable(self):
+     	routes = self.swtch.getObjects('BGPRoutes')
+     	if len(routes)>=0:
+     	    print '\n'
+     	    print 'Network          Mask           NextHop          Metric     LocalPref      Updated   		Path'
+     	for rt in routes:
+     	    print '%s %s %s %4d   %9d    %14s   %13s' %(rt['Network'].ljust(15), 
+     	                                                    rt['Mask'].ljust(15),
+     	                                                    rt['NextHop'].ljust(15), 
+     	                                                    rt['Metric'], 
+     	                                                    rt['LocalPref'], 
+     	                                                    rt['Updated'].split(".")[0],
+     	                                                    rt['Path'])
+        print "\n"
 	   
    def displayRoutes(self):
      	routes = self.swtch.getObjects('IPV4Routes')
@@ -535,20 +557,6 @@ class FlexSwitch_info():
      	                                                    rt['OutgoingInterface'])
         print "\n"
 
-   def displayBGPtable(self):
-     	routes = self.swtch.getObjects('BGPRoutes')
-     	if len(routes)>=0:
-     	    print '\n'
-     	    print 'Network          Mask           NextHop          Metric     LocalPref      Path   		Updated'
-     	for rt in routes:
-     	    print '%s %s %s %4d   %9d    %10s   %30s' %(rt['Network'].ljust(15), 
-     	                                                    rt['Mask'].ljust(15),
-     	                                                    rt['NextHop'].ljust(15), 
-     	                                                    rt['Metric'], 
-     	                                                    rt['LocalPref'], 
-     	                                                    rt['Path'], 
-     	                                                    rt['Updated'])
-        print "\n"
 
    def displayARPEntries(self):
         arps = self.swtch.getObjects('ArpEntrys')
@@ -567,7 +575,7 @@ class FlexSwitch_info():
      	ip_int = self.swtch.getObjects('IPv4Intfs')
      	if len(ip_int)>=0:
      	    print '\n'
-     	    print 'IPv4              IfIndex        Interface'
+     	    print 'Interface     IfIndex        IPv4'
      	for d in ip_int:
      		if len(str(d['IfIndex'])) < 8:
      			if d['IfIndex'] < 73:
@@ -587,9 +595,9 @@ class FlexSwitch_info():
      					else:
      						port='N/A'
      							
-     			print '%s %5s %21s' %(d['IpAddr'], 
-     		               d['IfIndex'],
-     		               port
+     			print '%s %6s %21s' %(port.ljust(10), 
+     						d['IfIndex'],
+     					    d['IpAddr']
      		               )
      		elif len(str(d['IfIndex'])) >= 8:
      			if d['IfIndex'] < 73:
@@ -609,9 +617,9 @@ class FlexSwitch_info():
      					else:
      						port='N/A'
      							
-     			print '%s %13s %13s' %(d['IpAddr'], 
-     		               d['IfIndex'],
-     		               port
+     			print '%s %s %13s' %(port.ljust(10), 
+     						d['IfIndex'],
+     					    d['IpAddr']
      		               )     			
      		     	       
         print "\n"  
@@ -696,17 +704,17 @@ class FlexSwitch_info():
             print 'IfAddr IfIndex  State  DR-RouterId DR-IpAddr BDR-RouterI BDR-IpAddr NumEvents LSACount LSACksum'
 
         for d in ospfIntfs:
-            if sum(d['ospfIntfs']):
+            #if sum(d['ospfIntfs']):
                 print '%3s  %3d %10s   %10s    %8s   %15s   %9s   %12s   %11s   %11s' %( d['IfIpAddressKey'],
                                                                                         d['AddressLessIfKey'],
-                                                                                        d['IfStat'],
-                                                                                        d['IfDesignatedRoute'],
-                                                                                        d['IfBackupDesignatedRoute'],
-                                                                                        d['IfEvent'],
-                                                                                        d['IfLsaCoun'],
-                                                                                        d['IfLsaCksumSu'],
-                                                                                        d['IfDesignatedRouterI'],
-                                                                                        d['IfBackupDesignatedRouterI'])
+                                                                                        d['IfState'],
+                                                                                        d['IfDesignatedRouter'],
+                                                                                        d['IfBackupDesignatedRouter'],
+                                                                                        d['IfEvents'],
+                                                                                        d['IfLsaCount'],
+                                                                                        d['IfLsaCksumSum'],
+                                                                                        d['IfDesignatedRouterId'],
+                                                                                        d['IfBackupDesignatedRouterId'])
         print "\n"            
    def getVlanInfo (self, vlanId):
         for vlan in self.swtch.getObjects ('VlanStates'):
