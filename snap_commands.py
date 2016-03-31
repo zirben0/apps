@@ -928,4 +928,3 @@ class FlexSwitch_info():
    														   d['Object']['SystemIdMac'],
    														   d['Object']['SystemPriority'],
    														   d['Object']['LagHash'])
-   		  		
