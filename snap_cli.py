@@ -47,7 +47,7 @@ class CmdLine(Cmd):
         Cmd.__init__(self)
         if not USING_READLINE:
             self.completekey = None
-        self.prompt = socket.gethostname()+"#"
+        self.prompt = switch_ip +"#"
         try:
         	switch_name = socket.gethostbyname(switch_ip)
         except socket.gaierror:

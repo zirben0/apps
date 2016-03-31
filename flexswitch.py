@@ -18,7 +18,7 @@ class FlexSwitch( object):
         r = requests.post(reqUrl, data=json.dumps(obj), headers=headers)
 
     def getVlanInfo (self, vlanId) :
-        for vlan in self.getObjects ('VlanStates'):
+        for vlan in self.getObjects ('Vlans'):
             print vlan 
             if vlan['VlanId'] == vlanId:
                 return int(vlan['IfIndex'])
