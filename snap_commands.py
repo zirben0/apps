@@ -535,15 +535,15 @@ class FlexSwitch_info():
 			   print '\n'
 			   print 'Neighbor   LocalAS   PeerAS     State      RxNotifications    RxUpdates   TxNotifications TxUpdates  Description'
 		   for pr in peers:
-			   print '%s %s %s     %s       %s              %s              %s           %s	%s' %(pr['ConfigObj']['NeighborAddress'].ljust(12),
-																				  str(pr['ConfigObj']['LocalAS']).ljust(8),
-																				  pr['ConfigObj']['PeerAS'],
-																				  sessionState[int(pr['ConfigObj']['SessionState'] -1)],
-																				  pr['ConfigObj']['Messages']['Received']['Notification'],
-																				  pr['ConfigObj']['Messages']['Received']['Update'],
-																				  pr['ConfigObj']['Messages']['Sent']['Notification'],
-																				  pr['ConfigObj']['Messages']['Sent']['Update'],
-																				  pr['ConfigObj']['Description'])
+			   print '%s %s %s     %s       %s              %s              %s           %s	%s' %(pr['Object']['NeighborAddress'].ljust(12),
+																				  str(pr['Object']['LocalAS']).ljust(8),
+																				  pr['Object']['PeerAS'],
+																				  sessionState[int(pr['Object']['SessionState'] -1)],
+																				  pr['Object']['Messages']['Received']['Notification'],
+																				  pr['Object']['Messages']['Received']['Update'],
+																				  pr['Object']['Messages']['Sent']['Notification'],
+																				  pr['Object']['Messages']['Sent']['Update'],
+																				  pr['Object']['Description'])
 
 		   print "\n" 
 		   
@@ -553,13 +553,13 @@ class FlexSwitch_info():
      	    print '\n'
      	    print 'Network          Mask           NextHop          Metric     LocalPref      Updated   		Path'
      	for rt in routes:
-     	    print '%s %s %s %4d   %9d    %14s   %13s' %(rt['ConfigObj']['Network'].ljust(17), 
-     	                                                    str(rt['ConfigObj']['CIDRLen']).ljust(13),
-     	                                                    rt['ConfigObj']['NextHop'].ljust(15), 
-     	                                                    rt['ConfigObj']['Metric'], 
-     	                                                    rt['ConfigObj']['LocalPref'], 
-     	                                                    rt['ConfigObj']['Updated'].split(".")[0],
-     	                                                    rt['ConfigObj']['Path'])
+     	    print '%s %s %s %4d   %9d    %14s   %13s' %(rt['Object']['Network'].ljust(17), 
+     	                                                    str(rt['Object']['CIDRLen']).ljust(13),
+     	                                                    rt['Object']['NextHop'].ljust(15), 
+     	                                                    rt['Object']['Metric'], 
+     	                                                    rt['Object']['LocalPref'], 
+     	                                                    rt['Object']['Updated'].split(".")[0],
+     	                                                    rt['Object']['Path'])
         print "\n"
 
    def displayBfdNeigh(self):
@@ -568,22 +568,22 @@ class FlexSwitch_info():
      	    print '\n'
      	    print 'Session ID            LocalIP         RemoteIP         LState 	RState  LDiscrim    RDiscrim'
      	for rt in neigh:
-     	    print '%s %s %s %4d   %9s    %5d   %4d' %(str(rt['ConfigObj']['SessionId']).ljust(15), 
-     	                                                    rt['ConfigObj']['LocalIpAddr'].ljust(15),
-     	                                                    rt['ConfigObj']['RemoteIpAddr'].ljust(15), 
-     	                                                    rt['ConfigObj']['SessionState'], 
-     	                                                    rt['ConfigObj']['RemoteSessionState'], 
-     	                                                    rt['ConfigObj']['LocalDiscriminator'], 
-     	                                                    rt['ConfigObj']['RemoteDiscriminator'])
+     	    print '%s %s %s %4d   %9s    %5d   %4d' %(str(rt['Object']['SessionId']).ljust(15), 
+     	                                                    rt['Object']['LocalIpAddr'].ljust(15),
+     	                                                    rt['Object']['RemoteIpAddr'].ljust(15), 
+     	                                                    rt['Object']['SessionState'], 
+     	                                                    rt['Object']['RemoteSessionState'], 
+     	                                                    rt['Object']['LocalDiscriminator'], 
+     	                                                    rt['Object']['RemoteDiscriminator'])
 
      	    print 'TxPackets          RxPackets         Multiplier 	MinTxInt  MinRxInt 	 LocalDiag    IfIndex '
-     	    print '%s %s %s %4d   %9s    %5s   %4s' %(rt['ConfigObj']['NumTxPackets'].ljust(15), 
-     	                                                    rt['ConfigObj']['NumRxPackets'].ljust(15),
-     	                                                    rt['ConfigObj']['LocalMultiplier'].ljust(15), 
-     	                                                    rt['ConfigObj']['DesiredMinTxInterval'], 
-     	                                                    rt['ConfigObj']['RequiredMinRxInterval'], 
-     	                                                    rt['ConfigObj']['LocalDiagType'], 
-     	                                                    rt['ConfigObj']['IfIndex'])
+     	    print '%s %s %s %4d   %9s    %5s   %4s' %(rt['Object']['NumTxPackets'].ljust(15), 
+     	                                                    rt['Object']['NumRxPackets'].ljust(15),
+     	                                                    rt['Object']['LocalMultiplier'].ljust(15), 
+     	                                                    rt['Object']['DesiredMinTxInterval'], 
+     	                                                    rt['Object']['RequiredMinRxInterval'], 
+     	                                                    rt['Object']['LocalDiagType'], 
+     	                                                    rt['Object']['IfIndex'])
      	    print "********************************************************************************************"
      	print "\n"        
 
@@ -593,12 +593,12 @@ class FlexSwitch_info():
    			print '\n'
    			print 'ifIndex   Enabled    NumSessions    Multiplier 	 MinTxInt  MinRxInt'
    		for rt in int:
-   			print '%s %s %s %s %s %s' %(str(rt['ConfigObj']['IfIndex']).ljust(10), 
-     	                                                    str(rt['ConfigObj']['Enabled']).ljust(15),
-     	                                                    str(rt['ConfigObj']['NumSessions']).ljust(10),
-     	                                                    str(rt['ConfigObj']['LocalMultiplier']).ljust(10), 
-     	                                                    rt['ConfigObj']['DesiredMinTxInterval'], 
-     	                                                    rt['ConfigObj']['RequiredMinRxInterval'])                                                    
+   			print '%s %s %s %s %s %s' %(str(rt['Object']['IfIndex']).ljust(10), 
+     	                                                    str(rt['Object']['Enabled']).ljust(15),
+     	                                                    str(rt['Object']['NumSessions']).ljust(10),
+     	                                                    str(rt['Object']['LocalMultiplier']).ljust(10), 
+     	                                                    rt['Object']['DesiredMinTxInterval'], 
+     	                                                    rt['Object']['RequiredMinRxInterval'])                                                    
    		print "\n"   			
 	   
    def displayRoutes(self):
@@ -607,11 +607,11 @@ class FlexSwitch_info():
      	    print '\n'
      	    print 'Network         NextHop         Protocol         IfType         IfIndex'
      	for rt in routes:
-     	    print '%s %s %s   %s    %s ' %(rt['ConfigObj']['DestinationNw'].ljust(15), 
-     	                                                    rt['ConfigObj']['NextHopIp'].ljust(15), 
-     	                                                    rt['ConfigObj']['Protocol'].ljust(15), 
-     	                                                    rt['ConfigObj']['OutgoingIntfType'].ljust(15), 
-     	                                                    rt['ConfigObj']['OutgoingInterface'].ljust(15))
+     	    print '%s %s %s   %s    %s ' %(rt['Object']['DestinationNw'].ljust(15), 
+     	                                                    rt['Object']['NextHopIp'].ljust(15), 
+     	                                                    rt['Object']['Protocol'].ljust(15), 
+     	                                                    rt['Object']['OutgoingIntfType'].ljust(15), 
+     	                                                    rt['Object']['OutgoingInterface'].ljust(15))
         print "\n"
 
 
@@ -621,11 +621,11 @@ class FlexSwitch_info():
             print '\n'
             print 'IP Address	MacAddress   	    TimeRemaining  	Vlan 	  Intf'
         for d in arps:
-            print  '%s	%s    %s	 %s	%s' %(d['ConfigObj']['IpAddr'],
-						d['ConfigObj']['MacAddr'],
-						d['ConfigObj']['ExpiryTimeLeft'],
-						d['ConfigObj']['Vlan'],
-						d['ConfigObj']['Intf'])
+            print  '%s	%s    %s	 %s	%s' %(d['Object']['IpAddr'],
+						d['Object']['MacAddr'],
+						d['Object']['ExpiryTimeLeft'],
+						d['Object']['Vlan'],
+						d['Object']['Intf'])
         print "\n"
 
    def IPv4Intfstatus(self):
@@ -634,49 +634,49 @@ class FlexSwitch_info():
      	    print '\n'
      	    print 'Interface     IfIndex        IPv4'
      	for d in ip_int:
-     		if len(str(d['ConfigObj']['IfIndex'])) < 8:
-     			if d['ConfigObj']['IfIndex'] < 73:
+     		if len(str(d['Object']['IfIndex'])) < 8:
+     			if d['Object']['IfIndex'] < 73:
      				index = self.swtch.getObjects('PortStates')
      				for e in index:
-     					if e['ConfigObj']['IfIndex'] == d['ConfigObj']['IfIndex']:
-     						port=e['ConfigObj']['Name']
+     					if e['Object']['IfIndex'] == d['Object']['IfIndex']:
+     						port=e['Object']['Name']
      						break
      					else:
      						port='N/A'
      			else:
      				index = self.swtch.getObjects('Vlans')
      				for e in index:
-     					if e['ConfigObj']['IfIndex'] == d['ConfigObj']['IfIndex']:
-     						port=e['ConfigObj']['VlanName']
+     					if e['Object']['IfIndex'] == d['Object']['IfIndex']:
+     						port=e['Object']['VlanName']
      						break
      					else:
      						port='N/A'
      							
      			print '%s %6s %21s' %(port.ljust(10), 
-     						d['ConfigObj']['IfIndex'],
-     					    d['ConfigObj']['IpAddr']
+     						d['Object']['IfIndex'],
+     					    d['Object']['IpAddr']
      		               )
-     		elif len(str(d['ConfigObj']['IfIndex'])) >= 8:
-     			if d['ConfigObj']['IfIndex'] < 73:
+     		elif len(str(d['Object']['IfIndex'])) >= 8:
+     			if d['Object']['IfIndex'] < 73:
      				index = self.swtch.getObjects('PortStates')
      				for e in index:
-     					if e['ConfigObj']['IfIndex'] == d['ConfigObj']['IfIndex']:
-     						port=e['ConfigObj']['Name']
+     					if e['Object']['IfIndex'] == d['Object']['IfIndex']:
+     						port=e['Object']['Name']
      						break
      					else:
      						port='N/A'
      			else:
      				index = self.swtch.getObjects('Vlans')
      				for e in index:
-     					if e['ConfigObj']['IfIndex'] == d['ConfigObj']['IfIndex']:
-     						port=e['ConfigObj']['VlanName']
+     					if e['Object']['IfIndex'] == d['Object']['IfIndex']:
+     						port=e['Object']['VlanName']
      						break
      					else:
      						port='N/A'
      							
      			print '%s %s %13s' %(port.ljust(10), 
-     						d['ConfigObj']['IfIndex'],
-     					    d['ConfigObj']['IpAddr']
+     						d['Object']['IfIndex'],
+     					    d['Object']['IpAddr']
      		               )     			
      		     	       
         print "\n"  
@@ -687,30 +687,30 @@ class FlexSwitch_info():
             print '\n'
             print 'Port         InOctets   InUcastPkts   InDiscards  InErrors     InUnknownProtos   OutOctets OutUcastPkts   OutDiscards   OutErrors'
         for d in ports:
-            if d['ConfigObj']['IfIndex'] == 0:
+            if d['Object']['IfIndex'] == 0:
         		continue
-            elif d['ConfigObj']['IfIndex'] < 10:
-            	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['ConfigObj']['IfIndex']),
-                                                                d['ConfigObj']['IfInOctets'],
-                                                                d['ConfigObj']['IfInUcastPkts'],
-                                                                d['ConfigObj']['IfInDiscards'],
-                                                                d['ConfigObj']['IfInErrors'],
-                                                                d['ConfigObj']['IfInUnknownProtos'],
-                                                                d['ConfigObj']['IfOutOctets'],
-                                                                d['ConfigObj']['IfOutUcastPkts'],
-                                                                d['ConfigObj']['IfOutDiscards'],
-                                                                d['ConfigObj']['IfOutErrors'])
+            elif d['Object']['IfIndex'] < 10:
+            	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['Object']['IfIndex']),
+                                                                d['Object']['IfInOctets'],
+                                                                d['Object']['IfInUcastPkts'],
+                                                                d['Object']['IfInDiscards'],
+                                                                d['Object']['IfInErrors'],
+                                                                d['Object']['IfInUnknownProtos'],
+                                                                d['Object']['IfOutOctets'],
+                                                                d['Object']['IfOutUcastPkts'],
+                                                                d['Object']['IfOutDiscards'],
+                                                                d['Object']['IfOutErrors'])
             else:
-            	print '%s  %7d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['ConfigObj']['IfIndex']),
-                                                                d['ConfigObj']['IfInOctets'],
-                                                                d['ConfigObj']['IfInUcastPkts'],
-                                                                d['ConfigObj']['IfInDiscards'],
-                                                                d['ConfigObj']['IfInErrors'],
-                                                                d['ConfigObj']['IfInUnknownProtos'],
-                                                                d['ConfigObj']['IfOutOctets'],
-                                                                d['ConfigObj']['IfOutUcastPkts'],
-                                                                d['ConfigObj']['IfOutDiscards'],
-                                                                d['ConfigObj']['IfOutErrors'])
+            	print '%s  %7d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("fpPort-"+str(d['Object']['IfIndex']),
+                                                                d['Object']['IfInOctets'],
+                                                                d['Object']['IfInUcastPkts'],
+                                                                d['Object']['IfInDiscards'],
+                                                                d['Object']['IfInErrors'],
+                                                                d['Object']['IfInUnknownProtos'],
+                                                                d['Object']['IfOutOctets'],
+                                                                d['Object']['IfOutUcastPkts'],
+                                                                d['Object']['IfOutDiscards'],
+                                                                d['Object']['IfOutErrors'])
         print "\n"
    def displayCPUPortObjects(self):
         ports = self.swtch.getObjects('PortStates')
@@ -718,17 +718,17 @@ class FlexSwitch_info():
             print '\n'
             print 'Port         InOctets   InUcastPkts   InDiscards  InErrors     InUnknownProtos   OutOctets OutUcastPkts   OutDiscards   OutErrors'
         for d in ports:
-            if d['ConfigObj']['IfIndex'] == 0:
+            if d['Object']['IfIndex'] == 0:
             	print '%s  %8d %10d   %10d    %8d   %15d   %9d   %12d   %11d   %11d' %("CPU",
-                                                                d['ConfigObj']['IfInOctets'],
-                                                                d['ConfigObj']['IfInUcastPkts'],
-                                                                d['ConfigObj']['IfInDiscards'],
-                                                                d['ConfigObj']['IfInErrors'],
-                                                                d['ConfigObj']['IfInUnknownProtos'],
-                                                                d['ConfigObj']['IfOutOctets'],
-                                                                d['ConfigObj']['IfOutUcastPkts'],
-                                                                d['ConfigObj']['IfOutDiscards'],
-                                                                d['ConfigObj']['IfOutErrors'])
+                                                                d['Object']['IfInOctets'],
+                                                                d['Object']['IfInUcastPkts'],
+                                                                d['Object']['IfInDiscards'],
+                                                                d['Object']['IfInErrors'],
+                                                                d['Object']['IfInUnknownProtos'],
+                                                                d['Object']['IfOutOctets'],
+                                                                d['Object']['IfOutUcastPkts'],
+                                                                d['Object']['IfOutDiscards'],
+                                                                d['Object']['IfOutErrors'])
 
    def displayPortStatus(self):
         ports = self.swtch.getObjects('PortStates')
@@ -736,19 +736,19 @@ class FlexSwitch_info():
             print '\n'
             print 'Port         Status   IFIndex   Duplex   Speed     Type'
         for d in ports: 
-            if d['ConfigObj']['IfIndex'] == 0:
+            if d['Object']['IfIndex'] == 0:
         		continue
-            elif d['ConfigObj']['IfIndex'] < 10:
-            	print '%s  %8s %6s %10s %8s %9s' %("fpPort-"+str(d['ConfigObj']['IfIndex']),
-                                                            d['ConfigObj']['OperState'],
-                                                             d['ConfigObj']['IfIndex'],
+            elif d['Object']['IfIndex'] < 10:
+            	print '%s  %8s %6s %10s %8s %9s' %("fpPort-"+str(d['Object']['IfIndex']),
+                                                            d['Object']['OperState'],
+                                                             d['Object']['IfIndex'],
                                                              'N/A',
                                                              'N/A',
                                                              'N/A')
             else:
-            	print '%s  %7s %6s %10s %8s %9s' %("fpPort-"+str(d['ConfigObj']['IfIndex']),
-                                                            d['ConfigObj']['OperState'],
-                                                             d['ConfigObj']['IfIndex'],
+            	print '%s  %7s %6s %10s %8s %9s' %("fpPort-"+str(d['Object']['IfIndex']),
+                                                            d['Object']['OperState'],
+                                                             d['Object']['IfIndex'],
                                                              'N/A',
                                                              'N/A',
                                                              'N/A')
@@ -758,20 +758,20 @@ class FlexSwitch_info():
    			if len(vlans):
    				print 'Vlan    Status   Ports 	Untagged_Ports'
    			for d in vlans:
-   				print '%s  %8s %8s %8s' %(str(d['ConfigObj']['VlanId']),
-   									  d['ConfigObj']['OperState'],
-   									  d['ConfigObj']['IfIndexList'],
-   									  d['ConfigObj']['UntagIfIndexList'])   			
+   				print '%s  %8s %8s %8s' %(str(d['Object']['VlanId']),
+   									  d['Object']['OperState'],
+   									  d['Object']['IfIndexList'],
+   									  d['Object']['UntagIfIndexList'])   			
    		else:
    			vlans = self.swtch.getObjects('Vlans')
    			if len(vlans):
    				print 'Vlan    Status   Ports 	Untagged_Ports'   		
    		   	for d in vlans:
-   				if d['ConfigObj']['VlanId'] == int(vlanId):
-   					print '%s  %8s %8s %8s' %(str(d['ConfigObj']['VlanId']),
-   									  	d['ConfigObj']['OperState'],
-   									  	d['ConfigObj']['IfIndexList'],
-   									  	d['ConfigObj']['UntagIfIndexList'])   
+   				if d['Object']['VlanId'] == int(vlanId):
+   					print '%s  %8s %8s %8s' %(str(d['Object']['VlanId']),
+   									  	d['Object']['OperState'],
+   									  	d['Object']['IfIndexList'],
+   									  	d['Object']['UntagIfIndexList'])   
    									  	
 
    def verifyDRElectionResult(self):
@@ -783,16 +783,16 @@ class FlexSwitch_info():
 
         for d in ospfIntfs:
             #if sum(d['ospfIntfs']):
-                print '%3s  %3d %10s   %10s    %8s   %15s   %9s   %12s   %11s   %11s' %( d['ConfigObj']['IfIpAddressKey'],
-                                                                                        d['ConfigObj']['AddressLessIfKey'],
-                                                                                        d['ConfigObj']['IfState'],
-                                                                                        d['ConfigObj']['IfDesignatedRouter'],
-                                                                                        d['ConfigObj']['IfBackupDesignatedRouter'],
-                                                                                        d['ConfigObj']['IfEvents'],
-                                                                                        d['ConfigObj']['IfLsaCount'],
-                                                                                        d['ConfigObj']['IfLsaCksumSum'],
-                                                                                        d['ConfigObj']['IfDesignatedRouterId'],
-                                                                                        d['ConfigObj']['IfBackupDesignatedRouterId'])
+                print '%3s  %3d %10s   %10s    %8s   %15s   %9s   %12s   %11s   %11s' %( d['Object']['IfIpAddressKey'],
+                                                                                        d['Object']['AddressLessIfKey'],
+                                                                                        d['Object']['IfState'],
+                                                                                        d['Object']['IfDesignatedRouter'],
+                                                                                        d['Object']['IfBackupDesignatedRouter'],
+                                                                                        d['Object']['IfEvents'],
+                                                                                        d['Object']['IfLsaCount'],
+                                                                                        d['Object']['IfLsaCksumSum'],
+                                                                                        d['Object']['IfDesignatedRouterId'],
+                                                                                        d['Object']['IfBackupDesignatedRouterId'])
         print "\n"            
 
    def getLagMembers(self):
@@ -801,22 +801,22 @@ class FlexSwitch_info():
       if len(members):
    	   for d in members:
    		   print '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'
-   		   print 'name: ' + d['ConfigObj']['NameKey'] + ' interface: ' + d['ConfigObj']['Interface']
-   		   print 'enabled: %s' % d['ConfigObj']['Enabled']
+   		   print 'name: ' + d['Object']['NameKey'] + ' interface: ' + d['Object']['Interface']
+   		   print 'enabled: %s' % d['Object']['Enabled']
    		   print 'lagtype: ' + ('LACP' if not d['LagType'] else 'STATIC')
-   		   print 'operkey: %s' % d['ConfigObj']['OperKey']
-   		   print 'mode: ' + ('ACTIVE' if not d['ConfigObj']['LacpMode'] else 'PASSIVE')
-   		   print 'interval: %s' % (('SLOW' if d['ConfigObj']['Interval'] else 'FAST'))
+   		   print 'operkey: %s' % d['Object']['OperKey']
+   		   print 'mode: ' + ('ACTIVE' if not d['Object']['LacpMode'] else 'PASSIVE')
+   		   print 'interval: %s' % (('SLOW' if d['Object']['Interval'] else 'FAST'))
    		   print 'system:\n'
-   		   print '\tsystemmac: %s' % d['ConfigObj']['SystemIdMac']
-   		   print '\tsysteprio: %s' % d['ConfigObj']['SystemPriority']
-   		   print '\tsystemId: %s' % d['ConfigObj']['SystemId']
+   		   print '\tsystemmac: %s' % d['Object']['SystemIdMac']
+   		   print '\tsysteprio: %s' % d['Object']['SystemPriority']
+   		   print '\tsystemId: %s' % d['Object']['SystemId']
    		   print 'actor:'
    		   stateStr = '\tstate: '
    		   for s in ('Activity', 'Timeout', 'Aggregatable', 'Synchronization', 'Collecting', 'Distributing'):
-   			   if s == 'Synchronization' and not d['ConfigObj'][s]:
+   			   if s == 'Synchronization' and not d['Object'][s]:
    				   stateStr += s + ', '
-   			   elif s == 'Activity' and not d['ConfigObj'][s]:
+   			   elif s == 'Activity' and not d['Object'][s]:
    				   stateStr += s + ', '
    			   elif s in ('Activity', 'Synchronization'):
    				   continue
@@ -826,11 +826,11 @@ class FlexSwitch_info():
    
    		   print '\tstats:'
    		   for s in ('LacpInPkts', 'LacpOutPkts', 'LacpRxErrors', 'LacpTxErrors', 'LacpUnknownErrors', 'LacpErrors', 'LampInPdu', 'LampOutPdu', 'LampInResponsePdu', 'LampOutResponsePdu'):
-   			   print '\t' + s, ': ', d['ConfigObj'][s]
+   			   print '\t' + s, ': ', d['Object'][s]
    
    		   print 'partner:\n'
-   		   print '\t' + 'key: %s' % d['ConfigObj']['PartnerKey']
-   		   print '\t' + 'partnerid: ' + d['ConfigObj']['PartnerId']
+   		   print '\t' + 'key: %s' % d['Object']['PartnerKey']
+   		   print '\t' + 'partnerid: ' + d['Object']['PartnerId']
    
 
 
@@ -862,22 +862,22 @@ class FlexSwitch_info():
       if len(members):
    	   for d in members:
    		   print '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'
-   		   print 'name: ' + d['ConfigObj']['NameKey'] + ' interface: ' + d['Interface']
-   		   print 'enabled: %s' % d['ConfigObj']['Enabled']
-   		   print 'lagtype: ' + ('LACP' if not d['ConfigObj']['LagType'] else 'STATIC')
-   		   print 'operkey: %s' % d['ConfigObj']['OperKey']
-   		   print 'mode: ' + ('ACTIVE' if not d['ConfigObj']['LacpMode'] else 'PASSIVE')
-   		   print 'interval: %s' % (('SLOW' if d['ConfigObj']['Interval'] else 'FAST'))
+   		   print 'name: ' + d['Object']['NameKey'] + ' interface: ' + d['Interface']
+   		   print 'enabled: %s' % d['Object']['Enabled']
+   		   print 'lagtype: ' + ('LACP' if not d['Object']['LagType'] else 'STATIC')
+   		   print 'operkey: %s' % d['Object']['OperKey']
+   		   print 'mode: ' + ('ACTIVE' if not d['Object']['LacpMode'] else 'PASSIVE')
+   		   print 'interval: %s' % (('SLOW' if d['Object']['Interval'] else 'FAST'))
    		   print 'system:\n'
-   		   print '\tsystemmac: %s' % d['ConfigObj']['SystemIdMac']
-   		   print '\tsysteprio: %s' % d['ConfigObj']['SystemPriority']
-   		   print '\tsystemId: %s' % d['ConfigObj']['SystemId']
+   		   print '\tsystemmac: %s' % d['Object']['SystemIdMac']
+   		   print '\tsysteprio: %s' % d['Object']['SystemPriority']
+   		   print '\tsystemId: %s' % d['Object']['SystemId']
    		   print 'actor:'
    		   stateStr = '\tstate: '
    		   for s in ('Activity', 'Timeout', 'Aggregatable', 'Synchronization', 'Collecting', 'Distributing'):
-   			   if s == 'Synchronization' and not d['ConfigObj'][s]:
+   			   if s == 'Synchronization' and not d['Object'][s]:
    				   stateStr += s + ', '
-   			   elif s == 'Activity' and not d['ConfigObj'][s]:
+   			   elif s == 'Activity' and not d['Object'][s]:
    				   stateStr += s + ', '
    			   elif s in ('Activity', 'Synchronization'):
    				   continue
@@ -887,26 +887,26 @@ class FlexSwitch_info():
    
    		   print '\tstats:'
    		   for s in ('LacpInPkts', 'LacpOutPkts', 'LacpRxErrors', 'LacpTxErrors', 'LacpUnknownErrors', 'LacpErrors', 'LampInPdu', 'LampOutPdu', 'LampInResponsePdu', 'LampOutResponsePdu'):
-   			   print '\t' + s, ': ', d['ConfigObj'][s]
+   			   print '\t' + s, ': ', d['Object'][s]
    
    		   print 'partner:\n'
-   		   print '\t' + 'key: %s' % d['ConfigObj']['PartnerKey']
-   		   print '\t' + 'partnerid: ' + d['ConfigObj']['PartnerId']
+   		   print '\t' + 'key: %s' % d['Object']['PartnerKey']
+   		   print '\t' + 'partnerid: ' + d['Object']['PartnerId']
    		   print 'debug:\n'
    		   try:
-   			   print '\t' + 'debugId: %s' % d['ConfigObj']['DebugId']
-   			   print '\t' + 'RxMachineState: %s' % RxMachineStateDict[d['ConfigObj']['RxMachine']]
-   			   print '\t' + 'RxTime (rx pkt rcv): %s' % d['ConfigObj']['RxTime']
-   			   print '\t' + 'MuxMachineState: %s' % MuxMachineStateDict[d['ConfigObj']['MuxMachine']]
-   			   print '\t' + 'MuxReason: %s' % d['ConfigObj']['MuxReason']
-   			   print '\t' + 'Actor Churn State: %s' % ChurnMachineStateDict[d['ConfigObj']['ActorChurnMachine']]
-   			   print '\t' + 'Partner Churn State: %s' % ChurnMachineStateDict[d['ConfigObj']['PartnerChurnMachine']]
-   			   print '\t' + 'Actor Churn Count: %s' % d['ConfigObj']['ActorChurnCount']
-   			   print '\t' + 'Partner Churn Count: %s' % d['ConfigObj']['PartnerChurnCount']
-   			   print '\t' + 'Actor Sync Transition Count: %s' % d['ConfigObj']['ActorSyncTransitionCount']
-   			   print '\t' + 'Partner Sync Transition Count: %s' % d['ConfigObj']['PartnerSyncTransitionCount']
-   			   print '\t' + 'Actor LAG ID change Count: %s' % d['ConfigObj']['ActorChangeCount']
-   			   print '\t' + 'Partner LAG ID change Count: %s' % d['ConfigObj']['PartnerChangeCount']
+   			   print '\t' + 'debugId: %s' % d['Object']['DebugId']
+   			   print '\t' + 'RxMachineState: %s' % RxMachineStateDict[d['Object']['RxMachine']]
+   			   print '\t' + 'RxTime (rx pkt rcv): %s' % d['Object']['RxTime']
+   			   print '\t' + 'MuxMachineState: %s' % MuxMachineStateDict[d['Object']['MuxMachine']]
+   			   print '\t' + 'MuxReason: %s' % d['Object']['MuxReason']
+   			   print '\t' + 'Actor Churn State: %s' % ChurnMachineStateDict[d['Object']['ActorChurnMachine']]
+   			   print '\t' + 'Partner Churn State: %s' % ChurnMachineStateDict[d['Object']['PartnerChurnMachine']]
+   			   print '\t' + 'Actor Churn Count: %s' % d['Object']['ActorChurnCount']
+   			   print '\t' + 'Partner Churn Count: %s' % d['Object']['PartnerChurnCount']
+   			   print '\t' + 'Actor Sync Transition Count: %s' % d['Object']['ActorSyncTransitionCount']
+   			   print '\t' + 'Partner Sync Transition Count: %s' % d['Object']['PartnerSyncTransitionCount']
+   			   print '\t' + 'Actor LAG ID change Count: %s' % d['Object']['ActorChangeCount']
+   			   print '\t' + 'Partner LAG ID change Count: %s' % d['Object']['PartnerChangeCount']
    		   except Exception as e:
    			   print e      
    
@@ -917,15 +917,15 @@ class FlexSwitch_info():
    	   print 'Name      Ifindex      LagType   Description      Enabled   MinLinks   Interval   Mode          SystemIdMac            SystemPriority    HASH'
    
    	   for d in lagGroup:
-   		   print '%7s  %7s    %7s  %15s    %8s   %2s     %8s      %6s   %20s         %s              %s' %(d['ConfigObj']['NameKey'],
-   														   d['ConfigObj']['Ifindex'],
-   														   "LACP" if int(d['ConfigObj']['LagType']) == 0 else "STATIC",
+   		   print '%7s  %7s    %7s  %15s    %8s   %2s     %8s      %6s   %20s         %s              %s' %(d['Object']['NameKey'],
+   														   d['Object']['Ifindex'],
+   														   "LACP" if int(d['Object']['LagType']) == 0 else "STATIC",
    														   d['Description'],
-   														   "Enabled" if bool(d['ConfigObj']['Enabled']) else "Disabled",
-   														   d['ConfigObj']['MinLinks'],
-   														   "FAST" if int(d['ConfigObj']['Interval']) == 0 else "SLOW",
-   														   "ACTIVE" if int(d['ConfigObj']['LacpMode']) == 0 else "PASSIVE",
-   														   d['ConfigObj']['SystemIdMac'],
-   														   d['ConfigObj']['SystemPriority'],
-   														   d['ConfigObj']['LagHash'])
+   														   "Enabled" if bool(d['Object']['Enabled']) else "Disabled",
+   														   d['Object']['MinLinks'],
+   														   "FAST" if int(d['Object']['Interval']) == 0 else "SLOW",
+   														   "ACTIVE" if int(d['Object']['LacpMode']) == 0 else "PASSIVE",
+   														   d['Object']['SystemIdMac'],
+   														   d['Object']['SystemPriority'],
+   														   d['Object']['LagHash'])
    		  		
