@@ -565,41 +565,42 @@ class FlexSwitch_info():
    def displayBfdNeigh(self):
      	neigh = self.swtch.getObjects('BfdSessionStates')
      	if len(neigh)>=0:
-     	    print '\n'
-     	    print 'Session ID            LocalIP         RemoteIP         LState 	RState  LDiscrim    RDiscrim'
+     		print "BFD Neighbors"
+     		print "********************************************************************************************"    	    
      	for rt in neigh:
-     	    print '%s %s %s %4d   %9s    %5d   %4d' %(str(rt['Object']['SessionId']).ljust(15), 
-     	                                                    rt['Object']['LocalIpAddr'].ljust(15),
-     	                                                    rt['Object']['RemoteIpAddr'].ljust(15), 
-     	                                                    rt['Object']['SessionState'], 
-     	                                                    rt['Object']['RemoteSessionState'], 
-     	                                                    rt['Object']['LocalDiscriminator'], 
-     	                                                    rt['Object']['RemoteDiscriminator'])
-
-     	    print 'TxPackets          RxPackets         Multiplier 	MinTxInt  MinRxInt 	 LocalDiag    IfIndex '
-     	    print '%s %s %s %4d   %9s    %5s   %4s' %(rt['Object']['NumTxPackets'].ljust(15), 
-     	                                                    rt['Object']['NumRxPackets'].ljust(15),
-     	                                                    rt['Object']['LocalMultiplier'].ljust(15), 
-     	                                                    rt['Object']['DesiredMinTxInterval'], 
-     	                                                    rt['Object']['RequiredMinRxInterval'], 
-     	                                                    rt['Object']['LocalDiagType'], 
-     	                                                    rt['Object']['IfIndex'])
+     	    print 'Session ID:', rt['Object']['SessionId']
+     	    print 'LocalIP:', rt['Object']['LocalIpAddr']       
+     	    print 'Remote IP:' ,rt['Object']['IpAddr'] 
+     	    print 'Local State:',rt['Object']['SessionState'] 
+     	    print 'Remote State:', rt['Object']['RemoteSessionState'] 
+     	    print 'Local Descrim:', rt['Object']['LocalDiscriminator'] 
+     	    print 'Remote Descrim:', rt['Object']['RemoteDiscriminator']
+     	    print 'TxPackets:',rt['Object']['NumTxPackets']
+     	    print 'RxPackets:',rt['Object']['NumRxPackets']
+     	    print 'Multiplier:',rt['Object']['DetectionMultiplier']
+     	    print 'MinTxInt:',rt['Object']['DesiredMinTxInterval'] 
+     	    print 'MinRxInt:',rt['Object']['RequiredMinRxInterval'] 	   	 
+     	    print 'LocalDiag:',rt['Object']['LocalDiagType'] 
+     	    print 'IfIndex:',rt['Object']['IfIndex']
      	    print "********************************************************************************************"
+     	    
      	print "\n"        
 
    def displayBfdInt(self):
-   		int = self.swtch.getObjects('BfdIntfStates')
+   		int = self.swtch.getObjects('BfdInterfaceStates')
    		if len(int)>=0:
-   			print '\n'
-   			print 'ifIndex   Enabled    NumSessions    Multiplier 	 MinTxInt  MinRxInt'
+   			print 'BFD Interfaces'
+   			print "********************************************************************************************"
    		for rt in int:
-   			print '%s %s %s %s %s %s' %(str(rt['Object']['IfIndex']).ljust(10), 
-     	                                                    str(rt['Object']['Enabled']).ljust(15),
-     	                                                    str(rt['Object']['NumSessions']).ljust(10),
-     	                                                    str(rt['Object']['LocalMultiplier']).ljust(10), 
-     	                                                    rt['Object']['DesiredMinTxInterval'], 
-     	                                                    rt['Object']['RequiredMinRxInterval'])                                                    
-   		print "\n"   			
+   			print 'ifIndex:',rt['Object']['IfIndex'] 
+   			print 'Enabled:',rt['Object']['Enabled']
+   			print 'NumSessions:',rt['Object']['NumSessions']
+   			print 'Multiplier:',rt['Object']['LocalMultiplier']
+   			print 'MinTxInt:',rt['Object']['DesiredMinTxInterval'] 
+   			print 'MinRxInt:',rt['Object']['RequiredMinRxInterval']
+   			print "********************************************************************************************"
+   		
+		print "\n"   			
 	   
    def displayRoutes(self):
      	routes = self.swtch.getObjects('IPv4RouteStates')
@@ -666,7 +667,7 @@ class FlexSwitch_info():
      					else:
      						port='N/A'
      			else:
-     				index = self.swtch.getObjects('Vlans')
+     				index = self.swtch.getObjects('VlanStates')
      				for e in index:
      					if e['Object']['IfIndex'] == d['Object']['IfIndex']:
      						port=e['Object']['VlanName']
