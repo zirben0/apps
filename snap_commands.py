@@ -562,7 +562,7 @@ class FlexSwitch_info():
      	                                                    rt['Object']['NextHop'].ljust(15), 
      	                                                    rt['Object']['Metric'], 
      	                                                    rt['Object']['LocalPref'], 
-     	                                                    rt['Object']['Updated'].split(".")[0],
+     	                                                    rt['Object']['UpdatedDuration'].split(".")[0],
      	                                                    rt['Object']['Path'])
         print "\n"
 
