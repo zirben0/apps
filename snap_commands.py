@@ -378,13 +378,17 @@ class Commands():
 	def auto_show(self, text, line, begidx, endidx):
 		lines=line.split()
 		list=[]	
-		
+		#print lines
 		if len(lines)>=1:
-			arg1 = self.autocomp_parser(_SHOW_BASE,lines[1] )
+			if 'ip' in lines:
+				arg1 = self.autocomp_parser(_SHOW_BASE,lines[1] )
 			
-			if len(arg1)==1:
-				return [i for i in arg1 if i.startswith(text)]
-			else:	
+			else:
+				arg1 = self.autocomp_parser(_SHOW_BASE,lines[1] )
+				if arg1[0] != lines[1]:
+					return arg1
+
+			'''else:	
 				return [i for i in arg1 if i.startswith(text)]
 				if 'ip' in arg1:
 				   if len(lines)==2:
@@ -409,7 +413,7 @@ class Commands():
 				else:
 					return [i for i in _SHOW_BASE if i.startswith(text)]
 		
-		
+		'''
 		'''				       
 		if 'show' in lines:
 			if 'ip' in lines:
@@ -569,6 +573,8 @@ class FlexSwitch_info():
      		print "********************************************************************************************"    	    
      	for rt in neigh:
      	    print 'Session ID:', rt['Object']['SessionId']
+     	    print 'Interface:'
+     	    print 'IfIndex:',rt['Object']['IfIndex']     	    
      	    print 'LocalIP:', rt['Object']['LocalIpAddr']       
      	    print 'Remote IP:' ,rt['Object']['IpAddr'] 
      	    print 'Local State:',rt['Object']['SessionState'] 
@@ -581,7 +587,7 @@ class FlexSwitch_info():
      	    print 'MinTxInt:',rt['Object']['DesiredMinTxInterval'] 
      	    print 'MinRxInt:',rt['Object']['RequiredMinRxInterval'] 	   	 
      	    print 'LocalDiag:',rt['Object']['LocalDiagType'] 
-     	    print 'IfIndex:',rt['Object']['IfIndex']
+     	    print 'RegisteredProtocols:',  rt['Object']['RegisteredProtocols']
      	    print "********************************************************************************************"
      	    
      	print "\n"        
@@ -592,7 +598,8 @@ class FlexSwitch_info():
    			print 'BFD Interfaces'
    			print "********************************************************************************************"
    		for rt in int:
-   			print 'ifIndex:',rt['Object']['IfIndex'] 
+   			print 'Interface:', 
+   			print 'IfIndex:',rt['Object']['IfIndex'] 
    			print 'Enabled:',rt['Object']['Enabled']
    			print 'NumSessions:',rt['Object']['NumSessions']
    			print 'Multiplier:',rt['Object']['LocalMultiplier']

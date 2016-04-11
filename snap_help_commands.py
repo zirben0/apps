@@ -8,28 +8,40 @@ _IP_HELP = {'interface':'Display IP related interface information',
 			'route':'Display routing information',
 			'arp  ':'Display ARP table and statistics',
 			'bgp   ':'Display BGP status and configuration',
-			'ospf':'Display OSPF status and configurtion'
+			'ospf':'Display OSPF status and configurtion',
+
 					}
-_SHOW_HELP = {'version':'Show the software version',
-			'interface':'Display IP related interface information',
-			'inventory':'Show physical inventory',
-			'ip        ':'Display IP information'
+_SHOW_HELP = {'bfd	       ':'Show Bfd information',
+			  'interface   ':'Display IP related interface information',
+			  'inventory   ':'Show physical inventory',
+			  'ip          ':'Display IP information',
+			  'port-channel':'Show port-channel information',
+			  'version     ':'Show the software version',
+
 					}
 _BGP_HELP = {'summary':'Display summarized information of BGP state',
 			'neighbors':'Display all configured BGP neighbors',
 					}	
 _BGP_NEIGH_HELP = {'detail':'Display detailed information for BGP neighbors'
 					}
+_BFD_HELP = {'interface':'Display BFD interfaces config',
+			'neighbors':'Display all configured BFD neighbors',
+					}
 _INVENT_HELP = {'detail':'Display detailed information for device inventory '
 					}
-_INTERFACE_HELP= {'fpPort':'Front Panel Ports',
+_INTERFACE_HELP= {'<CR>':'',
+				'fpPort':'Front Panel Ports',
   				'loopback':'Loopback interface',
   				'eth0':'Management interface',
   				'port-channel':'Port Channel interface',
   				'svi':'Vlan interface'
   				}
 
-_ARP_HELP = {'summary':'Display summarized information of arp',
+_PORTCHANNEL_HELP= {'summary':'Port-channel summary status',
+  					'interface':'Port-channel interface',
+  					}
+_ARP_HELP = {'<CR>':'',
+			'summary':'Display summarized information of arp',
 			'detail':'Display detailed formation for arp entries'
 			} 
 _ROUTE_HELP = 	{'summary':'Display summarized information of routes',
@@ -60,7 +72,9 @@ _COMMAND_HELP = {'show':_SHOW_HELP,
 				'inventory':_INVENT_HELP,
 				'interface':_INTERFACE_HELP,
 				'arp':_ARP_HELP,
-				'ospf':_OSPF_HELP
+				'ospf':_OSPF_HELP,
+				'bfd':_BFD_HELP,
+				'port-channel':_PORTCHANNEL_HELP
 				}
 
 
@@ -198,17 +212,37 @@ class Command_help():
 							sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('ip').get(keys)) )	
 
 				elif 'interface' in arg1:
-				   sys.stdout.write('   <CR>\n')
 				   for keys in _COMMAND_HELP.get('interface'):
 					   sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('interface').get(keys)) )
 
 				elif 'inventory' in arg1:
-				   sys.stdout.write('   <CR>\n')
 				   for keys in _COMMAND_HELP.get('inventory'):
 					   sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('inventory').get(keys)) )
 				elif 'version' in arg1:
 				   sys.stdout.write('   <CR>\n')
 				   
+				elif 'bfd' in arg1:
+				   if len(line) >= 3:
+					   bool, arg2 = self.parser(_COMMAND_HELP.get('bfd'),line[2])
+					   if bool == "True":
+						   bool=None
+						   if 'neighbor' in arg2:	
+								sys.stdout.write('   <CR>\n')							   
+						   elif 'interface' in arg2:	
+								sys.stdout.write('   <CR>\n')
+				   else:
+					   for keys in _COMMAND_HELP.get('bfd'):
+						   sys.stdout.write('   %s\t%s\n' % (keys,_COMMAND_HELP.get('bfd').get(keys)) ) 
+
+				elif 'port-channel' in arg1:
+				   if len(line) >= 3:
+					   bool, arg2 = self.parser(_COMMAND_HELP.get('port-channel'),line[2])
+					   if bool == "True":
+						   bool=None
+						   if 'summary' in arg2:	
+								sys.stdout.write('   <CR>\n')							   
+						   elif 'interface' in arg2:	
+								sys.stdout.write('   <CR>\n')
 		#No args presented after "show"; I.E. show ?
 		else: 
 			for keys in _COMMAND_HELP.get('show'):

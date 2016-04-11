@@ -159,7 +159,7 @@ class FlexSwitch( object):
         more = True
         entries = []
         while more == True:
-            qry = 'http://%s:8080/public/v1/%s?CurrentMarker=%d&NextMarker=%d&Count=%d' %(self.ip, objName, currentMarker, nextMarker, count)
+            qry = 'http://%s:8080/public/v1/state/%s?CurrentMarker=%d&NextMarker=%d&Count=%d' %(self.ip, objName, currentMarker, nextMarker, count)
             response = requests.get(qry)
             data = response.json()
             more =  data['MoreExist']
