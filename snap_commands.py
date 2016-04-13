@@ -1,5 +1,5 @@
 import sys, types, json
-from flexswitch import FlexSwitch
+from flexswitchV2 import FlexSwitch
 
 
 
@@ -360,7 +360,7 @@ class Commands():
 					   if bool == "True":
 						   bool=None
 						   if 'bgp' in arg2:
-						   	  print "Running BGP JSON"
+						   	  self.fs_info.displayRunBGP()
 				elif 'bfd' in arg1:
 				   if len(line) >= 2:
 					   bool, arg2 = self.parser(_SHOW_BFD.get('bfd'),line[1])
@@ -518,12 +518,19 @@ class FlexSwitch_info():
 
 
    def displayRunBGP(self):
-     	routes = self.swtch.getObjects('BGPNeighborStates')
-     	if len(routes)>=0:
-     	    print '\n'
-     	    print 'Network            Mask         NextHop         Cost       Protocol   IfType IfIndex'
-     	for rt in routes:
-     	    print '%s %s %s %4d   %9s    %5s   %4s' %(rt['DestinationNw'].ljust(15),) 
+     	neigh = self.swtch.getObjects('BGPNeighborStates')
+     	#globalc = self.swtch.getObjects('BGPGlobals')
+     	#peers = self.swtch.getObjects('BGPPeerGroups')
+		
+     	#if len(globalc)>=0:
+     	#    print globalc   
+     	    
+     	if len(neigh)>=0:
+     	    print neigh 
+     	    
+     	#if len(peers)>=0:
+     	#    print peers 
+
    		
    def displayBGPPeers(self):	   
 		   sessionState=  {  0: "Idle",
@@ -624,7 +631,7 @@ class FlexSwitch_info():
 
 
    def displayARPEntries(self):
-        arps = self.swtch.getObjects('ArpEntrys')
+        arps = self.swtch.getObjects('ArpEntryStates')
         if len(arps)>=0:
             print '\n'
             print 'IP Address	MacAddress   	    TimeRemaining  	Vlan 	  Intf'
@@ -637,7 +644,7 @@ class FlexSwitch_info():
         print "\n"
 
    def IPv4Intfstatus(self):
-     	ip_int = self.swtch.getObjects('IPv4Intfs')
+     	ip_int = self.swtch.getObjects('IPv4IntfStates')
      	if len(ip_int)>=0:
      	    print '\n'
      	    print 'Interface     IfIndex        IPv4'
@@ -764,23 +771,24 @@ class FlexSwitch_info():
    		if vlanId == 0:
    			vlans = self.swtch.getObjects('Vlans')
    			if len(vlans):
-   				print 'Vlan    Status   Ports 	Untagged_Ports'
+   				print 'Vlan    Ports 	Untagged_Ports'
    			for d in vlans:
-   				print '%s  %8s %8s %8s' %(str(d['Object']['VlanId']),
-   									  d['Object']['OperState'],
+   				print '%s  %8s %8s ' %(str(d['Object']['VlanId']),
    									  d['Object']['IfIndexList'],
    									  d['Object']['UntagIfIndexList'])   			
    		else:
    			vlans = self.swtch.getObjects('Vlans')
    			if len(vlans):
-   				print 'Vlan    Status   Ports 	Untagged_Ports'   		
+   				print 'Vlan    Ports 	Untagged_Ports'   		
+   			found =0
    		   	for d in vlans:
    				if d['Object']['VlanId'] == int(vlanId):
-   					print '%s  %8s %8s %8s' %(str(d['Object']['VlanId']),
-   									  	d['Object']['OperState'],
+   					found=1
+   					print '%s  %8s %8s ' %(str(d['Object']['VlanId']),
    									  	d['Object']['IfIndexList'],
    									  	d['Object']['UntagIfIndexList'])   
-   									  	
+   			if found == 0:
+   				print "**Vlan doesn't Exist**"						  	
 
    def verifyDRElectionResult(self):
         ospfIntfs = self.swtch.getObjects('OspfIfEntryStates')
