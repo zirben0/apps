@@ -1,0 +1,72 @@
+{
+ "ConditionType": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Specifies the match criterion this condition defines - eg",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IpPrefix": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Used in conjunction with MaskLengthRange to specify the IP Prefix to match on when the ConditionType is MatchDstIpPrefix/MatchSrcIpPrefix.",
+  "default": "",
+  "position": 4,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "MaskLengthRange": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Used in conjuction with IpPrefix to specify specify the IP Prefix to match on when the ConditionType is MatchDstIpPrefix/MatchSrcIpPrefix.",
+  "default": "",
+  "position": 5,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "MatchProtocol": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Protocol to match on if the ConditionType is set to MatchProtocol",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Name": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " PolicyConditionName",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

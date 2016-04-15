@@ -1,0 +1,58 @@
+{
+ "MatchType": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": "Specifies whether to match all/any of the statements within this policy",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Name": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Policy Name",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Precedence": {
+  "type": "int32",
+  "isKey": false,
+  "isArray": false,
+  "description": "Priority of the policy w.r.t other policies configured",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "StatementList": {
+  "type": "PolicyDefinitionStmtPrecedence",
+  "isKey": false,
+  "isArray": true,
+  "description": "Specifies list of statements along with their precedence order.",
+  "default": "",
+  "position": 4,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

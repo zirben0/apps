@@ -1,0 +1,44 @@
+{
+ "MacAddr": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " MAC Address",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Port": {
+  "type": "int32",
+  "isKey": false,
+  "isArray": false,
+  "description": " Port number on which mac was learned",
+  "default": "0",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "VlanId": {
+  "type": "int32",
+  "isKey": false,
+  "isArray": false,
+  "description": " Vlan id corresponding to which mac was learned",
+  "default": "0",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "HitCounter": {
+  "type": "int32",
+  "isKey": false,
+  "isArray": false,
+  "description": "Number of times this policy has been applied",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IpPrefixList": {
+  "type": "string",
+  "isKey": false,
+  "isArray": true,
+  "description": "List of networks/IP Prefixes this policy has been applied on to.",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Name": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " PolicyDefinitionState",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

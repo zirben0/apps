@@ -1,0 +1,44 @@
+{
+ "ActionInfo": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": "",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Name": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Action name",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "PolicyStmtList": {
+  "type": "string",
+  "isKey": false,
+  "isArray": true,
+  "description": " List of policy statements using this condition",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

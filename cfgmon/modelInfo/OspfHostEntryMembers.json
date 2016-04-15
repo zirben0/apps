@@ -1,0 +1,58 @@
+{
+ "HostCfgAreaID": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " To configure the OSPF area to which the host belongs.",
+  "default": "",
+  "position": 4,
+  "selections": " {'pattern'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "HostIpAddress": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " The IP address of the host.",
+  "default": "",
+  "position": 2,
+  "selections": " {'pattern'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "HostMetric": {
+  "type": "int32",
+  "isKey": false,
+  "isArray": false,
+  "description": " The metric to be advertised.",
+  "default": "",
+  "position": 3,
+  "selections": " {'range'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "HostTOS": {
+  "type": "int32",
+  "isKey": true,
+  "isArray": false,
+  "description": " The Type of Service of the route being configured.",
+  "default": "",
+  "position": 1,
+  "selections": " {'range'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

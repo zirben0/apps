@@ -1,0 +1,58 @@
+{
+ "IfMetricAddressLessIf": {
+  "type": "int32",
+  "isKey": true,
+  "isArray": false,
+  "description": " For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the value of ifIndex for interfaces having no IP address.  On row creation",
+  "default": "",
+  "position": 1,
+  "selections": " {'range'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IfMetricIpAddress": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " The IP address of this OSPF interface.  On row creation",
+  "default": "",
+  "position": 3,
+  "selections": " {'pattern'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IfMetricTOS": {
+  "type": "int32",
+  "isKey": true,
+  "isArray": false,
+  "description": " The Type of Service metric being referenced. On row creation",
+  "default": "",
+  "position": 2,
+  "selections": " {'range'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IfMetricValue": {
+  "type": "int32",
+  "isKey": false,
+  "isArray": false,
+  "description": " The metric of using this Type of Service on this interface.  The default value of the TOS 0 metric is 10^8 / ifSpeed.",
+  "default": "",
+  "position": 4,
+  "selections": " {'range'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

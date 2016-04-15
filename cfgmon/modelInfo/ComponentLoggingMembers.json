@@ -1,0 +1,30 @@
+{
+ "Level": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Logging level",
+  "default": " info",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Module": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Module name to set logging level",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

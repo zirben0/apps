@@ -1,0 +1,30 @@
+{
+ "DhcpRelay": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Global Dhcp Relay Agent Information",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Enable": {
+  "type": "bool",
+  "isKey": false,
+  "isArray": false,
+  "description": " Global Config stating whether DHCP Relay Agent is enabled on the box or not",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

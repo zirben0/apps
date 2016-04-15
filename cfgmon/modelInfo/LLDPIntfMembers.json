@@ -1,0 +1,30 @@
+{
+ "Enable": {
+  "type": "bool",
+  "isKey": false,
+  "isArray": false,
+  "description": " Enable/Disable lldp config",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IfIndex": {
+  "type": "int32",
+  "isKey": true,
+  "isArray": false,
+  "description": " IfIndex where lldp needs to be configured",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

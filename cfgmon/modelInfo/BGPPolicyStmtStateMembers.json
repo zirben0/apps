@@ -1,0 +1,58 @@
+{
+ "Actions": {
+  "type": "string",
+  "isKey": false,
+  "isArray": true,
+  "description": " List of actions",
+  "default": "",
+  "position": 4,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Conditions": {
+  "type": "string",
+  "isKey": false,
+  "isArray": true,
+  "description": " List of conditions",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "MatchConditions": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Match conditions ",
+  "default": "",
+  "position": 2,
+  "selections": " All/Any",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Name": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Name of the BGP policy statement",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "AreaRangeAreaId": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " The area that the address range is to be found within.",
+  "default": "",
+  "position": 1,
+  "selections": " {'pattern'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "AreaRangeEffect": {
+  "type": "int32",
+  "isKey": false,
+  "isArray": false,
+  "description": " Subnets subsumed by ranges either trigger the advertisement of the indicated summary (advertiseMatching) or result in the subnet's not being advertised at all outside the area.",
+  "default": "",
+  "position": 4,
+  "selections": " advertiseMatching(1)/doNotAdvertiseMatching(2)",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "AreaRangeMask": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " The subnet mask that pertains to the net or subnet.",
+  "default": "",
+  "position": 3,
+  "selections": " {'pattern'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "AreaRangeNet": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " The IP address of the net or subnet indicated by the range.",
+  "default": "",
+  "position": 2,
+  "selections": " {'pattern'",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

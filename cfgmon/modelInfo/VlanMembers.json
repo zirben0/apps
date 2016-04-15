@@ -1,0 +1,44 @@
+{
+ "IfIndexList": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " List of system assigned interface id's for tagged ports on this vlan",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "UntagIfIndexList": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " List of system assigned interface id's for untagged ports on this vlan",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "VlanId": {
+  "type": "int32",
+  "isKey": true,
+  "isArray": false,
+  "description": " 802.1Q tag/Vlan ID for vlan being provisioned",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

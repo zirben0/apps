@@ -1,0 +1,72 @@
+{
+ "Enable": {
+  "type": "bool",
+  "isKey": false,
+  "isArray": false,
+  "description": "Enable or disable this interface",
+  "default": "false",
+  "position": 5,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IfIndex": {
+  "type": "int32",
+  "isKey": true,
+  "isArray": false,
+  "description": "System generated id for the ipv4Intf where sub interface is to be configured",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "IpAddr": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": "Ip Address for the interface",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "MacAddr": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": "Mac address to be used for the sub interface. If none specified IPv4Intf mac address will be used",
+  "default": "",
+  "position": 4,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Type": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": "Type of interface",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

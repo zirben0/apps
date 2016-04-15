@@ -1,0 +1,16 @@
+{
+ "IpAddr": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Neighbor's IP Address for which corresponding Arp entry needed to be re-learned",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

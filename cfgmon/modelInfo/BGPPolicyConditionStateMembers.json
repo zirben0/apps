@@ -1,0 +1,44 @@
+{
+ "ConditionInfo": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Description of the BGP policy condition",
+  "default": "",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "Name": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Name of the BGP policy condition",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "PolicyStmtList": {
+  "type": "string",
+  "isKey": false,
+  "isArray": true,
+  "description": " Policy statements that use the BGP policy condition",
+  "default": "",
+  "position": 3,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}

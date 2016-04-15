@@ -1,0 +1,30 @@
+{
+ "SRLogger": {
+  "type": "string",
+  "isKey": true,
+  "isArray": false,
+  "description": " Global logging",
+  "default": "",
+  "position": 1,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ },
+ "SystemLogging": {
+  "type": "string",
+  "isKey": false,
+  "isArray": false,
+  "description": " Global logging",
+  "default": " on",
+  "position": 2,
+  "selections": "",
+  "queryparam": "",
+  "accelerated": false,
+  "min": 0,
+  "max": 0,
+  "len": 0
+ }
+}
