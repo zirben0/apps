@@ -1,12 +1,17 @@
+import os
+import time
 import argparse
+import shutil
+import threading
 import simplejson as json
 from flexswitchV2 import FlexSwitch
 
 gObjectsInfo =  {}
 
 class ConfigObjList (object):
-    def __init__ (self, name, currentList, newList):
+    def __init__ (self, swtch, name, currentList, newList):
         self.name = name
+        self.swtch = swtch
         self.current = currentList
         self.desire  = newList
         self.attrInfo = gObjectsInfo[name]
@@ -18,34 +23,54 @@ class ConfigObjList (object):
         for item in objList:
             keyStr = ''
             for attrName, attrInfo  in self.attrInfo.iteritems():
-                if attrInfo['isKey'] == 'true':
-                    keyStr = keyStr + attrName+item[attrName] 
-
+                if attrInfo['isKey'] == True:
+                    keyStr = keyStr + attrName+str(item[attrName])
             retDict[keyStr] = item
+        return retDict
+
+    def getObjKeyFromObj(self, objDict):
+        retDict = {}
+        for attrName , attrVal in objDict.iteritems:
+            if attrName in self.attrInfo:
+                if self.attrInfo[attrName]['isKey'] == 'true':
+                    retDict[attrName] = attrVal
         return retDict
 
     def applyConfig (self):
         for key, item in self.desiredDict.iteritems():
             if key not in self.currentDict:
-                self.createObj()
+                self.createObj(self.desiredDict[key])
             else:
-                self.updateObj(None)
+                self.updateObj(self.desiredDict[key])
 
         for key, item in self.currentDict.iteritems():
             if key not in self.desiredDict:
-                self.deleteObj()
+                self.deleteObj(self.desiredDict[key])
 
-    def createObj (self):
+    def createObj (self, objData):
+        methodName = 'create' + self.name
+        method =  getattr(self.swtch, methodName, None)
+        if method :
+            method(**objData)
         print 'Creating Object %s' %(self.name)
 
-    def deleteObj (self):
+    def deleteObj (self, objDict):
+        methodName = 'delete' + self.name
+        method =  getattr(self.swtch, methodName, None)
+        if method :
+            keys = self.getObjKeyFromObj(objDict)
+            method(**keys)
         print 'Deleting Object %s' %(self.name)
 
-    def updateObj (self, newAttrDict):
+    def updateObj (self, objData):
+        methodName = 'update' + self.name
+        method =  getattr(self.swtch, methodName, None)
+        if method :
+            method(**objData)
         print 'Updating object %s' %(self.name)
 
 class ConfigMonitor (object) :
-    def __init__ (self, ip, port, cfgDir) :
+    def __init__ (self, ip, port, cfgDir, pollFreq=5) :
         global gObjectsInfo
         self.cfgDir = cfgDir
         self.runningCfg = cfgDir + '/runningConfig.json'
@@ -57,6 +82,7 @@ class ConfigMonitor (object) :
         self.swtch = FlexSwitch(self.ip, self.port)
         self.currentConfig = {}
         self.cfgObjOrder = []
+        self.pollFreq = pollFreq
 
         with open('modelInfo/genObjectConfig.json') as objInfoFile:    
             self.objects = json.load(objInfoFile)
@@ -87,9 +113,8 @@ class ConfigMonitor (object) :
     def applyConfig (self, config) :
         for obj in self.cfgObjOrder:
             if config.has_key(obj):
-                objList = ConfigObjList (obj, self.currentConfig[obj], config[obj])
+                objList = ConfigObjList (self.swtch, obj, self.currentConfig[obj], config[obj])
                 objList.applyConfig()
-                
 
     def saveConfig(self) :
         for objName, objInfo  in self.objects.iteritems ():
@@ -106,7 +131,21 @@ class ConfigMonitor (object) :
 
         with open(self.runningCfg, 'w') as runningCfg:
             json.dump(self.currentConfig, runningCfg, indent=4, separators=(',', ': '))
+
+        if not os.path.isfile(self.desiredCfg):
+            print 'Current Config %s New Config %s ' %(self.runningCfg, self.desiredCfg)
+            shutil.copyfile(self.runningCfg, self.desiredCfg)
+        self.modifiedTime = os.stat(self.desiredCfg).st_mtime
             
+
+    def pollForConfigChange(self):
+        poller = threading.Timer(self.pollFreq, self.pollForConfigChange)
+        newTime = os.stat(self.desiredCfg).st_mtime
+        print '## Checking Config %s. Old Time %s New Time %s' %(self.desiredCfg, self.modifiedTime, newTime)
+        if newTime > self.modifiedTime:
+            self.modifiedTime = newTime
+            self.applyDesiredConfig()
+        poller.start()
             
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='FlexSwitch Configuration monitor')
@@ -134,7 +173,18 @@ if __name__ == '__main__':
                         default='8080',
                         help='Port')
 
+    parser.add_argument('--poll',
+                        type=str, 
+                        dest='poll',
+                        action='store',
+                        nargs='?',
+                        default='30',
+                        help='Polling interval')
     args = parser.parse_args()
-    monitor = ConfigMonitor (args.ip, args.port, args.cfgDir)
+    monitor = ConfigMonitor (args.ip, args.port, args.cfgDir, int(args.poll))
     monitor.saveConfig()
-    monitor.applyRunningConfig()
+    #monitor.applyDesiredConfig('tmp/desiredConfig.json')
+    monitor.pollForConfigChange()
+    while True:
+        time.sleep(1)
+    #monitor.applyRunningConfig()
