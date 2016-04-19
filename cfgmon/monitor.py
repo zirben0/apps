@@ -30,22 +30,35 @@ class ConfigObjList (object):
 
     def getObjKeyFromObj(self, objDict):
         retDict = {}
-        for attrName , attrVal in objDict.iteritems:
+        for attrName , attrVal in objDict.iteritems():
             if attrName in self.attrInfo:
-                if self.attrInfo[attrName]['isKey'] == 'true':
+                if self.attrInfo[attrName]['isKey']:
                     retDict[attrName] = attrVal
         return retDict
+
+    def cmpObjects(self, obj1, obj2):
+        if len(obj1) != len(obj2):
+            return False
+        for  key, val in obj1.iteritems():
+            if key not in obj2:
+                return False
+            else:
+                if obj1[key] != obj2[key]:
+                    return False
+
+        return True 
 
     def applyConfig (self):
         for key, item in self.desiredDict.iteritems():
             if key not in self.currentDict:
                 self.createObj(self.desiredDict[key])
             else:
-                self.updateObj(self.desiredDict[key])
+                if not self.cmpObjects(self.currentDict[key], self.desiredDict[key]):
+                    self.updateObj(self.desiredDict[key])
 
         for key, item in self.currentDict.iteritems():
             if key not in self.desiredDict:
-                self.deleteObj(self.desiredDict[key])
+                self.deleteObj(self.currentDict[key])
 
     def createObj (self, objData):
         methodName = 'create' + self.name
