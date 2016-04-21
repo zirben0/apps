@@ -1,11 +1,17 @@
 import os
+import sys
 import time
 import argparse
 import shutil
 import threading
-import simplejson as json
-from flexswitchV2 import FlexSwitch
+import json
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('../../sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
+MODELS_DIR='../../models/'
 gObjectsInfo =  {}
 
 class ConfigObjList (object):
@@ -97,15 +103,15 @@ class ConfigMonitor (object) :
         self.cfgObjOrder = []
         self.pollFreq = pollFreq
 
-        with open('modelInfo/genObjectConfig.json') as objInfoFile:    
+        with open(MODELS_DIR + 'genObjectConfig.json') as objInfoFile:    
             self.objects = json.load(objInfoFile)
 
         for obj in self.objects.keys():
-            attrInfoFile = 'modelInfo/%sMembers.json' %(obj)
+            attrInfoFile = MODELS_DIR+'%sMembers.json' %(obj)
             with open(attrInfoFile) as hdl : 
                 gObjectsInfo[obj] = json.load(hdl)
             
-        with open('modelInfo/configOrder.json') as orderInfoFile:    
+        with open(MODELS_DIR+'configOrder.json') as orderInfoFile:    
             orderInfo = json.load(orderInfoFile)
         self.cfgObjOrder = orderInfo['Order']
         self.saveConfig()
@@ -187,17 +193,27 @@ if __name__ == '__main__':
                         help='Port')
 
     parser.add_argument('--poll',
-                        type=str, 
+                        type=int, 
                         dest='poll',
                         action='store',
                         nargs='?',
-                        default='30',
+                        default=30,
                         help='Polling interval')
+
+    parser.add_argument('--applyConfig',
+                        type=bool, 
+                        dest='applyConfig',
+                        action='store',
+                        nargs='?',
+                        default=False,
+                        help='Apply Configuration')
     args = parser.parse_args()
     monitor = ConfigMonitor (args.ip, args.port, args.cfgDir, int(args.poll))
     monitor.saveConfig()
-    #monitor.applyDesiredConfig('tmp/desiredConfig.json')
-    monitor.pollForConfigChange()
-    while True:
-        time.sleep(1)
+    if args.applyConfig:
+        monitor.applyDesiredConfig(args.cfgDir+'/desiredConfig.json')
+    else :
+        monitor.pollForConfigChange()
+        while True:
+            time.sleep(1)
     #monitor.applyRunningConfig()
