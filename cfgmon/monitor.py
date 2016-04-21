@@ -25,7 +25,7 @@ class ConfigObjList (object):
         self.currentDict = self.convertObjListToDict(currentList)
         self.desiredDict = self.convertObjListToDict(newList)
 
-    def convertObjListToDict (self, objList):
+    def convertObjListToDict (self, objList=[]):
         retDict = {}
         for item in objList:
             keyStr = ''
@@ -68,6 +68,9 @@ class ConfigObjList (object):
                 self.deleteObj(self.currentDict[key])
 
     def createObj (self, objData):
+        if self.name == 'Port':
+            return
+
         methodName = 'create' + self.name
         method =  getattr(self.swtch, methodName, None)
         if method :
@@ -75,6 +78,8 @@ class ConfigObjList (object):
         print 'Creating Object %s' %(self.name)
 
     def deleteObj (self, objDict):
+        if self.name == 'Port':
+            return
         methodName = 'delete' + self.name
         method =  getattr(self.swtch, methodName, None)
         if method :
@@ -133,7 +138,7 @@ class ConfigMonitor (object) :
     def applyConfig (self, config) :
         for obj in self.cfgObjOrder:
             if config.has_key(obj):
-                objList = ConfigObjList (self.swtch, obj, self.currentConfig[obj], config[obj])
+                objList = ConfigObjList (self.swtch, obj, self.currentConfig.get(obj, {}), config[obj])
                 objList.applyConfig()
 
     def saveConfig(self) :
