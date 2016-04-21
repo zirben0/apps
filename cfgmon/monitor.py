@@ -7,11 +7,12 @@ import threading
 import json
 try:
     from flexswitchV2 import FlexSwitch
+    MODELS_DIR='../../models/'
 except:
-    sys.path.append('../../sdk/py/')
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    MODELS_DIR='/opt/flexswitch/models/'
     from flexswitchV2 import FlexSwitch
 
-MODELS_DIR='../../models/'
 gObjectsInfo =  {}
 
 class ConfigObjList (object):
