@@ -4,8 +4,7 @@ all: install
 
 exe:;
 	 
-clean: $(COMPS)
-	 $(foreach f,$^, make -C $(f) clean;)
+clean:;
 
 install: $(COMPS)
 	 $(foreach f,$^, make -C $(f) install;)
