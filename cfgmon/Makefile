@@ -14,10 +14,3 @@ install:
 	install $(SRCS) $(DESTDIR)/apps/cfgmon/ 
 	install configOrder.json $(DESTDIR)/models/ 
 
-guard:
-ifndef SR_CODE_BASE
-	 $(error SR_CODE_BASE is not set)
-endif
-
-clean:guard
-	 $(RM) $(DESTDIR)/$(COMP_NAME) 
