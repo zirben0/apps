@@ -5,6 +5,8 @@ import argparse
 import shutil
 import threading
 import json
+import time
+import requests 
 try:
     from flexswitchV2 import FlexSwitch
     MODELS_DIR='../../models/'
@@ -120,8 +122,30 @@ class ConfigMonitor (object) :
         with open(MODELS_DIR+'configOrder.json') as orderInfoFile:    
             orderInfo = json.load(orderInfoFile)
         self.cfgObjOrder = orderInfo['Order']
+
+        while not self.waitForSystemToBeReady ():
+            time.sleep(1)
         self.saveConfig()
 
+    def waitForSystemToBeReady (self) :
+        
+        httpSuccessCodes = [200, 201, 202, 204]
+        stateUrlBase = 'http://%s:%s/public/v1/state/'%(self.ip,str(self.port))                                                         
+        reqUrl =  stateUrlBase+'SystemStatus'
+        obj = {}
+        headers = {'Accept' : 'application/json', 'Content-Type' : 'application/json'}                                          
+        r = requests.get(reqUrl, data=json.dumps(obj), headers=headers) 
+        if r.status_code in httpSuccessCodes:
+            resp = r.json()
+            if resp['Object']['Ready'] == True:
+                print 'System Is ready'
+                return True 
+            else:
+                print 'System Is not ready yet'
+                return False
+        return False
+
+        
     def deleteConfig (self) :
         pass
 
@@ -157,10 +181,11 @@ class ConfigMonitor (object) :
         with open(self.runningCfg, 'w') as runningCfg:
             json.dump(self.currentConfig, runningCfg, indent=4, separators=(',', ': '))
 
-        if not os.path.isfile(self.desiredCfg):
-            print 'Current Config %s New Config %s ' %(self.runningCfg, self.desiredCfg)
-            shutil.copyfile(self.runningCfg, self.desiredCfg)
-        self.modifiedTime = os.stat(self.desiredCfg).st_mtime
+        if self.pollFreq:
+            if not os.path.isfile(self.desiredCfg):
+                print 'Current Config %s New Config %s ' %(self.runningCfg, self.desiredCfg)
+                shutil.copyfile(self.runningCfg, self.desiredCfg)
+            self.modifiedTime = os.stat(self.desiredCfg).st_mtime
             
 
     def pollForConfigChange(self):
@@ -203,7 +228,7 @@ if __name__ == '__main__':
                         dest='poll',
                         action='store',
                         nargs='?',
-                        default=30,
+                        default=None,
                         help='Polling interval')
 
     parser.add_argument('--applyConfig',
@@ -211,15 +236,27 @@ if __name__ == '__main__':
                         dest='applyConfig',
                         action='store',
                         nargs='?',
-                        default=False,
+                        default=True,
                         help='Apply Configuration')
+
+    parser.add_argument('--saveConfig',
+                        type=bool, 
+                        dest='saveConfig',
+                        action='store',
+                        nargs='?',
+                        default=True,
+                        help='Save Configuration')
     args = parser.parse_args()
-    monitor = ConfigMonitor (args.ip, args.port, args.cfgDir, int(args.poll))
-    monitor.saveConfig()
+    print args
+    monitor = ConfigMonitor (args.ip, args.port, args.cfgDir, args.poll)
+    if args.saveConfig:
+        monitor.saveConfig()
+        print 'Configuration is saved to %s'  %(monitor.runningCfg)
     if args.applyConfig:
         monitor.applyDesiredConfig(args.cfgDir+'/desiredConfig.json')
     else :
-        monitor.pollForConfigChange()
-        while True:
-            time.sleep(1)
+        if not args.saveConfig:
+            monitor.pollForConfigChange()
+            while True:
+                time.sleep(1)
     #monitor.applyRunningConfig()
