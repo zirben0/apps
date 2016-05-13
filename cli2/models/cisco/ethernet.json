@@ -1,0 +1,11 @@
+{
+  "ethernet": {
+    "prompt" : "ethernet",
+    "cliname" : "ethernet",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/PortMembers.json"
+      }
+    }
+  }
+}

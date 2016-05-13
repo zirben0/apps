@@ -1,0 +1,16 @@
+{
+  "svi": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : "svi"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe ethernet",
+        "default" : "vlan"
+      }
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "objname" : {
+    "type" : "string",
+    "descirption" : "object name to which references these attributes",
+    "default" : "Port"
+  },
+  "commands" : {
+    "type": "object",
+    "description": "holds all related commands related to ethernet port",
+    "properties": {
+      "AdminState": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "Autoneg": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "Description": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "Duplex": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "MacAddr": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "MediaType": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "Mtu": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "PhyIntfType": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "PortNum": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      },
+      "Speed": {
+        "type": "object",
+        "description": " Administrative state of this port\nDefault: ''\nselections: '': min: '' max: ''",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "required" : [
+      "PortNum"
+    ]
+  }
+}

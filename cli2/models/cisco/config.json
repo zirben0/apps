@@ -1,0 +1,11 @@
+{
+  "config": {
+    "prompt" : "(config)",
+    "cliname" : "config",
+    "commands" : {
+      "subcmd1" : {
+        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/interface.json"
+      }
+    }
+  } 
+}

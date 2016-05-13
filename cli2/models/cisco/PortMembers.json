@@ -1,0 +1,28 @@
+{
+  "commands" : {
+    "AdminState": {
+      "cliname": "shutdown"
+    },
+    "Autoneg": {
+      "cliname": "negotiate"
+    },
+    "Description": {
+      "cliname": "description"
+    },
+    "Duplex": {
+      "cliname": "duplex"
+    },
+    "MacAddr": {
+      "cliname": "mac-address"
+    },
+    "Mtu": {
+      "cliname": "mtu"
+    },
+    "Speed": {
+      "cliname": "speed"
+    },
+    "PortNum": {
+      "cliname": "ethernet"
+    }
+  }
+}
