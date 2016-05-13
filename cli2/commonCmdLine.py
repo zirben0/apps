@@ -106,7 +106,7 @@ class CommonCmdLine(object):
         with open(self.schemapath) as schema_data:
             self.schema = jsonref.load(schema_data)
 
-        pp.pprint(self.schema)
+        #pp.pprint(self.schema)
 
 
     def setModel(self):
@@ -127,9 +127,7 @@ class CommonCmdLine(object):
                 return False
         return True
 
-
     def default(self,):
-        import ipdb; ipdb.set_trace()
         pass
 
     def do_quit(self, args):
@@ -148,7 +146,7 @@ class CommonCmdLine(object):
 
     def do_apply(self, argv):
 
-        def get_sdk_func_args(func):
+        def get_sdk_func_key_values(func):
             argspec = inspect.getargspec(func)
             getKeys = argspec.args
             lengthkwargs = len(argspec.defaults) if argspec.defaults is not None else 0
@@ -163,7 +161,6 @@ class CommonCmdLine(object):
                         argumentList.append(v['value'])
             return argumentList
 
-
         if self.config:
             sys.stdout.write("Applying Config:\n")
             # tell the user what attributes are being applied
@@ -172,8 +169,6 @@ class CommonCmdLine(object):
             # get the sdk
             sdk = self.getSdk()
 
-            import ipdb; ipdb.set_trace()
-
             funcObjName = self.config.name
 
             #lets see if the object exists, by doing a get first
@@ -181,28 +176,18 @@ class CommonCmdLine(object):
             update_func = getattr(sdk, 'update' + funcObjName)
             create_func = getattr(sdk, 'create' + funcObjName)
 
-            # this logic will inspect the api call and return the appropriate
-            # function arguments
-            argspec = inspect.getargspec(get_func)
-            getKeys = argspec.args
-            lengthkwargs = len(argspec.defaults) if argspec.defaults is not None else 0
-            if lengthkwargs > 0:
-                getKeys = argspec.args[:-len(argspec.defaults)]
-
-            argumentList = get_sdk_func_args(get_func)
+            argumentList = get_sdk_func_key_values(get_func)
             try:
                 r = get_func(*argumentList)
                 if r.status_code in sdk.httpSuccessCodes:
                     # update
-                    argumentList = get_sdk_func_args(update_func)
-                    kwargs = self.config.getall()
+                    kwargs = self.config.getSdkAll()
                     r = update_func(*argumentList, **kwargs)
                     if r.status_code not in sdk.httpSuccessCodes:
-                        sys.stdout.write("command failed")
+                        sys.stdout.write("command failed %s %s" %(r.status_code, r.json()))
                 elif r.status_code == 404:
                     # create
-                    argumentList = get_sdk_func_args(create_func)
-                    kwargs = self.config.getall()
+                    kwargs = self.config.getSdkAll()
                     create_func(*argumentList, **kwargs)
             except Exception as e:
                 sys.stdout.write("FAILED TO GET OBJECT: %s")
@@ -212,8 +197,8 @@ class CommonCmdLine(object):
 
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config")
-        for k, v in self.configDict.iteritems():
-            sys.stdout.write("%s: %s\n" %(k, v))
+        self.config.show()
+
 
     def do_clearunapplied(self, argv):
         sys.stdout.write("Clearing Unapplied Config")

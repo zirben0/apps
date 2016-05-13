@@ -65,8 +65,6 @@ class InterfaceCmd(cmdln.Cmdln, CommonCmdLine):
 
     cmdln.alias("eth", "ether")
     def do_ethernet(self, arg):
-        import ipdb; ipdb.set_trace()
-
         pend = self.baseprompt[-2:]
         self.prompt = self.baseprompt[:-2] + self.model["interface"]["prompt"] + pend
         self.cmdloop()
@@ -79,7 +77,6 @@ class InterfaceCmd(cmdln.Cmdln, CommonCmdLine):
         pass
 
     def precmd(self, argv):
-        import ipdb; ipdb.set_trace()
         print argv
         if 'ethernet' in argv:
             if 'help' or '?' in argv:

@@ -43,13 +43,16 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.baseprompt = prompt
         self.prompt = self.baseprompt
 
-        self.config = CmdEntry(self.getObjName(), self.getUniqueKeyFromCliNameList(),)
-        sys.stdout.write("LeafCmd: %s" % self.model)
+        allCmdsDict = self.getCliCmdAttr(None, self.model[self.objname]["commands"])
+        # update the keys with appropriate values from parent command
+        allCmdsDict.update(self.getUniqueKeyFromCliNameList())
+
+        self.config = CmdEntry(self.getObjName(), allCmdsDict)
+        #sys.stdout.write("LeafCmd: %s" % self.model)
 
         self.setupCommands()
 
     def getCliNameToObjName(self):
-        import ipdb; ipdb.set_trace()
         for k, v in self.model[self.objname]["commands"].iteritems():
             print k,v
 
@@ -60,7 +63,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def getUniqueKeyFromCliNameList(self,):
         keyDict = {}
-        import ipdb; ipdb.set_trace()
         for i, c in enumerate(self.parent.lastcmd):
             subcmd = self.getCliCmdAttr(c, self.model[self.objname]["commands"])
             if subcmd:
@@ -70,7 +72,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         return keyDict
 
     def getCliCmdAttr(self, key, commands):
-
+        cmdDict = {}
         for k, v in commands.iteritems():
             if k == key:
                 return v
@@ -78,10 +80,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             # looking for subcommand
             if "commands" in v and type(v["commands"]) in (dict, jsonref.JsonRef):
                 for attrk, attrv in v["commands"].iteritems():
-                    if attrv['cliname'] == key:
-                        return {attrv['cliname']: {'key': attrk,
-                                                   'value': None}}
-        return None
+                    if attrv['cliname'] == key or key is None:
+                        cmdDict.update({attrv['cliname']: {'key': attrk,
+                                                   'value': None}})
+        return cmdDict
 
 
     def setupCommands(self):
@@ -90,7 +92,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         # in the format of 'do_<command>'
         # TODO need to add support for when the cli mode does not supply the cliname
         #      in this case need to get the default from the schema model
-        import ipdb; ipdb.set_trace()
         for subcmds, cmd in self.model[self.objname]["commands"].iteritems():
             # handle the links
             if 'subcmd' in subcmds:
@@ -118,7 +119,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def _cmd_default(self, argv):
 
-        import ipdb; ipdb.set_trace()
         if len(argv) < 2:
             return
 

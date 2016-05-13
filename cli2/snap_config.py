@@ -25,7 +25,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.baseprompt = prompt
         self.prompt = self.baseprompt
 
-        import ipdb; ipdb.set_trace()
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model[self.objname]["commands"].iteritems():
             # handle the links
@@ -65,7 +64,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         return True
 
     def do_help(self, argv):
-       sys.stdout.write("Command example: 'interface ethernet fpPort40' received '%s'\n\n" % (" ".join(argv)))
+        if 'ethernet' in argv:
+            sys.stdout.write("Command example: 'interface ethernet fpPort40' received '%s'\n\n" % (" ".join(argv)))
 
     def getchildrencmds(self, parentname, model, schema):
 
@@ -73,7 +73,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def _cmd_complete_interface(self, text, line, begidx, endidx):
         #sys.stdout.write("line: %s\n text: %s %s %s" %(line, text, not text, len(text)))
-        # remove spacing
+        # remove spacing/tab
         mline = [ x for x in line.split(' ') if x != '']
 
         #functionNameAsString = sys._getframe().f_code.co_name
@@ -86,16 +86,22 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         subschema = self.getSubCommand(mline[0], self.schema[self.objname]["properties"]["commands"]["properties"])
         #sys.stdout.write("2 submodel %s\n\n 2 subschema %s\n\n" %(submodel, subschema))
         subcommands = self.getchildrencmds(mline[0], submodel, subschema)
+        # todo should look next command so that this is not 'sort of hard coded'
+        # todo should to a getall at this point to get all of the interface types once a type is found
         #sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
+
         # lets remove any duplicates
-        returncommands = list(Set(subcommands).difference(mline))
+        returncommands = Set(subcommands).difference(mline)
 
-        if len(text) == 0:
+        if len(text) == 0 and len(returncommand) == len(subcommands):
             return returncommands
-
+        elif len(text) == 0:
+            # todo get all interfaces
+            pass
         # lets only get commands which are a partial of what was entered
         returncommands = [k for k in returncommands if k.startswith(text)]
         return returncommands
+
 
 
     def _cmd_interface(self, argv):
@@ -118,7 +124,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.stop = True
         c = LeafCmd(subcmd, self, self.prompt, subsubmodel, subsubschema)
         c.cmdloop()
-        sys.stdout.write("returning from LeafCmd.cmdloop\n\n")
         self.prompt = self.baseprompt
 
         self.cmdloop()

@@ -4,8 +4,8 @@ import sys
 
 class CmdEntry(object):
 
+    # hold provisioned values
     attrDict = {}
-    funcDict = {}
     def __init__(self, name, keyDict):
         # holds the name of the object
         self.name = name
@@ -29,8 +29,13 @@ class CmdEntry(object):
     def getall(self, ):
         return self.attrDict
 
-    def setcallmethod(self, prefix, func):
-        self.funcDict.update({prefix, func})
+    def getSdkAll(self):
+        newdict = {}
+        for k, v in self.getall().iteritems():
+            for kk, vv in self.keysDict.iteritems():
+                if k == kk:
+                    newdict.update({vv['key']: v})
+        return newdict
 
     def applyconfig(self):
         pass
@@ -39,8 +44,9 @@ class CmdEntry(object):
         sys.stdout.write("objkey: ")
         keystr = ''
         for k, v in self.keysDict.iteritems():
-            keystr += "%s:%s " %(k, v['value'])
-        sys.stdout.write('%s' %(keystr))
+            if v['value'] is not None:
+                keystr += "%s:%s " %(k, v['value'])
+        sys.stdout.write('\n%s\n' %(keystr))
         for k, v in self.attrDict.iteritems():
             sys.stdout.write("%s: %s\n" %(k, v))
 

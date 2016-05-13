@@ -36,6 +36,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         cmdln.Cmdln.__init__(self)
 
         self.privilege = False
+        self.tmp_remove_priveledge = None
         self.sdk = FlexSwitch(switch_ip, 8080)
 
         # this loop will setup each of the cliname commands for this model level
@@ -93,8 +94,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.baseprompt = self.model["prompt-prefix"] + self.model["prompt"]
         self.prompt = self.model["prompt-prefix"] + self.model["prompt"]
 
-
-
     def cmdloop(self, intro=None):
         try:
             if self.start:
@@ -110,6 +109,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def emptyline(self):
         pass
 
+    def non_privilege_get_names(self):
+        if self.privilege:
+            subcmd = self.getSubCommand("privilege", self.model["commands"])
+            return [ x for x in dir(self.__class__) if x == subcmd["cliname"]]
+
     @cmdln.alias("en", "ena")
     # match for schema cmd object
     def _cmd_privilege(self, arg):
@@ -117,7 +121,17 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         subcmd = self.getSubCommand("privilege", self.model["commands"])
         schmacmd = self.getSubCommand("privilege", self.schema["properties"]["commands"]["properties"])
         self.prompt = self.prompt[:-1] + self.getPrompt(subcmd, schmacmd)
+        self.baseprompt = self.prompt
+
+        # TODO need to figure out what populates the commands so that we can exclude the privilege command
+        # once in this mode
+        #docmd = 'do_%s' %(subcmd['cliname'])
+        #self.tmp_remove_priveledge = getattr(self.__class__, docmd)
+        #setattr(self.__class__, docmd, self.non_privilege_get_names)
         self.cmdloop()
+
+
+        # todo need to remove _cmd_privilege from valid command list
 
 
     def xdo_help(self, arg):
@@ -159,10 +173,10 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
     def do_exit(self, args):
         " Quiting FlexSwitch CLI"
-        configcmd = self.getSubCommand("privilege", self.model["commands"])
-        schemacmd = self.getSubCommand("privilege", self.schema["properties"]["commands"]["properties"])
-
-        if self.prompt[-1] == self.getPrompt(configcmd, schemacmd):
+        #subcmd = self.getSubCommand("privilege", self.model["commands"])
+        if self.privilege:
+            #docmd = 'do_%s' %(subcmd['cliname'])
+            #setattr(self.__class__, docmd, self.tmp_remove_priveledge)
             sys.stdout.write('Exiting Privilege mode\n')
             self.setPrompt()
             self.cmdloop()
