@@ -45,6 +45,7 @@ class CommonCmdLine(object):
         self.baseprompt = "DEFAULT"
         self.setSchema()
         self.setModel()
+        self.currentcmd = []
         valid = self.validateSchemaAndModel()
 
         if not valid:
@@ -61,19 +62,20 @@ class CommonCmdLine(object):
 
         # to prevent looping forever going to not accept
         # a tree larger than 10 levels
-        for x in range(10):
+        root = None
+        while root is None:
             # root node has no parent
             # and it holds the sdk
             if parent is None:
-                return child.sdk
+                root = child.sdk
             else:
                 child = parent
 
-            parent = getparent(child)
-
+            if not root:
+                parent = getparent(child)
 
         sys.stderr("Unable to find SDK for to access node")
-        return None
+        return root
 
     def getSubCommand(self, key, commands):
 
@@ -153,6 +155,28 @@ class CommonCmdLine(object):
 
         self.prompt = self.baseprompt
         self.stop = True
+
+    def do_where(self, args):
+
+        def getparent(child):
+            return child.parent
+
+        completecmd = self.currentcmd
+        parent = self.parent
+        if parent is not None:
+            completecmd = parent.currentcmd + completecmd
+
+        # to prevent looping forever going to not accept
+        # a tree larger than 10 levels
+        while parent is not None:
+            # root node has no parent
+            # and it holds the sdk
+            child = parent
+            parent = getparent(child)
+            if parent is not None:
+                completecmd = parent.currentcmd + completecmd
+
+        sys.stdout.write("\ncmd: %s\n\n" %(" ".join(completecmd,)))
 
     def do_apply(self, argv):
 

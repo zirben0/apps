@@ -42,6 +42,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.schema = schema
         self.baseprompt = prompt
         self.prompt = self.baseprompt
+        self.currentcmd = []
 
         allCmdsDict = self.getCliCmdAttr(None, self.model[self.objname]["commands"])
         # update the keys with appropriate values from parent command
@@ -73,7 +74,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def getCliCmdAttr(self, key, commands):
         cmdDict = {}
-        import ipdb; ipdb.set_trace()
         for k, v in commands.iteritems():
             if k == key:
                 return v

@@ -26,7 +26,16 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.baseprompt = prompt
         self.prompt = self.baseprompt
         self.commandLen = 0
+        self.currentcmd = []
 
+        self.setupCommands()
+
+    def setupCommands(self):
+        # this loop will setup each of the cliname commands for this model level
+        # cmdln/cmd expects that all commands have a function associated with it
+        # in the format of 'do_<command>'
+        # TODO need to add support for when the cli mode does not supply the cliname
+        #      in this case need to get the default from the schema model
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model[self.objname]["commands"].iteritems():
             # handle the links
@@ -163,6 +172,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         self.prompt += value + endprompt
         self.stop = True
+        self.currentcmd = self.lastcmd
         c = LeafCmd(argv[-2], self, self.prompt, submodel, subschema)
         c.cmdloop()
         self.prompt = self.baseprompt

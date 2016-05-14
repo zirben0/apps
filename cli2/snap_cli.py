@@ -157,12 +157,13 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         configprompt = self.getPrompt(configcmd["config"], schemacmd["config"])
         self.prompt = self.prompt[:-1] + configprompt + pend
         cmdln.Cmdln.stop = True
+        self.currentcmd = self.lastcmd
         c = ConfigCmd(self, name, self.prompt, configcmd, schemacmd)
         c.cmdloop()
         # return prompt to the base of this class
         self.prompt = self.baseprompt
 
-    def xdo_show(self, arg):
+    def do_show(self, arg):
         " Show running system information "
         if "?" in self.lastcmd:
             return
