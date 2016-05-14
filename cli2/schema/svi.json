@@ -9,7 +9,7 @@
       "cliname" : {
         "type" : "string",
         "description" : "name used in cli to describe ethernet",
-        "default" : "vlan"
+        "default" : "svi"
       }
     }
   }

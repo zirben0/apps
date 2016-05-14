@@ -73,6 +73,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def getCliCmdAttr(self, key, commands):
         cmdDict = {}
+        import ipdb; ipdb.set_trace()
         for k, v in commands.iteritems():
             if k == key:
                 return v

@@ -3,8 +3,10 @@ import copy
 import jsonref
 import sys
 from jsonschema import Draft4Validator
-import pprint
 import inspect
+import pprint
+
+
 
 USING_READLINE = True
 try:
@@ -84,11 +86,19 @@ class CommonCmdLine(object):
 
             # looking for subcommand
             if type(v) in (dict, jsonref.JsonRef) and key in v:
-                #sys.stdout.write("RETURN 2 %s\n\n"% (v))
+                #sys.stdout.write("RETURN 2 %s\n\n"% (v.keys()))
                 return v
-
-        sys.stdout.write("RETURN None\n\n")
         return None
+
+    def isValueExpected(self, cmd, schema):
+        if schema:
+            #sys.stdout.write("\nisValueExpected: cmd %s schema %s\n" %(cmd, schema[cmd].keys()))
+            return "value" in schema[cmd]["properties"]
+        return False
+
+    def getValue(self, attribute):
+
+        return hattribute["value"]
 
     def getPrompt(self, model, schema):
         try:
@@ -106,14 +116,14 @@ class CommonCmdLine(object):
         with open(self.schemapath) as schema_data:
             self.schema = jsonref.load(schema_data)
 
-        #pp.pprint(self.schema)
+        pp.pprint(self.schema)
 
 
     def setModel(self):
 
         with open(self.modelpath, "r") as json_model_data:
             self.model = jsonref.load(json_model_data)
-            pp.pprint(self.model)
+            #pp.pprint(self.model)
 
     def validateSchemaAndModel(self):
         if self.model is None or self.schema is None:

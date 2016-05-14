@@ -1,0 +1,18 @@
+{
+  "objname" : {
+    "type" : "string",
+    "descirption" : "object name to which references these attributes",
+    "default" : "Vlan"
+  },
+  "commands" : {
+    "IntfList": {
+      "cliname":  "member-list"
+    },
+    "UntagIntfList": {
+      "cliname": "untag-member-list"
+    },
+    "VlanId": {
+      "cliname": "vlan"
+    }
+  }
+}

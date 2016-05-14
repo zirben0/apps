@@ -1,6 +1,6 @@
 {
   "ethernet": {
-    "prompt" : "ethernet",
+    "prompt" : "eth",
     "cliname" : "ethernet",
     "commands" : {
       "subcmd1": {

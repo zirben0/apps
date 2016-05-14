@@ -1,0 +1,37 @@
+{
+  "objname" : {
+    "type" : "string",
+    "descirption" : "object name to which references these attributes",
+    "default" : "Port"
+  },
+  "commands" : {
+   "type": "object",
+   "description": "holds all related commands related to vlan",
+   "properties": {
+    "IntfList": {
+     "prompt": {
+      "type": "string"
+     },
+     "cliname": {
+      "type": "string"
+     }
+    },
+    "UntagIntfList": {
+     "prompt": {
+      "type": "string"
+     },
+     "cliname": {
+      "type": "string"
+     }
+    },
+    "VlanId": {
+     "prompt": {
+      "type": "string"
+     },
+     "cliname": {
+      "type": "string"
+     }
+    }
+   }
+  }
+}

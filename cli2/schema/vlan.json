@@ -1,15 +1,15 @@
 {
-  "ethernet": {
+  "vlan": {
     "type" : "object",
     "properties" : {
       "prompt" : {
         "type": "string",
-        "default" : "eth"
+        "default" : "vlan"
       },
       "cliname" : {
         "type" : "string",
         "description" : "name used in cli to describe ethernet",
-        "default" : "ethernet"
+        "default" : "vlan"
       },
       "value" : {
         "type" : "integer",
@@ -20,14 +20,10 @@
         "description": "holds all related commands related to ethernet port",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/PortMembers.json"
+            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/VlanMembers.json"
           }
         }
       }
-    },
-    "required" : [
-      "cliname",
-      "commands"
-    ]
+    }
   }
 }

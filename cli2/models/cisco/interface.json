@@ -1,6 +1,6 @@
 {
   "interface": {
-    "prompt" : "-if",
+    "prompt" : "if",
     "cliname" : "interface",
     "commands" : {
       "subcmd1": {
