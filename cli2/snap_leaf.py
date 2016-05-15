@@ -31,7 +31,7 @@ class SetAttrFunc(object):
 class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     # schema and model name
-    def __init__(self, objname, parent, prompt, model, schema):
+    def __init__(self, objname, cmdtype, parent, prompt, model, schema):
 
         cmdln.Cmdln.__init__(self)
 
@@ -43,6 +43,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.baseprompt = prompt
         self.prompt = self.baseprompt
         self.currentcmd = []
+        self.cmdtype = cmdtype
 
         allCmdsDict = self.getCliCmdAttr(None, self.model[self.objname]["commands"])
         # update the keys with appropriate values from parent command

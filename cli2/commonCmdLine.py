@@ -157,7 +157,7 @@ class CommonCmdLine(object):
         self.stop = True
 
     def do_where(self, args):
-
+        import ipdb; ipdb.set_trace()
         def getparent(child):
             return child.parent
 

@@ -15,7 +15,7 @@ from snap_leaf import LeafCmd
 pp = pprint.PrettyPrinter(indent=2)
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
-    def __init__(self, parent, objname, prompt, model, schema):
+    def __init__(self, cmdtype, parent, objname, prompt, model, schema):
 
         cmdln.Cmdln.__init__(self)
         self.objname = objname
@@ -27,6 +27,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.prompt = self.baseprompt
         self.commandLen = 0
         self.currentcmd = []
+        self.cmdtype = cmdtype
 
         self.setupCommands()
 
@@ -173,7 +174,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.prompt += value + endprompt
         self.stop = True
         self.currentcmd = self.lastcmd
-        c = LeafCmd(argv[-2], self, self.prompt, submodel, subschema)
+        c = LeafCmd(argv[-2], self.cmdtype, self, self.prompt, submodel, subschema)
         c.cmdloop()
         self.prompt = self.baseprompt
 
@@ -181,22 +182,24 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def precmd(self, argv):
         mlineLength = len(argv)
-        mline = argv
+        mline = [self.objname] + argv
+        subschema = self.schema
+        if mlineLength > 0:
+            try:
+                for i in range(1, len(mline)-1):
+                    subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                    valueexpected = self.isValueExpected(mline[i], subschema)
+                    if valueexpected:
+                        self.commandLen = mlineLength
 
-        try:
-            # lets walk through the commands inputed so far to determine the command len
-            subschema = self.getSubCommand(mline[0], self.schema[self.objname]["properties"]["commands"]["properties"])
-            valueexpected = self.isValueExpected(mline[0], subschema)
-            if valueexpected:
-                self.commandLen = mlineLength
-        except Exception:
-            pass
+            except Exception:
+                pass
 
-        cmd = argv[-1]
-        if cmd in ('?', ) or \
-                (mlineLength < self.commandLen and cmd not in ("exit", "end", "help")):
-            self.do_help(argv)
-            return ''
+            cmd = argv[-1]
+            if cmd in ('?', ) or \
+                    (mlineLength < self.commandLen and cmd not in ("exit", "end", "help")):
+                self.do_help(argv)
+                return ''
 
         return argv
 

@@ -152,13 +152,13 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
         pend = self.prompt[-1]
-        configcmd = self.getSubCommand("config", self.model["commands"])
-        schemacmd = self.getSubCommand("config", self.schema["properties"]["commands"]["properties"])
-        configprompt = self.getPrompt(configcmd["config"], schemacmd["config"])
+        configcmd = self.getSubCommand(name, self.model["commands"])
+        schemacmd = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        configprompt = self.getPrompt(configcmd[name], schemacmd[name])
         self.prompt = self.prompt[:-1] + configprompt + pend
         cmdln.Cmdln.stop = True
         self.currentcmd = self.lastcmd
-        c = ConfigCmd(self, name, self.prompt, configcmd, schemacmd)
+        c = ConfigCmd("config", self, name, self.prompt, configcmd, schemacmd)
         c.cmdloop()
         # return prompt to the base of this class
         self.prompt = self.baseprompt
@@ -167,7 +167,13 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         " Show running system information "
         if "?" in self.lastcmd:
             return
-        return self.commands.show_commands(arg)
+        name = "config"
+        configcmd = self.getSubCommand(name, self.model["commands"])
+        schemacmd = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        cmdln.Cmdln.stop = True
+        self.currentcmd = self.lastcmd
+        c = ConfigCmd(self, "show", "config", self.prompt, configcmd, schemacmd)
+        c.cmdloop()
 
     def xcomplete_show(self, text, line, begidx, endidx):
         return self.commands.auto_show(text, line, begidx, endidx)
