@@ -1,6 +1,7 @@
 #!/usr/lib/python
 # object which stores the current configuration
 import sys
+import copy
 
 class CmdEntry(object):
 
@@ -32,9 +33,10 @@ class CmdEntry(object):
     def getSdkAll(self):
         newdict = {}
         for k, v in self.getall().iteritems():
-            for kk, vv in self.keysDict.iteritems():
+            for kk, vv in copy.deepcopy(self.keysDict).iteritems():
                 if k == kk:
                     newdict.update({vv['key']: v})
+                    self.keysDict[kk].update({'value': v})
         return newdict
 
     def applyconfig(self):

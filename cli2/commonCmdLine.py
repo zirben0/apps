@@ -3,7 +3,6 @@ import copy
 import jsonref
 import sys
 from jsonschema import Draft4Validator
-import inspect
 import pprint
 
 
@@ -18,13 +17,7 @@ try:
     	readline.parse_and_bind("bind ^I rl_complete")
     else:
     	readline.parse_and_bind("tab: complete")
-except:
-    try:
-        # For Windows readline support go visit ...
-        # https://launchpad.net/pyreadline
-        import pyreadline
-    except:
-        USING_READLINE = False
+except:   se
 
 pp = pprint.PrettyPrinter(indent=2)
 
@@ -77,6 +70,29 @@ class CommonCmdLine(object):
         sys.stderr("Unable to find SDK for to access node")
         return root
 
+    def getSdkShow(self):
+        parent = self.parent
+        child = self
+
+        def getparent(child):
+            return child.parent
+
+        # to prevent looping forever going to not accept
+        # a tree larger than 10 levels
+        root = None
+        while root is None:
+            # root node has no parent
+            # and it holds the sdk
+            if parent is None:
+                root = child.sdkshow
+            else:
+                child = parent
+
+            if not root:
+                parent = getparent(child)
+        return root
+
+
     def getSubCommand(self, key, commands):
 
         #sys.stdout.write("commands: %s\n\n key %s\n\n"% (commands, key))
@@ -91,6 +107,11 @@ class CommonCmdLine(object):
                 #sys.stdout.write("RETURN 2 %s\n\n"% (v.keys()))
                 return v
         return None
+
+    def getchildrencmds(self, parentname, model, schema):
+        if model:
+            return [self.getCliName(cmdobj.values()[0]) for cmdobj in [obj for k, obj in model[parentname]["commands"].iteritems() if "subcmd" in k]]
+        return []
 
     def isValueExpected(self, cmd, schema):
         if schema:
@@ -157,7 +178,6 @@ class CommonCmdLine(object):
         self.stop = True
 
     def do_where(self, args):
-        import ipdb; ipdb.set_trace()
         def getparent(child):
             return child.parent
 
@@ -177,64 +197,3 @@ class CommonCmdLine(object):
                 completecmd = parent.currentcmd + completecmd
 
         sys.stdout.write("\ncmd: %s\n\n" %(" ".join(completecmd,)))
-
-    def do_apply(self, argv):
-
-        def get_sdk_func_key_values(func):
-            argspec = inspect.getargspec(func)
-            getKeys = argspec.args
-            lengthkwargs = len(argspec.defaults) if argspec.defaults is not None else 0
-            if lengthkwargs > 0:
-                getKeys = argspec.args[:-len(argspec.defaults)]
-
-            # lets setup the argument list
-            argumentList = []
-            for k in getKeys:
-                for v in self.config.keysDict.values():
-                    if v['key'] == k:
-                        argumentList.append(v['value'])
-            return argumentList
-
-        if self.config:
-            sys.stdout.write("Applying Config:\n")
-            # tell the user what attributes are being applied
-            self.config.show()
-
-            # get the sdk
-            sdk = self.getSdk()
-
-            funcObjName = self.config.name
-
-            #lets see if the object exists, by doing a get first
-            get_func = getattr(sdk, 'get' + funcObjName)
-            update_func = getattr(sdk, 'update' + funcObjName)
-            create_func = getattr(sdk, 'create' + funcObjName)
-
-            argumentList = get_sdk_func_key_values(get_func)
-            try:
-                r = get_func(*argumentList)
-                if r.status_code in sdk.httpSuccessCodes:
-                    # update
-                    kwargs = self.config.getSdkAll()
-                    r = update_func(*argumentList, **kwargs)
-                    if r.status_code not in sdk.httpSuccessCodes:
-                        sys.stdout.write("command failed %s %s" %(r.status_code, r.json()))
-                elif r.status_code == 404:
-                    # create
-                    kwargs = self.config.getSdkAll()
-                    create_func(*argumentList, **kwargs)
-            except Exception as e:
-                sys.stdout.write("FAILED TO GET OBJECT: %s")
-
-            # remove the configuration as it has been applied
-            self.config.clear(None, None, all=True)
-
-    def do_showunapplied(self, argv):
-        sys.stdout.write("Unapplied Config")
-        self.config.show()
-
-
-    def do_clearunapplied(self, argv):
-        sys.stdout.write("Clearing Unapplied Config")
-
-        self.configDict = {}

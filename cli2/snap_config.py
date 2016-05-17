@@ -84,37 +84,17 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         elif 'vlan' in argv:
             sys.stdout.write("Command example: 'vlan 100' received %s\n\n" %(" ".join(argv)))
 
-    def getchildrencmds(self, parentname, model, schema):
-
-        if model:
-            return [self.getCliName(cmdobj.values()[0]) for cmdobj in [obj for k, obj in model[parentname]["commands"].iteritems() if "subcmd" in k]]
-        return []
-
     def _cmd_complete_common(self, text, line, begidx, endidx):
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
-        mline = [ x for x in line.split(' ') if x != '']
+        mline = [self.objname] + [ x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
         #sys.stdout.write("complete cmd: %s\ncommand %s objname %s\n\n" %(self.model, mline[0], self.objname))
 
-        # lets get the child model and schema
-        submodel = self.getSubCommand(mline[0], self.model[self.objname]["commands"])
-        subschema = self.getSubCommand(mline[0], self.schema[self.objname]["properties"]["commands"]["properties"])
-        #sys.stdout.write("2 submodel %s\n\n 2 subschema %s\n\n schema %s\n\n" %(submodel, subschema, self.schema[self.objname]))
-        # get the sub commands for the child
-        subcommands = self.getchildrencmds(mline[0], submodel, subschema)
-        # check to see if this command is the last one before a value is expected
-        valueexpected = self.isValueExpected(mline[0], subschema)
-
-        #sys.stdout.write("submodel %s\n\n subschema %s\n\n valueexpected %s\n" %(submodel, subschema, valueexpected))
-        if valueexpected:
-            # set the total command length
-            self.commandLen = mlineLength + 1
-            #sys.stdout.write("returning value expected found subcommands %s\n" %(subcommands,))
-            return subcommands
-
+        submodel = self.model
+        subschema = self.schema
         # advance to next submodel and subschema
-        for i in range(1, mlineLength):
+        for i in range(mlineLength-1):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             if mline[i-1] in submodel:
                 submodel = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
@@ -123,7 +103,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
                     valueexpected = self.isValueExpected(mline[1], subschema)
                     if valueexpected:
-                        self.commandLen = len(mline) + 1
+                        self.commandLen = len(mline)
                         return []
                     else:
                         subcommands = self.getchildrencmds(mline[i], submodel, subschema)
@@ -152,18 +132,16 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         #          vlan <vlan #>
         if len(argv) != self.commandLen:
             self.cmdloop()
+
         value = argv[-1]
         # reset the command len
         self.commandLen = 0
         endprompt = self.baseprompt[-2:]
+        submodel = self.model
+        subschema = self.schema
+        self.prompt = self.baseprompt[:-2] + '-'
 
-        submodel = self.getSubCommand(argv[0], self.model[self.objname]["commands"])
-        subschema = self.getSubCommand(argv[0], self.schema[self.objname]["properties"]["commands"]["properties"])
-
-        configprompt = self.getPrompt(submodel[argv[0]], subschema[argv[0]])
-        self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
-
-        for i in range(1, len(argv)-1):
+        for i in range(len(argv)):
 
             submodel = self.getSubCommand(argv[i], submodel[argv[i-1]]["commands"])
             subschema = self.getSubCommand(argv[i], subschema[argv[i-1]]["properties"]["commands"]["properties"])
@@ -174,11 +152,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.prompt += value + endprompt
         self.stop = True
         self.currentcmd = self.lastcmd
-        c = LeafCmd(argv[-2], self.cmdtype, self, self.prompt, submodel, subschema)
-        c.cmdloop()
-        self.prompt = self.baseprompt
-
-        self.cmdloop()
+        if self.cmdtype == 'config':
+            c = LeafCmd(argv[-2], self.cmdtype, self, self.prompt, submodel, subschema)
+            c.cmdloop()
+            self.prompt = self.baseprompt
+            self.cmdloop()
+        else:
+            pass
+            # do show command
+            # check last argument for all/value
 
     def precmd(self, argv):
         mlineLength = len(argv)

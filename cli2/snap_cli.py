@@ -9,9 +9,11 @@ from optparse import OptionParser
 from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
 from snap_config import ConfigCmd
+from snap_show import ShowCmd
 from commonCmdLine import CommonCmdLine, USING_READLINE
 from flexswitchV2 import FlexSwitch
-
+from flexprint import FlexPrint
+from sets import Set
 
 class CmdLine(cmdln.Cmdln, CommonCmdLine):
     """
@@ -29,15 +31,15 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     """
     # name of schema and model
     name = 'base.json'
-
+    objname = 'base'
     def __init__(self, switch_ip, model_path, schema_path):
         self.start = True
         CommonCmdLine.__init__(self, None, switch_ip, schema_path, model_path, self.name)
         cmdln.Cmdln.__init__(self)
-
         self.privilege = False
         self.tmp_remove_priveledge = None
         self.sdk = FlexSwitch(switch_ip, 8080)
+        self.sdkshow = FlexPrint(switch_ip, 8080)
 
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model["commands"].iteritems():
@@ -45,7 +47,10 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             if 'subcmd' in subcmds:
                 try:
                     for k,v in cmd.iteritems():
-                        setattr(self.__class__, "do_" + self.getCliName(v), self.__getattribute__("_cmd_%s" %(k,)))
+                        cmdname = self.getCliName(v)
+                        setattr(self.__class__, "do_" + cmdname, self.__getattribute__("_cmd_%s" %(k,)))
+                        if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
+                            setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
                 except Exception as e:
                     sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
             else:
@@ -129,8 +134,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         #self.tmp_remove_priveledge = getattr(self.__class__, docmd)
         #setattr(self.__class__, docmd, self.non_privilege_get_names)
         self.cmdloop()
-
-
         # todo need to remove _cmd_privilege from valid command list
 
 
@@ -163,20 +166,84 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         # return prompt to the base of this class
         self.prompt = self.baseprompt
 
-    def do_show(self, arg):
+    def _cmd_complete_show(self, text, line, begidx, endidx):
+        #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
+        # remove spacing/tab
+        mline = [x for x in line.split(' ') if x != '']
+        sys.stdout.write("\nmline: %s \n" %(mline))
+        mlineLength = len(mline)
+        #sys.stdout.write("complete model: %s\ncommand %s \nobjname %s\n\n" %(self.model, mline, self.objname))
+
+        functionNameAsString = sys._getframe().f_code.co_name
+        name = functionNameAsString.split("_")[-1]
+
+        submodel = self.getSubCommand(name, self.model["commands"])
+        subschema = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        subcommands = self.getchildrencmds(mline[0], submodel, subschema)
+
+        sys.stdout.write("2: subcommands: %s \n\n" %(subcommands))
+
+        # advance to next submodel and subschema
+        for i in range(1, mlineLength):
+            #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
+            if mline[i-1] in submodel:
+                submodel = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                if submodel:
+                    #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subschema))
+                    subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                    valueexpected = self.isValueExpected(mline[1], subschema)
+                    if valueexpected:
+                        self.commandLen = len(mline)
+                        return []
+                    subcommands = self.getchildrencmds(mline[i], submodel, subschema)
+
+        # lets remove any duplicates
+        returncommands = list(Set(subcommands).difference(mline))
+
+        sys.stdout.write("3: subcommands: %s returncommands %s\n\n" %(subcommands, returncommands))
+
+        if len(text) == 0 and len(returncommands) == len(subcommands):
+            #sys.stdout.write("just before return %s" %(returncommands))
+            return returncommands
+        #elif len(text) == 0:
+        #    # todo get all values ?
+        #    pass
+        # lets only get commands which are a partial of what was entered
+        returncommands = [k for k in returncommands if k.startswith(text)]
+
+        return returncommands
+
+    def _cmd_show(self, argv):
         " Show running system information "
+
         if "?" in self.lastcmd:
             return
-        name = "config"
-        configcmd = self.getSubCommand(name, self.model["commands"])
-        schemacmd = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
-        cmdln.Cmdln.stop = True
-        self.currentcmd = self.lastcmd
-        c = ConfigCmd(self, "show", "config", self.prompt, configcmd, schemacmd)
-        c.cmdloop()
 
-    def xcomplete_show(self, text, line, begidx, endidx):
-        return self.commands.auto_show(text, line, begidx, endidx)
+        functionNameAsString = sys._getframe().f_code.co_name
+        name = functionNameAsString.split("_")[-1]
+
+        mline = argv
+        mlineLength = len(mline)
+        submodel = self.getSubCommand(name, self.model["commands"])
+        subschema = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        if mlineLength > 0:
+            try:
+                for i in range(1, mlineLength):
+                    if mline[i-1] in submodel:
+                        submodel = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                        if submodel:
+                            subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                            valueexpected = self.isValueExpected(mline[i], subschema)
+                            if valueexpected:
+                                self.currentcmd = self.lastcmd
+                                c = ShowCmd(self, submodel, subschema)
+                                c.show(mline, all=(i == mlineLength-1))
+                                self.currentcmd = []
+
+            except Exception:
+                pass
+
+        self.cmdloop()
 
     def do_exit(self, args):
         " Quiting FlexSwitch CLI"
@@ -192,6 +259,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             sys.exit(0)
 
     def precmd(self, cmdlist):
+
         if len(cmdlist) > 0:
             if cmdlist[-1] == 'help':
                 sys.stdout.write('%s\n' % self.__doc__)
