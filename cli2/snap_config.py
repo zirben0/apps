@@ -133,40 +133,44 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if len(argv) != self.commandLen:
             self.cmdloop()
 
+        import ipdb; ipdb.set_trace()
+
         value = argv[-1]
         # reset the command len
         self.commandLen = 0
         endprompt = self.baseprompt[-2:]
-        submodel = self.model
-        subschema = self.schema
-        self.prompt = self.baseprompt[:-2] + '-'
+        submodel = self.getSubCommand(argv[0], self.model[self.objname]["commands"])
+        subschema = self.getSubCommand(argv[0], self.schema[self.objname]["properties"]["commands"]["properties"])
+        configprompt = self.getPrompt(submodel[argv[0]], subschema[argv[0]])
+        self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
-        for i in range(len(argv)):
+        for i in range(1, len(argv)-1):
 
             submodel = self.getSubCommand(argv[i], submodel[argv[i-1]]["commands"])
             subschema = self.getSubCommand(argv[i], subschema[argv[i-1]]["properties"]["commands"]["properties"])
 
             configprompt = self.getPrompt(submodel[argv[i]], subschema[argv[i]])
-            self.prompt += configprompt + '-'
+            if configprompt:
+                self.prompt += configprompt + '-'
 
         self.prompt += value + endprompt
         self.stop = True
+        prevcmd = self.currentcmd
         self.currentcmd = self.lastcmd
-        if self.cmdtype == 'config':
-            c = LeafCmd(argv[-2], self.cmdtype, self, self.prompt, submodel, subschema)
-            c.cmdloop()
-            self.prompt = self.baseprompt
-            self.cmdloop()
-        else:
-            pass
-            # do show command
-            # check last argument for all/value
+        # stop the command loop for config as we will be running a new cmd loop
+        cmdln.Cmdln.stop = True
+        c = LeafCmd(argv[-2], self.cmdtype, self, self.prompt, submodel, subschema)
+        c.cmdloop()
+        self.prompt = self.baseprompt
+        self.currentcmd = prevcmd
+        self.cmdloop()
 
     def precmd(self, argv):
         mlineLength = len(argv)
         mline = [self.objname] + argv
         subschema = self.schema
         if mlineLength > 0:
+            self.commandLen = 1
             try:
                 for i in range(1, len(mline)-1):
                     subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])

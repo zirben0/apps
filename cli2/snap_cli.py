@@ -15,6 +15,25 @@ from flexswitchV2 import FlexSwitch
 from flexprint import FlexPrint
 from sets import Set
 
+
+class CmdFunc(object):
+    def __init__(self, origfuncname, func):
+        self.name = origfuncname
+        self.func = func
+
+        # lets save off the function attributes to the class
+        # in case someone like cmdln access it (which it does)
+        x = dir(func)
+        y = dir(self.__class__)
+        z = Set(x).difference(y)
+        for attr in z:
+            setattr(self, attr, func.__getattribute__(attr))
+
+    # allow class to be called as a method
+    def __call__(self, *args, **kwargs):
+        self.func(*args, **kwargs)
+
+
 class CmdLine(cmdln.Cmdln, CommonCmdLine):
     """
     Help may be requested at any point in a command by entering
@@ -48,7 +67,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 try:
                     for k,v in cmd.iteritems():
                         cmdname = self.getCliName(v)
-                        setattr(self.__class__, "do_" + cmdname, self.__getattribute__("_cmd_%s" %(k,)))
+                        funcname = "do_" + cmdname
+                        setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(k,))))
                         if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
                             setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
                 except Exception as e:
@@ -56,7 +76,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             else:
                 # handle commands when are not links
                 try:
-                    setattr(self.__class__, "do_" + self.getCliName(self.model["commands"][subcmds]), self.__getattribute__("_cmd_%s" %(subcmds,)))
+                    cmdname = self.getCliName(self.model["commands"][subcmds])
+                    funcname = "do_" + cmdname
+                    setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(subcmds,))))
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
 
@@ -123,19 +145,12 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     # match for schema cmd object
     def _cmd_privilege(self, arg):
         self.privilege = True
-        subcmd = self.getSubCommand("privilege", self.model["commands"])
-        schmacmd = self.getSubCommand("privilege", self.schema["properties"]["commands"]["properties"])
-        self.prompt = self.prompt[:-1] + self.getPrompt(subcmd, schmacmd)
+        submodel = self.getSubCommand("privilege", self.model["commands"])
+        subschema = self.getSubCommand("privilege", self.schema["properties"]["commands"]["properties"])
+        self.prompt = self.prompt[:-1] + self.getPrompt(submodel, subschema)
         self.baseprompt = self.prompt
-
-        # TODO need to figure out what populates the commands so that we can exclude the privilege command
-        # once in this mode
-        #docmd = 'do_%s' %(subcmd['cliname'])
-        #self.tmp_remove_priveledge = getattr(self.__class__, docmd)
-        #setattr(self.__class__, docmd, self.non_privilege_get_names)
+        self.currentcmd = self.lastcmd
         self.cmdloop()
-        # todo need to remove _cmd_privilege from valid command list
-
 
     def xdo_help(self, arg):
         doc_strings = [ (i[3:], getattr(self, i).__doc__)
@@ -154,15 +169,22 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
-        pend = self.prompt[-1]
-        configcmd = self.getSubCommand(name, self.model["commands"])
-        schemacmd = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
-        configprompt = self.getPrompt(configcmd[name], schemacmd[name])
-        self.prompt = self.prompt[:-1] + configprompt + pend
+        # get the submodule to be passed into config
+        submodel = self.getSubCommand(name, self.model["commands"])
+        subschema = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        configprompt = self.getPrompt(submodel[name], subschema[name])
+        # setup the prompt accordingly
+        self.prompt = self.prompt[:-1] + configprompt + self.prompt[-1]
+        # stop the command loop for config as we will be running a new cmd loop
         cmdln.Cmdln.stop = True
+        # save off the current command
+        prevcmd = self.currentcmd
         self.currentcmd = self.lastcmd
-        c = ConfigCmd("config", self, name, self.prompt, configcmd, schemacmd)
+
+        c = ConfigCmd("config", self, name, self.prompt, submodel, subschema)
         c.cmdloop()
+        # clear the command if we return
+        self.currentcmd = prevcmd
         # return prompt to the base of this class
         self.prompt = self.baseprompt
 
@@ -249,11 +271,13 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         " Quiting FlexSwitch CLI"
         #subcmd = self.getSubCommand("privilege", self.model["commands"])
         if self.privilege:
+            self.privilege = False
             #docmd = 'do_%s' %(subcmd['cliname'])
             #setattr(self.__class__, docmd, self.tmp_remove_priveledge)
             sys.stdout.write('Exiting Privilege mode\n')
             self.setPrompt()
             self.cmdloop()
+
         else:
             sys.stdout.write('Quiting Shell\n')
             sys.exit(0)
