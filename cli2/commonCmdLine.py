@@ -66,8 +66,6 @@ class CommonCmdLine(object):
 
             if not root:
                 parent = getparent(child)
-
-        sys.stderr("Unable to find SDK for to access node")
         return root
 
     def getSdkShow(self):
@@ -95,18 +93,17 @@ class CommonCmdLine(object):
 
     def getSubCommand(self, key, commands):
 
-        #sys.stdout.write("commands: %s\n\n key %s\n\n"% (commands, key))
-
+        subList = []
         for k, v in commands.iteritems():
             if k == key:
                 #sys.stdout.write("RETURN 1 %s\n\n"% (v))
-                return v
+                subList.append(v)
 
             # looking for subcommand
             if type(v) in (dict, jsonref.JsonRef) and key in v:
                 #sys.stdout.write("RETURN 2 %s\n\n"% (v.keys()))
-                return v
-        return None
+                subList.append(v)
+        return subList
 
     def getchildrencmds(self, parentname, model, schema):
         if model:
@@ -131,7 +128,7 @@ class CommonCmdLine(object):
 
 
     def getCliName(self, attribute):
-        #sys.stdout.write("getCliName: %s" %(attribute["cliname"],))
+        #sys.stdout.write("getCliName: %s\n" %(attribute,))
         return attribute["cliname"]
 
     def setSchema(self):
@@ -139,14 +136,15 @@ class CommonCmdLine(object):
         with open(self.schemapath) as schema_data:
             self.schema = jsonref.load(schema_data)
 
-        pp.pprint(self.schema)
+        #pp.pprint(self.schema)
 
 
     def setModel(self):
 
         with open(self.modelpath, "r") as json_model_data:
             self.model = jsonref.load(json_model_data)
-            #pp.pprint(self.model)
+
+        #pp.pprint(self.model)
 
     def validateSchemaAndModel(self):
         if self.model is None or self.schema is None:
@@ -154,7 +152,7 @@ class CommonCmdLine(object):
         else:
             try:
                 # lets validate the model against the json schema
-                Draft4Validator(self.model, self.schema)
+                print Draft4Validator(self.model, self.schema)
             except Exception as e:
                 print e
                 return False

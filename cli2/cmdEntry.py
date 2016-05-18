@@ -48,6 +48,7 @@ class CmdEntry(object):
         for k, v in self.keysDict.iteritems():
             if v['value'] is not None:
                 keystr += "%s:%s " %(k, v['value'])
+
         sys.stdout.write('\n%s\n' %(keystr))
         for k, v in self.attrDict.iteritems():
             sys.stdout.write("%s: %s\n" %(k, v))

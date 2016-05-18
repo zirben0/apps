@@ -27,7 +27,6 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
         # show all
         # show individual object
         # show individual object brief
-        import ipdb; ipdb.set_trace()
         lastcmd = argv[-1] if all else argv[-2] if argv[-1] != 'brief' else argv[-3]
         l = LeafCmd(lastcmd, "show", self.parent, None, self.model, self.schema)
 

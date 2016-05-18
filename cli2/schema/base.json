@@ -53,7 +53,7 @@
           "$ref" : "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/config.json"
         },
         "subcmd2" : {
-          "$ref" : "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/show.json"
+          "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/show.json"
         }
       }
     }

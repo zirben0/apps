@@ -5,6 +5,9 @@
     "commands" : {
       "subcmd1": {
         "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/PortMembers.json"
+      },
+      "subcmd2": {
+        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/ip.json"
       }
     }
   }

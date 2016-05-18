@@ -1,0 +1,45 @@
+{
+  "objname": {
+    "type": "string",
+    "descirption": "object name to which references these attributes",
+    "default": "IPv4Intf"
+  },
+  "commands": {
+    "type": "object",
+    "description": "",
+    "properties": {
+      "IntfRef": {
+        "type": "object",
+        "description": "",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "cliname": {
+            "type": "string",
+            "default" : "ethernet"
+          }
+        }
+      },
+      "IpAddr": {
+        "type": "object",
+        "description": "",
+        "properties": {
+          "IntfRef": {
+            "type": "object",
+            "description": "",
+            "properties": {
+              "prompt": {
+                "type": "string"
+              },
+              "cliname": {
+                "type": "string",
+                "default" : "address"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "objname" : {
     "type" : "string",
     "descirption" : "object name to which references these attributes",
-    "default" : "Port"
+    "default" : "Vlan"
   },
   "commands" : {
    "type": "object",

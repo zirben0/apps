@@ -87,26 +87,28 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def _cmd_complete_common(self, text, line, begidx, endidx):
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
-        mline = [self.objname] + [ x for x in line.split(' ') if x != '']
+        mline = [self.objname] + [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
         #sys.stdout.write("complete cmd: %s\ncommand %s objname %s\n\n" %(self.model, mline[0], self.objname))
 
         submodel = self.model
         subschema = self.schema
+        subcommands = []
         # advance to next submodel and subschema
-        for i in range(mlineLength-1):
+        for i in range(1, mlineLength):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             if mline[i-1] in submodel:
-                submodel = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
-                if submodel:
-                    #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subschema))
-                    subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
-                    valueexpected = self.isValueExpected(mline[1], subschema)
-                    if valueexpected:
-                        self.commandLen = len(mline)
-                        return []
-                    else:
-                        subcommands = self.getchildrencmds(mline[i], submodel, subschema)
+                submodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                if submodelList:
+                    subschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subschema))
+                        valueexpected = self.isValueExpected(mline[1], subschema)
+                        if valueexpected:
+                            self.commandLen = len(mline)
+                            return []
+                        else:
+                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -133,25 +135,23 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if len(argv) != self.commandLen:
             self.cmdloop()
 
-        import ipdb; ipdb.set_trace()
-
         value = argv[-1]
         # reset the command len
         self.commandLen = 0
         endprompt = self.baseprompt[-2:]
-        submodel = self.getSubCommand(argv[0], self.model[self.objname]["commands"])
-        subschema = self.getSubCommand(argv[0], self.schema[self.objname]["properties"]["commands"]["properties"])
-        configprompt = self.getPrompt(submodel[argv[0]], subschema[argv[0]])
+        submodelList = self.getSubCommand(argv[0], self.model[self.objname]["commands"])
+        subschemaList = self.getSubCommand(argv[0], self.schema[self.objname]["properties"]["commands"]["properties"])
+        configprompt = self.getPrompt(submodelList[0][argv[0]], subschemaList[0][argv[0]])
         self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
         for i in range(1, len(argv)-1):
-
-            submodel = self.getSubCommand(argv[i], submodel[argv[i-1]]["commands"])
-            subschema = self.getSubCommand(argv[i], subschema[argv[i-1]]["properties"]["commands"]["properties"])
-
-            configprompt = self.getPrompt(submodel[argv[i]], subschema[argv[i]])
-            if configprompt:
-                self.prompt += configprompt + '-'
+            for submodel, subschema in zip(submodelList, subschemaList):
+                submodelList = self.getSubCommand(argv[i], submodel[argv[i-1]]["commands"])
+                subschemaList = self.getSubCommand(argv[i], subschema[argv[i-1]]["properties"]["commands"]["properties"])
+                for submodel, subschema in zip(submodelList, subschemaList):
+                    configprompt = self.getPrompt(submodel[argv[i]], subschema[argv[i]])
+                    if configprompt:
+                        self.prompt += configprompt + '-'
 
         self.prompt += value + endprompt
         self.stop = True
@@ -159,7 +159,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.currentcmd = self.lastcmd
         # stop the command loop for config as we will be running a new cmd loop
         cmdln.Cmdln.stop = True
-        c = LeafCmd(argv[-2], self.cmdtype, self, self.prompt, submodel, subschema)
+
+        c = LeafCmd(argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
         c.cmdloop()
         self.prompt = self.baseprompt
         self.currentcmd = prevcmd
@@ -170,13 +171,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         mline = [self.objname] + argv
         subschema = self.schema
         if mlineLength > 0:
-            self.commandLen = 1
+            self.commandLen = 0
             try:
                 for i in range(1, len(mline)-1):
-                    subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
-                    valueexpected = self.isValueExpected(mline[i], subschema)
-                    if valueexpected:
-                        self.commandLen = mlineLength
+                    subschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                    for subschema in subschemaList:
+                        valueexpected = self.isValueExpected(mline[i], subschema)
+                        if valueexpected:
+                            self.commandLen = mlineLength
 
             except Exception:
                 pass

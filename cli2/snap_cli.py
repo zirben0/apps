@@ -110,6 +110,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
                 # lets validate the model against the json schema
                 Draft4Validator(self.model, self.schema)
+
             except Exception as e:
                 print e
                 return False
@@ -136,20 +137,17 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def emptyline(self):
         pass
 
-    def non_privilege_get_names(self):
-        if self.privilege:
-            subcmd = self.getSubCommand("privilege", self.model["commands"])
-            return [ x for x in dir(self.__class__) if x == subcmd["cliname"]]
-
     @cmdln.alias("en", "ena")
     # match for schema cmd object
     def _cmd_privilege(self, arg):
         self.privilege = True
-        submodel = self.getSubCommand("privilege", self.model["commands"])
-        subschema = self.getSubCommand("privilege", self.schema["properties"]["commands"]["properties"])
-        self.prompt = self.prompt[:-1] + self.getPrompt(submodel, subschema)
-        self.baseprompt = self.prompt
-        self.currentcmd = self.lastcmd
+        submodelList = self.getSubCommand("privilege", self.model["commands"])
+        subschemaList = self.getSubCommand("privilege", self.schema["properties"]["commands"]["properties"])
+        if submodelList and subschemaList and len(submodelList) == 1:
+            for submodel, subschema in zip(submodelList, subschemaList):
+                self.prompt = self.prompt[:-1] + self.getPrompt(submodel, subschema)
+                self.baseprompt = self.prompt
+                self.currentcmd = self.lastcmd
         self.cmdloop()
 
     def xdo_help(self, arg):
@@ -170,59 +168,66 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
         # get the submodule to be passed into config
-        submodel = self.getSubCommand(name, self.model["commands"])
-        subschema = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
-        configprompt = self.getPrompt(submodel[name], subschema[name])
-        # setup the prompt accordingly
-        self.prompt = self.prompt[:-1] + configprompt + self.prompt[-1]
-        # stop the command loop for config as we will be running a new cmd loop
-        cmdln.Cmdln.stop = True
-        # save off the current command
-        prevcmd = self.currentcmd
-        self.currentcmd = self.lastcmd
+        submodelList = self.getSubCommand(name, self.model["commands"])
+        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        # there should only be one config entry
+        if submodelList and subschemaList and len(submodelList) == 1:
+            for submodel, subschema in zip(submodelList, subschemaList):
+                configprompt = self.getPrompt(submodel[name], subschema[name])
+                # setup the prompt accordingly
+                self.prompt = self.prompt[:-1] + configprompt + self.prompt[-1]
+                # stop the command loop for config as we will be running a new cmd loop
+                cmdln.Cmdln.stop = True
+                # save off the current command
+                prevcmd = self.currentcmd
+                self.currentcmd = self.lastcmd
 
-        c = ConfigCmd("config", self, name, self.prompt, submodel, subschema)
-        c.cmdloop()
-        # clear the command if we return
-        self.currentcmd = prevcmd
-        # return prompt to the base of this class
-        self.prompt = self.baseprompt
+                c = ConfigCmd("config", self, name, self.prompt, submodel, subschema)
+                c.cmdloop()
+                # clear the command if we return
+                self.currentcmd = prevcmd
+                # return prompt to the base of this class
+                self.prompt = self.baseprompt
 
     def _cmd_complete_show(self, text, line, begidx, endidx):
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
         mline = [x for x in line.split(' ') if x != '']
-        sys.stdout.write("\nmline: %s \n" %(mline))
         mlineLength = len(mline)
-        #sys.stdout.write("complete model: %s\ncommand %s \nobjname %s\n\n" %(self.model, mline, self.objname))
+        #sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
 
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
 
-        submodel = self.getSubCommand(name, self.model["commands"])
-        subschema = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
-        subcommands = self.getchildrencmds(mline[0], submodel, subschema)
+        submodelList = self.getSubCommand(name, self.model["commands"])
+        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        subcommands = []
+        for submodel, subschema in zip(submodelList, subschemaList):
 
-        sys.stdout.write("2: subcommands: %s \n\n" %(subcommands))
+            subcommands += self.getchildrencmds(mline[0], submodel, subschema)
+            #sys.stdout.write("complete cmd: %s\ncommand %s subcommands %s\n\n" %(submodelList, name, subcommands))
+            # advance to next submodel and subschema
+            for i in range(1, mlineLength):
+                #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
+                if mline[i-1] in submodel:
+                    subsubmodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                    if subsubmodelList:
+                        subsubschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                        for subsubmodel, subsubschema in zip(subsubmodelList, subsubschemaList):
+                            #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subsubschema))
+                            valueexpected = self.isValueExpected(mline[1], subsubschema)
+                            if valueexpected:
+                                self.commandLen = len(mline)
+                                return []
+                            else:
+                                subcommands += self.getchildrencmds(mline[i], subsubmodel, subsubschema)
 
-        # advance to next submodel and subschema
-        for i in range(1, mlineLength):
-            #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
-            if mline[i-1] in submodel:
-                submodel = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
-                if submodel:
-                    #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subschema))
-                    subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
-                    valueexpected = self.isValueExpected(mline[1], subschema)
-                    if valueexpected:
-                        self.commandLen = len(mline)
-                        return []
-                    subcommands = self.getchildrencmds(mline[i], submodel, subschema)
+        # todo should look next command so that this is not 'sort of hard coded'
+        # todo should to a getall at this point to get all of the interface types once a type is found
+        #sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
 
         # lets remove any duplicates
         returncommands = list(Set(subcommands).difference(mline))
-
-        sys.stdout.write("3: subcommands: %s returncommands %s\n\n" %(subcommands, returncommands))
 
         if len(text) == 0 and len(returncommands) == len(subcommands):
             #sys.stdout.write("just before return %s" %(returncommands))
@@ -243,24 +248,25 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
-
         mline = argv
         mlineLength = len(mline)
-        submodel = self.getSubCommand(name, self.model["commands"])
-        subschema = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        submodelList = self.getSubCommand(name, self.model["commands"])
+        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
         if mlineLength > 0:
             try:
                 for i in range(1, mlineLength):
-                    if mline[i-1] in submodel:
-                        submodel = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
-                        if submodel:
-                            subschema = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
-                            valueexpected = self.isValueExpected(mline[i], subschema)
-                            if valueexpected:
-                                self.currentcmd = self.lastcmd
-                                c = ShowCmd(self, submodel, subschema)
-                                c.show(mline, all=(i == mlineLength-1))
-                                self.currentcmd = []
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        if mline[i-1] in submodel:
+                            submodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                            if submodelList:
+                                subschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                                for submodel, subschema in zip(submodelList, subschemaList):
+                                    valueexpected = self.isValueExpected(mline[i], subschema)
+                                    if valueexpected:
+                                        self.currentcmd = self.lastcmd
+                                        c = ShowCmd(self, [submodel], [subschema])
+                                        c.show(mline, all=(i == mlineLength-1))
+                                        self.currentcmd = []
 
             except Exception:
                 pass
