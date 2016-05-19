@@ -7,7 +7,7 @@
       "cliname": "redistribution"
     },
     "ASNum": {
-      "cliname": "asnum"
+      "cliname": "bgp"
     },
     "IBGPMaxPaths": {
       "cliname": "maxas-limit" 
