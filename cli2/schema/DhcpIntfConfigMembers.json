@@ -1,0 +1,202 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "DNSServerAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "dnsserveraddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tComma seperated List of DNS Server Address DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "BroadcastAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "broadcastaddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tBroadcast Address DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IPAddrRange": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ipaddrrange", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRange of IP Addresses DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Enable": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "enable", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enable and Disable Control DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouterAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routeraddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRouter Address DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IntfRef": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "intfref", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface name or ifindex of L3 interface object on which Dhcp Server need to be configured", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "DomainName": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "domainname", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDomain Name Address DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "SubnetMask": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "subnetmask", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tSubnet Mask", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Subnet": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "subnet", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tSubnet", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "DhcpIntfConfig", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

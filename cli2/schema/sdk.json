@@ -1,0 +1,17 @@
+{
+  "sdk": {
+    "type": "object",
+    "properties": {
+      "sdk-file": {
+        "type": "string",
+        "description": "holds the sdk config method for this object",
+        "default": "flexswitchV2.py"
+      },
+      "sdk-class": {
+        "type": "string",
+        "description": "holds the sdk config method for this object",
+        "default": "Flexswitch"
+      }
+    }
+  }
+}

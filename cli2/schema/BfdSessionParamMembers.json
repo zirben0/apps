@@ -1,0 +1,223 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "RequiredMinRxInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "requiredminrxinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRequired minimum rx interval in ms\n\tdefault: 1000", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AuthType": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "authtype", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t metmd5/keyedmd5/metsha1/keyedsha1/simple  Authentication type\n\tdefault: simple", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "DemandEnabled": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "demandenabled", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enable or disable demand mode\n\tdefault: false", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "DesiredMinTxInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "desiredmintxinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDesired minimum tx interval in ms\n\tdefault: 1000", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AuthenticationEnabled": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "authenticationenabled", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enable or disable authentication\n\tdefault: false", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AuthKeyId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "authkeyid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tAuthentication key id\n\tdefault: 1", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RequiredMinEchoRxInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "requiredminechorxinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRequired minimum echo rx interval in ms\n\tdefault: 0", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LocalMultiplier": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "localmultiplier", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDetection multiplier\n\tdefault: 3", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AuthData": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "authdata", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tAuthentication password\n\tdefault: snaproute", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Name": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "name", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tSession parameters", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "BfdSessionParam", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

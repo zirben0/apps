@@ -1,0 +1,25 @@
+{
+  "ip": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : ""
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe ip",
+        "default" : "ip"
+      },
+      "commands": {
+        "type": "object",
+        "description": "Base commands",
+        "properties": {
+          "subcmd1" : {
+            "$ref" : "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/IPv4IntfMembers.json"
+          }
+        }
+      }
+    }
+  }
+}

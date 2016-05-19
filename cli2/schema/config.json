@@ -1,0 +1,32 @@
+{
+  "config" : {
+    "type": "object",
+    "properties": {
+      "prompt" : {
+        "type" : "string",
+        "description" : "attribute to show what to display at the command line prompt",
+        "default" : "(config)"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "config name used",
+        "default" : "config"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to ethernet port",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/interface.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/vlan.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/router.json"
+          }
+        }
+      }
+    }
+  }
+}

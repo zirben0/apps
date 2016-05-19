@@ -1,0 +1,76 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "IfIndex": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ifindex", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface index for which Relay Agent Config needs to be done", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Enable": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "enable", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enabling/Disabling relay agent per interface", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ServerIp": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "serverip", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDhcp Server(s) where relay agent can relay client dhcp requests", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "DhcpRelayIntf", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

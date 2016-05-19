@@ -1,0 +1,118 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Interface": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "interface", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tName of the interface this session has to be established on\n\tdefault: None", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Owner": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "owner", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tModule requesting BFD session configuration\n\tdefault: user", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IpAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ipaddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tBFD neighbor IP address", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PerLink": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "perlink", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Run BFD sessions on individual link of a LAG if the neighbor is reachable through LAG\n\tdefault: false", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ParamName": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "paramname", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tName of the session parameters object to be applied on this session\n\tdefault: default", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "BfdSession", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

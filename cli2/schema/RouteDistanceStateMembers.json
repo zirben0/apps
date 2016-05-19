@@ -1,0 +1,55 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Distance": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "distance", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe current value of the admin distance of this protocol", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Protocol": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "protocol", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRouteDistanceState protocol", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "RouteDistanceState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

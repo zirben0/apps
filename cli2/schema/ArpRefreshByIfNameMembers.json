@@ -1,0 +1,34 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "IfName": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ifname", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tAll the Arp learned on given L3 interface will be re-learned", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "ArpRefreshByIfName", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

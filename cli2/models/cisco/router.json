@@ -1,0 +1,11 @@
+{
+  "router": {
+    "prompt" : "router",
+    "cliname" : "router", 
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/bgp.json"
+      }
+    }
+  }
+}

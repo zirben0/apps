@@ -1,0 +1,160 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Priority": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "priority", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tSending VRRP router's priority for\n\t   the virtual router\n\tdefault: 100", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AdvertisementInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "advertisementinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime interval between ADVERTISEMENTS\n\tdefault: 1", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PreemptMode": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "preemptmode", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Controls whether a (starting or restarting) higher-priority Backup router preempts a lower-priority Master router\n\tdefault: true", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtualIPv4Addr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtualipv4addr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVirtual Router Identifier", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IfIndex": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ifindex", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface index for which VRRP Config needs to be done", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VRID": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vrid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVirtual Router's Unique Identifier", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AcceptMode": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "acceptmode", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Controls whether a virtual router in Master state will accept packets addressed to the address owner's IPvX address as its own if it is not the IPvX address owner.\n\tdefault: false", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "VrrpIntf", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

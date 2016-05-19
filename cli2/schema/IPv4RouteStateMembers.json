@@ -1,0 +1,160 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "DestinationNw": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "destinationnw", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIP address of the route", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Protocol": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "protocol", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tProtocol type of the route", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IsNetworkReachable": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "isnetworkreachable", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Indicates whether this network is reachable", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PolicyList": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "policylist", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tList of policies applied on this route", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouteUpdatedTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routeupdatedtime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime when the route was last updated", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouteCreatedTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routecreatedtime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime when the route was added", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "NextHopList": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nexthoplist", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\ttype: NextHopInfo.  List of next hops to reach this network", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "IPv4RouteState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

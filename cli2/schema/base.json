@@ -1,0 +1,65 @@
+{
+  "id": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/base.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Cli Base",
+  "type": "object",
+  "properties": {
+    "style" : {
+      "type": "string",
+      "description": "emulation mode for the schema"
+    },
+    "prompt-prefix": {
+      "type": "string",
+      "oneOf": [
+        {
+          "format": "host-name"
+        },
+        {
+          "format": "ipv4"
+        },
+        {
+          "format": "ipv6"
+        }
+      ]
+    },
+    "prompt" : {
+      "type" : "string",
+      "default" : ">"
+    },
+    "sdk" : {
+      "$ref" : "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/sdk.json"
+    },
+    "commands": {
+      "type": "object",
+      "description": "Base commands",
+      "properties": {
+        "privilege": {
+          "type": "object",
+          "description" : "user mode object",
+          "properties": {
+            "prompt": {
+              "type": "string",
+              "description": "Prompt to display when entering this mode",
+              "default": "#"
+            },
+            "cliname": {
+              "type": "string",
+              "description": "Comamnd name used to enable this mode",
+              "default": "enable"
+            }
+          }
+        },
+        "subcmd1" : {
+          "$ref" : "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/config.json"
+        },
+        "subcmd2" : {
+          "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/show.json"
+        }
+      }
+    }
+  },
+  "required": [
+    "prompt",
+    "commands"
+  ]
+}

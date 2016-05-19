@@ -1,0 +1,97 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "DestinationNw": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "destinationnw", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIP address of the route in CIDR format", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouteUpdatedTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routeupdatedtime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime when the route was last updated", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "NextHopIps": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nexthopips", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tnext hop ip list for the route", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouteCreatedTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routecreatedtime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime when the route was added", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "IPv4RouteHwState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

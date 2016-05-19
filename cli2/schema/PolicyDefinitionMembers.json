@@ -1,0 +1,118 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Priority": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "priority", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tPriority of the policy w.r.t other policies configured", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MatchType": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "matchtype", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tall/any  Specifies whether to match all/any of the statements within this policy\n\tdefault: all", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PolicyType": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "policytype", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t BGP/OSPF/ALL  Specifies the intended protocol application for the policy\n\tdefault: ALL", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Name": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "name", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tPolicy Name", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "StatementList": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "statementlist", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\ttype: PolicyDefinitionStmtPriority.  Specifies list of statements along with their precedence order.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "PolicyDefinition", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}
