@@ -1,0 +1,223 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "LagId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lagid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tId of the lag group", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LagType": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lagtype", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t LACP(0)/STATIC(1)  Sets the type of LAG", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Members": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "members", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tList of current member interfaces for the aggregate", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "SystemIdMac": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "systemidmac", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t [0-9a-fA-F]{2}(  The MAC address portion of the node's System ID. This is combined with the system priority to construct the 8-octet system-id", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MinLinks": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "minlinks", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tSpecifies the mininum number of member interfaces that must be active for the aggregate interface to be available", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "SystemPriority": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "systempriority", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tSytem priority used by the node on this LAG interface. Lower value is higher priority for determining which node is the controlling system.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Interval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "interval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t SLOW(1)/FAST(0)  Set the period between LACP messages -- uses the lacp-period-type enumeration.\n\tdefault: 1", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LacpMode": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lacpmode", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t ACTIVE(0)/PASSIVE(1)  ACTIVE is to initiate the transmission of LACP packets. PASSIVE is to wait for peer to initiate the transmission of LACP packets.\n\tdefault: 0", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AdminState": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "adminstate", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tConvenient way to disable/enable a lag group.  The behaviour should be such that all traffic should stop.  LACP frames should continue to be processed", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LagHash": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "laghash", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t LAYER2(0)/LAYER3_4(2)/LAYER2_3(1)  The tx hashing algorithm used by the lag group\n\tdefault: 0", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "LaPortChannel", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

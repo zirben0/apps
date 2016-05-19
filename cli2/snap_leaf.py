@@ -281,7 +281,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             # tell the user what attributes are being applied
             for i in range(len(self.configList)):
                 config = self.configList[-(i+1)]
-                config.show()
+                #config.show()
 
                 # get the sdk
                 sdk = self.getSdkShow()

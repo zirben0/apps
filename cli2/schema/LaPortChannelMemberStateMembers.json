@@ -1,0 +1,895 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Collecting": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "collecting", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  If true", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MuxReason": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "muxreason", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tReason for the most recent MUX state change", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LampInPdu": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lampinpdu", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LAMPDU received", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LacpOutPkts": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lacpoutpkts", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LACPDUs transmitted", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RxMachine": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "rxmachine", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t RX_CURRENT(0)/RX_PORT_DISABLE(5)/RX_DEFAULTED(2)/RX_LACP_DISABLED(4)/RX_EXPIRED(1)/RX_INITIALIZE(3)  Current Rx Machine State", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LacpUnknownErrors": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lacpunknownerrors", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LACPDU unknown packet errors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MuxMachine": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "muxmachine", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MUX_COLLECTING(3)/MUX_COLLECTING_DISTRIBUTING_DEFAULTED(7)/MUX_COLLECTING_DISTRIBUTING(5)/MUX_DISTRIBUTING_DEFAULTED(6)/MUX_ATTACHED(2)/MUX_DETACHED(0)/MUX_DISTRIBUTING(4)/MUX_WAITING(1)  Current MUX Machine State", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerChangeCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnerchangecount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of times the Partner's perception of the LAG ID for the  Aggregation Port has changed.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "OperKey": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "operkey", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tCurrent operational value of the key for the aggregate interface", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LampOutPdu": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lampoutpdu", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LAMPDU transmited", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Distributing": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "distributing", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  When true", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ActorCdsChurnCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "actorcdschurncount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIf supported the number of times the Actor CDS Churn state has entered the ACTOR_CDS_CHURN state", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "SystemId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "systemid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t [0-9a-fA-F]{2}(  MAC address that defines the local system ID for the aggregate interface", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LampInResponsePdu": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lampinresponsepdu", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LAMPDU Response received", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ActorChurnMachine": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "actorchurnmachine", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  Actor Churn Detection Machine State", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ActorCdsChurnMachine": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "actorcdschurnmachine", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  If supported Actor CDS Churn Machine State", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LacpRxErrors": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lacprxerrors", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LACPDU receive packet errors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerSyncTransitionCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnersynctransitioncount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of times the Partner's Mux state machine has entered the  IN_SYNC state.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerCdsChurnCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnercdschurncount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIf supported the number of times the Actor CDS Churn state has entered the ACTOR_CDS_CHURN state", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerCdsChurnMachine": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnercdschurnmachine", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  If supported Partner CDS Churn Machine State", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerChurnMachine": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnerchurnmachine", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  Partner Churn Detection Machine State", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "OperState": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "operstate", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe operation state", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LacpErrors": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lacperrors", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LACPDU illegal packet errors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IfIndex": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ifindex", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tReference to aggregate member interface", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Activity": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "activity", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t ACTIVE(0)/PASSIVE(1)  Indicates participant is active or passive", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerKey": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnerkey", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tOperational value of the protocol partner's key", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerChurnCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnerchurncount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of times the Partner State machine has entered the  ACTOR_CHURN state", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LacpTxErrors": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lacptxerrors", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LACPDU transmit packet errors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LampOutResponsePdu": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lampoutresponsepdu", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LAMPDU Response received", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Timeout": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "timeout", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t SHORT(1)/LONG(0)  The timeout type (short or long) used by the participant", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LacpInPkts": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lacpinpkts", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of LACPDUs received", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Aggregatable": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "aggregatable", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  A true value indicates that the participant will allow the link to be used as part of the aggregate. A false value indicates the link should be used as an individual link", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LagId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lagid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tId of the lag group to which this port is associated with", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Synchronization": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "synchronization", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t OUT_SYNC(1)/IN_SYNC(0)  Indicates whether the participant is in-sync or out-of-sync", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PartnerId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "partnerid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t [0-9a-fA-F]{2}(  MAC address representing the protocol partner's interface system ID", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Defaulted": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "defaulted", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  When no partner information is exchanged port will come up in a defaulted state", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ActorChurnCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "actorchurncount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of times the Actor State machine has entered the  ACTOR_CHURN state", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ActorChangeCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "actorchangecount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of times the Actor's perception of the LAG ID for the  Aggregation Port has changed.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "DebugId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "debugid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDebug Information Id", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RxTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "rxtime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime at which the last LACPDU was received by a given port", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LagIfIndex": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lagifindex", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface member of the LACP aggregate", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ActorSyncTransitionCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "actorsynctransitioncount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNumber of times the Actor's Mux state machine has entered the  IN_SYNC state.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "LaPortChannelMemberState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

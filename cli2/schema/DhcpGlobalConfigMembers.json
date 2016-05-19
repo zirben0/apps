@@ -1,0 +1,97 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "DefaultLeaseTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "defaultleasetime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDefault Lease Time in seconds DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "DhcpConfigKey": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "dhcpconfigkey", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDHCP global config", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Enable": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "enable", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  DHCP Server enable/disable control DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MaxLeaseTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "maxleasetime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tMax Lease Time in seconds DEFAULT", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "DhcpGlobalConfig", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

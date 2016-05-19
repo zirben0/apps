@@ -8,6 +8,9 @@
       },
       "subcmd2" : {
         "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/vlan.json"
+      },
+      "subcmd3" : {
+        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/router.json"
       }
     }
   } 

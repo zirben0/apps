@@ -1,0 +1,244 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "VirtualRouterMACAddress": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtualroutermacaddress", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVRRP router's Mac Address", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PreemptMode": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "preemptmode", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  States Whether Preempt is Supported or not", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AdvertisementInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "advertisementinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime interval between Advertisements", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VRID": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vrid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVirtual Router's Unique Identifier", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Priority": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "priority", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVirtual router's Priority", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "SkewTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "skewtime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime to skew Master Down Interval", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VrrpState": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vrrpstate", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tCurrent vrrp state i.e. backup or master", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtualIPv4Addr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtualipv4addr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIp Address of Virtual Router", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IfIndex": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ifindex", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface index for which VRRP state is requested", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MasterDownTimer": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "masterdowntimer", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime interval for Backup to declare Master down", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IntfIpAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "intfipaddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIp Address of Interface where VRRP is configured", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "VrrpIntfState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

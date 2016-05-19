@@ -134,9 +134,9 @@ class CommonCmdLine(object):
     def setSchema(self):
 
         with open(self.schemapath) as schema_data:
+            import ipdb; ipdb.set_trace()
             self.schema = jsonref.load(schema_data)
-
-        #pp.pprint(self.schema)
+            pp.pprint(self.schema)
 
 
     def setModel(self):
@@ -144,7 +144,7 @@ class CommonCmdLine(object):
         with open(self.modelpath, "r") as json_model_data:
             self.model = jsonref.load(json_model_data)
 
-        #pp.pprint(self.model)
+        pp.pprint(self.model)
 
     def validateSchemaAndModel(self):
         if self.model is None or self.schema is None:

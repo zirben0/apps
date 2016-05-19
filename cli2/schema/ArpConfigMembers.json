@@ -1,0 +1,55 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Vrf": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vrf", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVrf Name", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Timeout": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "timeout", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tGlobal Arp entry timeout value. Default value", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "ArpConfig", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

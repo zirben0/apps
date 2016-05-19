@@ -1,0 +1,55 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Type": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "type", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tType of logical interface (e.x. loopback)", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Name": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "name", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tName of logical interface", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "LogicalIntf", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

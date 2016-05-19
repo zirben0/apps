@@ -1,0 +1,55 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Module": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "module", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tModule name to set logging level", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Level": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "level", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tLogging level\n\tdefault: info", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "ComponentLogging", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

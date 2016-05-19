@@ -1,5 +1,5 @@
 {
-  "id": "https://github.com/ccordes-snaproute/src/apps/cli2/schema/base.json",
+  "id": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/base.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Cli Base",
   "type": "object",

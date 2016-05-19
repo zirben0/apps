@@ -1,0 +1,181 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "AreaNssaTranslatorState": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "areanssatranslatorstate", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t disabled(3)/elected(2)/enabled(1)  Indicates if and how an NSSA border router is performing NSSA translation of type-7 LSAs into type-5  LSAs.  When this object is set to enabled", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AsBdrRtrCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "asbdrrtrcount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe total number of Autonomous System Border Routers reachable within this area.  This is initially zero and is calculated in each SPF pass.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AreaId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "areaid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer uniquely identifying an area. Area ID 0.0.0.0 is used for the OSPF backbone.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AreaNssaTranslatorEvents": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "areanssatranslatorevents", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIndicates the number of translator state changes that have occurred since the last boot-up.  Discontinuities in the value of this counter can occur at re-initialization of the management system", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "SpfRuns": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "spfruns", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe number of times that the intra-area route table has been calculated using this area's link state database.  This is typically done using Dijkstra's algorithm.  Discontinuities in the value of this counter can occur at re-initialization of the management system", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AreaLsaCksumSum": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "arealsacksumsum", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe 32-bit sum of the link state advertisements' LS checksums contained in this area's link state database.  This sum excludes external (LS type-5) link state advertisements. The sum can be used to determine if there has been a change in a router's link state database", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AreaLsaCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "arealsacount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe total number of link state advertisements in this area's link state database", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AreaBdrRtrCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "areabdrrtrcount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe total number of Area Border Routers reachable within this area.  This is initially zero and is calculated in each Shortest Path First (SPF) pass.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "OspfAreaEntryState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

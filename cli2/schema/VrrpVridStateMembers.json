@@ -1,0 +1,223 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "LastAdverTx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lastadvertx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime when last advertisement packet was send out", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "LastAdverRx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "lastadverrx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime when last advertisement packet was received", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MasterIp": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "masterip", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIp Address of the Master VRRP", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "PreviousState": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "previousstate", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tPrevious State of Local VRRP", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IfIndex": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ifindex", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface index for which VRRP state is requested", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AdverTx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "advertx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of advertisement packets send", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VRID": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vrid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVirtual Router's Unique Identifier", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TransitionReason": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "transitionreason", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tReason why we moved from previous state -> current state", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "CurrentState": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "currentstate", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tCurrent State of Local VRRP", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AdverRx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "adverrx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of advertisement packets received", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "VrrpVridState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

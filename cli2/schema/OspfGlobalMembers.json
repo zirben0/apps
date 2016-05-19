@@ -1,0 +1,307 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "StubRouterAdvertisement": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "stubrouteradvertisement", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t advertise(2)/doNotAdvertise(1)  This object controls the advertisement of stub router LSAs by the router.  The value doNotAdvertise will result in the advertisement of a standard router LSA and is the default value.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ExtLsdbLimit": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "extlsdblimit", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN -1 MAX 2147483647  The maximum number of non-default AS-external LSAs entries that can be stored in the link state database.  If the value is -1", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "DemandExtensions": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "demandextensions", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  The router's support for demand routing. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RestartInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "restartinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN 1 MAX 1800  Configured OSPF graceful restart timeout interval.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RFC1583Compatibility": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "rfc1583compatibility", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Indicates metrics used to choose among multiple AS-external LSAs.  When RFC1583Compatibility is set to enabled", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ReferenceBandwidth": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "referencebandwidth", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tReference bandwidth in kilobits/second for  calculating default interface metrics.  The default value is 100", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouterId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routerid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RestartStrictLsaChecking": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "restartstrictlsachecking", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Indicates if strict LSA checking is enabled for graceful restart.  This object is persistent and when written the entity SHOULD save the change to non-volatile  storage.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ExitOverflowInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "exitoverflowinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN 0 MAX 2147483647  The number of seconds that", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AdminStat": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "adminstat", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t disabled(2)/enabled(1)  The administrative status of OSPF in the router.  The value 'enabled' denotes that the OSPF Process is active on at least one interface; 'disabled' disables it on all interfaces.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MulticastExtensions": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "multicastextensions", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tA bit mask indicating whether the router is forwarding IP multicast (Class D) datagrams based on the algorithms defined in the multicast extensions to OSPF.  Bit 0", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ASBdrRtrStatus": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "asbdrrtrstatus", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  A flag to note whether this router is configured as an Autonomous System Border Router.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RestartSupport": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "restartsupport", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t plannedAndUnplanned(3)/none(1)/plannedOnly(2)  The router's support for OSPF graceful restart. Options include", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TOSSupport": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "tossupport", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  The router's support for type-of-service routing.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "OspfGlobal", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Action": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "action", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tpermit/deny  Action for this policy statement\n\tdefault: deny", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Conditions": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "conditions", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tList of conditions added to this policy statement", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Name": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "name", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tPolicy Statement Name", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MatchConditions": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "matchconditions", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tany/all  Specifies whether to match all/any of the conditions of this policy statement\n\tdefault: all", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "PolicyStmt", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

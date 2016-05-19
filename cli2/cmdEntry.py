@@ -22,8 +22,11 @@ class CmdEntry(object):
         try:
             if not all:
                 del(self.attrDict, k)
+                if k in self.keysDict:
+                    del(self.keysDict, k)
             else:
                 self.attrDict = {}
+                self.keysDict = {}
         except Exception:
             pass
 

@@ -1,0 +1,97 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "SendSummaryOnly": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "sendsummaryonly", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enable/Disable sending summary only for BGP aggregate action", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ActionType": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "actiontype", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tType of the BGP policy action", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Name": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "name", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tName of the BGP policy action", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "GenerateASSet": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "generateasset", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enable/Disable generating AS set for BGP aggregate action", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "BGPPolicyAction", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

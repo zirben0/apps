@@ -1,0 +1,181 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "VirtIfRetransInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtifretransinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN 0 MAX 3600  The number of seconds between link state avertisement retransmissions", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtIfHelloInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtifhellointerval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN 1 MAX 65535  The length of time", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtIfAuthType": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtifauthtype", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t none(0)/simplePassword(1)/md5(2)  The authentication type specified for a virtual interface.  Note that this object can be used to engage in significant attacks against an OSPF router.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtIfNeighbor": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtifneighbor", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The Router ID of the virtual neighbor.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtIfTransitDelay": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtiftransitdelay", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN 0 MAX 3600  The estimated number of seconds it takes to transmit a Link State update packet over this interface.  Note that the minimal value SHOULD be 1 second.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtIfAreaId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtifareaid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The transit area that the virtual link traverses.  By definition", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtIfAuthKey": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtifauthkey", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN 0 MAX 256  The cleartext password used as an OSPF authentication key when simplePassword security is enabled.  This object does not access any OSPF cryptogaphic (e.g.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VirtIfRtrDeadInterval": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtifrtrdeadinterval", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t MIN 0 MAX 2147483647  The number of seconds that a router's Hello packets have not been seen before its neighbors declare the router down.  This should be some multiple of the Hello interval.  This value must be the same for the virtual neighbor.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "OspfVirtIfEntry", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

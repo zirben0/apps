@@ -21,6 +21,9 @@
           },
           "subcmd2": {
             "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/vlan.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/router.json"
           }
         }
       }

@@ -1,0 +1,328 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "DiscontinuityTime": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "discontinuitytime", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe value of sysUpTime on the most recent occasion at which any one of this MIB's counters suffered a discontinuity.  If no such discontinuities have occurred since the last re-initialization of the local management subsystem", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AreaBdrRtrStatus": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "areabdrrtrstatus", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  A flag to note whether this router is an Area Border Router.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RestartStatus": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "restartstatus", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t unplannedRestart(3)/notRestarting(1)/plannedRestart(2)  Current status of OSPF graceful restart.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RestartAge": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "restartage", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRemaining time in current OSPF graceful restart interval.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "StubRouterSupport": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "stubroutersupport", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  The router's support for stub router functionality.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AsLsaCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "aslsacount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe number of AS-scope link state advertisements in the AS-scope link state database.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "OpaqueLsaSupport": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "opaquelsasupport", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  The router's support for Opaque LSA types.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "OriginateNewLsas": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "originatenewlsas", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe number of new link state advertisements that have been originated.  This number is incremented each time the router originates a new LSA.  Discontinuities in the value of this counter can occur at re-initialization of the management system", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouterId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routerid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VersionNumber": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "versionnumber", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t version2(2)  The current version number of the OSPF protocol is 2.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ExternLsaCount": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "externlsacount", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe number of external (LS type-5) link state advertisements in the link state database.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RestartExitReason": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "restartexitreason", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t inProgress(2)/none(1)/timedOut(4)/completed(3)/topologyChanged(5)  Describes the outcome of the last attempt at a graceful restart.  If the value is 'none'", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RxNewLsas": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "rxnewlsas", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe number of link state advertisements received that are determined to be new instantiations. This number does not include newer instantiations of self-originated link state advertisements.  Discontinuities in the value of this counter can occur at re-initialization of the management system", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AsLsaCksumSum": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "aslsacksumsum", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe 32-bit unsigned sum of the LS checksums of the AS link state advertisements contained in the AS-scope link state database.  This sum can be used to determine if there has been a change in a router's AS-scope link state database", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ExternLsaCksumSum": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "externlsacksumsum", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tThe 32-bit sum of the LS checksums of the external link state advertisements contained in the link state database.  This sum can be used to determine if there has been a change in a router's link state database and to compare the link state database of two routers.  The value should be treated as unsigned when comparing two sums of checksums.", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "OspfGlobalState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

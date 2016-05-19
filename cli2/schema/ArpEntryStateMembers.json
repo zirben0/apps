@@ -1,0 +1,118 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Vlan": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vlan", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tVlan ID of the Router Interface to which neighbor is attached to", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "MacAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "macaddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tMAC address of the neighbor machine with corresponding IP Address", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Intf": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "intf", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRouter Interface to which neighbor is attached to", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IpAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ipaddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tNeighbor's IP Address", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "ExpiryTimeLeft": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "expirytimeleft", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime left before entry expires in case neighbor departs", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "ArpEntryState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

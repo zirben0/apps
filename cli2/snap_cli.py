@@ -15,7 +15,6 @@ from flexswitchV2 import FlexSwitch
 from flexprint import FlexPrint
 from sets import Set
 
-
 class CmdFunc(object):
     def __init__(self, origfuncname, func):
         self.name = origfuncname
@@ -305,20 +304,19 @@ if __name__ == '__main__':
     parser.add_option("-s", "--switch", action="store", dest="switch_ip", type="string",
                       help="Switch IP to run the cli against", default= '127.0.0.1')
     parser.add_option("-m", "--model", action="store",type="string",
-                      dest="model_path",
+                      dest="cli_model_path",
                       help="Path to the cli model to be used")
     parser.add_option("-j", "--jschema", action="store",type="string",
-                      dest="schema_path",
+                      dest="cli_schema_path",
                       help="Path to the cli model to be used")
-
     (options, args) = parser.parse_args()
 
     switch_ip='127.0.0.1'
     switch_ip = options.switch_ip
-    model_path = options.model_path
-    schema_path = options.schema_path
+    cli_model_path = options.cli_model_path
+    cli_schema_path = options.cli_schema_path
 
-    cmdLine = CmdLine(switch_ip, model_path, schema_path)
+    cmdLine = CmdLine(switch_ip, cli_model_path, cli_schema_path, )
     #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #result = sock.connect_ex((switch_ip,8080))
     result = True

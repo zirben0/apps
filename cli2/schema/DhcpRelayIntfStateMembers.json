@@ -1,0 +1,139 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "TotalDhcpServerRx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "totaldhcpserverrx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of server requests made by relay agent", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TotalDhcpServerTx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "totaldhcpservertx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of server responses received by relay agent", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TotalDhcpClientRx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "totaldhcpclientrx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of client requests that camde to relay agent", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IntfId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "intfid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface Index for which state is required to be collected", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TotalDrops": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "totaldrops", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of Dhcp Packets dropped by relay agent", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TotalDhcpClientTx": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "totaldhcpclienttx", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of client responses send out by relay agent", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "DhcpRelayIntfState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

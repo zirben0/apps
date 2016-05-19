@@ -1,0 +1,25 @@
+{
+  "commands": {
+    "RouterId": {
+      "cliname": "router-id"
+    }, 
+    "Redistribution": {
+      "cliname": "redistribution"
+    },
+    "ASNum": {
+      "cliname": "asnum"
+    },
+    "IBGPMaxPaths": {
+      "cliname": "maxas-limit" 
+    }, 
+    "EBGPMaxPaths": {
+      "cliname": "ebgpmaxpaths"
+    },
+    "UseMultiplePaths": {
+      "cliname": "usemultiplepaths" 
+    }, 
+    "EBGPAllowMultipleAS": {
+      "cliname": "ebgpallowmultipleas" 
+    }
+  } 
+}

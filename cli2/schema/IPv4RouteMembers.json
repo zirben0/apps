@@ -1,0 +1,139 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "DestinationNw": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "destinationnw", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tIP address of the route", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "NullRoute": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nullroute", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Specify if this is a null route\n\tdefault: false", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Protocol": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "protocol", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tProtocol type of the route", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "NetworkMask": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "networkmask", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tmask of the route", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "NextHop": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nexthop", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\ttype: NextHopInfo.  ", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Cost": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "cost", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tCost of this route\n\tdefault: 0", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "IPv4Route", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

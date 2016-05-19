@@ -1,0 +1,76 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "NextHopIntRef": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nexthopintref", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface name or ifindex of port/lag or vlan on which this next hop is configured", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "NextHopIp": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nexthopip", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tnext hop ip of the route\n\tdefault: 0.0.0.0", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "Weight": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "weight", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tWeight of the next hop\n\tdefault: 0", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "NextHopInfo", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

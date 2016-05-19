@@ -1,45 +1,55 @@
 {
-  "objname": {
-    "type": "string",
-    "descirption": "object name to which references these attributes",
-    "default": "IPv4Intf"
-  },
   "commands": {
-    "type": "object",
-    "description": "",
+    "type": "object", 
+    "description": "", 
     "properties": {
       "IntfRef": {
-        "type": "object",
-        "description": "",
+        "type": "object", 
         "properties": {
           "prompt": {
+            "default": "", 
             "type": "string"
-          },
+          }, 
           "cliname": {
-            "type": "string",
-            "default" : "ethernet"
+            "default": "intfref", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface name or ifindex of port/lag or vlan on which this IPv4 object is configured", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
           }
         }
-      },
+      }, 
       "IpAddr": {
-        "type": "object",
-        "description": "",
+        "type": "object", 
         "properties": {
-          "IntfRef": {
-            "type": "object",
-            "description": "",
-            "properties": {
-              "prompt": {
-                "type": "string"
-              },
-              "cliname": {
-                "type": "string",
-                "default" : "address"
-              }
-            }
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ipaddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tInterface IP/Net mask in CIDR format to provision on switch interface", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
           }
         }
       }
     }
+  }, 
+  "objname": {
+    "default": "IPv4Intf", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
   }
 }

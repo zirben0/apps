@@ -135,7 +135,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if len(argv) != self.commandLen:
             self.cmdloop()
 
-        value = argv[-1]
         # reset the command len
         self.commandLen = 0
         endprompt = self.baseprompt[-2:]
@@ -143,7 +142,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         subschemaList = self.getSubCommand(argv[0], self.schema[self.objname]["properties"]["commands"]["properties"])
         configprompt = self.getPrompt(submodelList[0][argv[0]], subschemaList[0][argv[0]])
         self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
-
+        value = None
         for i in range(1, len(argv)-1):
             for submodel, subschema in zip(submodelList, subschemaList):
                 submodelList = self.getSubCommand(argv[i], submodel[argv[i-1]]["commands"])
@@ -152,8 +151,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     configprompt = self.getPrompt(submodel[argv[i]], subschema[argv[i]])
                     if configprompt:
                         self.prompt += configprompt + '-'
+                        value = argv[-1]
 
-        self.prompt += value + endprompt
+        if value != None:
+            self.prompt += value + endprompt
+        else:
+            self.prompt = self.prompt[:-1] + endprompt
         self.stop = True
         prevcmd = self.currentcmd
         self.currentcmd = self.lastcmd

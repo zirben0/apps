@@ -1,0 +1,76 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Index": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "index", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tEvent ID", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "EventInfo": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "eventinfo", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tDetailed description of the event", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TimeStamp": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "timestamp", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTime when the event occured", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "IPv4EventState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

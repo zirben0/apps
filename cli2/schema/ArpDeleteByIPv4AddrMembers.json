@@ -1,0 +1,34 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "IpAddr": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ipaddr", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tEnd Host IP Address for which corresponding Arp entry needed to be deleted", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "ArpDeleteByIPv4Addr", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "TotalPaths": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "totalpaths", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of paths received from neighbors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "RouterId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "routerid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tRouter id for BGP global config", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "AS": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "as", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tLocal AS for BGP global config", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IBGPMaxPaths": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ibgpmaxpaths", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tMax ECMP paths from Internal BGP neighbors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "EBGPMaxPaths": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ebgpmaxpaths", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tMax ECMP paths from External BGP neighbors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "UseMultiplePaths": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "usemultiplepaths", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enable/disable ECMP for BGP", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "EBGPAllowMultipleAS": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ebgpallowmultipleas", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTrue/False  Enable/diable ECMP paths from multiple ASes", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "TotalPrefixes": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "totalprefixes", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tTotal number of destinations received from neighbors", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "BGPGlobalState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

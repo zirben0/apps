@@ -1,37 +1,76 @@
 {
-  "objname" : {
-    "type" : "string",
-    "descirption" : "object name to which references these attributes",
-    "default" : "Vlan"
-  },
-  "commands" : {
-   "type": "object",
-   "description": "holds all related commands related to vlan",
-   "properties": {
-    "IntfList": {
-     "prompt": {
-      "type": "string"
-     },
-     "cliname": {
-      "type": "string"
-     }
-    },
-    "UntagIntfList": {
-     "prompt": {
-      "type": "string"
-     },
-     "cliname": {
-      "type": "string"
-     }
-    },
-    "VlanId": {
-     "prompt": {
-      "type": "string"
-     },
-     "cliname": {
-      "type": "string"
-     }
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "UntagIntfList": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "untagintflist", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tList of interface names or ifindex values to  be added as untagged members of the vlan", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "IntfList": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "intflist", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\tList of interface names or ifindex values to  be added as tagged members of the vlan", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }
+        }
+      }, 
+      "VlanId": {
+        "type": "object", 
+        "properties": {
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vlanid", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "\t802.1Q tag/Vlan ID for vlan being provisioned", 
+            "type": "string"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }
+        }
+      }
     }
-   }
+  }, 
+  "objname": {
+    "default": "Vlan", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
   }
 }
