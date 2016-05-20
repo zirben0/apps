@@ -12,6 +12,9 @@ Running the CLI requires that you tell it the path of the schema being used and 
 
 ### Example help
 ```
+cd to apps dir
+# assuming you have SR_CODE_BASE set in your environment see env.sh for PYTHON_PATH being referenced
+source env.sh
 python snap_cli.py -h
 Usage: snap_cli.py [options]
 
