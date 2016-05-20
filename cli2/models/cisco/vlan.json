@@ -4,7 +4,7 @@
     "cliname" : "vlan",
     "commands" : {
       "subcmd1": {
-        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/VlanMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/VlanMembers.json"
       }
     }
   }

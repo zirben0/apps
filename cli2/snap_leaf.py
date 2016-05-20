@@ -299,6 +299,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     def show_state(self, all=False):
 
         if self.configList:
+            import ipdb; ipdb.set_trace()
             sys.stdout.write("Applying Show:\n")
             # tell the user what attributes are being applied
             for i in range(len(self.configList)):
@@ -310,17 +311,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                 funcObjName = config.name
                 try:
-                    #lets see if the object exists, by doing a get first
-                    printall_func = getattr(sdk, 'print' + funcObjName + 'States')
-                    print_func = getattr(sdk, 'print' + funcObjName + 'State')
-
-                    # update all the arguments so that the values get set in the get_sdk_...
-                    kwargs = config.getSdkAll()
-                    argumentList = self.get_sdk_func_key_values(config, kwargs, print_func)
-
                     if all:
+                        printall_func = getattr(sdk, 'print' + funcObjName + 'States')
                         printall_func()
                     else:
+                        # update all the arguments so that the values get set in the get_sdk_...
+                        print_func = getattr(sdk, 'print' + funcObjName + 'State')
+                        kwargs = config.getSdkAll()
+                        argumentList = self.get_sdk_func_key_values(config, kwargs, print_func)
                         print_func(*argumentList)
 
                     # remove the configuration as it has been applied

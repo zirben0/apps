@@ -4,6 +4,7 @@ import jsonref
 import sys
 from jsonschema import Draft4Validator
 import pprint
+import requests
 
 
 
@@ -195,6 +196,7 @@ class CommonCmdLine(object):
     def setSchema(self):
 
         with open(self.schemapath) as schema_data:
+
             self.schema = jsonref.load(schema_data)
             #pp.pprint(self.schema)
 

@@ -3,7 +3,7 @@
     "cliname" : "bgp",
     "commands" : {
       "subcmd1": {
-        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/BGPGlobalMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalMembers.json"
       }
     }
   }
