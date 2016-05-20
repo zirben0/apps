@@ -9,7 +9,6 @@ from jsonref import JsonRef
 
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine
-from snap_interface import InterfaceCmd
 from snap_leaf import LeafCmd
 
 pp = pprint.PrettyPrinter(indent=2)
