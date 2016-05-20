@@ -15,6 +15,10 @@
         "type" : "integer",
         "description" : "this is a trigger to cli that a command needs a value"
       },
+      "help": {
+        "type" : "string",
+        "default": "Ethernet IEEE 802.3z"
+      },
       "commands" : {
         "type": "object",
         "description": "holds all related commands related to ethernet port",

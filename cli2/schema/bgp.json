@@ -11,6 +11,10 @@
         "description" : "name used in cli to describe ethernet",
         "default" : "bgp"
       },
+       "help" : {
+        "type" : "string",
+        "default": "Border Gateway Protocol (BGP)"
+      },
       "value" : {
         "type" : "integer",
         "description" : "this is a trigger to cli that a command needs a value"

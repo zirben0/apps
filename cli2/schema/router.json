@@ -11,6 +11,10 @@
         "description" : "name used in cli to describe ethernet",
         "default" : "router"
       },
+      "help" : {
+        "type" : "string",
+        "default": "Enable a routing process"
+      },
       "commands" : {
         "type": "object",
         "description": "holds all related commands related to ethernet port",

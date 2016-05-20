@@ -12,6 +12,10 @@
         "description" : "config name used",
         "default" : "config"
       },
+      "help" : {
+        "type" : "string",
+        "default" : "Configuration commands"
+      },
       "commands" : {
         "type": "object",
         "description": "holds all related commands related to ethernet port",

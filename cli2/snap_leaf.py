@@ -273,6 +273,28 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         argumentList.append(v['value'])
             return argumentList
 
+    def display_help(self, argv):
+        mline = [self.objname] + argv
+        mlineLength = len(mline)
+        #sys.stdout.write("complete cmd: %s\ncommand %s objname %s\n\n" %(self.model, mline[0], self.objname))
+
+        #submodel = self.model
+        #subschema = self.schema
+        subcommands = []
+        for model, schema in zip(self.modelList, self.schemaList):
+            subcommands = self.getchildrenhelpcmds(mline[0], model, schema)
+
+        for i in range(1, mlineLength-1):
+            for model, schema in zip(self.modelList, self.schemaList):
+                #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
+                submodelList = self.getSubCommand(mline[i], model[mline[i-1]]["commands"])
+                if submodelList:
+                    subschemaList = self.getSubCommand(mline[i], schema[mline[i-1]]["properties"]["commands"]["properties"])
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
+                        subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+
+        self.printCommands(mline, subcommands)
 
     def show_state(self, all=False):
 
@@ -306,6 +328,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 except Exception as e:
                     sys.stdout.write("FAILED TO GET OBJECT for show state: %s\n" %(e,))
 
+
+    def do_help(self, argv):
+        self.display_help(argv)
 
     def do_apply(self, argv):
 
@@ -364,3 +389,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         sys.stdout.write("Clearing Unapplied Config")
         for config in self.configList:
             config.clear()
+
+    def precmd(self, argv):
+        return CommonCmdLine.precmd(self, argv)

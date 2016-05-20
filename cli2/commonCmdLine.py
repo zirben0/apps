@@ -100,18 +100,76 @@ class CommonCmdLine(object):
                 subList.append(v)
 
             # looking for subcommand
-            if type(v) in (dict, jsonref.JsonRef) and key in v:
+            if type(v) in (dict, jsonref.JsonRef) and ((key in v) or key in ('?', 'help')):
                 #sys.stdout.write("RETURN 2 %s\n\n"% (v.keys()))
                 subList.append(v)
         return subList
 
     def getchildrencmds(self, parentname, model, schema):
-        if model:
-            return [self.getCliName(cmdobj.values()[0]) for cmdobj in [obj for k, obj in model[parentname]["commands"].iteritems() if "subcmd" in k]]
-        return []
+        # working model
+        #if model:
+        #    return [self.getCliName(cmdobj.values()[0]) for cmdobj in [obj for k, obj in model[parentname]["commands"].iteritems() if "subcmd" in k]]
+        cliNameList = []
+        if schema:
+            for k, schemaobj in schema[parentname]["properties"]["commands"]["properties"].iteritems():
+                if "subcmd" in k:
+                    cliname = None
+                    modelobj = model[parentname]["commands"][k] if k in model[parentname]["commands"] else None
+                    if modelobj:
+                        for kk, vv in modelobj.iteritems():
+                            cliname = self.getCliName(vv)
+                    # did not find the name in the model lets get from schema
+                    if cliname is None:
+                        for kk, vv in schemaobj.iteritems():
+                            cliname = self.getCliName(vv)
+
+                    cliNameList.append(cliname)
+        return cliNameList
+
+    def getchildrenhelpcmds(self, parentname, model, schema):
+        cliHelpList = []
+        if schema:
+            for k, schemaobj in schema[parentname]["properties"]["commands"]["properties"].iteritems():
+                if "subcmd" in k:
+                    cliname = None
+                    modelobj = model[parentname]["commands"][k] if k in model[parentname]["commands"] else None
+                    x = []
+                    if modelobj:
+                        for kk, vv in modelobj.iteritems():
+                            # leaf node
+                            if kk == "commands":
+                                for kkk, vvv in vv.iteritems():
+                                    x.append([kkk, self.getCliName(vvv), self.getCliHelp(vvv)])
+                            else:
+                                x.append([kk, self.getCliName(vv), self.getCliHelp(vv)])
+                    # did not find the name in the model lets get from schema
+                    for val in x:
+                        if val[1] is None or val[2] is None:
+                            for kk, vv in schemaobj.iteritems():
+                                # leaf node
+                                if kk == "commands":
+                                    for kkk, vvv in vv["properties"].iteritems():
+                                        if kkk == val[0]:
+                                            cliname, clihelp = self.getCliName(vvv["properties"]), self.getCliHelp(vvv["properties"])
+                                            if val[1] is None:
+                                                val[1] = cliname["default"]
+                                            else:
+                                                val[2] = clihelp["default"]
+
+                                            cliHelpList.append((val[1], val[2]))
+
+                                elif "properties" in vv:
+                                    cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
+                                    if val[1] is None:
+                                        val[1] = cliname
+                                    else:
+                                        val[2] = clihelp["default"]
+
+                                    cliHelpList.append((val[1], val[2]))
+        return cliHelpList
 
     def isValueExpected(self, cmd, schema):
-        if schema:
+        if schema and cmd in schema:
             #sys.stdout.write("\nisValueExpected: cmd %s schema %s\n" %(cmd, schema[cmd].keys()))
             return "value" in schema[cmd]["properties"]
         return False
@@ -129,7 +187,10 @@ class CommonCmdLine(object):
 
     def getCliName(self, attribute):
         #sys.stdout.write("getCliName: %s\n" %(attribute,))
-        return attribute["cliname"]
+        return attribute["cliname"] if "cliname" in attribute else None
+
+    def getCliHelp(self, attribute):
+        return attribute["help"] if "help" in attribute else None
 
     def setSchema(self):
 
@@ -155,6 +216,43 @@ class CommonCmdLine(object):
                 print e
                 return False
         return True
+
+    def display_help(self, argv):
+        mline = [self.objname] + argv
+        mlineLength = len(mline)
+
+        submodel = self.model
+        subschema = self.schema
+        subcommands = []
+        if mlineLength == 2:
+            subcommands = self.getchildrenhelpcmds(mline[0], submodel, subschema)
+        else:
+            # advance to next submodel and subschema
+            for i in range(1, mlineLength-1):
+                if mline[i-1] in submodel:
+                    submodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                    if submodelList:
+                        subschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+
+        self.printCommands(mline, subcommands)
+
+    def printCommands(self, argv, subcommands):
+
+        mlineLength = len(argv)
+
+        sys.stdout.write("%15s\t\t\t%s\n" %("Command", "Description"))
+        sys.stdout.write("%15s\t\t\t%s\n" %("-------", "------------------"))
+        if mlineLength > 2:
+            for k, v in [x for x in subcommands if x[0] == argv[-2]]:
+                sys.stdout.write("%15s\t\t\t%s\n" %(k, v))
+                return
+
+        # multiple commands
+        for k, v in subcommands:
+            sys.stdout.write("%15s\t\t\t%s\n" %(k, v))
+
 
     def default(self,):
         pass
@@ -193,3 +291,10 @@ class CommonCmdLine(object):
                 completecmd = parent.currentcmd + completecmd
 
         sys.stdout.write("\ncmd: %s\n\n" %(" ".join(completecmd,)))
+
+    def precmd(self, argv):
+        if len(argv) > 0:
+            if argv[-1] in ('help', '?'):
+                self.display_help(argv)
+                return ''
+        return argv
