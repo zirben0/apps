@@ -15,6 +15,10 @@
         "type" : "integer",
         "description" : "this is a trigger to cli that a command needs a value"
       },
+      "help" : {
+        "type" : "string",
+        "default": "Vlan Commands"
+      },
       "commands" : {
         "type": "object",
         "description": "holds all related commands related to ethernet port",

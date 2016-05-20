@@ -189,7 +189,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.prompt = self.baseprompt
 
     def _cmd_complete_show(self, text, line, begidx, endidx):
-        #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
+        sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
         mline = [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
@@ -241,7 +241,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
     def _cmd_show(self, argv):
         " Show running system information "
-
         if "?" in self.lastcmd:
             return
 
@@ -286,17 +285,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         else:
             sys.stdout.write('Quiting Shell\n')
             sys.exit(0)
-
-    def precmd(self, cmdlist):
-
-        if len(cmdlist) > 0:
-            if cmdlist[-1] == 'help':
-                sys.stdout.write('%s\n' % self.__doc__)
-                return ''
-            elif cmdlist[-1] == '?':
-                #self.command_help.show_help(line)
-                return cmdlist
-        return cmdlist
 
 # *** MAIN LOOP ***
 if __name__ == '__main__':

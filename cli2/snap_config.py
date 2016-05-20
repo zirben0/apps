@@ -78,14 +78,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 return False
         return True
 
-    def do_help(self, argv):
-        if 'ethernet' in argv:
-            sys.stdout.write("Command example: 'interface ethernet fpPort40' received '%s'\n\n" % (" ".join(argv)))
-        elif 'vlan' in argv:
-            sys.stdout.write("Command example: 'vlan 100' received %s\n\n" %(" ".join(argv)))
-
     def _cmd_complete_common(self, text, line, begidx, endidx):
-        #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
+
+        #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
         mline = [self.objname] + [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
@@ -189,7 +184,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             cmd = argv[-1]
             if cmd in ('?', ) or \
                     (mlineLength < self.commandLen and cmd not in ("exit", "end", "help")):
-                self.do_help(argv)
+                self.display_help(argv)
                 return ''
 
         return argv
@@ -200,3 +195,5 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def do_ip(self):
         pass
 
+    def do_help(self, argv):
+        self.display_help(argv)

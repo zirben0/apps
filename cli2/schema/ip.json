@@ -11,6 +11,10 @@
         "description" : "name used in cli to describe ip",
         "default" : "ip"
       },
+      "help": {
+        "type" : "string",
+        "default": "Configure IP features"
+      },
       "commands": {
         "type": "object",
         "description": "Base commands",
