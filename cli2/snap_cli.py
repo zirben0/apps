@@ -315,7 +315,7 @@ class PrepareModel(object):
             shutil.rmtree(path)
         except Exception:
             pass
-        
+
         if not os.access(path, os.F_OK):
             os.makedirs(path)
 
@@ -337,10 +337,12 @@ if __name__ == '__main__':
                       help="Switch IP to run the cli against", default= '127.0.0.1')
     parser.add_option("-m", "--model", action="store",type="string",
                       dest="cli_model_path",
-                      help="Path to the cli model to be used")
+                      help="Path to the cli model to be used",
+                      default= './models/cisco/')
     parser.add_option("-j", "--jschema", action="store",type="string",
                       dest="cli_schema_path",
-                      help="Path to the cli model to be used")
+                      help="Path to the cli model to be used",
+                      default='./schema/')
     (options, args) = parser.parse_args()
 
     switch_ip='127.0.0.1'
