@@ -7,10 +7,10 @@
       "cliname": "enable"
     },
     "subcmd1" : {
-      "$ref" : "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/config.json"
+      "$ref" : "file:/tmp/snaproute/cli/model/cisco/config.json"
     },
     "subcmd2" : {
-      "$ref" : "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/show.json"
+      "$ref" : "file:/tmp/snaproute/cli/model/cisco/show.json"
     }
   }
 }

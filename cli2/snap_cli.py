@@ -1,10 +1,12 @@
 #!/usr/bin/python
 
-import sys, getopt, socket
+import sys, getopt, socket, os
 import jsonref
 import cmdln
 import readline
 import rlcompleter
+import glob
+import shutil
 from optparse import OptionParser
 from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
@@ -189,7 +191,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.prompt = self.baseprompt
 
     def _cmd_complete_show(self, text, line, begidx, endidx):
-        sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
+        #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
         mline = [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
@@ -286,6 +288,44 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             sys.stdout.write('Quiting Shell\n')
             sys.exit(0)
 
+class PrepareModel(object):
+    def __init__(self, cli_model_path, cli_schema_path):
+        # path location on the local drive where the cli model is located
+        self.model_path = cli_model_path
+        # path location on the local drive where the cli schema is located
+        self.schema_path = cli_schema_path
+        # path where model ref's will live
+        self.ref_model_path = '/tmp/snaproute/cli/model/' + cli_model_path.split('/')[-2] + '/'
+        # path where schema ref's will live
+        self.ref_schema_path = '/tmp/snaproute/cli/schema/'
+
+    def Prepare(self):
+        # create the directories if they don't already exist
+        # if it exists function will remove existing files
+        self.mkdir_p(self.ref_model_path)
+        self.mkdir_p(self.ref_schema_path)
+
+        self.copy_json_to_new_path(self.model_path, self.ref_model_path)
+        self.copy_json_to_new_path(self.schema_path, self.ref_schema_path)
+
+    def mkdir_p(self, path):
+
+        # lets clean the directory if it exists in case other models exist
+        shutil.rmtree(path)
+        if not os.access(path, os.F_OK):
+            os.makedirs(path)
+
+    def copy_json_to_new_path(self, oldpath, newpath):
+
+        for filename in glob.glob(os.path.join(oldpath, '*.json')):
+            #sys.stdout.write("copying file:%s to %s\n" %(filename, newpath))
+            try:
+                shutil.copy(filename, newpath)
+            except IOError:
+                pass
+
+
+
 # *** MAIN LOOP ***
 if __name__ == '__main__':
     parser = OptionParser()
@@ -303,6 +343,17 @@ if __name__ == '__main__':
     switch_ip = options.switch_ip
     cli_model_path = options.cli_model_path
     cli_schema_path = options.cli_schema_path
+
+    # lets make /tmp/snaproute/cli/ directory if it does not exist
+    # if it does exist lets clean the directory
+    # lets move all the json schema and model to a temporary
+    # directory structure so that the jsonref can properly
+    # parse the references
+    # /tmp/snaproute/cli/models
+    # /tmp/snaproute/cli/schema
+    x = PrepareModel(cli_model_path, cli_schema_path)
+    x.Prepare()
+
 
     cmdLine = CmdLine(switch_ip, cli_model_path, cli_schema_path, )
     #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

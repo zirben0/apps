@@ -24,10 +24,10 @@
         "description": "holds all related commands related to ethernet port",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/PortMembers.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/PortMembers.json"
           },
           "subcmd2": {
-            "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/schema/ip.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/ip.json"
           }
         }
       }

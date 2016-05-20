@@ -3,7 +3,7 @@
     "cliname" : "ip",
     "commands": {
       "subcmd1" : {
-        "$ref": "file:/home/ccordes/git/snaproute/src/apps/cli2/models/cisco/IPv4IntfMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4IntfMembers.json"
       }
     }
   }
