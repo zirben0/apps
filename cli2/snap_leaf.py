@@ -299,7 +299,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     def show_state(self, all=False):
 
         if self.configList:
-            import ipdb; ipdb.set_trace()
             sys.stdout.write("Applying Show:\n")
             # tell the user what attributes are being applied
             for i in range(len(self.configList)):
