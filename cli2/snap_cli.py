@@ -311,7 +311,11 @@ class PrepareModel(object):
     def mkdir_p(self, path):
 
         # lets clean the directory if it exists in case other models exist
-        shutil.rmtree(path)
+        try:
+            shutil.rmtree(path)
+        except Exception:
+            pass
+        
         if not os.access(path, os.F_OK):
             os.makedirs(path)
 
