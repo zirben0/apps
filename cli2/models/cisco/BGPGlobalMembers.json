@@ -1,7 +1,7 @@
 {
   "commands": {
     "RouterId": {
-      "cliname": "router-id"
+      "cliname": "router_id"
     }, 
     "Redistribution": {
       "cliname": "redistribution"
@@ -10,7 +10,7 @@
       "cliname": "bgp"
     },
     "IBGPMaxPaths": {
-      "cliname": "maxas-limit" 
+      "cliname": "maxas_limit"
     }, 
     "EBGPMaxPaths": {
       "cliname": "ebgpmaxpaths"

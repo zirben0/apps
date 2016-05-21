@@ -6,10 +6,10 @@
   },
   "commands" : {
     "IntfList": {
-      "cliname":  "member-list"
+      "cliname":  "member_list"
     },
     "UntagIntfList": {
-      "cliname": "untag-member-list"
+      "cliname": "untag_member_list"
     },
     "VlanId": {
       "cliname": "vlan"

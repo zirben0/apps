@@ -13,7 +13,7 @@
       "cliname": "duplex"
     },
     "MacAddr": {
-      "cliname": "mac-address"
+      "cliname": "mac_address"
     },
     "Mtu": {
       "cliname": "mtu"

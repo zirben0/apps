@@ -1,0 +1,24 @@
+{
+  "commands": {
+    "Priority": {
+      "cliname": "priority"
+    },
+    "HelloTime": {
+      "cliname": "hello_time"
+    },
+    "Vlan": {
+      "cliname": "vlan"
+    },
+    "ForwardDelay": {
+      "cliname": "forward_time"
+    },
+    "MaxAge": {
+      "cliname": "max_age"
+    }
+  }, 
+  "objname": {
+    "default": "StpBridgeInstance", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

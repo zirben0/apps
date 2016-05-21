@@ -15,9 +15,9 @@ try:
     import readline
     import rlcompleter
     if 'libedit' in readline.__doc__:
-    	readline.parse_and_bind("bind ^I rl_complete")
+        readline.parse_and_bind("bind ^I rl_complete")
     else:
-    	readline.parse_and_bind("tab: complete")
+        readline.parse_and_bind("tab: complete")
 except:   se
 
 pp = pprint.PrettyPrinter(indent=2)
@@ -91,19 +91,44 @@ class CommonCmdLine(object):
                 parent = getparent(child)
         return root
 
+    def getConfigObj(self):
+        child = self
+        config = None
+        def getparent(child):
+            return child.parent
+
+        if hasattr(child, 'configList'):
+            config = self
+
+        while config is None:
+            parent = getparent(child)
+            if hasattr(parent, 'configList'):
+                config = parent
+
+        return config
 
     def getSubCommand(self, key, commands):
-
         subList = []
         for k, v in commands.iteritems():
             if k == key:
                 #sys.stdout.write("RETURN 1 %s\n\n"% (v))
                 subList.append(v)
+            else:
+                # looking for subcommand
+                if type(v) in (dict, jsonref.JsonRef):
 
-            # looking for subcommand
-            if type(v) in (dict, jsonref.JsonRef) and ((key in v) or key in ('?', 'help')):
-                #sys.stdout.write("RETURN 2 %s\n\n"% (v.keys()))
-                subList.append(v)
+                    if key in ('?', 'help'):
+                        subList.append(v)
+                    # attribute
+                    elif key in v:
+                        subList.append(v)
+                    # model command
+                    elif key in [self.getCliName(vv) for vv in v.values() if 'cliname' in vv]:
+                        subList.append(v)
+                    # schema command
+                    elif key in [vv['properties']['cliname']['default'] for vv in v.values() if 'properties' in vv and 'cliname' in vv['properties']]:
+                        subList.append(v)
+
         return subList
 
     def getchildrencmds(self, parentname, model, schema):
@@ -112,10 +137,12 @@ class CommonCmdLine(object):
         #    return [self.getCliName(cmdobj.values()[0]) for cmdobj in [obj for k, obj in model[parentname]["commands"].iteritems() if "subcmd" in k]]
         cliNameList = []
         if schema:
-            for k, schemaobj in schema[parentname]["properties"]["commands"]["properties"].iteritems():
+            schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
+
+            for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
                 if "subcmd" in k:
                     cliname = None
-                    modelobj = model[parentname]["commands"][k] if k in model[parentname]["commands"] else None
+                    modelobj = model[schemaname]["commands"][k] if k in model[schemaname]["commands"] else None
                     if modelobj:
                         for kk, vv in modelobj.iteritems():
                             cliname = self.getCliName(vv)
@@ -127,13 +154,19 @@ class CommonCmdLine(object):
                     cliNameList.append(cliname)
         return cliNameList
 
+    def getSchemaCommandNameFromCliName(self, cliname, model):
+
+        for key, value in model.iteritems():
+            if 'cliname' in value:
+                return key
+
     def getchildrenhelpcmds(self, parentname, model, schema):
         cliHelpList = []
         if schema:
-            for k, schemaobj in schema[parentname]["properties"]["commands"]["properties"].iteritems():
+            schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
+            for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
                 if "subcmd" in k:
-                    cliname = None
-                    modelobj = model[parentname]["commands"][k] if k in model[parentname]["commands"] else None
+                    modelobj = model[schemaname]["commands"][k] if k in model[schemaname]["commands"] else None
                     x = []
                     if modelobj:
                         for kk, vv in modelobj.iteritems():
@@ -169,10 +202,12 @@ class CommonCmdLine(object):
                                     cliHelpList.append((val[1], val[2]))
         return cliHelpList
 
-    def isValueExpected(self, cmd, schema):
-        if schema and cmd in schema:
-            #sys.stdout.write("\nisValueExpected: cmd %s schema %s\n" %(cmd, schema[cmd].keys()))
-            return "value" in schema[cmd]["properties"]
+    def isValueExpected(self, cmd, model, schema):
+        schemaname = self.getSchemaCommandNameFromCliName(cmd, model)
+        if schema:
+            if schemaname in  schema:
+                #sys.stdout.write("\nisValueExpected: cmd %s schema %s\n" %(cmd, schema[cmd].keys()))
+                return "value" in schema[schemaname]["properties"]
         return False
 
     def getValue(self, attribute):
@@ -198,14 +233,16 @@ class CommonCmdLine(object):
         with open(self.schemapath) as schema_data:
 
             self.schema = jsonref.load(schema_data)
-            #pp.pprint(self.schema)
+            # ENABLE THIS if you see problems with decode
+            pp.pprint(self.schema)
 
 
     def setModel(self):
 
         with open(self.modelpath, "r") as json_model_data:
             self.model = jsonref.load(json_model_data)
-            #pp.pprint(self.model)
+            # ENABLE THIS if you see problems with decode
+            pp.pprint(self.model)
 
     def validateSchemaAndModel(self):
         if self.model is None or self.schema is None:
@@ -213,7 +250,7 @@ class CommonCmdLine(object):
         else:
             try:
                 # lets validate the model against the json schema
-                print Draft4Validator(self.model, self.schema)
+                Draft4Validator(self.schema).validate(self.model)
             except Exception as e:
                 print e
                 return False
@@ -222,7 +259,6 @@ class CommonCmdLine(object):
     def display_help(self, argv):
         mline = [self.objname] + argv
         mlineLength = len(mline)
-
         submodel = self.model
         subschema = self.schema
         subcommands = []
@@ -232,9 +268,10 @@ class CommonCmdLine(object):
             # advance to next submodel and subschema
             for i in range(1, mlineLength-1):
                 if mline[i-1] in submodel:
-                    submodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                     if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
 
@@ -293,6 +330,22 @@ class CommonCmdLine(object):
                 completecmd = parent.currentcmd + completecmd
 
         sys.stdout.write("\ncmd: %s\n\n" %(" ".join(completecmd,)))
+
+    def do_apply(self, argv):
+        configObj = self.getConfigObj()
+        if configObj:
+            configObj.do_apply(argv)
+
+    def do_showunapplied(self, argv):
+        configObj = self.getConfigObj()
+        if configObj:
+            configObj.do_showunapplied(argv)
+
+
+    def do_clearunapplied(self, argv):
+        configObj = self.getConfigObj()
+        if configObj:
+            configObj.do_clearunapplied(argv)
 
     def precmd(self, argv):
         if len(argv) > 0:

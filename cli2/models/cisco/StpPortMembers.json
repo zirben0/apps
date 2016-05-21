@@ -1,0 +1,27 @@
+{
+  "commands": {
+    "BrgIfIndex": {
+      "cliname": "vlan"
+    },
+    "AdminEdgePort": {
+      "cliname": "edge"
+    },
+    "BridgeAssurance": {
+      "cliname": "bridge"
+    },
+    "BpduGuard": {
+      "cliname": "bpduguard"
+    },
+    "IfIndex": {
+      "cliname": "ethernet"
+    },
+    "AdminPathCost": {
+      "cliname": "pathcost"
+    }
+  },
+  "objname": {
+    "default": "StpPort", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}
