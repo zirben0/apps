@@ -5,15 +5,16 @@ import copy
 
 class CmdEntry(object):
 
-    # hold provisioned values
-    attrDict = {}
+
     def __init__(self, name, keyDict):
         # holds the name of the object
         self.name = name
+        # hold provisioned values
+        self.attrDict = {}
         # holds the attributes which are keys to this config object
         # { cliname : {'modelname' : name,
         #              'value' : value} }
-        self.keysDict = keyDict
+        self.keysDict = copy.deepcopy(keyDict)
 
     def set(self, k, v):
         self.attrDict.update({k:v})
@@ -46,13 +47,13 @@ class CmdEntry(object):
         pass
 
     def show(self):
-        sys.stdout.write("objkey: ")
+        #sys.stdout.write("objkey: \n")
         keystr = ''
         for k, v in self.keysDict.iteritems():
             if v['value'] is not None:
-                keystr += "%s:%s " %(k, v['value'])
+                sys.stdout.write("%s:%s \n" %(k, v['value']))
 
-        sys.stdout.write('\n%s\n' %(keystr))
+        #sys.stdout.write('\n%s\n' %(keystr))
         for k, v in self.attrDict.iteritems():
-            sys.stdout.write("%s: %s\n" %(k, v))
+            sys.stdout.write("objname[%s]: %s: %s\n" %(self.name, k, v))
 

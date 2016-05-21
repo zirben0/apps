@@ -4,7 +4,7 @@ import sys
 import cmdln
 import json
 import jsonref
-import inspect
+
 from sets import Set
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine
@@ -32,7 +32,7 @@ class SetAttrFunc(object):
 class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     # schema and model name
-    def __init__(self, objname, cmdtype, parent, prompt, modelList, schemaList):
+    def __init__(self, objname, cliname, cmdtype, parent, prompt, modelList, schemaList):
 
         cmdln.Cmdln.__init__(self)
 
@@ -45,8 +45,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.prompt = self.baseprompt
         self.cmdtype = cmdtype
         self.currentcmd = []
-        self.configList = []
 
+        configObj = self.getConfigObj()
         for model, schema in zip(self.modelList, self.schemaList):
 
             # lets get all commands and subcommands for a given config operation
@@ -60,18 +60,27 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                     objDict[v['objname']].update({k:v})
 
-            for k, v in objDict.iteritems():
-                self.configList.append(CmdEntry(k, objDict[k]))
+            if configObj:
+                for k, v in objDict.iteritems():
+                    config = CmdEntry(k, objDict[k])
+                    if cliname != self.parent.lastcmd[-1]:
+                        basekey = self.parent.lastcmd[-2]
+                        basevalue = self.parent.lastcmd[-1]
+                        config.set(basekey, basevalue)
+                    configObj.configList.append(config)
 
             #sys.stdout.write("LeafCmd: %s" % self.model)
 
+        '''
         # update the parents attribute info to the subcommands
-        if self.objname != self.parent.lastcmd[-1]:
-            for cmdEntry in self.configList:
-                basekey = self.parent.lastcmd[-2]
-                basevalue = self.parent.lastcmd[-1]
-                cmdEntry.set(basekey, basevalue)
-
+        if cliname != self.parent.lastcmd[-1]:
+            if configObj:
+                for config in configObj.configList:
+                    if config.name == self.objname:
+                        basekey = self.parent.lastcmd[-2]
+                        basevalue = self.parent.lastcmd[-1]
+                        config.set(basekey, basevalue)
+        '''
         self.setupCommands()
 
 
@@ -152,13 +161,20 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             for k,v in cmd["commands"].iteritems():
                                 cmdname = self.getCliName(v)
                                 # Note needed for show
-                                #if cmdname != self.objname:
+                                if '-' in cmdname:
+                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                    self.do_exit([])
+                                    cmdname = cmdname.replace('-', '_')
                                 setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_default))
                                 #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
                         else:
                             # another sub command list
                             for k, v in cmd.iteritems():
                                 cmdname = self.getCliName(v)
+                                if '-' in cmdname:
+                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                    self.do_exit([])
+                                    cmdname = cmdname.replace('-', '_')
                                 # Note needed for show
                                 #if cmdname != self.objname:
                                 setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_default))
@@ -169,7 +185,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 else:
                     # handle commands when are not links
                     try:
-                        setattr(self.__class__, "do_" + self.getCliName(model[self.objname][subcmds]["commands"]), SetAttrFunc(self._cmd_default))
+                        cmdname = self.getCliName(model[self.objname][subcmds]["commands"])
+                        if '-' in cmdname:
+                            sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                            self.do_exit([])
+                            cmdname = cmdname.replace('-', '_')
+                        setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_default))
                     except Exception as e:
                             sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 
@@ -191,18 +212,22 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             subkey = argv[0]
             value = argv[1]
 
-            for config in self.configList:
-                if subkey in config.keysDict.keys():
-                    # store the attribute into the config
-                    config.set(subkey, value)
+            configObj = self.getConfigObj()
+            if configObj:
+                for config in configObj.configList:
+                    if subkey in config.keysDict.keys():
+                        # store the attribute into the config
+                        config.set(subkey, value)
         else:
             # key + subkey + value supplied
             key = argv[0]
             subkey = argv[1]
             value = argv[2]
-            for config in self.configList:
-                if subkey in config.keysDict.keys():
-                    config.set(subkey, value)
+            configObj = self.getConfigObj()
+            if configObj:
+                for config in configObj.configList:
+                    if subkey in config.keysDict.keys():
+                        config.set(subkey, value)
 
 
     def getchildrencmds(self, parentname, model, schema):
@@ -255,23 +280,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         return returncommands
 
-
-    def get_sdk_func_key_values(self, config, kwargs, func):
-            argspec = inspect.getargspec(func)
-            getKeys = argspec.args[1:]
-            lengthkwargs = len(argspec.defaults) if argspec.defaults is not None else 0
-            if lengthkwargs > 0:
-                getKeys = argspec.args[:-len(argspec.defaults)]
-
-            # lets setup the argument list
-            argumentList = []
-            for k in getKeys:
-                if k in kwargs:
-                    del kwargs[k]
-                for v in config.keysDict.values():
-                    if v['key'] == k:
-                        argumentList.append(v['value'])
-            return argumentList
+    def show_state(self, all=False):
+        configObj = self.getConfigObj()
+        if configObj:
+            configObj.show_state(all)
 
     def display_help(self, argv):
         mline = [self.objname] + argv
@@ -296,96 +308,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         self.printCommands(mline, subcommands)
 
-    def show_state(self, all=False):
-
-        if self.configList:
-            sys.stdout.write("Applying Show:\n")
-            # tell the user what attributes are being applied
-            for i in range(len(self.configList)):
-                config = self.configList[-(i+1)]
-                #config.show()
-
-                # get the sdk
-                sdk = self.getSdkShow()
-
-                funcObjName = config.name
-                try:
-                    if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName + 'States')
-                        printall_func()
-                    else:
-                        # update all the arguments so that the values get set in the get_sdk_...
-                        print_func = getattr(sdk, 'print' + funcObjName + 'State')
-                        kwargs = config.getSdkAll()
-                        argumentList = self.get_sdk_func_key_values(config, kwargs, print_func)
-                        print_func(*argumentList)
-
-                    # remove the configuration as it has been applied
-                    config.clear(None, None, all=True)
-                except Exception as e:
-                    sys.stdout.write("FAILED TO GET OBJECT for show state: %s\n" %(e,))
-
-
     def do_help(self, argv):
         self.display_help(argv)
-
-    def do_apply(self, argv):
-
-        if self.configList:
-            sys.stdout.write("Applying Config:\n")
-            for config in self.configList:
-                # tell the user what attributes are being applied
-                #config.show()
-
-                # get the sdk
-                sdk = self.getSdk()
-
-                funcObjName = config.name
-
-                #lets see if the object exists, by doing a get first
-                get_func = getattr(sdk, 'get' + funcObjName)
-                update_func = getattr(sdk, 'update' + funcObjName)
-                create_func = getattr(sdk, 'create' + funcObjName)
-
-                try:
-                    # update all the arguments
-                    kwargs = config.getSdkAll()
-                    argumentList = self.get_sdk_func_key_values(config, kwargs, get_func)
-
-                    r = get_func(*argumentList)
-                    if r.status_code in sdk.httpSuccessCodes:
-                        # update
-                        argumentList = self.get_sdk_func_key_values(config, kwargs, update_func)
-                        if len(kwargs) > 0:
-                            r = update_func(*argumentList, **kwargs)
-                            if r.status_code not in sdk.httpSuccessCodes:
-                                sys.stdout.write("command update FAILED:\n%s %s" %(r.status_code, r.json()['Error']))
-
-                    elif r.status_code == 404:
-                        # create
-                        argumentList = self.get_sdk_func_key_values(config, kwargs, create_func)
-                        r = create_func(*argumentList, **kwargs)
-                        if r.status_code not in sdk.httpSuccessCodes:
-                            sys.stdout.write("command create FAILED:\n%s %s" %(r.status_code, r.json()['Error']))
-
-                    else:
-                        sys.stdout.write("Command Get FAILED\n%s %s" %(r.status_code, r.json()['Error']))
-
-                    # remove the configuration as it has been applied
-                    config.clear(None, None, all=True)
-                except Exception as e:
-                    sys.stdout.write("FAILED TO GET OBJECT: %s" %(e,))
-
-    def do_showunapplied(self, argv):
-        sys.stdout.write("Unapplied Config")
-        for config in self.configList:
-            config.show()
-
-
-    def do_clearunapplied(self, argv):
-        sys.stdout.write("Clearing Unapplied Config")
-        for config in self.configList:
-            config.clear()
 
     def precmd(self, argv):
         return CommonCmdLine.precmd(self, argv)

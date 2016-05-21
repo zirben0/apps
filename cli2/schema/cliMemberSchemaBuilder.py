@@ -156,10 +156,12 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-j", "--jschema", action="store",type="string",
                       dest="cli_schema_path",
-                      help="Path to the cli model to be used")
+                      help="Path to the cli model to be used",
+                      default="./schema/")
     parser.add_option("-d", "--jdatamodel", action="store", type="string",
                       dest="data_member_model_path",
-                      help="Path to json data model member files")
+                      help="Path to json data model member files",
+                      default='./models/cisco/')
 
     (options, args) = parser.parse_args()
 

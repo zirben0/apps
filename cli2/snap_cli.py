@@ -68,6 +68,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 try:
                     for k,v in cmd.iteritems():
                         cmdname = self.getCliName(v)
+                        if '-' in cmdname:
+                            sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                            self.do_exit([])
+                            cmdname = cmdname.replace('-', '_')
+
                         funcname = "do_" + cmdname
                         setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(k,))))
                         if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
@@ -78,6 +83,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 # handle commands when are not links
                 try:
                     cmdname = self.getCliName(self.model["commands"][subcmds])
+                    if '-' in cmdname:
+                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                        self.do_exit([])
+                        cmdname = cmdname.replace('-', '_')
+
                     funcname = "do_" + cmdname
                     setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(subcmds,))))
                 except Exception as e:
@@ -110,7 +120,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.setPrompt()
 
                 # lets validate the model against the json schema
-                Draft4Validator(self.model, self.schema)
+                Draft4Validator(self.schema).validate(self.model)
 
             except Exception as e:
                 print e
@@ -166,9 +176,14 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         if self.privilege is False:
             return
 
+        if len(args) > 1:
+            self.display_help(args)
+            return
+
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
         # get the submodule to be passed into config
+        schemaname = self.getSchemaCommandNameFromCliName(name, self.model)
         submodelList = self.getSubCommand(name, self.model["commands"])
         subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
         # there should only be one config entry
@@ -195,7 +210,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         # remove spacing/tab
         mline = [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
-        #sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
+        sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
 
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
@@ -216,7 +231,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         subsubschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
                         for subsubmodel, subsubschema in zip(subsubmodelList, subsubschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subsubschema))
-                            valueexpected = self.isValueExpected(mline[1], subsubschema)
+                            valueexpected = self.isValueExpected(mline[1], subsubmodel, subsubschema)
                             if valueexpected:
                                 self.commandLen = len(mline)
                                 return []
@@ -241,14 +256,24 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         return returncommands
 
+    def display_show_help(self, mline):
+        mlineLength = len(mline)
+        submodelList = self.getSubCommand("show", self.model["commands"])
+        subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"])
+        for submodel, subschema in zip(submodelList, subschemaList):
+            c = ShowCmd(self, submodel, subschema)
+            c.display_help(mline[1:])
+
+
     def _cmd_show(self, argv):
         " Show running system information "
-        if "?" in self.lastcmd:
-            return
+        mline = argv
+        if mline[-1] in ('help', '?'):
+            self.display_show_help(mline)
+            return argv
 
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
-        mline = argv
         mlineLength = len(mline)
         submodelList = self.getSubCommand(name, self.model["commands"])
         subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
@@ -257,11 +282,12 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 for i in range(1, mlineLength):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         if mline[i-1] in submodel:
-                            submodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                            submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                             if submodelList:
-                                subschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                                subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
                                 for submodel, subschema in zip(submodelList, subschemaList):
-                                    valueexpected = self.isValueExpected(mline[i], subschema)
+                                    valueexpected = self.isValueExpected(mline[i], submodel, subschema)
                                     if valueexpected:
                                         self.currentcmd = self.lastcmd
                                         c = ShowCmd(self, [submodel], [subschema])

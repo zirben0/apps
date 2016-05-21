@@ -9,18 +9,7 @@
       "description": "emulation mode for the schema"
     },
     "prompt-prefix": {
-      "type": "string",
-      "oneOf": [
-        {
-          "format": "host-name"
-        },
-        {
-          "format": "ipv4"
-        },
-        {
-          "format": "ipv6"
-        }
-      ]
+      "format": "ipv4"
     },
     "prompt" : {
       "type" : "string",

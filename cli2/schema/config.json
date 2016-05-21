@@ -26,8 +26,11 @@
           "subcmd2": {
             "$ref": "file:/tmp/snaproute/cli/schema/vlan.json"
           },
-          "subcmd2": {
+          "subcmd3": {
             "$ref": "file:/tmp/snaproute/cli/schema/router.json"
+          },
+          "subcmd4": {
+            "$ref": "file:/tmp/snaproute/cli/schema/stp.json"
           }
         }
       }

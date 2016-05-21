@@ -1,0 +1,11 @@
+{
+  "stp": {
+    "prompt" : "stp",
+    "cliname" : "spanning_tree",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/stpvlan.json"
+      }
+    }
+  }
+}

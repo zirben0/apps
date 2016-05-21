@@ -17,6 +17,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
     def __init__(self, parent, model, schema):
 
         cmdln.Cmdln.__init__(self)
+        self.objname = 'show'
         self.parent = parent
         self.model = model
         self.schema = schema
@@ -27,7 +28,8 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
         # show individual object
         # show individual object brief
         lastcmd = argv[-1] if all else argv[-2] if argv[-1] != 'brief' else argv[-3]
-        l = LeafCmd(lastcmd, "show", self.parent, None, self.model, self.schema)
+        schemaname = self.getSchemaCommandNameFromCliName(lastcmd, self.model)
+        l = LeafCmd(lastcmd, schemaname, self.parent, None, self.model, self.schema)
 
         # todo need to call the keys
         # l.do_lastcmd
