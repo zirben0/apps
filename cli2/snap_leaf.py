@@ -102,6 +102,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         cmdList = []
         cmdDict = {}
         tmpobjname = objname
+
+
+
         for k, v in model.iteritems():
             tmpschema = schema[k]
             if k == key:
@@ -233,7 +236,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     def getchildrencmds(self, parentname, model, schema):
         attrlist = []
         if model:
-            for cmdobj in [obj for k, obj in model[parentname]["commands"].iteritems() if "subcmd" in k]:
+            schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
+            for cmdobj in [obj for k, obj in model[schemaname]["commands"].iteritems() if "subcmd" in k]:
                 for v in cmdobj["commands"].values():
                     if v['cliname'] != self.objname:
                         attrlist.append(v['cliname'])
@@ -252,10 +256,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         for i in range(1, mlineLength):
             for model, schema in zip(self.modelList, self.schemaList):
                 #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
-                submodelList = self.getSubCommand(mline[i], model[mline[i-1]]["commands"])
+                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
+                submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
                 #sys.stdout.write("submoduleList %s\n" %(submodelList,))
                 if submodelList:
-                    subschemaList = self.getSubCommand(mline[i], schema[mline[i-1]]["properties"]["commands"]["properties"])
+                    subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
                     #sys.stdout.write("subschemaList %s\n" %(subschemaList,))
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
@@ -298,10 +303,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         for i in range(1, mlineLength-1):
             for model, schema in zip(self.modelList, self.schemaList):
+                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
                 #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
-                submodelList = self.getSubCommand(mline[i], model[mline[i-1]]["commands"])
+                submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
                 if submodelList:
-                    subschemaList = self.getSubCommand(mline[i], schema[mline[i-1]]["properties"]["commands"]["properties"])
+                    subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
                         subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)

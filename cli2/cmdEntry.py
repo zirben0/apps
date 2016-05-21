@@ -54,6 +54,7 @@ class CmdEntry(object):
                 sys.stdout.write("%s:%s \n" %(k, v['value']))
 
         #sys.stdout.write('\n%s\n' %(keystr))
+        sys.stdout.write("objname[%s]:\n" %(self.name))
         for k, v in self.attrDict.iteritems():
-            sys.stdout.write("objname[%s]: %s: %s\n" %(self.name, k, v))
+            sys.stdout.write("\t%s: %s\n" %(self.name, k, v))
 

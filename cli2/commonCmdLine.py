@@ -234,7 +234,7 @@ class CommonCmdLine(object):
 
             self.schema = jsonref.load(schema_data)
             # ENABLE THIS if you see problems with decode
-            #pp.pprint(self.schema)
+            pp.pprint(self.schema)
 
 
     def setModel(self):
@@ -242,7 +242,7 @@ class CommonCmdLine(object):
         with open(self.modelpath, "r") as json_model_data:
             self.model = jsonref.load(json_model_data)
             # ENABLE THIS if you see problems with decode
-            #pp.pprint(self.model)
+            pp.pprint(self.model)
 
     def validateSchemaAndModel(self):
         if self.model is None or self.schema is None:

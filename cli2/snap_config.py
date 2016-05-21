@@ -272,7 +272,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def do_apply(self, argv):
 
-        import ipdb; ipdb.set_trace()
         if self.configList:
             sys.stdout.write("Applying Config:\n")
             for config in self.configList:
@@ -301,22 +300,28 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         if len(kwargs) > 0:
                             r = update_func(*argumentList, **kwargs)
                             if r.status_code not in sdk.httpSuccessCodes:
-                                sys.stdout.write("command update FAILED:\n%s %s" %(r.status_code, r.json()['Error']))
+                                sys.stdout.write("command update FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
+                            else:
+                                sys.stdout.write("update SUCCESS:\n" )
+                                config.show()
 
                     elif r.status_code == 404:
                         # create
                         argumentList = self.get_sdk_func_key_values(config, kwargs, create_func)
                         r = create_func(*argumentList, **kwargs)
                         if r.status_code not in sdk.httpSuccessCodes:
-                            sys.stdout.write("command create FAILED:\n%s %s" %(r.status_code, r.json()['Error']))
+                            sys.stdout.write("command create FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
+                        else:
+                            sys.stdout.write("create SUCCESS:\n" )
+                            config.show()
 
                     else:
-                        sys.stdout.write("Command Get FAILED\n%s %s" %(r.status_code, r.json()['Error']))
+                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
 
                     # remove the configuration as it has been applied
                     config.clear(None, None, all=True)
                 except Exception as e:
-                    sys.stdout.write("FAILED TO GET OBJECT: %s" %(e,))
+                    sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
 
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")
@@ -326,7 +331,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def do_clearunapplied(self, argv):
         sys.stdout.write("Clearing Unapplied Config\n")
-        for config in self.parent.configList:
+        for config in self.configList:
             config.clear()
 
     '''
