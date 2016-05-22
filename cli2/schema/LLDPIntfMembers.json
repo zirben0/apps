@@ -6,7 +6,19 @@
       "IfIndex": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "IfIndex where lldp needs to be configured", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "ifindex", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tIfIndex where lldp needs to be configured", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "Enable": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable lldp config", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,13 +59,13 @@
             "default": "enable", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Enable/Disable lldp config", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }

@@ -66,8 +66,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     if cliname != self.parent.lastcmd[-1]:
                         basekey = self.parent.lastcmd[-2]
                         basevalue = self.parent.lastcmd[-1]
-                        config.set(basekey, basevalue)
-                    configObj.configList.append(config)
+                        config.setValid(True)
+                        config.set(self.parent.lastcmd, basekey, basevalue)
+                    # only add this config if it does not already exist
+                    if not configObj.doesConfigExist(config):
+                        configObj.configList.append(config)
 
             #sys.stdout.write("LeafCmd: %s" % self.model)
 
@@ -88,22 +91,74 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         cmd = 'objname'
         return self.getSubCommand(cmd, schema[self.objname]["properties"]["commands"]["properties"])[0][cmd]['default']
 
-    def getUniqueKeyFromCliNameList(self, model, cmd):
-        keyDict = {}
-        for i, c in enumerate(cmd):
-            subcmd = self.getCliCmdAttrs(c, model[self.objname]["commands"])
-            if subcmd and c in subcmd:
-                # lets set the key value
-                subcmd[c]['value'] = self.parent.lastcmd[i+1] if self.cmdtype == 'config' else None
-                keyDict.update(subcmd)
-        return keyDict
 
     def getCliCmdAttrs(self, key, objname, subcmd, model, schema):
         cmdList = []
         cmdDict = {}
         tmpobjname = objname
 
+        for k, v in schema.iteritems():
+            if k == key:
+                return v
 
+            tmpmodel = None
+            if k in model:
+                tmpmodel = model[k]
+                try:
+                    if 'objname' in v:
+                        tmpobjname = v['objname']['default']
+                except Exception:
+                    pass
+                # looking for subcommand
+                if "subcmd" in k and "commands" in v and type(v["commands"]) in (dict, jsonref.JsonRef):
+                    cmds = self.getCliCmdAttrs(key, tmpobjname, subcmd, tmpmodel["commands"], v["commands"]["properties"])
+                    cmdList += cmds
+                # looking for subsubcommand
+                elif "subcmd" in k and type(v) in (dict, jsonref.JsonRef):
+
+                    for kk, vv in tmpmodel.iteritems():
+                        subtmpschema = v[kk]['properties']
+                        try:
+                            if 'objname' in subtmpschema:
+                                tmpobjname = subtmpschema['objname']['default']
+                        except Exception:
+                            pass
+
+                        tmpsubcmd = None
+                        if 'cliname' in vv:
+                            if subcmd is None:
+                                tmpsubcmd = vv['cliname']
+                            else:
+                                tmpsubcmd = subcmd + vv['cliname']
+
+                        if "commands" in vv:
+                            cmds = self.getCliCmdAttrs(key, tmpobjname, tmpsubcmd, vv["commands"], subtmpschema["commands"]["properties"])
+                            cmdList += cmds
+
+                else:
+                    cmdDict.update({tmpmodel['cliname'] : {'key': k,
+                                                    'subcommand' : subcmd,
+                                                    'objname' : objname,
+                                                    'value': v['properties']['defaultarg']['default'],
+                                                    'isarray': v['properties']['islist']['default'],
+                                                    'type': v['properties']['argtype']['default']}})
+            else:
+                cmdDict.update({v['properties']['cliname']['default'] : {'key': k,
+                                                    'subcommand' : subcmd,
+                                                    'objname' : objname,
+                                                    'value': v['properties']['defaultarg']['default'],
+                                                    'isarray': v['properties']['islist']['default'],
+                                                    'type': v['properties']['argtype']['default']}})
+        if cmdDict:
+            cmdList.append(cmdDict)
+
+        return cmdList
+
+
+    def xgetCliCmdAttrs(self, key, objname, subcmd, model, schema):
+        cmdList = []
+        cmdDict = {}
+        tmpobjname = objname
 
         for k, v in model.iteritems():
             tmpschema = schema[k]
@@ -143,7 +198,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 cmdDict.update({v['cliname'] : {'key': k,
                                                 'subcommand' : subcmd,
                                                 'objname' : objname,
-                                                'value': None}})
+                                                'value': None,
+                                                'isarray': False,
+                                                'type': str }})
         if cmdDict:
             cmdList.append(cmdDict)
 
@@ -219,8 +276,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             if configObj:
                 for config in configObj.configList:
                     if subkey in config.keysDict.keys():
+                        config.setValid(True)
                         # store the attribute into the config
-                        config.set(subkey, value)
+                        config.set(self.lastcmd, subkey, value)
         else:
             # key + subkey + value supplied
             key = argv[0]
@@ -230,7 +288,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             if configObj:
                 for config in configObj.configList:
                     if subkey in config.keysDict.keys():
-                        config.set(subkey, value)
+                        config.setValid(True)
+                        config.set(self.lastcmd, subkey, value)
 
 
     def getchildrencmds(self, parentname, model, schema):

@@ -6,7 +6,19 @@
       "Priority": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "priority", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "Statement": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,13 +59,13 @@
             "default": "statement", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

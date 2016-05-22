@@ -6,49 +6,85 @@
       "Interface": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Name of the interface this session has to be established on default: None", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "None", 
             "type": "string"
           }, 
           "cliname": {
             "default": "interface", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tName of the interface this session has to be established on\n\tdefault: None", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Owner": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Module requesting BFD session configuration default: user", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "user", 
             "type": "string"
           }, 
           "cliname": {
             "default": "owner", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tModule requesting BFD session configuration\n\tdefault: user", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "IpAddr": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "BFD neighbor IP address", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,55 +92,79 @@
             "default": "ipaddr", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tBFD neighbor IP address", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "PerLink": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Run BFD sessions on individual link of a LAG if the neighbor is reachable through LAG default: false", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }, 
           "cliname": {
             "default": "perlink", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Run BFD sessions on individual link of a LAG if the neighbor is reachable through LAG\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "ParamName": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Name of the session parameters object to be applied on this session default: default", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "default", 
             "type": "string"
           }, 
           "cliname": {
             "default": "paramname", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tName of the session parameters object to be applied on this session\n\tdefault: default", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

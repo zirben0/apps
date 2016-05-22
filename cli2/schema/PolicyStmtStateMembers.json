@@ -6,7 +6,19 @@
       "Action": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Action corresponding to this policy statement", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "action", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tAction corresponding to this policy statement", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "PolicyList": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "List of policies using this policy statement", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,20 +59,32 @@
             "default": "policylist", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tList of policies using this policy statement", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
+          "islist": {
+            "default": true, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Conditions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "List of conditions added to this policy statement", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,20 +92,32 @@
             "default": "conditions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tList of conditions added to this policy statement", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
+          "islist": {
+            "default": true, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Name": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "PolicyStmtState", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -77,20 +125,32 @@
             "default": "name", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tPolicyStmtState", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "MatchConditions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Specifies whether to match all/any of the conditions of this policy statement", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -98,13 +158,13 @@
             "default": "matchconditions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tSpecifies whether to match all/any of the conditions of this policy statement", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

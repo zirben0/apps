@@ -6,7 +6,19 @@
       "RequiredMinRxInterval": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Required minimum rx interval", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "requiredminrxinterval", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tRequired minimum rx interval", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "AuthenticationType": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Authentication type", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,20 +59,32 @@
             "default": "authenticationtype", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tAuthentication type", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "AuthenticationData": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Authentication password", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,20 +92,32 @@
             "default": "authenticationdata", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tAuthentication password", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "DesiredMinTxInterval": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Desired minimum tx interval", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -77,20 +125,32 @@
             "default": "desiredmintxinterval", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tDesired minimum tx interval", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "AuthenticationEnabled": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Authentication enabled", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -98,20 +158,32 @@
             "default": "authenticationenabled", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Authentication enabled", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "DemandEnabled": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Demand mode enabled", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -119,20 +191,32 @@
             "default": "demandenabled", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Demand mode enabled", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "NumSessions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of sessions using these params", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -140,20 +224,32 @@
             "default": "numsessions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of sessions using these params", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "Name": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Session parameters", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -161,20 +257,32 @@
             "default": "name", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tSession parameters", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "AuthenticationKeyId": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Authentication key id", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -182,20 +290,32 @@
             "default": "authenticationkeyid", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tAuthentication key id", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "RequiredMinEchoRxInterval": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Required minimum echo rx interval", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -203,20 +323,32 @@
             "default": "requiredminechorxinterval", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tRequired minimum echo rx interval", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "LocalMultiplier": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Detection multiplier", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -224,13 +356,13 @@
             "default": "localmultiplier", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tDetection multiplier", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }

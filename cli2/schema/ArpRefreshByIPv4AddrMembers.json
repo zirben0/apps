@@ -6,7 +6,19 @@
       "IpAddr": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Neighbor's IP Address for which corresponding Arp entry needed to be re-learned", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,13 +26,13 @@
             "default": "ipaddr", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNeighbor's IP Address for which corresponding Arp entry needed to be re-learned", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

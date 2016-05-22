@@ -6,7 +6,19 @@
       "IntfRef": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Intf name of system generated id (ifindex) of the ipv4Intf where sub interface is to be configured", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "intfref", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tIntf name of system generated id (ifindex) of the ipv4Intf where sub interface is to be configured", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "MacAddr": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Mac address to be used for the sub interface. If none specified IPv4Intf mac address will be used", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,20 +59,32 @@
             "default": "macaddr", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tMac address to be used for the sub interface. If none specified IPv4Intf mac address will be used", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Type": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Type of interface", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,41 +92,65 @@
             "default": "type", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tType of interface", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Enable": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable or disable this interface default: false", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }, 
           "cliname": {
             "default": "enable", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Enable or disable this interface\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "IpAddr": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Ip Address for the interface", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -98,13 +158,13 @@
             "default": "ipaddr", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tIp Address for the interface", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

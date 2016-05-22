@@ -6,7 +6,19 @@
       "NumUpSessions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of BFD sessions in up state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "numupsessions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of BFD sessions in up state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "Enable": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Global BFD state in this VRF", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,20 +59,32 @@
             "default": "enable", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Global BFD state in this VRF", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "NumDownSessions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of BFD sessions in down state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,20 +92,32 @@
             "default": "numdownsessions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of BFD sessions in down state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "Bfd": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "VRF id for which global BFD state is requested", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -77,20 +125,32 @@
             "default": "bfd", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tVRF id for which global BFD state is requested", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "NumAdminDownSessions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of BFD sessions in admin down state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -98,20 +158,32 @@
             "default": "numadmindownsessions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of BFD sessions in admin down state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "NumTotalSessions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Total number of BFD sessions", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -119,13 +191,13 @@
             "default": "numtotalsessions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTotal number of BFD sessions", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }

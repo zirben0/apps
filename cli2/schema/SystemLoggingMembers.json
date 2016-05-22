@@ -6,7 +6,19 @@
       "SRLogger": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Global logging", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,34 +26,46 @@
             "default": "srlogger", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tGlobal logging", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Logging": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Global logging default: on", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "on", 
             "type": "string"
           }, 
           "cliname": {
             "default": "logging", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tGlobal logging\n\tdefault: on", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

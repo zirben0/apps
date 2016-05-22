@@ -6,7 +6,19 @@
       "Name": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "PolicyDefinitionState", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "name", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tPolicyDefinitionState", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "IpPrefixList": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "List of networks/IP Prefixes this policy has been applied on to.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,13 +59,13 @@
             "default": "ipprefixlist", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tList of networks/IP Prefixes this policy has been applied on to.", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
+          "islist": {
+            "default": true, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

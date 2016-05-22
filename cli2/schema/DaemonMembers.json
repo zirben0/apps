@@ -6,49 +6,85 @@
       "WatchDog": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable watchdog for daemon default: true", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true", 
             "type": "string"
           }, 
           "cliname": {
             "default": "watchdog", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Enable watchdog for daemon\n\tdefault: true", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "Enable": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable the flexswitch daemon default: true", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true", 
             "type": "string"
           }, 
           "cliname": {
             "default": "enable", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Enable the flexswitch daemon\n\tdefault: true", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "Name": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Daemon name", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,13 +92,13 @@
             "default": "name", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tDaemon name", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

@@ -5,8 +5,7 @@ import sys
 from jsonschema import Draft4Validator
 import pprint
 import requests
-
-
+from tablePrint import indent, wrap_onspace_strict
 
 USING_READLINE = True
 try:
@@ -279,19 +278,14 @@ class CommonCmdLine(object):
 
     def printCommands(self, argv, subcommands):
 
-        mlineLength = len(argv)
-
-        sys.stdout.write("%15s\t\t\t%s\n" %("Command", "Description"))
-        sys.stdout.write("%15s\t\t\t%s\n" %("-------", "------------------"))
-        if mlineLength > 2:
-            for k, v in [x for x in subcommands if x[0] == argv[-2]]:
-                sys.stdout.write("%15s\t\t\t%s\n" %(k, v))
-                return
-
-        # multiple commands
-        for k, v in subcommands:
-            sys.stdout.write("%15s\t\t\t%s\n" %(k, v))
-
+        labels = ('Command', 'Description',)
+        rows = []
+        for x in subcommands:
+            rows.append((x[0], x[1]))
+        width = 30
+        print indent([labels]+rows, hasHeader=True, separateRows=False,
+                     prefix=' ', postfix=' ', headerChar= '-', delim='    ',
+                     wrapfunc=lambda x: wrap_onspace_strict(x,width))
 
     def default(self,):
         pass
@@ -346,6 +340,21 @@ class CommonCmdLine(object):
         configObj = self.getConfigObj()
         if configObj:
             configObj.do_clearunapplied(argv)
+
+        # need to ensure that we exit out of current config if we are
+        # not already at config
+        child = self
+        if child.objname != "config":
+            parent = child.parent
+            while parent is not None:
+                if parent.objname == "config":
+                    self.do_exit([])
+                    parent = None
+                else:
+                    self.do_exit([])
+                    child = parent
+                    parent = child.parent
+
 
     def precmd(self, argv):
         if len(argv) > 0:

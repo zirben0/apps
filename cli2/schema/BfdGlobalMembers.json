@@ -6,28 +6,52 @@
       "Enable": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Global BFD state in this VRF default: true", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true", 
             "type": "string"
           }, 
           "cliname": {
             "default": "enable", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Global BFD state in this VRF\n\tdefault: true", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "Bfd": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "VRF id where BFD is globally enabled or disabled", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,13 +59,13 @@
             "default": "bfd", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tVRF id where BFD is globally enabled or disabled", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

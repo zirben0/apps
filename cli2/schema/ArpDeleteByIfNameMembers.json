@@ -6,7 +6,19 @@
       "IfName": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "All the Arp learned for end host on given L3 interface will be deleted", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,13 +26,13 @@
             "default": "ifname", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tAll the Arp learned for end host on given L3 interface will be deleted", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }
