@@ -1,0 +1,178 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Priority": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Priority of the policy w.r.t other policies configured", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "priority", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "MatchType": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "all/any  Specifies whether to match all/any of the statements within this policy default: all", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "all", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "matchtype", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "PolicyType": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " BGP/OSPF/ALL  Specifies the intended protocol application for the policy default: ALL", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "ALL", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "policytype", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "Name": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Policy Name", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "name", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "StatementList": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: PolicyDefinitionStmtPriority.  Specifies list of statements along with their precedence order.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "statementlist", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "PolicyDefinitionStmtPriority", 
+            "type": "string"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "PolicyDefinition", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

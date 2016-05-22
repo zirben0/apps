@@ -1,0 +1,79 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Enable": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Global Config stating whether DHCP Relay Agent is enabled on the box or not", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "enable", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }
+        }
+      }, 
+      "DhcpRelay": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Global Dhcp Relay Agent Information", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "dhcprelay", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "DhcpRelayGlobal", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

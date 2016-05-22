@@ -1,0 +1,79 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "Received": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: BGPCounters.  Rx counters of the BGP neighbor", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "received", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "BGPCounters", 
+            "type": "string"
+          }
+        }
+      }, 
+      "Sent": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: BGPCounters.  Tx counters of the BGP neighbor", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "sent", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "BGPCounters", 
+            "type": "string"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "BGPMessages", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

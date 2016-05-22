@@ -1,0 +1,409 @@
+{
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "NbrIpAddr": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The IP address this neighbor is using in its IP source address.  Note that", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbripaddr", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrRestartHelperAge": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Remaining time in current OSPF graceful restart interval", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrrestarthelperage", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrAddressLessIndex": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " MIN 0 MAX 2147483647  On an interface having an IP address", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbraddresslessindex", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrRestartHelperStatus": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " helping(2)/notHelping(1)  Indicates whether the router is acting as a graceful restart helper for the neighbor.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrrestarthelperstatus", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrOptions": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "A bit mask corresponding to the neighbor's options field.  Bit 0", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbroptions", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbmaNbrPermanence": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " permanent(2)/dynamic(1)  This variable displays the status of the entry; 'dynamic' and 'permanent' refer to how the neighbor became known.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbmanbrpermanence", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrLsRetransQLen": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "The current length of the retransmission queue.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrlsretransqlen", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrEvents": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "The number of times this neighbor relationship has changed state or an error has occurred.  Discontinuities in the value of this counter can occur at re-initialization of the management system", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrevents", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrRestartHelperExitReason": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " inProgress(2)/none(1)/timedOut(4)/completed(3)/topologyChanged(5)  Describes the outcome of the last attempt at acting as a graceful restart helper for the neighbor.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrrestarthelperexitreason", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrState": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " exchangeStart(5)/loading(7)/attempt(2)/exchange(6)/down(1)/init(3)/full(8)/twoWay(4)  The state of the relationship with this neighbor.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrstate", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrHelloSuppressed": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Indicates whether Hellos are being suppressed to the neighbor.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrhellosuppressed", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }
+        }
+      }, 
+      "NbrRtrId": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer (represented as a type IpAddress) uniquely identifying the neighboring router in the Autonomous System.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "nbrrtrid", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }
+    }
+  }, 
+  "objname": {
+    "default": "OspfNbrEntryState", 
+    "type": "string", 
+    "descirption": "object name to which references these attributes"
+  }
+}

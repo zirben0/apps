@@ -1,0 +1,54 @@
+{
+  "id": "file:/tmp/snaproute/cli/schema/base.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Cli Base",
+  "type": "object",
+  "properties": {
+    "style" : {
+      "type": "string",
+      "description": "emulation mode for the schema"
+    },
+    "prompt-prefix": {
+      "format": "ipv4"
+    },
+    "prompt" : {
+      "type" : "string",
+      "default" : ">"
+    },
+    "sdk" : {
+      "$ref" : "file:/tmp/snaproute/cli/schema/sdk.json"
+    },
+    "commands": {
+      "type": "object",
+      "description": "Base commands",
+      "properties": {
+        "privilege": {
+          "type": "object",
+          "description" : "user mode object",
+          "properties": {
+            "prompt": {
+              "type": "string",
+              "description": "Prompt to display when entering this mode",
+              "default": "#"
+            },
+            "cliname": {
+              "type": "string",
+              "description": "Comamnd name used to enable this mode",
+              "default": "enable"
+            }
+          }
+        },
+        "subcmd1" : {
+          "$ref" : "file:/tmp/snaproute/cli/schema/config.json"
+        },
+        "subcmd2" : {
+          "$ref": "file:/tmp/snaproute/cli/schema/show.json"
+        }
+      }
+    }
+  },
+  "required": [
+    "prompt",
+    "commands"
+  ]
+}

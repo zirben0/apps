@@ -1,0 +1,20 @@
+{
+  "config": {
+    "prompt" : "(config)",
+    "cliname" : "config",
+    "commands" : {
+      "subcmd1" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/interface.json"
+      },
+      "subcmd2" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/vlan.json"
+      },
+      "subcmd3" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/router.json"
+      },
+      "subcmd4" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/stp.json"
+      }
+    }
+  } 
+}

@@ -1,0 +1,13 @@
+{
+  "show": {
+    "cliname" : "show",
+    "commands" : {
+      "subcmd1" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/interface.json"
+      },
+      "subcmd2" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/vlan.json"
+      }
+    }
+  } 
+}

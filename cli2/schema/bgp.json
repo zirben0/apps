@@ -1,0 +1,33 @@
+{
+  "bgp": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : "bgp"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe ethernet",
+        "default" : "bgp"
+      },
+       "help" : {
+        "type" : "string",
+        "default": "Border Gateway Protocol (BGP)"
+      },
+      "value" : {
+        "type" : "integer",
+        "description" : "this is a trigger to cli that a command needs a value"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to ethernet port",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalMembers.json"
+          }
+        }
+      }
+    }
+  }
+}

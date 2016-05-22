@@ -1,0 +1,10 @@
+{
+  "bgp": {
+    "cliname" : "bgp",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalMembers.json"
+      }
+    }
+  }
+}

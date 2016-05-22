@@ -1,0 +1,32 @@
+{
+  "interface": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type" : "string",
+        "default" : "interface"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "Name used in cli to describe an interface",
+        "default" : "interface"
+      },
+      "help" : {
+        "type" : "string",
+        "default": "Configure interfaces"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to the different interfaces",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/ethernet.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/svi.json"
+          }
+        }
+      }
+    }
+  }
+}
