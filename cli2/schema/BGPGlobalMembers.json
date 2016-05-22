@@ -6,7 +6,19 @@
       "RouterId": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Router id for BGP global config", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,41 +26,65 @@
             "default": "routerid", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tRouter id for BGP global config", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Redistribution": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: SourcePolicyList.  Provide redistribution policies for BGP from different sources default: []", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "[]", 
             "type": "string"
           }, 
           "cliname": {
             "default": "redistribution", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\ttype: SourcePolicyList.  Provide redistribution policies for BGP from different sources", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
+          "islist": {
+            "default": true, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "SourcePolicyList", 
+            "type": "string"
           }
         }
       }, 
       "ASNum": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Local AS for BGP global config", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,97 +92,145 @@
             "default": "asnum", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tLocal AS for BGP global config", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "IBGPMaxPaths": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Max ECMP paths from Internal BGP neighbors default: 0", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0", 
             "type": "string"
           }, 
           "cliname": {
             "default": "ibgpmaxpaths", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tMax ECMP paths from Internal BGP neighbors\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "EBGPMaxPaths": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Max ECMP paths from External BGP neighbors default: 0", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0", 
             "type": "string"
           }, 
           "cliname": {
             "default": "ebgpmaxpaths", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tMax ECMP paths from External BGP neighbors\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "UseMultiplePaths": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable/disable ECMP for BGP default: false", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }, 
           "cliname": {
             "default": "usemultiplepaths", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Enable/disable ECMP for BGP\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "EBGPAllowMultipleAS": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable/diable ECMP paths from multiple ASes default: false", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }, 
           "cliname": {
             "default": "ebgpallowmultipleas", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  Enable/diable ECMP paths from multiple ASes\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }

@@ -6,7 +6,19 @@
       "Received": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: BGPCounters.  Rx counters of the BGP neighbor", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "received", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\ttype: BGPCounters.  Rx counters of the BGP neighbor", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "BGPCounters", 
+            "type": "string"
           }
         }
       }, 
       "Sent": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: BGPCounters.  Tx counters of the BGP neighbor", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,13 +59,13 @@
             "default": "sent", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\ttype: BGPCounters.  Tx counters of the BGP neighbor", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "BGPCounters", 
+            "type": "string"
           }
         }
       }

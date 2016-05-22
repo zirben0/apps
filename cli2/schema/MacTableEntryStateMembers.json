@@ -6,7 +6,19 @@
       "MacAddr": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "MAC Address", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,55 +26,79 @@
             "default": "macaddr", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tMAC Address", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Port": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Port number on which mac was learned default: 0", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0", 
             "type": "string"
           }, 
           "cliname": {
             "default": "port", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tPort number on which mac was learned\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "VlanId": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Vlan id corresponding to which mac was learned default: 0", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0", 
             "type": "string"
           }, 
           "cliname": {
             "default": "vlanid", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tVlan id corresponding to which mac was learned\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }

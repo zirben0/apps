@@ -6,7 +6,19 @@
       "Collecting": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  If true", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,20 +26,32 @@
             "default": "collecting", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  If true", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "MuxReason": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Reason for the most recent MUX state change", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,20 +59,32 @@
             "default": "muxreason", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tReason for the most recent MUX state change", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "LampInPdu": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LAMPDU received", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,20 +92,32 @@
             "default": "lampinpdu", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LAMPDU received", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "LacpOutPkts": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LACPDUs transmitted", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -77,20 +125,32 @@
             "default": "lacpoutpkts", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LACPDUs transmitted", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "RxMachine": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " RX_CURRENT(0)/RX_PORT_DISABLE(5)/RX_DEFAULTED(2)/RX_LACP_DISABLED(4)/RX_EXPIRED(1)/RX_INITIALIZE(3)  Current Rx Machine State", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -98,20 +158,32 @@
             "default": "rxmachine", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t RX_CURRENT(0)/RX_PORT_DISABLE(5)/RX_DEFAULTED(2)/RX_LACP_DISABLED(4)/RX_EXPIRED(1)/RX_INITIALIZE(3)  Current Rx Machine State", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "LacpUnknownErrors": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LACPDU unknown packet errors", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -119,20 +191,32 @@
             "default": "lacpunknownerrors", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LACPDU unknown packet errors", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "MuxMachine": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " MUX_COLLECTING(3)/MUX_COLLECTING_DISTRIBUTING_DEFAULTED(7)/MUX_COLLECTING_DISTRIBUTING(5)/MUX_DISTRIBUTING_DEFAULTED(6)/MUX_ATTACHED(2)/MUX_DETACHED(0)/MUX_DISTRIBUTING(4)/MUX_WAITING(1)  Current MUX Machine State", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -140,20 +224,32 @@
             "default": "muxmachine", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t MUX_COLLECTING(3)/MUX_COLLECTING_DISTRIBUTING_DEFAULTED(7)/MUX_COLLECTING_DISTRIBUTING(5)/MUX_DISTRIBUTING_DEFAULTED(6)/MUX_ATTACHED(2)/MUX_DETACHED(0)/MUX_DISTRIBUTING(4)/MUX_WAITING(1)  Current MUX Machine State", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "PartnerChangeCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of times the Partner's perception of the LAG ID for the  Aggregation Port has changed.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -161,20 +257,32 @@
             "default": "partnerchangecount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of times the Partner's perception of the LAG ID for the  Aggregation Port has changed.", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "OperKey": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Current operational value of the key for the aggregate interface", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -182,20 +290,32 @@
             "default": "operkey", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tCurrent operational value of the key for the aggregate interface", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint16", 
+            "type": "string"
           }
         }
       }, 
       "LampOutPdu": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LAMPDU transmited", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -203,20 +323,32 @@
             "default": "lampoutpdu", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LAMPDU transmited", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "Distributing": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  When true", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -224,20 +356,32 @@
             "default": "distributing", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  When true", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "ActorCdsChurnCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "If supported the number of times the Actor CDS Churn state has entered the ACTOR_CDS_CHURN state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -245,20 +389,32 @@
             "default": "actorcdschurncount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tIf supported the number of times the Actor CDS Churn state has entered the ACTOR_CDS_CHURN state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "SystemId": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " [0-9a-fA-F]{2}(  MAC address that defines the local system ID for the aggregate interface", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -266,20 +422,32 @@
             "default": "systemid", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t [0-9a-fA-F]{2}(  MAC address that defines the local system ID for the aggregate interface", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "LampInResponsePdu": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LAMPDU Response received", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -287,20 +455,32 @@
             "default": "lampinresponsepdu", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LAMPDU Response received", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "ActorChurnMachine": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " CHURN_NO_CHURN(0)/CHURN_CHURN(1)  Actor Churn Detection Machine State", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -308,20 +488,32 @@
             "default": "actorchurnmachine", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  Actor Churn Detection Machine State", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "ActorCdsChurnMachine": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " CHURN_NO_CHURN(0)/CHURN_CHURN(1)  If supported Actor CDS Churn Machine State", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -329,20 +521,32 @@
             "default": "actorcdschurnmachine", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  If supported Actor CDS Churn Machine State", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "LacpRxErrors": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LACPDU receive packet errors", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -350,20 +554,32 @@
             "default": "lacprxerrors", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LACPDU receive packet errors", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "PartnerSyncTransitionCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of times the Partner's Mux state machine has entered the  IN_SYNC state.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -371,20 +587,32 @@
             "default": "partnersynctransitioncount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of times the Partner's Mux state machine has entered the  IN_SYNC state.", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "PartnerCdsChurnCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "If supported the number of times the Actor CDS Churn state has entered the ACTOR_CDS_CHURN state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -392,20 +620,32 @@
             "default": "partnercdschurncount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tIf supported the number of times the Actor CDS Churn state has entered the ACTOR_CDS_CHURN state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "PartnerCdsChurnMachine": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " CHURN_NO_CHURN(0)/CHURN_CHURN(1)  If supported Partner CDS Churn Machine State", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -413,20 +653,32 @@
             "default": "partnercdschurnmachine", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  If supported Partner CDS Churn Machine State", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "PartnerChurnMachine": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " CHURN_NO_CHURN(0)/CHURN_CHURN(1)  Partner Churn Detection Machine State", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -434,20 +686,32 @@
             "default": "partnerchurnmachine", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t CHURN_NO_CHURN(0)/CHURN_CHURN(1)  Partner Churn Detection Machine State", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "OperState": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "The operation state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -455,20 +719,32 @@
             "default": "operstate", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tThe operation state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "LacpErrors": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LACPDU illegal packet errors", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -476,20 +752,32 @@
             "default": "lacperrors", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LACPDU illegal packet errors", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "IfIndex": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Reference to aggregate member interface", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -497,20 +785,32 @@
             "default": "ifindex", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tReference to aggregate member interface", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "Activity": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " ACTIVE(0)/PASSIVE(1)  Indicates participant is active or passive", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -518,20 +818,32 @@
             "default": "activity", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t ACTIVE(0)/PASSIVE(1)  Indicates participant is active or passive", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "PartnerKey": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Operational value of the protocol partner's key", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -539,20 +851,32 @@
             "default": "partnerkey", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tOperational value of the protocol partner's key", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint16", 
+            "type": "string"
           }
         }
       }, 
       "PartnerChurnCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of times the Partner State machine has entered the  ACTOR_CHURN state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -560,20 +884,32 @@
             "default": "partnerchurncount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of times the Partner State machine has entered the  ACTOR_CHURN state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "LacpTxErrors": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LACPDU transmit packet errors", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -581,20 +917,32 @@
             "default": "lacptxerrors", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LACPDU transmit packet errors", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "LampOutResponsePdu": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LAMPDU Response received", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -602,20 +950,32 @@
             "default": "lampoutresponsepdu", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LAMPDU Response received", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "Timeout": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " SHORT(1)/LONG(0)  The timeout type (short or long) used by the participant", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -623,20 +983,32 @@
             "default": "timeout", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t SHORT(1)/LONG(0)  The timeout type (short or long) used by the participant", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "LacpInPkts": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of LACPDUs received", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -644,20 +1016,32 @@
             "default": "lacpinpkts", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of LACPDUs received", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "Aggregatable": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  A true value indicates that the participant will allow the link to be used as part of the aggregate. A false value indicates the link should be used as an individual link", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -665,20 +1049,32 @@
             "default": "aggregatable", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  A true value indicates that the participant will allow the link to be used as part of the aggregate. A false value indicates the link should be used as an individual link", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "LagId": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Id of the lag group to which this port is associated with", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -686,20 +1082,32 @@
             "default": "lagid", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tId of the lag group to which this port is associated with", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "Synchronization": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " OUT_SYNC(1)/IN_SYNC(0)  Indicates whether the participant is in-sync or out-of-sync", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -707,20 +1115,32 @@
             "default": "synchronization", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t OUT_SYNC(1)/IN_SYNC(0)  Indicates whether the participant is in-sync or out-of-sync", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "PartnerId": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " [0-9a-fA-F]{2}(  MAC address representing the protocol partner's interface system ID", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -728,20 +1148,32 @@
             "default": "partnerid", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\t [0-9a-fA-F]{2}(  MAC address representing the protocol partner's interface system ID", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Defaulted": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  When no partner information is exchanged port will come up in a defaulted state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -749,20 +1181,32 @@
             "default": "defaulted", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTrue/False  When no partner information is exchanged port will come up in a defaulted state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
           }
         }
       }, 
       "ActorChurnCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of times the Actor State machine has entered the  ACTOR_CHURN state", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -770,20 +1214,32 @@
             "default": "actorchurncount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of times the Actor State machine has entered the  ACTOR_CHURN state", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "ActorChangeCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of times the Actor's perception of the LAG ID for the  Aggregation Port has changed.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -791,20 +1247,32 @@
             "default": "actorchangecount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of times the Actor's perception of the LAG ID for the  Aggregation Port has changed.", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }, 
       "DebugId": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Debug Information Id", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -812,20 +1280,32 @@
             "default": "debugid", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tDebug Information Id", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "RxTime": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Time at which the last LACPDU was received by a given port", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -833,20 +1313,32 @@
             "default": "rxtime", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tTime at which the last LACPDU was received by a given port", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
           }
         }
       }, 
       "LagIfIndex": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Interface member of the LACP aggregate", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -854,20 +1346,32 @@
             "default": "lagifindex", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tInterface member of the LACP aggregate", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
           }
         }
       }, 
       "ActorSyncTransitionCount": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Number of times the Actor's Mux state machine has entered the  IN_SYNC state.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -875,13 +1379,13 @@
             "default": "actorsynctransitioncount", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tNumber of times the Actor's Mux state machine has entered the  IN_SYNC state.", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "uint64", 
+            "type": "string"
           }
         }
       }

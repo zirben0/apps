@@ -6,7 +6,19 @@
       "Module": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Module name to set logging level", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -14,34 +26,46 @@
             "default": "module", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tModule name to set logging level", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Level": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Logging level default: info", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "info", 
             "type": "string"
           }, 
           "cliname": {
             "default": "level", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tLogging level\n\tdefault: info", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

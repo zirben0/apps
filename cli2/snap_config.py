@@ -10,6 +10,7 @@ from jsonref import JsonRef
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine
 from snap_leaf import LeafCmd
+from cmdEntry import *
 
 pp = pprint.PrettyPrinter(indent=2)
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
@@ -239,6 +240,17 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     argumentList.append(v['value'])
         return argumentList
 
+    def doesConfigExist(self, c):
+        '''
+        :param entry: CmdEntry
+        :return:
+        '''
+        for config in self.configList:
+            if config.name == c.name:
+                return True
+        return False
+
+
     def show_state(self, all=False):
 
         configObj = self.getConfigObj()
@@ -260,7 +272,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     else:
                         # update all the arguments so that the values get set in the get_sdk_...
                         print_func = getattr(sdk, 'print' + funcObjName + 'State')
-                        kwargs = config.getSdkAll()
+                        kwargs = config.getSdkConfig()
                         argumentList = self.get_sdk_func_key_values(config, kwargs, print_func)
                         print_func(*argumentList)
 
@@ -275,64 +287,68 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if self.configList:
             sys.stdout.write("Applying Config:\n")
             for config in self.configList:
-                # tell the user what attributes are being applied
-                #config.show()
+                if config.isValid():
 
-                # get the sdk
-                sdk = self.getSdk()
+                    # tell the user what attributes are being applied
+                    #config.show()
 
-                funcObjName = config.name
+                    # get the sdk
+                    sdk = self.getSdk()
 
-                #lets see if the object exists, by doing a get first
-                get_func = getattr(sdk, 'get' + funcObjName)
-                update_func = getattr(sdk, 'update' + funcObjName)
-                create_func = getattr(sdk, 'create' + funcObjName)
+                    funcObjName = config.name
 
-                try:
-                    # update all the arguments
-                    kwargs = config.getSdkAll()
-                    argumentList = self.get_sdk_func_key_values(config, kwargs, get_func)
+                    #lets see if the object exists, by doing a get first
+                    get_func = getattr(sdk, 'get' + funcObjName)
+                    update_func = getattr(sdk, 'update' + funcObjName)
+                    create_func = getattr(sdk, 'create' + funcObjName)
 
-                    r = get_func(*argumentList)
-                    if r.status_code in sdk.httpSuccessCodes:
-                        # update
-                        argumentList = self.get_sdk_func_key_values(config, kwargs, update_func)
-                        if len(kwargs) > 0:
-                            r = update_func(*argumentList, **kwargs)
+                    try:
+                        # update all the arguments
+                        kwargs = config.getSdkConfig()
+                        argumentList = self.get_sdk_func_key_values(config, kwargs, get_func)
+
+                        r = get_func(*argumentList)
+                        if r.status_code in sdk.httpSuccessCodes:
+                            # update
+                            argumentList = self.get_sdk_func_key_values(config, kwargs, update_func)
+                            if len(kwargs) > 0:
+                                r = update_func(*argumentList, **kwargs)
+                                if r.status_code not in sdk.httpSuccessCodes:
+                                    sys.stdout.write("command update FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                else:
+                                    sys.stdout.write("update SUCCESS:\n" )
+                                    config.show()
+
+                        elif r.status_code == 404:
+                            # create
+                            import ipdb; ipdb.set_trace()
+                            argumentList = self.get_sdk_func_key_values(config, kwargs, create_func)
+                            r = create_func(*argumentList, **kwargs)
                             if r.status_code not in sdk.httpSuccessCodes:
-                                sys.stdout.write("command update FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                sys.stdout.write("command create FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
                             else:
-                                sys.stdout.write("update SUCCESS:\n" )
+                                sys.stdout.write("create SUCCESS:\n" )
                                 config.show()
 
-                    elif r.status_code == 404:
-                        # create
-                        argumentList = self.get_sdk_func_key_values(config, kwargs, create_func)
-                        r = create_func(*argumentList, **kwargs)
-                        if r.status_code not in sdk.httpSuccessCodes:
-                            sys.stdout.write("command create FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
                         else:
-                            sys.stdout.write("create SUCCESS:\n" )
-                            config.show()
+                            sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
 
-                    else:
-                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
-
-                    # remove the configuration as it has been applied
-                    config.clear(None, None, all=True)
-                except Exception as e:
-                    sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+                        # remove the configuration as it has been applied
+                        config.clear(None, None, all=True)
+                    except Exception as e:
+                        sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
 
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")
         for config in self.configList:
-            config.show()
+            if config.isValid():
+                config.show()
 
 
     def do_clearunapplied(self, argv):
         sys.stdout.write("Clearing Unapplied Config\n")
         for config in self.configList:
-            config.clear()
+            config.clear(all)
 
     '''
     TODO need to be able to run show at any time during config

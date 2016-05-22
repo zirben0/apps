@@ -12,23 +12,37 @@ class MemberTemplate(object):
                 # empty string means ignore
                 "prompt": {
                     "type": "string",
-                    "default" : ""
+                    "default": ""
                 },
                 # what gets displayed when a tab is pressed
                 "cliname": {
                     "type": "string",
-                    "default" : ""
+                    "default": ""
                 },
                 # description of what attribute value, ranges, default etc should be
                 # when user types ? or help
                 "help": {
                     "type": "string",
-                    "default" : "TODO"
+                    "default": "TODO"
+                },
+                # describes the type of the value that needs to be supplied
+                "argtype": {
+                    "type": "string",
+                    "default": ""
+                },
+                "defaultarg" : {
+                    "type": "string",
+                    "default": ""
+                },
+                # is the attribute a list of type?
+                "islist" :{
+                    "type": "boolean",
+                    "default": False
                 },
                 # determine if this attribute is a key to this object
                 "key" : {
-                    "type" : "boolean",
-                    "default": "false"
+                    "type": "boolean",
+                    "default": False
                 }
             }
         }
@@ -45,31 +59,40 @@ class MemberTemplate(object):
     def setKey(self, k=False):
         self.info["properties"]["key"]["default"] = k
 
+    def setDefault(self, d=""):
+        self.info["properties"]["defaultarg"]["default"] = d
+
+    def setType(self, t=str):
+        self.info["properties"]["argtype"]["default"] = t
+
+    def setIsList(self, l=False):
+        self.info["properties"]["islist"]["default"] = l
+
     def setHelp(self, d, type=None, selections=None, min=None, max=None, len=None, default=None):
         lines = []
         if 'int' in type:
             if min not in ('', None) and max not in ('', None):
-                lines.append("\t%s-%s  %s" %(min, max, d))
+                lines.append("%s-%s  %s" %(min, max, d))
             elif selections not in ('', None):
-                lines.append("\t%s  %s" %(selections, d))
+                lines.append("%s  %s" %(selections, d))
             elif len not in ('', None):
-                lines.append("\tlen(%s) %s" %(len, d))
+                lines.append("len(%s) %s" %(len, d))
             else:
-                lines.append("\t%s" %(d))
+                lines.append("%s" %(d))
         elif type == 'bool':
-            lines.append("\tTrue/False  %s" %(d, ))
+            lines.append("True/False  %s" %(d, ))
         elif type == 'string':
             if selections not in ('', None):
-                lines.append("\t%s  %s" %(selections, d))
+                lines.append("%s  %s" %(selections, d))
             else:
-                lines.append("\t%s" %(d, ))
+                lines.append("%s" %(d, ))
         else:
-            lines.append("\ttype: %s.  %s" %(type, d))
+            lines.append("type: %s.  %s" %(type, d))
 
         if default:
-            lines.append("\tdefault: %s" %(default,))
+            lines.append("default: %s" %(default,))
 
-        self.info["properties"]["help"]["default"] = "\n".join(lines)
+        self.info["properties"]["help"]["default"] = " ".join(lines)
 
 # this class will take the generated json data model member files
 # and create a schema from them
@@ -108,11 +131,10 @@ class ModelMemberSchemaFormat(object):
             "description": "",
             "properties": { } # where member info is stored
         }
-
         for name, member in self.membermodel.iteritems():
             type = member['type']
             iskey = member['isKey']
-            #isArray = member['isArray']
+            isArray = member['isArray']
             description = member['description']
             default = member['default']
             isdefaultset = member['isDefaultSet']
@@ -125,7 +147,11 @@ class ModelMemberSchemaFormat(object):
             memberinfo = MemberTemplate()
             memberinfo.setCliName(name.lower())
             memberinfo.setKey(iskey)
+            memberinfo.setType(type)
+            memberinfo.setIsList(isArray)
             memberinfo.setPrompt("")
+            memberinfo.setDefault(default)
+
             memberinfo.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
 
             self.memberschema["commands"]["properties"].update(
@@ -157,11 +183,12 @@ if __name__ == '__main__':
     parser.add_option("-j", "--jschema", action="store",type="string",
                       dest="cli_schema_path",
                       help="Path to the cli model to be used",
-                      default="./schema/")
+                      default="./")
     parser.add_option("-d", "--jdatamodel", action="store", type="string",
                       dest="data_member_model_path",
                       help="Path to json data model member files",
-                      default='./models/cisco/')
+                      default='../../../../../reltools/codegentools/._genInfo/')
+
 
     (options, args) = parser.parse_args()
 

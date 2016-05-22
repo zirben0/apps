@@ -6,28 +6,52 @@
       "Action": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "permit/deny  Action for this policy statement default: deny", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "deny", 
             "type": "string"
           }, 
           "cliname": {
             "default": "action", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tpermit/deny  Action for this policy statement\n\tdefault: deny", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Conditions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "List of conditions added to this policy statement", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -35,20 +59,32 @@
             "default": "conditions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tList of conditions added to this policy statement", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
+          "islist": {
+            "default": true, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "Name": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Policy Statement Name", 
+            "type": "string"
+          }, 
+          "defaultarg": {
             "default": "", 
             "type": "string"
           }, 
@@ -56,34 +92,46 @@
             "default": "name", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tPolicy Statement Name", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
+          "islist": {
+            "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }, 
       "MatchConditions": {
         "type": "object", 
         "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "prompt": {
             "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "any/all  Specifies whether to match all/any of the conditions of this policy statement default: all", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "all", 
             "type": "string"
           }, 
           "cliname": {
             "default": "matchconditions", 
             "type": "string"
           }, 
-          "help": {
-            "default": "\tany/all  Specifies whether to match all/any of the conditions of this policy statement\n\tdefault: all", 
-            "type": "string"
-          }, 
-          "key": {
+          "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
           }
         }
       }

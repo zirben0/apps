@@ -3,7 +3,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "Priority": {
+      "RouterId": {
         "type": "object", 
         "properties": {
           "key": {
@@ -15,7 +15,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Priority of the policy w.r.t other policies configured", 
+            "default": "System Router Id", 
             "type": "string"
           }, 
           "defaultarg": {
@@ -23,40 +23,7 @@
             "type": "string"
           }, 
           "cliname": {
-            "default": "priority", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "MatchType": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "all/any  Specifies whether to match all/any of the statements within this policy default: all", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "all", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "matchtype", 
+            "default": "routerid", 
             "type": "string"
           }, 
           "islist": {
@@ -69,7 +36,7 @@
           }
         }
       }, 
-      "PolicyType": {
+      "Version": {
         "type": "object", 
         "properties": {
           "key": {
@@ -81,15 +48,15 @@
             "type": "string"
           }, 
           "help": {
-            "default": " BGP/OSPF/ALL  Specifies the intended protocol application for the policy default: ALL", 
+            "default": "System Version Information", 
             "type": "string"
           }, 
           "defaultarg": {
-            "default": "ALL", 
+            "default": "", 
             "type": "string"
           }, 
           "cliname": {
-            "default": "policytype", 
+            "default": "version", 
             "type": "string"
           }, 
           "islist": {
@@ -102,7 +69,139 @@
           }
         }
       }, 
-      "Name": {
+      "Description": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "System Description", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "description", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "MgmtIp": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Management Ip of System", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "mgmtip", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "Hostname": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "System Host Name", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "hostname", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "SwitchMac": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Switch Mac Address", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "switchmac", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "Vrf": {
         "type": "object", 
         "properties": {
           "key": {
@@ -114,15 +213,15 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Policy Name", 
+            "default": "System Vrf default: default", 
             "type": "string"
           }, 
           "defaultarg": {
-            "default": "", 
+            "default": "default", 
             "type": "string"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "vrf", 
             "type": "string"
           }, 
           "islist": {
@@ -131,39 +230,6 @@
           }, 
           "argtype": {
             "default": "string", 
-            "type": "string"
-          }
-        }
-      }, 
-      "StatementList": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: PolicyDefinitionStmtPriority.  Specifies list of statements along with their precedence order.", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "statementlist", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "PolicyDefinitionStmtPriority", 
             "type": "string"
           }
         }
@@ -171,7 +237,7 @@
     }
   }, 
   "objname": {
-    "default": "PolicyDefinition", 
+    "default": "SystemParam", 
     "type": "string", 
     "descirption": "object name to which references these attributes"
   }
