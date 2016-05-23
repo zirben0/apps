@@ -210,7 +210,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         # remove spacing/tab
         mline = [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
-        sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
+        #sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
 
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
@@ -234,6 +234,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                             valueexpected = self.isValueExpected(mline[1], subsubmodel, subsubschema)
                             if valueexpected:
                                 self.commandLen = len(mline)
+
                                 return []
                             else:
                                 subcommands += self.getchildrencmds(mline[i], subsubmodel, subsubschema)

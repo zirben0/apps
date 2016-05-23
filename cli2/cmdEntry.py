@@ -19,6 +19,13 @@ def convertStrBoolToBool(v):
         return True
     return False
 
+def convertStrNumToNum(v):
+    try:
+        val = string.atoi(v)
+    except Exception:
+        val = 0
+    return val
+
 def getEntryAttribute(entry):
     return entry.attr
 
@@ -33,15 +40,27 @@ def getEntrytime(entry):
 
 class CmdSet(object):
 
-    def __init__(self, cmd, attr, val):
+    def __init__(self, cmd, delete, attr, val):
         self.cmd = cmd
+        self.delete = delete
         self.attr = attr
         self.val = val
         self.date = time.ctime()
 
-    def set(self, val):
+    def __str__(self,):
+        lines = "cmd: %s\ndelete %s\n attr %s\n val %s\n date %s\n" %(self.cmd, self.delete, self.attr, self.val, self.date)
+        return lines
+
+
+    def set(self, cmd, delete, attr, val):
+        self.cmd = cmd
+        self.delete = delete
+        self.attr = attr
         self.val = val
         self.date = time.ctime()
+
+    def get(self):
+        return (self.cmd, self.attr, self.val)
 
 class CmdEntry(object):
 
@@ -52,6 +71,13 @@ class CmdEntry(object):
         # so this flag will allow config obj to know
         # to send this config to hw
         self.valid = False
+        # if the base key command was added
+        # then the config may be pending waiting for the
+        # second attribute to be set on the object
+        self.pending = True
+        # This is a delete command, meaning we want to
+        # update to a default or delete an object
+        self.delete = False
         # holds the name of the object
         self.name = name
         # hold provisioned values
@@ -64,26 +90,39 @@ class CmdEntry(object):
         #              'value' : value} }
         self.keysDict = copy.deepcopy(keyDict)
 
+    def __str__(self):
+        lines = "name: %s\nvalid: %sdelete %s\n" %(self.name, self.valid, self.delete)
+        lines += "attrList: %s\n" %(self.attrList)
+        lines += "keysDict: %s\n" %(self.keysDict)
+        return lines
+
     def isValid(self):
         return self.valid
 
     def setValid(self, v):
         self.valid = v
 
-    def set(self, fullcmd, k, v):
+    def setPending(self, p):
+        self.pending = p
+
+    def setDelete(self, d):
+        self.delete = d
+
+    def set(self, fullcmd, delete, k, v):
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
-                entry.set(v)
+                # TODO if delete then we may need to remove this command all together
+                entry.set(' '.join(fullcmd), delete, k, v)
                 return
 
-        self.attrList.append(CmdSet(' '.join(fullcmd),k, v))
+        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v))
 
     def clear(self, k=None, v=None, all=None):
         try:
             if not all:
                 delcmd = None
                 for entry in self.attrList:
-                    if k == self.getEntryAttribute(entry):
+                    if k == getEntryAttribute(entry):
                         delcmd = entry
 
                 if delcmd is not None:
@@ -106,33 +145,48 @@ class CmdEntry(object):
                     value = None
                     if self.keysDict[kk]['isarray']:
                         if isnumeric(self.keysDict[kk]['type']):
-                            l = [x.lstrip('').rstrip('') for x in getEntryValue(entry).split(",")]
+                            l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
                             value = [int(x) for x in l]
                         elif isboolean(self.keysDict[kk]['type']):
-                            l = [x.lstrip('').rstrip('') for x in getEntryValue(entry).split(",")]
+                            l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
                             value = [convertStrBoolToBool(x) for x in l]
                         else:
                             value = [x.lstrip('').rstrip('') for x in getEntryValue(entry).split(",")]
 
                     else:
                         if isnumeric(self.keysDict[kk]['type']):
-                            value = int(getEntryValue(entry))
+                            value = convertStrNumToNum(getEntryValue(entry))
                         elif isboolean(self.keysDict[kk]['type']):
                             value = convertStrBoolToBool(getEntryValue(entry))
                         else:
-                            self.keysDict[kk].update({'value': getEntryValue(entry)})
-                            newdict.update({vv['key']: getEntryValue(entry)})
+                            value = getEntryValue(entry)
 
-                    self.keysDict[kk].update({'value': value})
+                    #self.keysDict[kk].update({'value': value})
                     newdict.update({vv['key']: value})
 
-        # lets add the rest of the attributes that are part of this
+        # lets add the defaults for the rest of the attributes that are part of this
         # config object
         for k, v in self.keysDict.iteritems():
             if v['key'] not in newdict:
-                if v['isarray']:
-                    v['value'] = []
-                newdict.update({v['key']: v['value']})
+                value = None
+                if self.keysDict[kk]['isarray']:
+                    if isnumeric(self.keysDict[kk]['type']):
+                        l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                        value = [int(x) for x in l]
+                    elif isboolean(self.keysDict[kk]['type']):
+                        l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                        value = [convertStrBoolToBool(x) for x in l]
+                    else:
+                        value = [x.lstrip('').rstrip('') for x in v['value'].split(",")]
+                else:
+                    if isnumeric(self.keysDict[kk]['type']):
+                        value = convertStrNumToNum(v['value'])
+                    elif isboolean(self.keysDict[kk]['type']):
+                        value = convertStrBoolToBool(v['value'])
+                    else:
+                        value = getEntryValue(v['value'])
+
+                newdict.update({v['key']: value})
 
         return newdict
 

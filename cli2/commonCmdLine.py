@@ -97,18 +97,21 @@ class CommonCmdLine(object):
             return child.parent
 
         if hasattr(child, 'configList'):
-            config = self
+            config = child
 
-        while config is None:
-            parent = getparent(child)
+        parent = getparent(child)
+        while parent is not None and config is None:
             if hasattr(parent, 'configList'):
                 config = parent
+            parent = getparent(child)
 
         return config
 
     def getSubCommand(self, key, commands):
         subList = []
         for k, v in commands.iteritems():
+            #print "subCommand: key %s k %s v %s\n\n" %(key, k, v)
+
             if k == key:
                 #sys.stdout.write("RETURN 1 %s\n\n"% (v))
                 subList.append(v)
@@ -121,11 +124,16 @@ class CommonCmdLine(object):
                     # attribute
                     elif key in v:
                         subList.append(v)
+                    # model subcmd
+                    elif key in [vv['cliname'] for vv in v.values() if 'cliname' in vv]:
+                        subList.append(v)
                     # model command
-                    elif key in [self.getCliName(vv) for vv in v.values() if 'cliname' in vv]:
+                    elif key in [self.getCliName(vv) for kk, vv in v.iteritems() if 'commands' in kk and 'cliname' in vv]:
+                        subList.append(v)
+                    elif key in [vv['properties']['cliname']['default'] for vv in v.values() if 'properties' in vv and 'cliname' in vv['properties']]:
                         subList.append(v)
                     # schema command
-                    elif key in [vv['properties']['cliname']['default'] for vv in v.values() if 'properties' in vv and 'cliname' in vv['properties']]:
+                    elif key in [vv['properties']['cliname']['default'] for kk, vv in v.iteritems() if 'commands' in kk and 'properties' in vv and 'cliname' in vv['properties']]:
                         subList.append(v)
 
         return subList
@@ -156,8 +164,21 @@ class CommonCmdLine(object):
     def getSchemaCommandNameFromCliName(self, cliname, model):
 
         for key, value in model.iteritems():
-            if 'cliname' in value:
+            if type(value) == dict and 'cliname' in value and cliname == value['cliname']:
                 return key
+
+
+    def getCreateWithDefault(self, cliname, schema, model):
+
+        schemaname = self.getSchemaCommandNameFromCliName(cliname, model)
+        if schema:
+            for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
+                if "subcmd" in k:
+                   for kk in schemaobj.keys():
+                       if 'createwithdefault' in kk:
+                           return schemaobj[kk]['default']
+
+        return False
 
     def getchildrenhelpcmds(self, parentname, model, schema):
         cliHelpList = []
@@ -173,7 +194,7 @@ class CommonCmdLine(object):
                             if kk == "commands":
                                 for kkk, vvv in vv.iteritems():
                                     x.append([kkk, self.getCliName(vvv), self.getCliHelp(vvv)])
-                            else:
+                            elif type(vv) == dict:
                                 x.append([kk, self.getCliName(vv), self.getCliHelp(vv)])
                     # did not find the name in the model lets get from schema
                     for val in x:
@@ -191,14 +212,14 @@ class CommonCmdLine(object):
 
                                             cliHelpList.append((val[1], val[2]))
 
-                                elif "properties" in vv:
+                                elif "properties" in vv and "commands" in vv["properties"]:
                                     cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
-                                    if val[1] is None:
+                                    if val[1] is None and cliname:
                                         val[1] = cliname
-                                    else:
+                                    elif clihelp:
                                         val[2] = clihelp["default"]
-
-                                    cliHelpList.append((val[1], val[2]))
+                                    if val[1] and val[2]:
+                                        cliHelpList.append((val[1], val[2]))
         return cliHelpList
 
     def isValueExpected(self, cmd, model, schema):
@@ -221,11 +242,10 @@ class CommonCmdLine(object):
 
 
     def getCliName(self, attribute):
-        #sys.stdout.write("getCliName: %s\n" %(attribute,))
-        return attribute["cliname"] if "cliname" in attribute else None
+        return attribute["cliname"] if type(attribute) == dict and "cliname" in attribute else None
 
     def getCliHelp(self, attribute):
-        return attribute["help"] if "help" in attribute else None
+        return attribute["help"] if type(attribute) == dict and "help" in attribute else None
 
     def setSchema(self):
 
@@ -233,7 +253,7 @@ class CommonCmdLine(object):
 
             self.schema = jsonref.load(schema_data)
             # ENABLE THIS if you see problems with decode
-            pp.pprint(self.schema)
+            #pp.pprint(self.schema)
 
 
     def setModel(self):
@@ -241,7 +261,7 @@ class CommonCmdLine(object):
         with open(self.modelpath, "r") as json_model_data:
             self.model = jsonref.load(json_model_data)
             # ENABLE THIS if you see problems with decode
-            pp.pprint(self.model)
+            #pp.pprint(self.model)
 
     def validateSchemaAndModel(self):
         if self.model is None or self.schema is None:
@@ -300,7 +320,6 @@ class CommonCmdLine(object):
         return
 
     def do_exit(self, args):
-
         self.prompt = self.baseprompt
         self.stop = True
 
