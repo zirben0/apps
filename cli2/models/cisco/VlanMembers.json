@@ -1,9 +1,5 @@
 {
-  "objname" : {
-    "type" : "string",
-    "descirption" : "object name to which references these attributes",
-    "default" : "Vlan"
-  },
+  "createwithdefault" : true,
   "commands" : {
     "IntfList": {
       "cliname":  "member_list"

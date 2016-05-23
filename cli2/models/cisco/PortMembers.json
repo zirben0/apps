@@ -21,7 +21,7 @@
     "Speed": {
       "cliname": "speed"
     },
-    "PortNum": {
+    "IntfRef": {
       "cliname": "ethernet"
     }
   }

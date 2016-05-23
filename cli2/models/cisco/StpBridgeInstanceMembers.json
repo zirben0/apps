@@ -15,10 +15,5 @@
     "MaxAge": {
       "cliname": "max_age"
     }
-  }, 
-  "objname": {
-    "default": "StpBridgeInstance", 
-    "type": "string", 
-    "descirption": "object name to which references these attributes"
   }
 }
