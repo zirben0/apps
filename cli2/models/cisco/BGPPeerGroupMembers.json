@@ -1,5 +1,4 @@
 {
-  "prompt" : "peer",
   "commands": {
     "MaxPrefixesRestartTimer": {
       "cliname": "max_prefixes_restart_timer"

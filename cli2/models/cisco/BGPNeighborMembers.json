@@ -1,5 +1,4 @@
 {
-  "prompt" : "neighbor",
   "commands": {
     "BfdEnable": {
       "cliname": "bfd_enable"
