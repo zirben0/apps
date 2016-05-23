@@ -103,7 +103,9 @@ class CommonCmdLine(object):
         while parent is not None and config is None:
             if hasattr(parent, 'configList'):
                 config = parent
+            child = parent
             parent = getparent(child)
+
 
         return config
 
@@ -130,11 +132,16 @@ class CommonCmdLine(object):
                     # model command
                     elif key in [self.getCliName(vv) for kk, vv in v.iteritems() if 'commands' in kk and 'cliname' in vv]:
                         subList.append(v)
+                    #elif "commands" in v and key in [self.getCliName(vv) for vv in v["commands"].values() if 'cliname' in vv]:
+                    #    subList.append(v)
                     elif key in [vv['properties']['cliname']['default'] for vv in v.values() if 'properties' in vv and 'cliname' in vv['properties']]:
                         subList.append(v)
                     # schema command
                     elif key in [vv['properties']['cliname']['default'] for kk, vv in v.iteritems() if 'commands' in kk and 'properties' in vv and 'cliname' in vv['properties']]:
                         subList.append(v)
+                    #elif "commands" in v and key in [vv['properties']['cliname']['default'] for vv in v["commands"]["properties"].values()]:
+                    #    subList.append(v)
+
 
         return subList
 
@@ -145,20 +152,33 @@ class CommonCmdLine(object):
         cliNameList = []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
-
             for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
-                if "subcmd" in k:
-                    cliname = None
-                    modelobj = model[schemaname]["commands"][k] if k in model[schemaname]["commands"] else None
-                    if modelobj:
-                        for kk, vv in modelobj.iteritems():
-                            cliname = self.getCliName(vv)
-                    # did not find the name in the model lets get from schema
-                    if cliname is None:
-                        for kk, vv in schemaobj.iteritems():
-                            cliname = self.getCliName(vv)
+                #print 'getchildrencmds: ', k, schemaobj
+                modelobj = model[schemaname]["commands"][k] if k in model[schemaname]["commands"] else None
+                #print 'getchildrencmds: ', modelobj
 
-                    cliNameList.append(cliname)
+                if modelobj:
+                    if "subcmd" in k:
+                        for kk, vv in modelobj.iteritems():
+                            if 'commands' in kk:
+                                for vvv in vv.values():
+                                    cliname = self.getCliName(vvv)
+                                    if cliname != None:
+                                        cliNameList.append(cliname)
+                            else:
+                                cliname = self.getCliName(vv)
+                                if cliname != None:
+                                    cliNameList.append(cliname)
+                        # did not find the name in the model lets get from schema
+                        # DON'T do this as the model is the master display for commands
+                        #if cliname is None:
+                        #    for kk, vv in schemaobj.iteritems():
+                        #        cliname = self.getCliName(vv)
+                    else: # just an attribute
+                        for vv in modelobj.values():
+                            cliname = self.getCliName(vv)
+                            if cliname is not None:
+                                cliNameList.append(cliname)
         return cliNameList
 
     def getSchemaCommandNameFromCliName(self, cliname, model):
@@ -242,7 +262,8 @@ class CommonCmdLine(object):
 
 
     def getCliName(self, attribute):
-        return attribute["cliname"] if type(attribute) == dict and "cliname" in attribute else None
+        #print 'getCliName xxx:', attribute, type(attribute), 'cliname' in attribute, attribute["cliname"]
+        return attribute["cliname"] if ((type(attribute) == dict) and ("cliname" in attribute)) else None
 
     def getCliHelp(self, attribute):
         return attribute["help"] if type(attribute) == dict and "help" in attribute else None

@@ -56,6 +56,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.prompt = self.baseprompt
         self.cmdtype = cmdtype
         self.currentcmd = []
+        self.subcommand = False
 
 
         self.setupCommands()
@@ -174,7 +175,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         '''
         This api will setup all the do_<command> and comlete_<command> as required by the cmdln class.
         The functionality is common for all commands so we will map the commands based on what is in
-        the model.
+        the model.  Once a leaf has been processed the commands need to be removed from the class otherwise
+        they commands will exist under other leaf processing.
         The function being supplied is actually a class so that we know the origional callers function
         name.
         :return:
@@ -340,11 +342,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self._cmd_common(argv)
 
     def _cmd_common(self, argv):
+
         delete = False
         mline = argv
         if len(argv) > 0 and argv[0] == 'no':
             mline = argv[1:]
             delete = True
+
+
 
         if len(mline) < 2:
             return
@@ -358,6 +363,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             if configObj:
                 for config in configObj.configList:
                     if subkey in config.keysDict.keys():
+
                         config.setValid(True)
                         if len(config.attrList) > 1 and delete:
                             config.clear(subkey, value)
@@ -372,12 +378,72 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             configObj = self.getConfigObj()
             if configObj:
                 for config in configObj.configList:
-                    if subkey in config.keysDict.keys():
+                    if len([x for x in config.keysDict.keys() if x == key or x == subkey]) == 2:
                         config.setValid(True)
                         if len(config.attrList) > 1 and delete:
                             config.clear(subkey, value)
                         else:
                             config.set(self.lastcmd, delete, subkey, value)
+
+        if self.subcommand:
+
+            # reset the command len
+            self.commandLen = 0
+
+            model = self.modelList[0]
+            schema = self.schemaList[0]
+
+            endprompt = self.baseprompt[-2:]
+            # should be at config x
+            schemaname = self.getSchemaCommandNameFromCliName(self.objname, model)
+            submodelList = self.getSubCommand(argv[0], model[schemaname]["commands"])
+            subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"])
+            schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
+            configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
+            if self.cmdtype != 'delete':
+                self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
+
+            value = None
+            if len(argv) == 2:
+                value = argv[-1]
+
+
+            objname = schemaname
+            for i in range(1, len(argv)-1):
+                for submodel, subschema in zip(submodelList, subschemaList):
+                    schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
+
+                    submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
+                    subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
+                        configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
+                        objname = schemaname
+                        if configprompt and self.cmdtype != 'delete':
+                            self.prompt += configprompt + '-'
+                            value = argv[-1]
+
+            if value != None:
+                self.prompt += value + endprompt
+            elif self.cmdtype != 'delete':
+                self.prompt = self.prompt[:-1] + endprompt
+            self.stop = True
+            prevcmd = self.currentcmd
+            self.currentcmd = self.lastcmd
+            # stop the command loop for config as we will be running a new cmd loop
+            cmdln.Cmdln.stop = True
+            self.teardownCommands()
+            c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
+            if c.applybaseconfig(argv[-2]):
+                c.cmdloop()
+            self.setupCommands()
+            if self.cmdtype == 'delete':
+                self.cmdtype = 'config'
+
+            self.subcommand = False
+            self.prompt = self.baseprompt
+            self.currentcmd = prevcmd
+            self.cmdloop()
 
 
     def getchildrencmds(self, parentname, model, schema):
@@ -419,7 +485,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     #sys.stdout.write("subschemaList %s\n" %(subschemaList,))
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
-                        subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                        valueexpected = self.isValueExpected(mline[i], submodel, subschema)
+                        #sys.stdout.write("\ncomplete:  10 value expected %s\n" %(valueexpected))
+                        if valueexpected:
+                            self.commandLen = len(mline)
+                            # todo need to do a get to display all the valid keys
+                            return []
+                        else:
+                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
                         #sys.stdout.write("subcommands %s" %(subcommands,))
 
         # todo should look next command so that this is not 'sort of hard coded'
@@ -473,4 +546,32 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.display_help(argv)
 
     def precmd(self, argv):
-        return CommonCmdLine.precmd(self, argv)
+        #return CommonCmdLine.precmd(self, argv)
+        mlineLength = len(argv) - (1 if 'no' in argv else 0)
+        mline = [self.objname] + [x for x in argv if x != 'no']
+        subschema = self.schemaList[0]
+        submodel = self.modelList[0]
+        if mlineLength > 0:
+            self.commandLen = 0
+            try:
+                for i in range(1, len(mline)-1):
+                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        valueexpected = self.isValueExpected(mline[i], submodel, subschema)
+                        if valueexpected:
+                            self.commandLen = mlineLength
+                            self.subcommand = True
+
+            except Exception as e:
+                sys.stdout.write("precmd: error %s" %(e,))
+                pass
+
+            cmd = argv[-1]
+            if cmd in ('?', ) or \
+                    (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):
+                self.display_help(argv)
+                return ''
+
+        return argv

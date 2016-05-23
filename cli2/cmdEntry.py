@@ -2,6 +2,7 @@
 # object which stores the current configuration
 import sys
 import copy
+import string
 from tablePrint import indent, wrap_onspace_strict
 import time
 ATTRIBUTE = 0
@@ -166,7 +167,7 @@ class CmdEntry(object):
 
         # lets add the defaults for the rest of the attributes that are part of this
         # config object
-        for k, v in self.keysDict.iteritems():
+        for kk, v in self.keysDict.iteritems():
             if v['key'] not in newdict:
                 value = None
                 if self.keysDict[kk]['isarray']:
@@ -184,7 +185,7 @@ class CmdEntry(object):
                     elif isboolean(self.keysDict[kk]['type']):
                         value = convertStrBoolToBool(v['value'])
                     else:
-                        value = getEntryValue(v['value'])
+                        value = v['value']
 
                 newdict.update({v['key']: value})
 

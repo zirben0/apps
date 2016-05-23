@@ -30,7 +30,13 @@
             "$ref": "file:/tmp/snaproute/cli/schema/router.json"
           },
           "subcmd4": {
+            "$ref": "file:/tmp/snaproute/cli/schema/bfd.json"
+          },
+          "subcmd5": {
             "$ref": "file:/tmp/snaproute/cli/schema/stp.json"
+          },
+          "subcmd6": {
+            "$ref": "file:/tmp/snaproute/cli/schema/feature.json"
           }
         }
       }

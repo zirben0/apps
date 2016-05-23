@@ -190,18 +190,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             if mline[i-1] in submodel:
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
                 submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                #sys.stdout.write("config complete: submodelList = %s\n" %(submodelList))
                 if submodelList:
                     subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
                     for submodel, subschema in zip(submodelList, subschemaList):
-                        #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subschema))
-                        valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                        if valueexpected:
-                            self.commandLen = len(mline)
-                            # todo need to do a get to display all the valid keys
-                            return []
-                        else:
-                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                        #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
+                        subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -225,6 +221,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         # each config command takes a cmd, subcmd and value
         # example: interface ethernet <port#>
         #          vlan <vlan #>
+        #import ipdb; ipdb.set_trace()
         if len(argv) != self.commandLen:
             self.cmdloop()
 
@@ -240,8 +237,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
         if self.cmdtype != 'delete':
             self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
-        value = None
 
+        value = None
         objname = schemaname
         for i in range(1, len(argv)-1):
             for submodel, subschema in zip(submodelList, subschemaList):
@@ -267,10 +264,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         # stop the command loop for config as we will be running a new cmd loop
         cmdln.Cmdln.stop = True
 
+        self.teardownCommands()
         c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
         if c.applybaseconfig(argv[-2]):
             c.cmdloop()
-
+        self.setupCommands()
         if self.cmdtype == 'delete':
             self.cmdtype = 'config'
 
@@ -394,6 +392,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def do_apply(self, argv):
         if self.configList:
 
+            #import ipdb; ipdb.set_trace()
             sys.stdout.write("Applying Config:\n")
             for config in self.configList:
                 if config.isValid():
