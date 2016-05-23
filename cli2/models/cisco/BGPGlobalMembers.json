@@ -10,16 +10,16 @@
       "cliname": "bgp"
     },
     "IBGPMaxPaths": {
-      "cliname": "maxas_limit"
+      "cliname": "maximum_ibgp_paths"
     }, 
     "EBGPMaxPaths": {
-      "cliname": "ebgpmaxpaths"
+      "cliname": "maximum_paths"
     },
     "UseMultiplePaths": {
-      "cliname": "usemultiplepaths" 
+      "cliname": "use_multiple_paths"
     }, 
     "EBGPAllowMultipleAS": {
-      "cliname": "ebgpallowmultipleas" 
+      "cliname": "bestpath_as_path_multipath_relax"
     }
   } 
 }

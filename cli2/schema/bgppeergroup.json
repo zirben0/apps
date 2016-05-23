@@ -1,19 +1,19 @@
 {
-  "bgp": {
+  "peergroup": {
     "type" : "object",
     "properties" : {
       "prompt" : {
         "type": "string",
-        "default" : "bgp"
+        "default" : "peer"
       },
       "cliname" : {
         "type" : "string",
         "description" : "name used in cli to describe ethernet",
-        "default" : "bgp"
+        "default" : "peer"
       },
        "help" : {
         "type" : "string",
-        "default": "Border Gateway Protocol (BGP)"
+        "default": "BGP Peer Group Info"
       },
       "value" : {
         "type" : "integer",
@@ -21,16 +21,10 @@
       },
       "commands" : {
         "type": "object",
-        "description": "holds all related commands related to ethernet port",
+        "description": "holds all related commands related to BGP Peer Group",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalMembers.json"
-          },
-          "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/bgpneighbor.json"
-          },
-          "subcmd3": {
-            "$ref": "file:/tmp/snaproute/cli/schema/bgppeergroup.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/BGPPeerGroupMembers.json"
           }
         }
       }

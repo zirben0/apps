@@ -1,412 +1,62 @@
 {
+  "prompt" : "peer",
   "commands": {
-    "type": "object", 
-    "description": "", 
-    "properties": {
-      "MaxPrefixesRestartTimer": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "maxprefixesrestarttimer", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tTime to wait before we start BGP peer session when we receive max prefixes\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "RouteReflectorClient": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "routereflectorclient", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tTrue/False  Set/Clear BGP neighbor as a route reflector client\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "Description": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "description", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tDescription of the BGP neighbor", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "MultiHopTTL": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "multihopttl", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tTTL for multi hop BGP neighbor\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "MaxPrefixesDisconnect": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "maxprefixesdisconnect", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tTrue/False  Disconnect the BGP peer session when we receive the max prefixes from the neighbor\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "LocalAS": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "localas", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tLocal AS of the BGP neighbor\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "ConnectRetryTime": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "connectretrytime", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tConnect retry time to connect to BGP neighbor after disconnect\n\tdefault: 60", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "KeepaliveTime": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "keepalivetime", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tKeep alive time for the BGP neighbor\n\tdefault: 60", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "AuthPassword": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "authpassword", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tPassword to connect to the BGP neighbor", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "AddPathsMaxTx": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "addpathsmaxtx", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tMax number of additional paths that can be transmitted to BGP neighbor\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "MultiHopEnable": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "multihopenable", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tTrue/False  Enable/Disable multi hop for BGP neighbor\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "AddPathsRx": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "addpathsrx", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tTrue/False  Receive additional paths from BGP neighbor\n\tdefault: false", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "UpdateSource": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "updatesource", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tSource IP to connect to the BGP neighbor", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "RouteReflectorClusterId": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "routereflectorclusterid", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tCluster Id of the internal BGP neighbor route reflector client\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "MaxPrefixesThresholdPct": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "maxprefixesthresholdpct", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tThe percentage of maximum prefixes before we start logging\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "HoldTime": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "holdtime", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tHold time for the BGP neighbor\n\tdefault: 180", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "MaxPrefixes": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "maxprefixes", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tMaximum number of prefixes that can be received from the BGP neighbor\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "PeerAS": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "peeras", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tPeer AS of the BGP neighbor\n\tdefault: 0", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }
-        }
-      }, 
-      "Name": {
-        "type": "object", 
-        "properties": {
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "name", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "\tName of the BGP peer group", 
-            "type": "string"
-          }, 
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }
-        }
-      }
+    "MaxPrefixesRestartTimer": {
+      "cliname": "max_prefixes_restart_timer"
+    },
+    "RouteReflectorClient": {
+      "cliname": "routere_flector_client"
+    },
+    "Description": {
+      "cliname": "description"
+    },
+    "MultiHopTTL": {
+      "cliname": "ebgp_multihop"
+    },
+    "MaxPrefixesDisconnect": {
+      "cliname": "max_prefixes_disconnect"
+    },
+    "LocalAS": {
+      "cliname": "local_as"
+    },
+    "ConnectRetryTime": {
+      "cliname": "connect_retry_time"
+    },
+    "KeepaliveTime": {
+      "cliname": "timers_keep_alive"
+    },
+    "AuthPassword": {
+      "cliname": "password"
+    },
+    "AddPathsMaxTx": {
+      "cliname": "capability_addition_paths_send"
+    },
+    "MultiHopEnable": {
+      "cliname": "multihop_enable"
+    },
+    "AddPathsRx": {
+      "cliname": "capability_addition_paths_receive"
+    },
+    "UpdateSource": {
+      "cliname": "update_source"
+    },
+    "RouteReflectorClusterId": {
+      "cliname": "cluster_id"
+    },
+    "MaxPrefixesThresholdPct": {
+      "cliname": "max_prefixes_threshold_pct"
+    },
+    "HoldTime": {
+      "cliname": "timers_hold_time"
+    },
+    "MaxPrefixes": {
+      "cliname": "max_prefixes"
+    },
+    "PeerAS": {
+      "cliname": "peer_as"
+    },
+    "Name": {
+      "cliname": "name"
     }
-  }, 
-  "objname": {
-    "default": "BGPPeerGroup", 
-    "type": "string", 
-    "descirption": "object name to which references these attributes"
   }
 }
