@@ -466,6 +466,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     # for example:
     # >ip address 10.1.1.1
     def _cmd_complete_common(self, text, line, begidx, endidx):
+
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
         mline = [self.objname] + [x for x in line.split(' ') if x != '']
@@ -553,31 +554,39 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def precmd(self, argv):
         #return CommonCmdLine.precmd(self, argv)
+
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
         mline = [self.objname] + [x for x in argv if x != 'no']
-        subschema = self.schemaList[0]
-        submodel = self.modelList[0]
-        if mlineLength > 0:
-            self.commandLen = 0
-            try:
-                for i in range(1, len(mline)-1):
-                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
-                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                        if valueexpected:
-                            self.commandLen = mlineLength
-                            self.subcommand = True
+        subschema = self.schemaList[0] if self.schemaList else None
+        submodel = self.modelList[0] if self.modelList else None
 
-            except Exception as e:
-                sys.stdout.write("precmd: error %s" %(e,))
-                pass
+        if subschema and submodel:
+            if mlineLength > 0:
+                self.commandLen = 0
+                try:
+                    for i in range(1, len(mline)-1):
+                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            valueexpected = self.isValueExpected(mline[i], submodel, subschema)
+                            if valueexpected:
+                                if mlineLength - i > 1:
+                                    sys.stdout.write("Invalid command entered, ignoring\n")
+                                    return ''
 
-            cmd = argv[-1]
-            if cmd in ('?', ) or \
-                    (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):
-                self.display_help(argv)
-                return ''
+                                # found that if commands are entered after the last command then there can be a problem
+                                self.commandLen = mlineLength
+                                self.subcommand = True
+
+                except Exception as e:
+                    sys.stdout.write("precmd: error %s" %(e,))
+                    pass
+
+                cmd = argv[-1]
+                if cmd in ('?', ) or \
+                        (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):
+                    self.display_help(argv)
+                    return ''
 
         return argv
