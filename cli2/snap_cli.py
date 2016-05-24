@@ -159,7 +159,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.prompt = self.prompt[:-1] + self.getPrompt(submodel, subschema)
                 self.baseprompt = self.prompt
                 self.currentcmd = self.lastcmd
-        self.cmdloop()
+
+        if self.stop:
+            self.cmdloop()
 
     def xdo_help(self, arg):
         doc_strings = [ (i[3:], getattr(self, i).__doc__)
@@ -204,6 +206,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.currentcmd = prevcmd
                 # return prompt to the base of this class
                 self.prompt = self.baseprompt
+                if self.stop:
+                    self.cmdloop()
 
     def _cmd_complete_show(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
@@ -299,7 +303,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             except Exception:
                 pass
 
-        self.cmdloop()
+        if self.stop:
+            self.cmdloop()
 
     def do_exit(self, args):
         " Quiting FlexSwitch CLI"

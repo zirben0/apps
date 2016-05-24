@@ -190,14 +190,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             if mline[i-1] in submodel:
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
-                submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                #sys.stdout.write("config complete: submodelList = %s\n" %(submodelList))
-                if submodelList:
-                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                        subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                if schemaname:
+                    #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
+                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                    #sys.stdout.write("config complete: submodelList = %s\n" %(submodelList))
+                    if submodelList:
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
+                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -221,81 +222,92 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         # each config command takes a cmd, subcmd and value
         # example: interface ethernet <port#>
         #          vlan <vlan #>
-        #import ipdb; ipdb.set_trace()
         if len(argv) != self.commandLen:
-            self.cmdloop()
+            if self.stop:
+                self.cmdloop()
+            else:
+                return
+
 
         # reset the command len
         self.commandLen = 0
 
-        endprompt = self.baseprompt[-2:]
+        endprompt = ''
         # should be at config x
         schemaname = self.getSchemaCommandNameFromCliName(self.objname, self.model)
-        submodelList = self.getSubCommand(argv[0], self.model[schemaname]["commands"])
-        subschemaList = self.getSubCommand(argv[0], self.schema[schemaname]["properties"]["commands"]["properties"])
-        schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
-        configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-        if self.cmdtype != 'delete':
-            self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
+        if schemaname:
+            submodelList = self.getSubCommand(argv[0], self.model[schemaname]["commands"])
+            subschemaList = self.getSubCommand(argv[0], self.schema[schemaname]["properties"]["commands"]["properties"])
+            schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
+            if schemaname:
+                configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
+                if self.cmdtype != 'delete' and configprompt:
+                    endprompt = self.baseprompt[-2:]
+                    self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
-        value = None
-        objname = schemaname
-        for i in range(1, len(argv)-1):
-            for submodel, subschema in zip(submodelList, subschemaList):
-                schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
+                value = None
+                objname = schemaname
+                for i in range(1, len(argv)-1):
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
+                        if schemaname:
+                            submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
+                            subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                            for submodel, subschema in zip(submodelList, subschemaList):
+                                schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
+                                if schemaname:
+                                    configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
+                                    objname = schemaname
+                                    if configprompt and self.cmdtype != 'delete':
+                                        self.prompt += configprompt + '-'
+                                        value = argv[-1]
 
-                submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
-                subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"])
-                for submodel, subschema in zip(submodelList, subschemaList):
-                    schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
-                    configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
-                    objname = schemaname
-                    if configprompt and self.cmdtype != 'delete':
-                        self.prompt += configprompt + '-'
-                        value = argv[-1]
+                if value != None:
+                    self.prompt += value + endprompt
+                elif self.cmdtype != 'delete' and self.prompt[:-1] != "#":
+                    self.prompt = self.prompt[:-1] + endprompt
+                self.stop = True
+                prevcmd = self.currentcmd
+                self.currentcmd = self.lastcmd
+                # stop the command loop for config as we will be running a new cmd loop
+                cmdln.Cmdln.stop = True
 
-        if value != None:
-            self.prompt += value + endprompt
-        elif self.cmdtype != 'delete':
-            self.prompt = self.prompt[:-1] + endprompt
-        self.stop = True
-        prevcmd = self.currentcmd
-        self.currentcmd = self.lastcmd
-        # stop the command loop for config as we will be running a new cmd loop
-        cmdln.Cmdln.stop = True
+                self.teardownCommands()
+                c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
+                if c.applybaseconfig(argv[-2]):
+                    c.cmdloop()
+                self.setupCommands()
+                if self.cmdtype == 'delete':
+                    self.cmdtype = 'config'
 
-        self.teardownCommands()
-        c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
-        if c.applybaseconfig(argv[-2]):
-            c.cmdloop()
-        self.setupCommands()
-        if self.cmdtype == 'delete':
-            self.cmdtype = 'config'
-
-        self.prompt = self.baseprompt
-        self.currentcmd = prevcmd
-        self.cmdloop()
+                self.prompt = self.baseprompt
+                self.currentcmd = prevcmd
+        if self.stop:
+            self.cmdloop()
 
     def precmd(self, argv):
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
         mline = [self.objname] + [x for x in argv if x != 'no']
         subschema = self.schema
         submodel = self.model
+        subcommands = []
         if mlineLength > 0:
             self.commandLen = 0
             try:
                 for i in range(1, len(mline)-1):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
-                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                        if valueexpected:
-                            if mlineLength - i > 1:
-                                sys.stdout.write("Invalid command entered, ignoring\n")
-                                return ''
+                    if schemaname:
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                            valueexpected = self.isValueExpected(mline[i], submodel, subschema)
+                            if valueexpected:
+                                if mlineLength - i > 1:
+                                    sys.stdout.write("Invalid command entered, ignoring\n")
+                                    return ''
 
-                            self.commandLen = mlineLength
+                                self.commandLen = mlineLength
 
             except Exception as e:
                 sys.stdout.write("precmd: error %s" %(e,))
@@ -347,7 +359,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     argumentList.append(data[k])
                     if k in data:
                         del data[k]
-
 
         return (argumentList, data)
 
@@ -429,7 +440,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         r = get_func(*argumentList)
                         if r.status_code in sdk.httpSuccessCodes:
                             # update
-                            data = config.getSdkConfig()
+                            data = config.getSdkConfig(readdata=r.json()['Object'])
                             (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
                             if len(kwargs) > 0:
                                 r = update_func(*argumentList, **kwargs)

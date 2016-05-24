@@ -16,7 +16,7 @@
         "description": "holds all related commands related to ethernet port",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/tmp/snaproute/cli/schema/BfdGlobalMembers.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/bfdfeature.json"
           }
         }
       }

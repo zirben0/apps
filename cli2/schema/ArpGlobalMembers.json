@@ -3,40 +3,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "DefaultLeaseTime": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Default Lease Time in seconds DEFAULT", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "defaultleasetime", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "DhcpConfigKey": {
+      "Vrf": {
         "type": "object", 
         "properties": {
           "key": {
@@ -48,15 +15,15 @@
             "type": "string"
           }, 
           "help": {
-            "default": "DHCP global config", 
+            "default": "System Vrf default: default", 
             "type": "string"
           }, 
           "defaultarg": {
-            "default": "", 
+            "default": "default", 
             "type": "string"
           }, 
           "cliname": {
-            "default": "dhcpconfigkey", 
+            "default": "vrf", 
             "type": "string"
           }, 
           "islist": {
@@ -69,7 +36,7 @@
           }
         }
       }, 
-      "Enable": {
+      "Timeout": {
         "type": "object", 
         "properties": {
           "key": {
@@ -81,7 +48,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  DHCP Server enable/disable control DEFAULT", 
+            "default": "Global Arp entry timeout value. Default value", 
             "type": "string"
           }, 
           "defaultarg": {
@@ -89,7 +56,7 @@
             "type": "string"
           }, 
           "cliname": {
-            "default": "enable", 
+            "default": "timeout", 
             "type": "string"
           }, 
           "islist": {
@@ -97,40 +64,7 @@
             "type": "boolean"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
-          }
-        }
-      }, 
-      "MaxLeaseTime": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Max Lease Time in seconds DEFAULT", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "maxleasetime", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
+            "default": "int32", 
             "type": "string"
           }
         }
@@ -148,7 +82,7 @@
     "descirption": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
-    "default": "DhcpGlobalConfig", 
+    "default": "ArpGlobal", 
     "type": "string", 
     "descirption": "object name to which references these attributes"
   }

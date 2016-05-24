@@ -19,7 +19,7 @@
             "type": "string"
           }, 
           "defaultarg": {
-            "default": "", 
+            "default": "",
             "type": "string"
           }, 
           "cliname": {

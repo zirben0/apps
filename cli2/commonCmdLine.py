@@ -266,7 +266,7 @@ class CommonCmdLine(object):
         try:
             return model["prompt"]
         except KeyError:
-            schema["properties"]["prompt"]["default"]
+            return None
 
 
     def getCliName(self, attribute):

@@ -1,0 +1,34 @@
+{
+  "commands": {
+    "RequiredMinRxInterval": {
+      "cliname": "echo_rx_interval"
+    },
+    "AuthType": {
+      "cliname": "auth_type"
+    },
+    "DemandEnabled": {
+      "cliname": "demand_enabled"
+    },
+    "DesiredMinTxInterval": {
+      "cliname": "echo_interval"
+    },
+    "AuthenticationEnabled": {
+      "cliname": "authentication_enabled"
+    },
+    "AuthKeyId": {
+      "cliname": "auth_keyid"
+    },
+    "RequiredMinEchoRxInterval": {
+      "cliname": "requiredminechorxinterval"
+    },
+    "LocalMultiplier": {
+      "cliname": "local_multiplier"
+    },
+    "AuthData": {
+      "cliname": "auth_data"
+    },
+    "Name": {
+      "cliname": "profile_name"
+    }
+  }
+}

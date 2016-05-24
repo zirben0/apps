@@ -402,54 +402,58 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             endprompt = self.baseprompt[-2:]
             # should be at config x
             schemaname = self.getSchemaCommandNameFromCliName(self.objname, model)
-            submodelList = self.getSubCommand(argv[0], model[schemaname]["commands"])
-            subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"])
-            schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
-            configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-            if self.cmdtype != 'delete':
-                self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
+            if schemaname:
+                submodelList = self.getSubCommand(argv[0], model[schemaname]["commands"])
+                subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"])
+                schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
+                configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
+                if self.cmdtype != 'delete':
+                    self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
-            value = None
-            if len(argv) == 2:
-                value = argv[-1]
+                value = None
+                if len(argv) == 2:
+                    value = argv[-1]
 
 
-            objname = schemaname
-            for i in range(1, len(argv)-1):
-                for submodel, subschema in zip(submodelList, subschemaList):
-                    schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
-
-                    submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
-                    subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                objname = schemaname
+                for i in range(1, len(argv)-1):
                     for submodel, subschema in zip(submodelList, subschemaList):
-                        schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
-                        configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
-                        objname = schemaname
-                        if configprompt and self.cmdtype != 'delete':
-                            self.prompt += configprompt + '-'
-                            value = argv[-1]
+                        schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
+                        if schemaname:
+                            submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
+                            subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                            for submodel, subschema in zip(submodelList, subschemaList):
+                                schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
+                                if schemaname:
+                                    configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
+                                    objname = schemaname
+                                    if configprompt and self.cmdtype != 'delete':
+                                        self.prompt += configprompt + '-'
+                                        value = argv[-1]
 
-            if value != None:
-                self.prompt += value + endprompt
-            elif self.cmdtype != 'delete':
-                self.prompt = self.prompt[:-1] + endprompt
-            self.stop = True
-            prevcmd = self.currentcmd
-            self.currentcmd = self.lastcmd
-            # stop the command loop for config as we will be running a new cmd loop
-            cmdln.Cmdln.stop = True
-            self.teardownCommands()
-            c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
-            if c.applybaseconfig(argv[-2]):
-                c.cmdloop()
-            self.setupCommands()
-            if self.cmdtype == 'delete':
-                self.cmdtype = 'config'
+                if value != None:
+                    self.prompt += value + endprompt
+                elif self.cmdtype != 'delete':
+                    self.prompt = self.prompt[:-1] + endprompt
+                self.stop = True
+                prevcmd = self.currentcmd
+                self.currentcmd = self.lastcmd
+                # stop the command loop for config as we will be running a new cmd loop
+                cmdln.Cmdln.stop = True
+                self.teardownCommands()
+                c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
+                if c.applybaseconfig(argv[-2]):
+                    c.cmdloop()
+                self.setupCommands()
+                if self.cmdtype == 'delete':
+                    self.cmdtype = 'config'
 
-            self.subcommand = False
-            self.prompt = self.baseprompt
-            self.currentcmd = prevcmd
-            self.cmdloop()
+                self.subcommand = False
+                self.prompt = self.baseprompt
+                self.currentcmd = prevcmd
+                if self.stop:
+                    self.cmdloop()
+
 
 
     def getchildrencmds(self, parentname, model, schema):
@@ -484,23 +488,24 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             for model, schema in zip(self.modelList, self.schemaList):
                 #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
-                #sys.stdout.write("\nschemaname %s\n\n" %(schemaname))
-                submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
-                #sys.stdout.write("submoduleList %s\n" %(submodelList,))
-                if submodelList:
-                    subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
-                    #sys.stdout.write("subschemaList %s\n" %(subschemaList,))
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
-                        valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                        #sys.stdout.write("\ncomplete:  10 value expected %s\n" %(valueexpected))
-                        if valueexpected:
-                            self.commandLen = len(mline)
-                            # todo need to do a get to display all the valid keys
-                            return []
-                        else:
-                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
-                        #sys.stdout.write("subcommands %s" %(subcommands,))
+                if schemaname:
+                    #sys.stdout.write("\nschemaname %s\n\n" %(schemaname))
+                    submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
+                    #sys.stdout.write("submoduleList %s\n" %(submodelList,))
+                    if submodelList:
+                        subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
+                        #sys.stdout.write("subschemaList %s\n" %(subschemaList,))
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
+                            valueexpected = self.isValueExpected(mline[i], submodel, subschema)
+                            #sys.stdout.write("\ncomplete:  10 value expected %s\n" %(valueexpected))
+                            if valueexpected:
+                                self.commandLen = len(mline)
+                                # todo need to do a get to display all the valid keys
+                                return []
+                            else:
+                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                            #sys.stdout.write("subcommands %s" %(subcommands,))
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -539,13 +544,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         for i in range(1, mlineLength-1):
             for model, schema in zip(self.modelList, self.schemaList):
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
-                #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
-                submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
-                if submodelList:
-                    subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
-                        subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                if schemaname:
+                    #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
+                    submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
+                    if submodelList:
+                        subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
+                            subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
 
         self.printCommands(mline, subcommands)
 
@@ -566,18 +572,19 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 try:
                     for i in range(1, len(mline)-1):
                         schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
-                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                            if valueexpected:
-                                if mlineLength - i > 1:
-                                    sys.stdout.write("Invalid command entered, ignoring\n")
-                                    return ''
+                        if schemaname:
+                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                            submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                            for submodel, subschema in zip(submodelList, subschemaList):
+                                valueexpected = self.isValueExpected(mline[i], submodel, subschema)
+                                if valueexpected:
+                                    if mlineLength - i > 1:
+                                        sys.stdout.write("Invalid command entered, ignoring\n")
+                                        return ''
 
-                                # found that if commands are entered after the last command then there can be a problem
-                                self.commandLen = mlineLength
-                                self.subcommand = True
+                                    # found that if commands are entered after the last command then there can be a problem
+                                    self.commandLen = mlineLength
+                                    self.subcommand = True
 
                 except Exception as e:
                     sys.stdout.write("precmd: error %s" %(e,))
