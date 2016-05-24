@@ -286,12 +286,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 elif "subcmd" in k and type(v) in (dict, jsonref.JsonRef):
 
                     for kk, vv in tmpmodel.iteritems():
-                        subtmpschema = v[kk]['properties']
                         try:
+                            subtmpschema = v[kk]['properties']
                             if 'objname' in subtmpschema:
                                 tmpobjname = subtmpschema['objname']['default']
                         except Exception:
-                            pass
+                            continue
 
                         tmpsubcmd = None
                         if 'cliname' in vv:
