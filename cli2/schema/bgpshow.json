@@ -24,7 +24,7 @@
         "description": "Base commands",
         "properties": {
           "subcmd1" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/BGPNeighbor.json"
+            "$ref" : "file:/tmp/snaproute/cli/schema/BGPNeighborSummary.json"
           },
           "subcmd2" : {
             "$ref": "file:/tmp/snaproute/cli/schema/BGPRouteStateMembers.json"
