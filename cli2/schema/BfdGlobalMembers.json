@@ -23,7 +23,7 @@
             "type": "string"
           }, 
           "cliname": {
-            "default": "bfd",
+            "default": "enable", 
             "type": "string"
           }, 
           "islist": {
@@ -56,7 +56,7 @@
             "type": "string"
           }, 
           "cliname": {
-            "default": "name",
+            "default": "bfd", 
             "type": "string"
           }, 
           "islist": {
