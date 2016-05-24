@@ -291,6 +291,10 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         valueexpected = self.isValueExpected(mline[i], submodel, subschema)
                         if valueexpected:
+                            if mlineLength - i > 1:
+                                sys.stdout.write("Invalid command entered, ignoring\n")
+                                return ''
+
                             self.commandLen = mlineLength
 
             except Exception as e:
