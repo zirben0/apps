@@ -5,6 +5,7 @@ from sets import Set
 import cmdln
 import json
 import pprint
+import inspect
 from jsonref import JsonRef
 
 from jsonschema import Draft4Validator
@@ -51,6 +52,36 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
             func(argv[-2:])
 
         self.show_state(all=all)
+
+    def get_sdk_func_key_values(self, data, func):
+        argspec = inspect.getargspec(func)
+        getKeys = argspec.args[1:]
+        lengthkwargs = len(argspec.defaults) if argspec.defaults is not None else 0
+        if lengthkwargs > 0:
+            getKeys = argspec.args[:-len(argspec.defaults)]
+
+        # lets setup the argument list
+        # and remove the values from the kwargs
+        argumentList = []
+        # set all the args
+        if 'create' in func.__name__ or \
+           'get' in func.__name__ or \
+           'print' in func.__name__:
+            for k in getKeys:
+                if k in data:
+                    argumentList.append(data[k])
+
+            data = {}
+        elif 'update' in func.__name__:
+            for k in getKeys:
+                if k in data:
+                    argumentList.append(data[k])
+                    if k in data:
+                        del data[k]
+
+
+        return (argumentList, data)
+
 
     def show_state(self, all=False):
 
