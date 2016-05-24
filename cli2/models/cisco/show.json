@@ -7,6 +7,21 @@
       },
       "subcmd2" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/vlan.json"
+      },
+      "subcmd3" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/router.json"
+      },
+      "subcmd4" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/bfd.json"
+      },
+      "subcmd5" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/stp.json"
+      },
+      "subcmd6" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/feature.json"
+      },
+      "subcmd7" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipshow.json"
       }
     }
   } 

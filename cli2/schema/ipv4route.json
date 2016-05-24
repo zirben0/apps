@@ -1,0 +1,33 @@
+{
+  "route": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : ""
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe ip",
+        "default" : "route"
+      },
+      "help": {
+        "type" : "string",
+        "default": "Configure IP features"
+      },
+      "value": {
+        "type": "integer",
+        "default" : "trigger to know that a value is expected"
+      },
+      "commands": {
+        "type": "object",
+        "description": "Base commands",
+        "properties": {
+          "subcmd1" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4RouteMembers.json"
+          }
+        }
+      }
+    }
+  }
+}

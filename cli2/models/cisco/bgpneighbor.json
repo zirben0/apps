@@ -1,5 +1,6 @@
 {
   "neighbor": {
+    "prompt" : "neighbor",
     "cliname" : "neighbor",
     "commands" : {
       "subcmd1": {
