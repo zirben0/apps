@@ -122,11 +122,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 for k, v in subcmd.iteritems():
                     currcmdline = ''
                     if type(v) in (dict, jsonref.JsonRef):
+                        #import ipdb; ipdb.set_trace()
                         if 'cliname' in v:
                             currcmdline += ' ' + v['cliname']
                         if 'commands' in v:
                             for kk, vv in v['commands'].iteritems():
-                                nextcmdline = ''
                                 if 'subcmd' in kk:
                                     for x in  submcmd_walk(vv):
                                         newcmdline = currcmdline + x
@@ -135,7 +135,13 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                     for kkk, vvv in vv.iteritems():
                                         if 'cliname' in kkk:
                                             newcmdline = currcmdline + vvv
-                                            yield newcmdline
+                                            yield newcmdlinev
+                        else:
+                            # reached the attributes
+                            for kk, vv in v.iteritems():
+                                if 'cliname' in vv:
+                                    newcmdline = currcmdline + ' ' + vv['cliname']
+                                    yield newcmdline
             yield ''
 
         cmdList = []
@@ -147,12 +153,14 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         #traverse the commands
                         for x in submcmd_walk(vv):
                             cmdline = x
-                            cmdList.append(cmdline)
+                            if cmdline not in cmdList:
+                                cmdList.append(cmdline)
                     else:
                         for kkk, vvv in vv.iteritems():
                             if 'cliname' in kkk:
                                 cmdline = vvv
-                                cmdList.append(cmdline)
+                                if cmdline not in cmdList:
+                                    cmdList.append(cmdline)
         for x in cmdList:
             print x
 
@@ -398,6 +406,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                 subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                                 for subsubmodel, subsubschema in zip(submodelList, subschemaList):
                                     valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                    import ipdb; ipdb.set_trace()
+                                    # we want to keep looping untill there are no more value commands
                                     if valueexpected and mlineLength-1 == i:
                                         self.currentcmd = self.lastcmd
                                         c = ShowCmd(self, subsubmodel, subsubschema)
