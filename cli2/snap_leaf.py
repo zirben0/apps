@@ -246,7 +246,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         cmd = 'objname'
         return self.getSubCommand(cmd, schema[self.objname]["properties"]["commands"]["properties"])[0][cmd]['default']
 
-
     def getCliCmdAttrs(self, key, objname, createwithdefault, subcmd, model, schema):
         '''
         Based on the schema and model will fill in the default object parameters

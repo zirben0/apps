@@ -11,6 +11,7 @@ from jsonref import JsonRef
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine
 from snap_leaf import LeafCmd
+from cmdEntry import CmdEntry
 
 pp = pprint.PrettyPrinter(indent=2)
 class ShowCmd(cmdln.Cmdln, CommonCmdLine):
@@ -41,17 +42,32 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
         # show individual object brief
         lastcmd = argv[-1] if all else argv[-2] if argv[-1] != 'brief' else argv[-3]
         schemaname = self.getSchemaCommandNameFromCliName(lastcmd, self.model)
-        # leaf will gather all the config info for the object
-        l = LeafCmd(schemaname, lastcmd, "show", self, None, [self.model], [self.schema])
-        l.applybaseconfig(lastcmd)
+        if schemaname:
+            # leaf will gather all the config info for the object
+            #l = LeafCmd(schemaname, lastcmd, "show", self, None, [self.model], [self.schema])
+            #l.applybaseshow(lastcmd)
 
-        # todo need to call the keys
-        # l.do_lastcmd
-        if not all:
-            func = getattr(l, "do_%s" %(lastcmd,))
-            func(argv[-2:])
+            # only display the what is available from this object
+            for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
+                # looping through the subcmds to find one that has an object associated with it.
+                if type(v) in (dict, JsonRef):
+                    for kk, vv in v.iteritems():
+                        # each subcmd will either be a link to another subcommand
+                        # or a commands containing attributes of an object, which should hold
+                        # the object in question associated with this command.
+                        if "objname" in kk:
+                            config = CmdEntry(v['objname']['default'], {})
+                            config.setValid(True)
+                            self.configList.append(config)
 
-        self.show_state(all=all)
+            # todo need to call the keys
+            # l.do_lastcmd
+            if not all:
+                func = getattr(l, "do_%s" %(lastcmd,))
+                func(argv[-2:])
+
+            self.show_state(all=all)
+            self.configList.remove(config)
 
     def get_sdk_func_key_values(self, data, func):
         argspec = inspect.getargspec(func)
@@ -88,6 +104,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
         configObj = self.getConfigObj()
         if configObj and configObj.configList:
             sys.stdout.write("Applying Show:\n")
+            #import ipdb; ipdb.set_trace()
             # tell the user what attributes are being applied
             for i in range(len(configObj.configList)):
                 config = configObj.configList[-(i+1)]
