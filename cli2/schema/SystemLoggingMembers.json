@@ -3,39 +3,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "SRLogger": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Global logging", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "srlogger", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
-          }
-        }
-      }, 
       "Logging": {
         "type": "object", 
         "properties": {
@@ -48,7 +15,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Global logging default: on", 
+            "default": " on/off  Global logging default: on", 
             "type": "string"
           }, 
           "defaultarg": {
@@ -57,6 +24,39 @@
           }, 
           "cliname": {
             "default": "logging", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }
+        }
+      }, 
+      "Vrf": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Vrf name default: default", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "default", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "vrf", 
             "type": "string"
           }, 
           "islist": {

@@ -24,10 +24,15 @@
         "description": "holds all related commands related to ethernet port",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/tmp/snaproute/cli/schema/BFDGlobalMembers.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/BfdGlobalMembers.json"
           }
         }
       }
+    },
+    "createwithdefault": {
+        "default": true,
+        "type": "boolean",
+        "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
     }
   }
 }

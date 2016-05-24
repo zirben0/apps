@@ -137,7 +137,7 @@ class CmdEntry(object):
     def getallconfig(self, ):
         return self.attrList
 
-    def getSdkConfig(self):
+    def getSdkConfig(self, readdata=None):
         newdict = {}
         for entry in self.getallconfig():
             for kk, vv in copy.deepcopy(self.keysDict).iteritems():
@@ -162,6 +162,9 @@ class CmdEntry(object):
                         else:
                             value = getEntryValue(entry)
 
+                    if readdata:
+                        del readdata[vv['key']]
+
                     #self.keysDict[kk].update({'value': value})
                     newdict.update({vv['key']: value})
 
@@ -170,22 +173,25 @@ class CmdEntry(object):
         for kk, v in self.keysDict.iteritems():
             if v['key'] not in newdict:
                 value = None
-                if self.keysDict[kk]['isarray']:
-                    if isnumeric(self.keysDict[kk]['type']):
-                        l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
-                        value = [int(x) for x in l]
-                    elif isboolean(self.keysDict[kk]['type']):
-                        l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
-                        value = [convertStrBoolToBool(x) for x in l]
+                if not readdata:
+                    if self.keysDict[kk]['isarray']:
+                        if isnumeric(self.keysDict[kk]['type']):
+                            l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                            value = [int(x) for x in l]
+                        elif isboolean(self.keysDict[kk]['type']):
+                            l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                            value = [convertStrBoolToBool(x) for x in l]
+                        else:
+                            value = [x.lstrip('').rstrip('') for x in v['value'].split(",")]
                     else:
-                        value = [x.lstrip('').rstrip('') for x in v['value'].split(",")]
-                else:
-                    if isnumeric(self.keysDict[kk]['type']):
-                        value = convertStrNumToNum(v['value'])
-                    elif isboolean(self.keysDict[kk]['type']):
-                        value = convertStrBoolToBool(v['value'])
-                    else:
-                        value = v['value']
+                        if isnumeric(self.keysDict[kk]['type']):
+                            value = convertStrNumToNum(v['value'])
+                        elif isboolean(self.keysDict[kk]['type']):
+                            value = convertStrBoolToBool(v['value'])
+                        else:
+                            value = v['value']
+                elif v['key'] in readdata:
+                    value = readdata[v['key']]
 
                 newdict.update({v['key']: value})
 
