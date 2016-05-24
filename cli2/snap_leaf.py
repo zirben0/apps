@@ -290,8 +290,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             subtmpschema = v[kk]['properties']
                             if 'objname' in subtmpschema:
                                 tmpobjname = subtmpschema['objname']['default']
-                        except Exception:
-                            continue
+                        except Exception as e:
+                            sys.stdout.write("getCliCmdAttrs: ERROR caught %s" %(e,))
 
                         tmpsubcmd = None
                         if 'cliname' in vv:
