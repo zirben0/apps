@@ -260,7 +260,7 @@ class CommonCmdLine(object):
 
     def getValue(self, attribute):
 
-        return hattribute["value"]
+        return attribute["value"]
 
     def getPrompt(self, model, schema):
         try:
