@@ -97,6 +97,9 @@ class CmdEntry(object):
         lines += "keysDict: %s\n" %(self.keysDict)
         return lines
 
+    def isEntryEmpty(self):
+        return len(self.attrList) == 0
+
     def isValid(self):
         return self.valid
 
@@ -109,7 +112,23 @@ class CmdEntry(object):
     def setDelete(self, d):
         self.delete = d
 
+    def updateSpecialValueCases(self, k, v):
+        '''
+        This function is meant to handle special cases where we need to convert the value to some special
+        value.  Not sure if this is the correct place to handle this but since it is only once case
+        going to perform the operation here.
+        :param k: Model name of attribute
+        :param v: CmdSet
+        :return:
+        '''
+        if self.name == 'Port':
+            if k == 'IntfRef':
+                if "/" in v.val:
+                    v.val = v.attr + v.val.split('/')[1]
+        return v
+
     def set(self, fullcmd, delete, k, v):
+
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
                 # TODO if delete then we may need to remove this command all together
@@ -146,21 +165,21 @@ class CmdEntry(object):
                     value = None
                     if self.keysDict[kk]['isarray']:
                         if isnumeric(self.keysDict[kk]['type']):
-                            l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
+                            l = [convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
                             value = [int(x) for x in l]
                         elif isboolean(self.keysDict[kk]['type']):
-                            l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
+                            l = [convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
                             value = [convertStrBoolToBool(x) for x in l]
                         else:
-                            value = [x.lstrip('').rstrip('') for x in getEntryValue(entry).split(",")]
+                            value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
 
                     else:
                         if isnumeric(self.keysDict[kk]['type']):
-                            value = convertStrNumToNum(getEntryValue(entry))
+                            value = convertStrNumToNum(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
                         elif isboolean(self.keysDict[kk]['type']):
-                            value = convertStrBoolToBool(getEntryValue(entry))
+                            value = convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
                         else:
-                            value = getEntryValue(entry)
+                            value = getEntryValue(self.updateSpecialValueCases(vv['key'], entry))
 
                     if readdata:
                         del readdata[vv['key']]

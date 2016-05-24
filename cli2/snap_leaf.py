@@ -404,7 +404,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             schemaname = self.getSchemaCommandNameFromCliName(self.objname, model)
             if schemaname:
                 submodelList = self.getSubCommand(argv[0], model[schemaname]["commands"])
-                subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"])
+                subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
                 schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
                 configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
                 if self.cmdtype != 'delete':
@@ -421,7 +421,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
                         if schemaname:
                             submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
-                            subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                            subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
                                 if schemaname:
@@ -493,7 +493,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
                     #sys.stdout.write("submoduleList %s\n" %(submodelList,))
                     if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
+                        subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
                         #sys.stdout.write("subschemaList %s\n" %(subschemaList,))
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
@@ -548,7 +548,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
                     submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
                     if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"])
+                        subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
                             subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
@@ -573,7 +573,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     for i in range(1, len(mline)-1):
                         schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                         if schemaname:
-                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                             submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 valueexpected = self.isValueExpected(mline[i], submodel, subschema)

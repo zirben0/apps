@@ -39,11 +39,6 @@ class CommonCmdLine(object):
         self.setSchema()
         self.setModel()
         self.currentcmd = []
-        valid = self.validateSchemaAndModel()
-
-        if not valid:
-            sys.stdout.write("schema and model mismatch")
-            sys.exit(0)
 
     def getSdk(self):
         sdk = True
@@ -109,8 +104,27 @@ class CommonCmdLine(object):
 
         return config
 
-    def getSubCommand(self, key, commands):
+    def getSubCommand(self, k, commands, model=None):
         subList = []
+        key = k
+        if model:
+            #print 'getSubCmd: searchKey %s\n' % (k,)
+            key = self.getSchemaCommandNameFromCliName(k, model)
+            if not key:
+                if 'commands' in model:
+                    for cmd, submodel in model["commands"].iteritems():
+                        #print 'getSubCommand: cmd ', cmd, submodel
+                        if 'subcmd' in cmd and key is None:
+                            key = self.getSchemaCommandNameFromCliName(k, submodel)
+                if [x for x in model.keys() if 'subcmd' in x]:
+                    for cmd, submodel in model.iteritems():
+                        #print 'getSubCommand: cmd ', cmd, submodel
+                        if [y for y in submodel.values() if 'cliname' in y] and key is None:
+                            key = self.getSchemaCommandNameFromCliName(k, submodel)
+
+            if not key:
+                key = k
+
         for k, v in commands.iteritems():
             #print "subCommand: key %s k %s v %s\n\n" %(key, k, v)
 
@@ -184,14 +198,17 @@ class CommonCmdLine(object):
         return cliNameList
 
     def getSchemaCommandNameFromCliName(self, cliname, model):
-        #print 'getSchemaCommand:', cliname, model
+        #print '\ngetSchemaCommand:', cliname, model
         #print '\n\n'
         for key, value in model.iteritems():
-            if type(value) == dict and 'cliname' in value and cliname == value['cliname']:
-                #print 'getSchemaCommand found key', key
-                #print '\n\n'
-                return key
-
+            if type(value) == dict:
+                if 'cliname' in value and cliname == value['cliname']:
+                    return key
+                else:
+                    for k, v in value.iteritems():
+                        if 'cliname' in v and cliname == v['cliname']:
+                            return k
+        return None
 
 
     def getCreateWithDefault(self, cliname, schema, model):
@@ -292,18 +309,6 @@ class CommonCmdLine(object):
             # ENABLE THIS if you see problems with decode
             #pp.pprint(self.model)
 
-    def validateSchemaAndModel(self):
-        if self.model is None or self.schema is None:
-            sys.exit(2)
-        else:
-            try:
-                # lets validate the model against the json schema
-                Draft4Validator(self.schema).validate(self.model)
-            except Exception as e:
-                print e
-                return False
-        return True
-
     def display_help(self, argv):
         mline = [self.objname] + argv
         mlineLength = len(mline)
@@ -319,7 +324,7 @@ class CommonCmdLine(object):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                     if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
 

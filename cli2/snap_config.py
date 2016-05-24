@@ -142,19 +142,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         #    self.intro = '\n'
         #    self.cmdloop()
 
-
-    def validateSchemaAndModel(self):
-        if self.model is None or self.schema is None:
-            sys.exit(2)
-        else:
-            try:
-                # lets validate the model against the json schema
-                Draft4Validator(self.schema).validate(self.model)
-            except Exception as e:
-                print e
-                return False
-        return True
-
     def _cmd_complete_delete(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %('no ' + self.objname, line, text, not text))
         mline = [x for x in line.split(' ') if x != '']
@@ -185,17 +172,18 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 if f.startswith('do_') and not f.endswith('no'):
                     subcommands.append(f.lstrip('do_'))
 
+
         # advance to next submodel and subschema
         for i in range(1, mlineLength):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             if mline[i-1] in submodel:
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
                 if schemaname:
-                    #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
                     submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    #sys.stdout.write("config complete: submodelList = %s\n" %(submodelList))
+                    #sys.stdout.write("config complete: submodel[schemaname][commands] = %s\n" %(submodel[schemaname]["commands"]))
                     if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
                             subcommands += self.getchildrencmds(mline[i], submodel, subschema)
@@ -237,7 +225,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         schemaname = self.getSchemaCommandNameFromCliName(self.objname, self.model)
         if schemaname:
             submodelList = self.getSubCommand(argv[0], self.model[schemaname]["commands"])
-            subschemaList = self.getSubCommand(argv[0], self.schema[schemaname]["properties"]["commands"]["properties"])
+            subschemaList = self.getSubCommand(argv[0], self.schema[schemaname]["properties"]["commands"]["properties"], self.model[schemaname]["commands"])
             schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
             if schemaname:
                 configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
@@ -252,7 +240,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
                         if schemaname:
                             submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
-                            subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"])
+                            subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
                                 if schemaname:
@@ -297,8 +285,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 for i in range(1, len(mline)-1):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
-                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             subcommands += self.getchildrencmds(mline[i], submodel, subschema)
                             valueexpected = self.isValueExpected(mline[i], submodel, subschema)
@@ -415,7 +403,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     globalconfigList.append(config)
                 else:
                     otherconfig.append(config)
-
+            delconfigList = []
             for config in globalconfigList + otherconfig:
                 if config.isValid():
 
@@ -444,7 +432,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                             (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
                             if len(kwargs) > 0:
                                 r = update_func(*argumentList, **kwargs)
-                                if r.status_code not in sdk.httpSuccessCodes:
+                                # succes or '500' nothing updated no changes ocurred
+                                if r.status_code not in sdk.httpSuccessCodes + ['500']:
                                     sys.stdout.write("command update FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
                                 else:
                                     sys.stdout.write("update SUCCESS:\n" )
@@ -466,8 +455,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                         # remove the configuration as it has been applied
                         config.clear(None, None, all=True)
+                        if config.isEntryEmpty():
+                            delconfigList.append(config)
                     except Exception as e:
                         sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+
+            if delconfigList:
+                for config in delconfigList:
+                    self.configList.remove(config)
 
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")
@@ -480,6 +475,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         sys.stdout.write("Clearing Unapplied Config\n")
         for config in self.configList:
             config.clear(all)
+
+        self.configList = []
+
 
     '''
     TODO need to be able to run show at any time during config
