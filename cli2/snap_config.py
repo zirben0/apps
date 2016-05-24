@@ -434,7 +434,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                 r = update_func(*argumentList, **kwargs)
                                 # succes or '500' nothing updated no changes ocurred
                                 if r.status_code not in sdk.httpSuccessCodes + ['500']:
-                                    sys.stdout.write("command update FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                    sys.stdout.write("command update FAILED:\n%s %s\n sent %s %s" %(r.status_code, r.json()['Error'], argumentList, kwargs))
                                 else:
                                     sys.stdout.write("update SUCCESS:\n" )
                                     config.show()

@@ -167,6 +167,7 @@ class CommonCmdLine(object):
         if schema:
             #print '\n\ngetchildrencmds: ', schema, parentname
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
+            #print '\n\ngetchildrencmds: ', schemaname
             if schemaname in schema:
                 for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
                     #print 'getchildrencmds: ', k, schemaobj
