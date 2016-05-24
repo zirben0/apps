@@ -19,6 +19,9 @@
       },
       "subcmd6" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/feature.json"
+      },
+      "subcmd7" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipshow.json"
       }
     }
   } 

@@ -1,0 +1,8 @@
+{
+  "cliname" : "route",
+  "commands": {
+    "DestinationNw": {
+      "cliname": "destinationnw"
+    }
+  }
+}

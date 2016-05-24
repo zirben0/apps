@@ -28,6 +28,9 @@
           },
           "subcmd6": {
             "$ref": "file:/tmp/snaproute/cli/schema/feature.json"
+          },
+          "subcmd7": {
+            "$ref": "file:/tmp/snaproute/cli/schema/ipshow.json"
           }
         }
       }

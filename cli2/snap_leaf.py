@@ -79,18 +79,21 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             if configObj:
                 for k, v in objDict.iteritems():
                     config = CmdEntry(k, objDict[k])
-                    if cliname == self.parent.lastcmd[-2]:
-                        for kk in v.keys():
-                            if kk == cliname:
-                                basekey = self.parent.lastcmd[-2]
-                                basevalue = self.parent.lastcmd[-1]
-                                # TODO this should be set based on some schema/model
-                                # letting me know that the parent config can
-                                # create a default object, otherwise enging will
-                                # try to create a lot of objects
-                                config.setValid(v[basekey]['createwithdefaults'])
-                                delete = True if self.cmdtype == 'delete' else False
-                                config.set(self.parent.lastcmd, delete, basekey, basevalue)
+                    if self.cmdtype != 'show':
+                        if cliname == self.parent.lastcmd[-2]:
+                            for kk in v.keys():
+                                if kk == cliname:
+                                    basekey = self.parent.lastcmd[-2]
+                                    basevalue = self.parent.lastcmd[-1]
+                                    # TODO this should be set based on some schema/model
+                                    # letting me know that the parent config can
+                                    # create a default object, otherwise enging will
+                                    # try to create a lot of objects
+                                    config.setValid(v[basekey]['createwithdefaults'])
+                                    delete = True if self.cmdtype == 'delete' else False
+                                    config.set(self.parent.lastcmd, delete, basekey, basevalue)
+                    else:
+                        config.setValid(True)
 
                     # only add this config if it does not already exist
                     cfg = configObj.doesConfigExist(config)
@@ -134,25 +137,27 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if "commands" in cmd:
                             for k,v in cmd["commands"].iteritems():
                                 cmdname = self.getCliName(v)
-                                # Note needed for show
-                                if '-' in cmdname:
-                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI\n" %(cmdname,))
-                                    self.do_exit([])
-                                    cmdname = cmdname.replace('-', '_')
-                                setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
-                                #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
+                                if cmdname:
+                                    # Note needed for show
+                                    if '-' in cmdname:
+                                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI\n" %(cmdname,))
+                                        self.do_exit([])
+                                        cmdname = cmdname.replace('-', '_')
+                                    setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                                    #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
                         else:
                             # another sub command list
                             for k, v in cmd.iteritems():
                                 cmdname = self.getCliName(v)
-                                if '-' in cmdname:
-                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                                    self.do_exit([])
-                                    cmdname = cmdname.replace('-', '_')
-                                # Note needed for show
-                                #if cmdname != self.objname:
-                                setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
-                                setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                                if cmdname:
+                                    if '-' in cmdname:
+                                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                        self.do_exit([])
+                                        cmdname = cmdname.replace('-', '_')
+                                    # Note needed for show
+                                    #if cmdname != self.objname:
+                                    setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                                    setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
 
                     except Exception as e:
                             sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
@@ -160,11 +165,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     # handle commands when are not links
                     try:
                         cmdname = self.getCliName(model[self.objname][subcmds]["commands"])
-                        if '-' in cmdname:
-                            sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                            self.do_exit([])
-                            cmdname = cmdname.replace('-', '_')
-                        setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                        if cmdname:
+                            if '-' in cmdname:
+                                sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                self.do_exit([])
+                                cmdname = cmdname.replace('-', '_')
+                            setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
                     except Exception as e:
                             sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 

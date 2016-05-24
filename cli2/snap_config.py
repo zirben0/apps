@@ -366,7 +366,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # tell the user what attributes are being applied
             for i in range(len(configObj.configList)):
                 config = configObj.configList[-(i+1)]
-                #config.show()
 
                 # get the sdk
                 sdk = self.getSdkShow()
@@ -392,9 +391,18 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def do_apply(self, argv):
         if self.configList:
 
-            #import ipdb; ipdb.set_trace()
+            import ipdb; ipdb.set_trace()
             sys.stdout.write("Applying Config:\n")
+            # HACK need to make sure global objects are called before other objects
+            globalconfigList = []
+            otherconfig = []
             for config in self.configList:
+                if "global" in config.name.lower():
+                    globalconfigList.append(config)
+                else:
+                    otherconfig.append(config)
+
+            for config in globalconfigList + otherconfig:
                 if config.isValid():
 
                     # tell the user what attributes are being applied

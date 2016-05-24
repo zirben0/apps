@@ -220,17 +220,18 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         subcommands = []
         for submodel, subschema in zip(submodelList, subschemaList):
 
-            subcommands += self.getchildrencmds(mline[0], submodel, subschema)
+            subcommands = self.getchildrencmds(mline[0], submodel, subschema)
             #sys.stdout.write("complete cmd: %s\ncommand %s subcommands %s\n\n" %(submodelList, name, subcommands))
             # advance to next submodel and subschema
             for i in range(1, mlineLength):
                 #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
                 if mline[i-1] in submodel:
-                    subsubmodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
+                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                    subsubmodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                     if subsubmodelList:
-                        subsubschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
+                        #subsubschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
                         for subsubmodel, subsubschema in zip(subsubmodelList, subsubschemaList):
-                            #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subsubschema))
+                            #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subsubschema %s\n\n" %(i, mline[i-i], mline[i], subsubschema))
                             valueexpected = self.isValueExpected(mline[1], subsubmodel, subsubschema)
                             if valueexpected:
                                 self.commandLen = len(mline)
@@ -291,7 +292,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                     valueexpected = self.isValueExpected(mline[i], submodel, subschema)
                                     if valueexpected:
                                         self.currentcmd = self.lastcmd
-                                        c = ShowCmd(self, [submodel], [subschema])
+                                        c = ShowCmd(self, submodel, subschema)
                                         c.show(mline, all=(i == mlineLength-1))
                                         self.currentcmd = []
 
