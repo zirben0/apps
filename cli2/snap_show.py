@@ -113,14 +113,14 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                 # get the sdk
                 sdk = self.getSdkShow()
 
-                funcObjName = config.name
+                funcObjName = config.name if 'State' in config.name else config.name + 'States'
                 try:
                     if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName + 'States')
+                        printall_func = getattr(sdk, 'print' + funcObjName + 's')
                         printall_func()
                     else:
                         # update all the arguments so that the values get set in the get_sdk_...
-                        print_func = getattr(sdk, 'print' + funcObjName + 'State')
+                        print_func = getattr(sdk, 'print' + funcObjName)
                         data = config.getSdkConfig()
                         (argumentList, kwargs) = self.get_sdk_func_key_values(data, print_func)
                         print_func(*argumentList)

@@ -56,6 +56,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.prompt = self.baseprompt
         self.cmdtype = cmdtype
         self.currentcmd = []
+        self.parentcliname = cliname
         self.subcommand = False
 
 
@@ -360,15 +361,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             return
         elif len(mline) == 2:
             # key value supplied
-            key = None
+            key = self.parentcliname if not self.subcommand else None
             subkey = mline[0]
             value = mline[1]
 
             configObj = self.getConfigObj()
             if configObj:
                 for config in configObj.configList:
-                    if subkey in config.keysDict.keys():
 
+                    if len([x for x,v in config.keysDict.iteritems() if (key in (v['subcommand'],None)) and x == subkey]) == 1:
                         config.setValid(True)
                         if len(config.attrList) > 1 and delete:
                             config.clear(subkey, value)
@@ -471,7 +472,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     # for example:
     # >ip address 10.1.1.1
     def _cmd_complete_common(self, text, line, begidx, endidx):
-
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
