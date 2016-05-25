@@ -347,29 +347,24 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         submodelList = self.getSubCommand(name, self.model["commands"])
         subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
-        subcommands = []
-        for submodel, subschema in zip(submodelList, subschemaList):
-
-            subcommands = self.getchildrencmds(mline[0], submodel, subschema)
-            #sys.stdout.write("complete cmd: %s\ncommand %s subcommands %s\n\n" %(submodelList, name, subcommands))
-            # advance to next submodel and subschema
-            for i in range(1, mlineLength):
-                #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
-                if mline[i-1] in submodel:
-                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                    if schemaname:
-                        subsubmodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                        if subsubmodelList:
-                            subsubschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                            for subsubmodel, subsubschema in zip(subsubmodelList, subsubschemaList):
-                                #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subsubschema %s\n\n" %(i, mline[i-i], mline[i], subsubschema))
-                                #valueexpected = self.isValueExpected(mline[1], subsubmodel, subsubschema)
-                                #if valueexpected:
-                                #    self.commandLen = len(mline)
-
-                                #    return []
-                                #else:
+        subcommands = self.getchildrencmds(mline[0], submodelList[0], subschemaList[0])
+        if mlineLength > 0:
+            try:
+                for i in range(1, mlineLength):
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                        if submodelList:
+                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                                #valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                # we want to keep looping untill there are no more value commands
+                                #if valueexpected and mlineLength-1 == i:
                                 subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
+
+
+            except Exception:
+                pass
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -414,19 +409,18 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             try:
                 for i in range(1, mlineLength):
                     for submodel, subschema in zip(submodelList, subschemaList):
-                        if mline[i-1] in submodel:
-                            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                            submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                            if submodelList:
-                                subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                                for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                    valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                                    # we want to keep looping untill there are no more value commands
-                                    if valueexpected and mlineLength-1 == i:
-                                        self.currentcmd = self.lastcmd
-                                        c = ShowCmd(self, subsubmodel, subsubschema)
-                                        c.show(mline, all=(i == mlineLength-1))
-                                        self.currentcmd = []
+                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                    if submodelList:
+                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                                valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                # we want to keep looping untill there are no more value commands
+                                if valueexpected and mlineLength-1 == i:
+                                    self.currentcmd = self.lastcmd
+                                    c = ShowCmd(self, subsubmodel, subsubschema)
+                                    c.show(mline, all=(i == mlineLength-1))
+                                    self.currentcmd = []
 
 
             except Exception:

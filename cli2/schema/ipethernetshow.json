@@ -15,6 +15,10 @@
         "type" : "string",
         "default": "Show IP Interface features"
       },
+       "value" : {
+        "type" : "integer",
+        "description" : "this is a trigger to cli that a command needs a value"
+      },
       "commands": {
         "type": "object",
         "description": "Base commands",
