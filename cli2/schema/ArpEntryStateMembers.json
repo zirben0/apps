@@ -3,105 +3,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "Vlan": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Vlan ID of the Router Interface to which neighbor is attached to", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "vlan", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
-          }
-        }
-      }, 
-      "MacAddr": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "MAC address of the neighbor machine with corresponding IP Address", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "macaddr", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
-          }
-        }
-      }, 
-      "Intf": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Router Interface to which neighbor is attached to", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "intf", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
-          }
-        }
-      }, 
       "IpAddr": {
         "type": "object", 
         "properties": {
@@ -134,39 +35,6 @@
             "type": "string"
           }
         }
-      }, 
-      "ExpiryTimeLeft": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Time left before entry expires in case neighbor departs", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "expirytimeleft", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
-          }
-        }
       }
     }
   }, 
@@ -178,11 +46,11 @@
   "defaultref": {
     "type": "object", 
     "properties": {}, 
-    "descirption": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
     "default": "ArpEntryState", 
     "type": "string", 
-    "descirption": "object name to which references these attributes"
+    "description": "object name to which references these attributes"
   }
 }

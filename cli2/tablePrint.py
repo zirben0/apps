@@ -1,6 +1,7 @@
 #!/user/lib/python
 import cStringIO,operator
-
+# Code taken from
+# http://code.activestate.com/recipes/267662-table-indentation/
 
 def indent(rows, hasHeader=False, headerChar='-', delim=' | ', justify='left',
            separateRows=False, prefix='', postfix='', wrapfunc=lambda x:x):
