@@ -383,7 +383,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             configObj = self.getConfigObj()
             if configObj:
                 for config in configObj.configList:
-                    if len([x for x in config.keysDict.keys() if x == key or x == subkey]) == 2:
+                    if len([x for x,v in config.keysDict.iteritems() if v['subcommand'] == key and x == subkey]) == 1:
                         config.setValid(True)
                         if len(config.attrList) > 1 and delete:
                             config.clear(subkey, value)
@@ -450,8 +450,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 self.subcommand = False
                 self.prompt = self.baseprompt
                 self.currentcmd = prevcmd
-                if self.stop:
-                    self.cmdloop()
+
+        # lets restart the cmdloop
+        if self.stop:
+            self.cmdloop()
 
 
 
@@ -472,7 +474,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
-        mline = [self.objname] + [x for x in line.split(' ') if x != '']
+        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        mline = [parentcmd] + [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
         #sys.stdout.write("\nmline: %s\n" %(mline))
 
@@ -530,7 +533,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             configObj.show_state(all)
 
     def display_help(self, argv):
-        mline = [self.objname] + argv
+        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        mline = [parentcmd] + argv
         mlineLength = len(mline)
         #sys.stdout.write("complete cmd: %s\ncommand %s objname %s\n\n" %(self.model, mline[0], self.objname))
 
@@ -558,10 +562,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.display_help(argv)
 
     def precmd(self, argv):
-        #return CommonCmdLine.precmd(self, argv)
-
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
-        mline = [self.objname] + [x for x in argv if x != 'no']
+        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        mline = [parentcmd] + [x for x in argv if x != 'no']
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
 
