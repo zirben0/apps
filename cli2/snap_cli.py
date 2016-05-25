@@ -231,7 +231,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 # update to add the prompt prefix
                 self.model["prompt-prefix"] = self.switch_name
                 try:
-                    import ipdb; ipdb.set_trace()
                     sdk = self.getSdk()
                     ports = sdk.getAllPorts()
                     if ports:
