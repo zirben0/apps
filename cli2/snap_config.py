@@ -275,7 +275,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def precmd(self, argv):
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
-        mline = [self.objname] + [x for x in argv if x != 'no']
+        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        mline = [parentcmd] + [x for x in argv if x != 'no']
         subschema = self.schema
         submodel = self.model
         subcommands = []

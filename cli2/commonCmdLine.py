@@ -296,7 +296,7 @@ class CommonCmdLine(object):
 
     def setSchema(self):
 
-        with open(self.schemapath) as schema_data:
+        with open(self.schemapath, 'r') as schema_data:
 
             self.schema = jsonref.load(schema_data)
             # ENABLE THIS if you see problems with decode
@@ -305,7 +305,7 @@ class CommonCmdLine(object):
 
     def setModel(self):
 
-        with open(self.modelpath, "r") as json_model_data:
+        with open(self.modelpath, "rw+") as json_model_data:
             self.model = jsonref.load(json_model_data)
             # ENABLE THIS if you see problems with decode
             #pp.pprint(self.model)

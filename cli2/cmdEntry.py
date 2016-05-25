@@ -121,10 +121,10 @@ class CmdEntry(object):
         :param v: CmdSet
         :return:
         '''
-        if self.name == 'Port':
-            if k == 'IntfRef':
-                if "/" in v.val:
-                    v.val = v.attr + v.val.split('/')[1]
+        if k == ('IntfRef', 'IfIndex', 'Port'):
+            if "/" in v.val:
+                v.val = v.attr + v.val.split('/')[1]
+
         return v
 
     def set(self, fullcmd, delete, k, v):

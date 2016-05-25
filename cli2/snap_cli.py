@@ -122,7 +122,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 for k, v in subcmd.iteritems():
                     currcmdline = ''
                     if type(v) in (dict, jsonref.JsonRef):
-                        #import ipdb; ipdb.set_trace()
                         if 'cliname' in v:
                             currcmdline += ' ' + v['cliname']
                         if 'commands' in v:
@@ -135,7 +134,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                     for kkk, vvv in vv.iteritems():
                                         if 'cliname' in kkk:
                                             newcmdline = currcmdline + vvv
-                                            yield newcmdlinev
+                                            yield newcmdline
                         else:
                             # reached the attributes
                             for kk, vv in v.iteritems():
@@ -165,7 +164,38 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             print x
 
 
+    def replace_cli_name(self, name, newname):
+        def submcmd_walk(name, newname, subcmd):
+            if type(subcmd) in (dict, jsonref.JsonRef):
+                for k, v in subcmd.iteritems():
+                    if type(v) in (dict, jsonref.JsonRef):
+                        if 'cliname' in v and v['cliname'] == name:
+                            v['cliname'] = newname
+                        if 'commands' in v:
+                            for kk, vv in v['commands'].iteritems():
+                                if 'subcmd' in kk:
+                                    submcmd_walk(name, newname, vv)
+                                else:
+                                    for kkk, vvv in vv.iteritems():
+                                        if 'cliname' in kkk and vvv == name:
+                                            vv[kkk] = name
 
+                        else:
+                            # reached the attributes
+                            for kk, vv in v.iteritems():
+                                if 'cliname' in vv and vv['cliname'] == name:
+                                    vv['cliname'] = newname
+
+        for k, v in self.model.iteritems():
+            if "commands" == k:
+                for kk, vv in v.iteritems():
+                    if 'subcmd' in kk:
+                        #traverse the commands
+                        submcmd_walk(name, newname, vv)
+                    else:
+                        for kkk, vvv in vv.iteritems():
+                            if 'cliname' in kkk and vvv == name:
+                                vv[kkk] = newname
 
     def validateSchemaAndModel(self):
 
@@ -205,22 +235,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     ports = sdk.getAllPorts()
                     if ports:
                         port_prefix = detect_port_prefix([p['Object']['IntfRef'] for p in ports])
-                        # TODO make this a model api to find 'ethernet' within tree cause this
-                        # call is ridiculous and if model changes then this line will have to change as well
-                        self.model['commands']['subcmd1']['config']['commands']['subcmd1']['interface']['commands']['subcmd1']['ethernet']['cliname'] = port_prefix
-
-                        def find_attribute_ethernet(subcmd, port_prefix):
-                            if 'subcmd' in key and 'commands' in subcmd:
-                                for k, v in subcmd['commands'].iteritems():
-                                    if 'cliname' in v and 'ethernet' == v['cliname']:
-                                        v['cliname'] = port_prefix
-
-                        # now we need to loop through everyones reference to 'ethernet' under the ethernet commands
-                        for key, subcmd in  self.model['commands']['subcmd1']['config']['commands']['subcmd1']['interface']['commands']['subcmd1']['ethernet']['commands'].iteritems():
-                            if 'subcmd' in key:
-                                find_attribute_ethernet(subcmd, port_prefix)
-                            elif 'cliname' in subcmd and subcmd['cliname'] == 'ethernet':
-                                subcmd['cliname'] = port_prefix
+                        self.replace_cli_name('ethernet', port_prefix)
 
                 except Exception as e:
                     sys.stdout("Failed to find port prefix exiting CLI, is switch %s accessable?" %(self.switch_name))
@@ -406,7 +421,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                 subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                                 for subsubmodel, subsubschema in zip(submodelList, subschemaList):
                                     valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                                    import ipdb; ipdb.set_trace()
                                     # we want to keep looping untill there are no more value commands
                                     if valueexpected and mlineLength-1 == i:
                                         self.currentcmd = self.lastcmd
