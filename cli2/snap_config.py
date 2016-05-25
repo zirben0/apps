@@ -385,7 +385,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 return config
         return None
 
-
+    '''
     def show_state(self, all=False):
 
         configObj = self.getConfigObj()
@@ -414,7 +414,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     config.clear(None, None, all=True)
                 except Exception as e:
                     sys.stdout.write("FAILED TO GET OBJECT for show state: %s\n" %(e,))
-
+    '''
 
     def do_apply(self, argv):
         if self.configList:
