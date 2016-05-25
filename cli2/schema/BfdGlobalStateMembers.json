@@ -3,105 +3,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "NumUpSessions": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Number of BFD sessions in up state", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "numupsessions", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "Enable": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Global BFD state in this VRF", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "enable", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "bool", 
-            "type": "string"
-          }
-        }
-      }, 
-      "NumDownSessions": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Number of BFD sessions in down state", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "numdownsessions", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
       "Vrf": {
         "type": "object", 
         "properties": {
@@ -134,72 +35,6 @@
             "type": "string"
           }
         }
-      }, 
-      "NumAdminDownSessions": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Number of BFD sessions in admin down state", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "numadmindownsessions", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "NumTotalSessions": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Total number of BFD sessions", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "numtotalsessions", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
       }
     }
   }, 
@@ -211,11 +46,11 @@
   "defaultref": {
     "type": "object", 
     "properties": {}, 
-    "descirption": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
     "default": "BfdGlobalState", 
     "type": "string", 
-    "descirption": "object name to which references these attributes"
+    "description": "object name to which references these attributes"
   }
 }

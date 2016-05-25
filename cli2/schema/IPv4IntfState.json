@@ -1,0 +1,79 @@
+{
+  "ipv4intfstate": {
+    "createwithdefault": {
+      "default": true, 
+      "type": "boolean", 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object", 
+    "properties": {
+      "cliname": {
+        "default": "", 
+        "type": "string", 
+        "description": "name used in cli to describe bfd"
+      }, 
+      "commands": {
+        "type": "object", 
+        "description": "holds all related sub command attributes related to this Leaf", 
+        "properties": {
+          "subcmd1": {
+            "$ref": "/tmp/snaproute/cli/schema/IPv4IntfStateMembers.json"
+          }
+        }
+      }, 
+      "prompt": {
+        "default": "", 
+        "displayValue": false, 
+        "type": "string", 
+        "description": "what to display on the prompt when the user has entered a command"
+      }, 
+      "help": {
+        "default": "", 
+        "type": "string"
+      }, 
+      "value": {
+        "type": "object", 
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {
+          "IntfRef": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": "System assigned interface id of L2 interface (port/lag/vlan) to which this IPv4 object is linked", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "intfref", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "argtype": {
+                "default": "string", 
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

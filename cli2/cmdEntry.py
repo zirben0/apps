@@ -1,5 +1,29 @@
 #!/usr/lib/python
-# object which stores the current configuration
+#
+#Copyright [2016] [SnapRoute Inc]
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#       Unless required by applicable law or agreed to in writing, software
+#       distributed under the License is distributed on an "AS IS" BASIS,
+#       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#       See the License for the specific language governing permissions and
+#       limitations under the License.
+#
+# _______  __       __________   ___      _______.____    __    ____  __  .___________.  ______  __    __
+# |   ____||  |     |   ____\  \ /  /     /       |\   \  /  \  /   / |  | |           | /      ||  |  |  |
+# |  |__   |  |     |  |__   \  V  /     |   (----` \   \/    \/   /  |  | `---|  |----`|  ,----'|  |__|  |
+# |   __|  |  |     |   __|   >   <       \   \      \            /   |  |     |  |     |  |     |   __   |
+# |  |     |  `----.|  |____ /  .  \  .----)   |      \    /\    /    |  |     |  |     |  `----.|  |  |  |
+# |__|     |_______||_______/__/ \__\ |_______/        \__/  \__/     |__|     |__|      \______||__|  |__|
+#
+# Container classes for cli commands entered from user and also contains default values from model schema,
+# ref from model, or values read from reading database when object exists
+#
 import sys
 import copy
 import string
@@ -40,7 +64,9 @@ def getEntrytime(entry):
     return entry.date
 
 class CmdSet(object):
-
+    '''
+    Hold the attributes related to a cli command given
+    '''
     def __init__(self, cmd, delete, attr, val):
         self.cmd = cmd
         self.delete = delete
@@ -64,6 +90,9 @@ class CmdSet(object):
         return (self.cmd, self.attr, self.val)
 
 class CmdEntry(object):
+    '''
+
+    '''
 
     def __init__(self, name, keyDict):
         # used to determine if this is a config object
@@ -81,14 +110,11 @@ class CmdEntry(object):
         self.delete = False
         # holds the name of the object
         self.name = name
-        # hold provisioned values
-        # { 'configcmd': string
-        #   'attr' : { attr:value }}
+        # holds provisioned values from user as a list of CmdSet
         self.attrList = []
         # holds the attributes which are keys to this config object
-        # initially holds default values
-        # { cliname : {'modelname' : name,
-        #              'value' : value} }
+        # initially holds default values for attributes which are
+        # contained in the json schema
         self.keysDict = copy.deepcopy(keyDict)
 
     def __str__(self):
@@ -121,7 +147,8 @@ class CmdEntry(object):
         :param v: CmdSet
         :return:
         '''
-        if k == ('IntfRef', 'IfIndex', 'Port'):
+        if k in ('IntfRef', 'IfIndex', 'Port'):
+            import ipdb; ipdb.set_trace()
             if "/" in v.val:
                 v.val = v.attr + v.val.split('/')[1]
 
@@ -220,14 +247,10 @@ class CmdEntry(object):
         pass
 
     def show(self):
-        #sys.stdout.write("objkey: \n")
-        keystr = ''
-        #for k, v in self.keysDict.iteritems():
-        #    if v['value'] is not None:
-        #        sys.stdout.write("%s:%s \n" %(k, v['value']))
-
-        #sys.stdout.write('\n%s\n' %(keystr))
-
+        '''
+        Display the output of a commands as entered by a user
+        :return:
+        '''
         sys.stdout.write('\tobject: %s\n' %(self.name))
 
         labels = ('command', 'attr', 'value', 'time provisioned')

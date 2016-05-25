@@ -3,72 +3,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "AreaNssaTranslatorState": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": " disabled(3)/elected(2)/enabled(1)  Indicates if and how an NSSA border router is performing NSSA translation of type-7 LSAs into type-5  LSAs.  When this object is set to enabled", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "areanssatranslatorstate", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "AsBdrRtrCount": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "The total number of Autonomous System Border Routers reachable within this area.  This is initially zero and is calculated in each SPF pass.", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "asbdrrtrcount", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
       "AreaId": {
         "type": "object", 
         "properties": {
@@ -101,171 +35,6 @@
             "type": "string"
           }
         }
-      }, 
-      "AreaNssaTranslatorEvents": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Indicates the number of translator state changes that have occurred since the last boot-up.  Discontinuities in the value of this counter can occur at re-initialization of the management system", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "areanssatranslatorevents", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "SpfRuns": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "The number of times that the intra-area route table has been calculated using this area's link state database.  This is typically done using Dijkstra's algorithm.  Discontinuities in the value of this counter can occur at re-initialization of the management system", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "spfruns", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "AreaLsaCksumSum": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "The 32-bit sum of the link state advertisements' LS checksums contained in this area's link state database.  This sum excludes external (LS type-5) link state advertisements. The sum can be used to determine if there has been a change in a router's link state database", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "arealsacksumsum", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "AreaLsaCount": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "The total number of link state advertisements in this area's link state database", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "arealsacount", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "AreaBdrRtrCount": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "The total number of Area Border Routers reachable within this area.  This is initially zero and is calculated in each Shortest Path First (SPF) pass.", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "areabdrrtrcount", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
-          }
-        }
       }
     }
   }, 
@@ -277,11 +46,11 @@
   "defaultref": {
     "type": "object", 
     "properties": {}, 
-    "descirption": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
     "default": "OspfAreaEntryState", 
     "type": "string", 
-    "descirption": "object name to which references these attributes"
+    "description": "object name to which references these attributes"
   }
 }

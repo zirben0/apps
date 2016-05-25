@@ -48,7 +48,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  Enable/Disable lldp config", 
+            "default": "True/False  Enable/Disable lldp config Per Port", 
             "type": "string"
           }, 
           "defaultarg": {
@@ -79,11 +79,11 @@
   "defaultref": {
     "type": "object", 
     "properties": {}, 
-    "descirption": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
     "default": "LLDPIntf", 
     "type": "string", 
-    "descirption": "object name to which references these attributes"
+    "description": "object name to which references these attributes"
   }
 }

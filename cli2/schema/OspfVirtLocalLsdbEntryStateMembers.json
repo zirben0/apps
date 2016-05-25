@@ -3,171 +3,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "VirtLocalLsdbAge": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "This field is the age of the link state advertisement in seconds.", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "virtlocallsdbage", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "VirtLocalLsdbSequence": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "The sequence number field is a signed 32-bit integer.  It starts with the value '80000001'h", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "virtlocallsdbsequence", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "VirtLocalLsdbType": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": " localOpaqueLink(9)  The type of the link state advertisement. Each link state type has a separate advertisement format.", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "virtlocallsdbtype", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
-      "VirtLocalLsdbAdvertisement": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": " MIN 1 MAX 65535  The entire link state advertisement", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "virtlocallsdbadvertisement", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
-          }
-        }
-      }, 
-      "VirtLocalLsdbChecksum": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "This field is the checksum of the complete contents of the advertisement", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "virtlocallsdbchecksum", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
       "VirtLocalLsdbNeighbor": {
         "type": "object", 
         "properties": {
@@ -267,6 +102,39 @@
           }
         }
       }, 
+      "VirtLocalLsdbType": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " localOpaqueLink(9)  The type of the link state advertisement. Each link state type has a separate advertisement format.", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "virtlocallsdbtype", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }
+        }
+      }, 
       "VirtLocalLsdbRouterId": {
         "type": "object", 
         "properties": {
@@ -310,11 +178,11 @@
   "defaultref": {
     "type": "object", 
     "properties": {}, 
-    "descirption": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
     "default": "OspfVirtLocalLsdbEntryState", 
     "type": "string", 
-    "descirption": "object name to which references these attributes"
+    "description": "object name to which references these attributes"
   }
 }
