@@ -1,0 +1,29 @@
+{
+  "ipethernetshow": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : ""
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe interfaces for ip",
+        "default" : "ethernet"
+      },
+      "help": {
+        "type" : "string",
+        "default": "Show IP Interface features"
+      },
+      "commands": {
+        "type": "object",
+        "description": "Base commands",
+        "properties": {
+          "subcmd1" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4IntfStateMembers.json"
+          }
+        }
+      }
+    }
+  }
+}

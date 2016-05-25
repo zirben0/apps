@@ -1,0 +1,7 @@
+{
+  "commands": {
+    "IntfRef": {
+      "cliname": "ethernet"
+    }
+  }
+}

@@ -214,8 +214,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 prefix.append(char)
             if prefix:
                 prefixes.append((''.join(prefix), threshold))
-            print prefixes
-            print max([x[1] for x in prefixes])
+            #print prefixes
+            #print max([x[1] for x in prefixes])
             maxprefix = [y[0] for y in prefixes if y[1] == max([x[1] for x in prefixes])][0]
             return maxprefix
 
@@ -231,6 +231,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 # update to add the prompt prefix
                 self.model["prompt-prefix"] = self.switch_name
                 try:
+                    import ipdb; ipdb.set_trace()
                     sdk = self.getSdk()
                     ports = sdk.getAllPorts()
                     if ports:
@@ -238,7 +239,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         self.replace_cli_name('ethernet', port_prefix)
 
                 except Exception as e:
-                    sys.stdout("Failed to find port prefix exiting CLI, is switch %s accessable?" %(self.switch_name))
+                    sys.stdout.write("Failed to find port prefix exiting CLI, is switch %s accessable?\n" %(self.switch_name))
                     self.do_exit([])
 
                 #with open(self.modelpath, 'w') as f:
