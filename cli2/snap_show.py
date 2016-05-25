@@ -62,9 +62,9 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
 
             # todo need to call the keys
             # l.do_lastcmd
-            if not all:
-                func = getattr(l, "do_%s" %(lastcmd,))
-                func(argv[-2:])
+            #if not all:
+            #    func = getattr(l, "do_%s" %(lastcmd,))
+            #    func(argv[-2:])
 
             self.show_state(all=all)
             self.configList.remove(config)
