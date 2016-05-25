@@ -1,0 +1,10 @@
+{
+  "ipethernetshow": {
+    "cliname": "ethernet",
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4IntfStateMembers.json"
+      }
+    }
+  }
+}
