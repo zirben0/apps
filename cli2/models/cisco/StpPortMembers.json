@@ -18,10 +18,5 @@
     "AdminPathCost": {
       "cliname": "pathcost"
     }
-  },
-  "objname": {
-    "default": "StpPort", 
-    "type": "string", 
-    "descirption": "object name to which references these attributes"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "ip": {
+    "cliname" : "ip",
+    "commands": {
+      "subcmd1" : {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/ipv4route.json"
+      },
+      "subcmd2" : {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/bgpshow.json"
+      },
+      "subcmd3" : {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/ipintfshow.json"
+      }
+
+    }
+  }
+}

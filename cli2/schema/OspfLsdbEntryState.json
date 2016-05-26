@@ -1,0 +1,178 @@
+{
+  "ospflsdbentrystate": {
+    "createwithdefault": {
+      "default": true, 
+      "type": "boolean", 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object", 
+    "properties": {
+      "cliname": {
+        "default": "", 
+        "type": "string", 
+        "description": "name used in cli to describe bfd"
+      }, 
+      "commands": {
+        "type": "object", 
+        "description": "holds all related sub command attributes related to this Leaf", 
+        "properties": {
+          "subcmd1": {
+            "$ref": "/tmp/snaproute/cli/schema/OspfLsdbEntryStateMembers.json"
+          }
+        }
+      }, 
+      "prompt": {
+        "default": "", 
+        "displayValue": false, 
+        "type": "string", 
+        "description": "what to display on the prompt when the user has entered a command"
+      }, 
+      "help": {
+        "default": "", 
+        "type": "string"
+      }, 
+      "value": {
+        "type": "object", 
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {
+          "LsdbType": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": " routerLink(1)/asSummaryLink(4)/asExternalLink(5)/nssaExternalLink(7)/networkLink(2)/multicastLink(6)/summaryLink(3)/areaOpaqueLink(10)  The type of the link state advertisement. Each link state type has a separate advertisement format.  Note", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "lsdbtype", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "argtype": {
+                "default": "int32", 
+                "type": "string"
+              }
+            }
+          }, 
+          "LsdbAreaId": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The 32-bit identifier of the area from which the LSA was received.", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "lsdbareaid", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "argtype": {
+                "default": "string", 
+                "type": "string"
+              }
+            }
+          }, 
+          "LsdbLsid": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The Link State ID is an LS Type Specific field containing either a Router ID or an IP address; it identifies the piece of the routing domain that is being described by the advertisement.", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "lsdblsid", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "argtype": {
+                "default": "string", 
+                "type": "string"
+              }
+            }
+          }, 
+          "LsdbRouterId": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The 32-bit number that uniquely identifies the originating router in the Autonomous System.", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "lsdbrouterid", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "argtype": {
+                "default": "string", 
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

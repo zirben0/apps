@@ -1,0 +1,13 @@
+{
+  "bfd": {
+    "cliname" : "bfd",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionParamMembers.json"
+      },
+      "subcmd2": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionMembers.json"
+      }
+    }
+  }
+}

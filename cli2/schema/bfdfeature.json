@@ -1,0 +1,38 @@
+{
+  "bfdfeature": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : "bfd"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe bfd",
+        "default" : "bfd"
+      },
+       "help" : {
+        "type" : "string",
+        "default": "Bidirectional Forwarding Detection (BFD) Feature"
+      },
+      "value" : {
+        "type" : "integer",
+        "description" : "this is a trigger to cli that a command needs a value"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to ethernet port",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BfdGlobalMembers.json"
+          }
+        }
+      }
+    },
+    "createwithdefault": {
+        "default": true,
+        "type": "boolean",
+        "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+    }
+  }
+}

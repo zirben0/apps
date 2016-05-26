@@ -1,0 +1,11 @@
+{
+  "neighbor": {
+    "prompt" : "neighbor",
+    "cliname" : "neighbor",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighborMembers.json"
+      }
+    }
+  }
+}

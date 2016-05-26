@@ -25,6 +25,12 @@
         "properties": {
           "subcmd1": {
             "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalMembers.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/bgpneighbor.json"
+          },
+          "subcmd3": {
+            "$ref": "file:/tmp/snaproute/cli/schema/bgppeergroup.json"
           }
         }
       }

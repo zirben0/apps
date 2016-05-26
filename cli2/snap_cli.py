@@ -1,4 +1,31 @@
-#!/usr/bin/python
+#!/usr/lib/python
+#
+#Copyright [2016] [SnapRoute Inc]
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#       Unless required by applicable law or agreed to in writing, software
+#       distributed under the License is distributed on an "AS IS" BASIS,
+#       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#       See the License for the specific language governing permissions and
+#       limitations under the License.
+#
+# _______  __       __________   ___      _______.____    __    ____  __  .___________.  ______  __    __
+# |   ____||  |     |   ____\  \ /  /     /       |\   \  /  \  /   / |  | |           | /      ||  |  |  |
+# |  |__   |  |     |  |__   \  V  /     |   (----` \   \/    \/   /  |  | `---|  |----`|  ,----'|  |__|  |
+# |   __|  |  |     |   __|   >   <       \   \      \            /   |  |     |  |     |  |     |   __   |
+# |  |     |  `----.|  |____ /  .  \  .----)   |      \    /\    /    |  |     |  |     |  `----.|  |  |  |
+# |__|     |_______||_______/__/ \__\ |_______/        \__/  \__/     |__|     |__|      \______||__|  |__|
+#
+# Main routine for the cli, will contain root node functionality within the cli tree
+# Will be the container for the reference to the flexSdk and flexPrint, as well
+# as holds the master model and schema for the cli.   The Cli utilizes a class cmdln.py which
+# was built as a wrapper above the common cmd class as part of the standard python library as of 2.7
+#
 
 import sys, getopt, socket, os
 import jsonref
@@ -7,6 +34,8 @@ import readline
 import rlcompleter
 import glob
 import shutil
+from collections import Counter
+from itertools import izip_longest
 from optparse import OptionParser
 from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
@@ -54,12 +83,24 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     objname = 'base'
     def __init__(self, switch_ip, model_path, schema_path):
         self.start = True
-        CommonCmdLine.__init__(self, None, switch_ip, schema_path, model_path, self.name)
+
         cmdln.Cmdln.__init__(self)
         self.privilege = False
         self.tmp_remove_priveledge = None
         self.sdk = FlexSwitch(switch_ip, 8080)
         self.sdkshow = FlexPrint(switch_ip, 8080)
+
+        # this must be called after sdk setting as the common init is valididating
+        # the model and some info needs to be gathered from system to populate the
+        # cli accordingly
+        CommonCmdLine.__init__(self, None, switch_ip, schema_path, model_path, self.name)
+
+        # lets make sure the model is correct
+        valid = self.validateSchemaAndModel()
+
+        if not valid:
+            sys.stdout.write("schema and model mismatch")
+            sys.exit(0)
 
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model["commands"].iteritems():
@@ -101,7 +142,110 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.intro = "FlexSwitch Console Version 1.0, Connected to: " + self.switch_name
         self.intro += "\nUsing %s style cli\n" %(self.model["style"],)
 
+    def do_show_cli(self, arv):
+
+        def submcmd_walk(subcmd):
+            if type(subcmd) in (dict, jsonref.JsonRef):
+                for k, v in subcmd.iteritems():
+                    currcmdline = ''
+                    if type(v) in (dict, jsonref.JsonRef):
+                        if 'cliname' in v:
+                            currcmdline += ' ' + v['cliname']
+                        if 'commands' in v:
+                            for kk, vv in v['commands'].iteritems():
+                                if 'subcmd' in kk:
+                                    for x in  submcmd_walk(vv):
+                                        newcmdline = currcmdline + x
+                                        yield newcmdline
+                                else:
+                                    for kkk, vvv in vv.iteritems():
+                                        if 'cliname' in kkk:
+                                            newcmdline = currcmdline + vvv
+                                            yield newcmdline
+                        else:
+                            # reached the attributes
+                            for kk, vv in v.iteritems():
+                                if 'cliname' in vv:
+                                    newcmdline = currcmdline + ' ' + vv['cliname']
+                                    yield newcmdline
+            yield ''
+
+        cmdList = []
+        for k, v in self.model.iteritems():
+            if "commands" == k:
+                for kk, vv in v.iteritems():
+                    cmdline = ''
+                    if 'subcmd' in kk:
+                        #traverse the commands
+                        for x in submcmd_walk(vv):
+                            cmdline = x
+                            if cmdline not in cmdList:
+                                cmdList.append(cmdline)
+                    else:
+                        for kkk, vvv in vv.iteritems():
+                            if 'cliname' in kkk:
+                                cmdline = vvv
+                                if cmdline not in cmdList:
+                                    cmdList.append(cmdline)
+        for x in cmdList:
+            print x
+
+
+    def replace_cli_name(self, name, newname):
+        def submcmd_walk(name, newname, subcmd):
+            if type(subcmd) in (dict, jsonref.JsonRef):
+                for k, v in subcmd.iteritems():
+                    if type(v) in (dict, jsonref.JsonRef):
+                        if 'cliname' in v and v['cliname'] == name:
+                            v['cliname'] = newname
+                        if 'commands' in v:
+                            for kk, vv in v['commands'].iteritems():
+                                if 'subcmd' in kk:
+                                    submcmd_walk(name, newname, vv)
+                                else:
+                                    for kkk, vvv in vv.iteritems():
+                                        if 'cliname' in kkk and vvv == name:
+                                            vv[kkk] = name
+
+                        else:
+                            # reached the attributes
+                            for kk, vv in v.iteritems():
+                                if 'cliname' in vv and vv['cliname'] == name:
+                                    vv['cliname'] = newname
+
+        for k, v in self.model.iteritems():
+            if "commands" == k:
+                for kk, vv in v.iteritems():
+                    if 'subcmd' in kk:
+                        #traverse the commands
+                        submcmd_walk(name, newname, vv)
+                    else:
+                        for kkk, vvv in vv.iteritems():
+                            if 'cliname' in kkk and vvv == name:
+                                vv[kkk] = newname
+
     def validateSchemaAndModel(self):
+
+        def detect_port_prefix(strings):
+            threshold = len(strings)
+            prefix = []
+            prefixes = []
+            for chars in izip_longest(*strings, fillvalue=''):
+                char, count = Counter(chars).most_common(1)[0]
+                if count == 1:
+                    break
+                elif count < threshold:
+                    if prefix:
+                        prefixes.append((''.join(prefix), threshold))
+                    threshold = count
+                prefix.append(char)
+            if prefix:
+                prefixes.append((''.join(prefix), threshold))
+            #print prefixes
+            #print max([x[1] for x in prefixes])
+            maxprefix = [y[0] for y in prefixes if y[1] == max([x[1] for x in prefixes])][0]
+            return maxprefix
+
         if self.model is None or self.schema is None:
             sys.exit(2)
         else:
@@ -113,6 +257,16 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
                 # update to add the prompt prefix
                 self.model["prompt-prefix"] = self.switch_name
+                try:
+                    sdk = self.getSdk()
+                    ports = sdk.getAllPorts()
+                    if ports:
+                        port_prefix = detect_port_prefix([p['Object']['IntfRef'] for p in ports])
+                        self.replace_cli_name('ethernet', port_prefix)
+
+                except Exception as e:
+                    sys.stdout.write("Failed to find port prefix exiting CLI, is switch %s accessable?\n" %(self.switch_name))
+                    self.do_exit([])
 
                 #with open(self.modelpath, 'w') as f:
                 #    jsonref.dump(self.model, f, indent=2)
@@ -159,7 +313,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.prompt = self.prompt[:-1] + self.getPrompt(submodel, subschema)
                 self.baseprompt = self.prompt
                 self.currentcmd = self.lastcmd
-        self.cmdloop()
+
+        if self.stop:
+            self.cmdloop()
 
     def xdo_help(self, arg):
         doc_strings = [ (i[3:], getattr(self, i).__doc__)
@@ -172,7 +328,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     # match for schema cmd object
     def _cmd_config(self, args):
         " Global configuration mode "
-
         if self.privilege is False:
             return
 
@@ -183,7 +338,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
         # get the submodule to be passed into config
-        schemaname = self.getSchemaCommandNameFromCliName(name, self.model)
+        #schemaname = self.getSchemaCommandNameFromCliName(name, self.model)
         submodelList = self.getSubCommand(name, self.model["commands"])
         subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
         # there should only be one config entry
@@ -204,39 +359,39 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.currentcmd = prevcmd
                 # return prompt to the base of this class
                 self.prompt = self.baseprompt
+                if self.stop:
+                    self.cmdloop()
 
     def _cmd_complete_show(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
         mline = [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
-        sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
+        #sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
 
         functionNameAsString = sys._getframe().f_code.co_name
         name = functionNameAsString.split("_")[-1]
 
         submodelList = self.getSubCommand(name, self.model["commands"])
-        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
-        subcommands = []
-        for submodel, subschema in zip(submodelList, subschemaList):
+        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
+        subcommands = self.getchildrencmds(mline[0], submodelList[0], subschemaList[0])
+        if mlineLength > 0:
+            try:
+                for i in range(1, mlineLength):
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                        if submodelList:
+                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                                #valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                # we want to keep looping untill there are no more value commands
+                                #if valueexpected and mlineLength-1 == i:
+                                subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
 
-            subcommands += self.getchildrencmds(mline[0], submodel, subschema)
-            #sys.stdout.write("complete cmd: %s\ncommand %s subcommands %s\n\n" %(submodelList, name, subcommands))
-            # advance to next submodel and subschema
-            for i in range(1, mlineLength):
-                #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
-                if mline[i-1] in submodel:
-                    subsubmodelList = self.getSubCommand(mline[i], submodel[mline[i-1]]["commands"])
-                    if subsubmodelList:
-                        subsubschemaList = self.getSubCommand(mline[i], subschema[mline[i-1]]["properties"]["commands"]["properties"])
-                        for subsubmodel, subsubschema in zip(subsubmodelList, subsubschemaList):
-                            #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s subschema %s\n" %(i, mline[i-i], mline[i], subsubschema))
-                            valueexpected = self.isValueExpected(mline[1], subsubmodel, subsubschema)
-                            if valueexpected:
-                                self.commandLen = len(mline)
-                                return []
-                            else:
-                                subcommands += self.getchildrencmds(mline[i], subsubmodel, subsubschema)
+
+            except Exception:
+                pass
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -259,7 +414,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def display_show_help(self, mline):
         mlineLength = len(mline)
         submodelList = self.getSubCommand("show", self.model["commands"])
-        subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"])
+        subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
         for submodel, subschema in zip(submodelList, subschemaList):
             c = ShowCmd(self, submodel, subschema)
             c.display_help(mline[1:])
@@ -276,28 +431,30 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         name = functionNameAsString.split("_")[-1]
         mlineLength = len(mline)
         submodelList = self.getSubCommand(name, self.model["commands"])
-        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
         if mlineLength > 0:
             try:
                 for i in range(1, mlineLength):
                     for submodel, subschema in zip(submodelList, subschemaList):
-                        if mline[i-1] in submodel:
-                            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                            submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                            if submodelList:
-                                subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"])
-                                for submodel, subschema in zip(submodelList, subschemaList):
-                                    valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                                    if valueexpected:
-                                        self.currentcmd = self.lastcmd
-                                        c = ShowCmd(self, [submodel], [subschema])
-                                        c.show(mline, all=(i == mlineLength-1))
-                                        self.currentcmd = []
+                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                    if submodelList:
+                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                                valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                # we want to keep looping untill there are no more value commands
+                                if valueexpected and mlineLength-1 == i:
+                                    self.currentcmd = self.lastcmd
+                                    c = ShowCmd(self, subsubmodel, subsubschema)
+                                    c.show(mline, all=(i == mlineLength-1))
+                                    self.currentcmd = []
+
 
             except Exception:
                 pass
 
-        self.cmdloop()
+        if self.stop:
+            self.cmdloop()
 
     def do_exit(self, args):
         " Quiting FlexSwitch CLI"

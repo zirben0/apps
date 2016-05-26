@@ -1,0 +1,19 @@
+{
+  "commands": {
+    "Interface": {
+        "cliname":  "interface"
+    },
+    "Owner": {
+        "cliname":  "owner"
+    },
+    "IpAddr": {
+        "cliname":  "ipaddr"
+    },
+    "PerLink": {
+        "cliname":  "perlink"
+    },
+    "ParamName": {
+      "cliname": "profile_name"
+    }
+  }
+}

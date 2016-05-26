@@ -1,0 +1,11 @@
+{
+  "feature": {
+    "cliname" :  "feature",
+    "prompt" : "feature",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/bfdfeature.json"
+      }
+    }
+  }
+}
