@@ -12,7 +12,7 @@
     "type": "object", 
     "properties": {
       "cliname": {
-        "default": "", 
+        "default": "profile",
         "type": "string", 
         "description": "name used in cli to describe bfd"
       }, 
@@ -59,7 +59,7 @@
                 "type": "string"
               }, 
               "cliname": {
-                "default": "name", 
+                "default": "profile",
                 "type": "string"
               }, 
               "islist": {

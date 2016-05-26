@@ -202,7 +202,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                             for kk, vv in v['commands'].iteritems():
                                 if 'subcmd' in kk:
                                     submcmd_walk(name, newname, vv)
-                                else:
+                                elif type(vv) in (dict, jsonref.JsonRef):
                                     for kkk, vvv in vv.iteritems():
                                         if 'cliname' in kkk and vvv == name:
                                             vv[kkk] = name
@@ -215,14 +215,15 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         for k, v in self.model.iteritems():
             if "commands" == k:
-                for kk, vv in v.iteritems():
-                    if 'subcmd' in kk:
-                        #traverse the commands
-                        submcmd_walk(name, newname, vv)
-                    else:
-                        for kkk, vvv in vv.iteritems():
-                            if 'cliname' in kkk and vvv == name:
-                                vv[kkk] = newname
+                if type(v) in (dict, jsonref.JsonRef):
+                    for kk, vv in v.iteritems():
+                        if 'subcmd' in kk:
+                            #traverse the commands
+                            submcmd_walk(name, newname, vv)
+                        elif type(vv) in (dict, jsonref.JsonRef):
+                            for kkk, vvv in vv.iteritems():
+                                if 'cliname' in kkk and vvv == name:
+                                    vv[kkk] = newname
 
     def validateSchemaAndModel(self):
 
@@ -261,6 +262,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     sdk = self.getSdk()
                     ports = sdk.getAllPorts()
                     if ports:
+                        import ipdb; ipdb.set_trace()
                         port_prefix = detect_port_prefix([p['Object']['IntfRef'] for p in ports])
                         self.replace_cli_name('ethernet', port_prefix)
 

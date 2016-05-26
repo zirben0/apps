@@ -40,7 +40,7 @@ from optparse import OptionParser
 
 
 GENERATED_SCHEMA_PATH = '/tmp/snaproute/cli/schema/'
-GENERATED_MODEL_PATH = '/tmp/snaproute/cli/model/cisco'
+GENERATED_MODEL_PATH = '/tmp/snaproute/cli/model/cisco/'
 
 class ModelLeafTemplate(object):
     '''
@@ -56,8 +56,6 @@ class ModelLeafTemplate(object):
 
             },
             "commands": {
-                "description": "Commands must be in the format of 'subcmd<x>' which should contain"
-                                "a $ref keyword or the command an be just Attribute : Value"
             }
         }
 
