@@ -56,6 +56,8 @@ class ModelLeafTemplate(object):
 
             },
             "commands": {
+                "description": "Commands must be in the format of 'subcmd<x>' which should contain"
+                                "a $ref keyword or the command an be just Attribute : Value"
             }
         }
 
