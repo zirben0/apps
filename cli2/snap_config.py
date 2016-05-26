@@ -437,7 +437,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                     # get the sdk
                     sdk = self.getSdk()
-                    import ipdb; ipdb.set_trace()
                     funcObjName = config.name
 
                     #lets see if the object exists, by doing a get first

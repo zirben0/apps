@@ -148,7 +148,6 @@ class CmdEntry(object):
         :return:
         '''
         if k in ('IntfRef', 'IfIndex', 'Port'):
-            import ipdb; ipdb.set_trace()
             if "/" in v.val:
                 v.val = v.attr + v.val.split('/')[1]
 
