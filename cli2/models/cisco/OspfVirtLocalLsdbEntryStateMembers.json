@@ -1,0 +1,19 @@
+{
+  "commands": {
+    "VirtLocalLsdbNeighbor": {
+      "cliname": "virtlocallsdbneighbor"
+    }, 
+    "VirtLocalLsdbLsid": {
+      "cliname": "virtlocallsdblsid"
+    }, 
+    "VirtLocalLsdbTransitArea": {
+      "cliname": "virtlocallsdbtransitarea"
+    }, 
+    "VirtLocalLsdbType": {
+      "cliname": "virtlocallsdbtype"
+    }, 
+    "VirtLocalLsdbRouterId": {
+      "cliname": "virtlocallsdbrouterid"
+    }
+  }
+}

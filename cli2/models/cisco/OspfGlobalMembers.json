@@ -1,0 +1,46 @@
+{
+  "commands": {
+    "StubRouterAdvertisement": {
+      "cliname": "stubrouteradvertisement"
+    }, 
+    "ExtLsdbLimit": {
+      "cliname": "extlsdblimit"
+    }, 
+    "DemandExtensions": {
+      "cliname": "demandextensions"
+    }, 
+    "RestartInterval": {
+      "cliname": "restartinterval"
+    }, 
+    "RFC1583Compatibility": {
+      "cliname": "rfc1583compatibility"
+    }, 
+    "ReferenceBandwidth": {
+      "cliname": "referencebandwidth"
+    }, 
+    "RouterId": {
+      "cliname": "routerid"
+    }, 
+    "RestartStrictLsaChecking": {
+      "cliname": "restartstrictlsachecking"
+    }, 
+    "ExitOverflowInterval": {
+      "cliname": "exitoverflowinterval"
+    }, 
+    "AdminStat": {
+      "cliname": "adminstat"
+    }, 
+    "MulticastExtensions": {
+      "cliname": "multicastextensions"
+    }, 
+    "ASBdrRtrStatus": {
+      "cliname": "asbdrrtrstatus"
+    }, 
+    "RestartSupport": {
+      "cliname": "restartsupport"
+    }, 
+    "TOSSupport": {
+      "cliname": "tossupport"
+    }
+  }
+}

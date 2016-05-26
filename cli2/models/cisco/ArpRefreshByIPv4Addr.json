@@ -1,0 +1,17 @@
+{
+  "arprefreshbyipv4addr": {
+    "cliname": "", 
+    "commands": {
+      "subcmd1": {
+        "$ref": "/tmp/snaproute/cli/model/ciscoArpRefreshByIPv4AddrMembers.json"
+      }, 
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+    }, 
+    "prompt": "", 
+    "value": {
+      "IpAddr": {
+        "cliname": "ipaddr"
+      }
+    }
+  }
+}

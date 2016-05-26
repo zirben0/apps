@@ -1,0 +1,25 @@
+{
+  "commands": {
+    "RouterId": {
+      "cliname": "routerid"
+    }, 
+    "Version": {
+      "cliname": "version"
+    }, 
+    "Description": {
+      "cliname": "description"
+    }, 
+    "MgmtIp": {
+      "cliname": "mgmtip"
+    }, 
+    "Hostname": {
+      "cliname": "hostname"
+    }, 
+    "SwitchMac": {
+      "cliname": "switchmac"
+    }, 
+    "Vrf": {
+      "cliname": "vrf"
+    }
+  }
+}

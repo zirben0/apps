@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "Policy": {
+      "cliname": "policy"
+    }, 
+    "Sources": {
+      "cliname": "sources"
+    }
+  }
+}

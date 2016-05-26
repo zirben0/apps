@@ -1,0 +1,31 @@
+{
+  "commands": {
+    "DNSServerAddr": {
+      "cliname": "dnsserveraddr"
+    }, 
+    "BroadcastAddr": {
+      "cliname": "broadcastaddr"
+    }, 
+    "IPAddrRange": {
+      "cliname": "ipaddrrange"
+    }, 
+    "Enable": {
+      "cliname": "enable"
+    }, 
+    "RouterAddr": {
+      "cliname": "routeraddr"
+    }, 
+    "IntfRef": {
+      "cliname": "intfref"
+    }, 
+    "DomainName": {
+      "cliname": "domainname"
+    }, 
+    "SubnetMask": {
+      "cliname": "subnetmask"
+    }, 
+    "Subnet": {
+      "cliname": "subnet"
+    }
+  }
+}

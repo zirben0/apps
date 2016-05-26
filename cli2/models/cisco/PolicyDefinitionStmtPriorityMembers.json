@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "Priority": {
+      "cliname": "priority"
+    }, 
+    "Statement": {
+      "cliname": "statement"
+    }
+  }
+}

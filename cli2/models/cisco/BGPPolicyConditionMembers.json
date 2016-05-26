@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "ConditionType": {
+      "cliname": "conditiontype"
+    }, 
+    "MaskLengthRange": {
+      "cliname": "masklengthrange"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }, 
+    "IpPrefix": {
+      "cliname": "ipprefix"
+    }
+  }
+}

@@ -3,6 +3,21 @@
   "commands": {
     "DestinationNw": {
       "cliname": "destinationnw"
+    }, 
+    "NullRoute": {
+      "cliname": "nullroute"
+    }, 
+    "Protocol": {
+      "cliname": "protocol"
+    }, 
+    "NetworkMask": {
+      "cliname": "networkmask"
+    }, 
+    "NextHop": {
+      "cliname": "nexthop"
+    }, 
+    "Cost": {
+      "cliname": "cost"
     }
   }
 }

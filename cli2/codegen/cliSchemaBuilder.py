@@ -40,33 +40,51 @@ from optparse import OptionParser
 
 
 GENERATED_SCHEMA_PATH = '/tmp/snaproute/cli/schema/'
+GENERATED_MODEL_PATH = '/tmp/snaproute/cli/model/cisco'
 
 class ModelLeafTemplate(object):
     '''
     Class containeer which will serve as a template for model class key attrbibutes
     which must be entered by a user
     '''
-    leafinfotemplate = {
-        "prompt": "", # empty string will not display anything
-        "cliname": "",
-        "commands": {
-            "description": "Commands must be in the format of 'subcmd<x>' which should contain"
-                            "a $ref keyword or the command an be just Attribute : Value"
-        },
-        "createwithdefault": {
-            "default": True,
-            "type": "boolean",
-            "description": "Attribute used to tell the cli whether an object can be created withdefaultref "
-                           "and/or default settings.  If this is false, all attributes must be set by user "
-                           "in order for create to be called."
-        }
-    }
-    def __init__(self, frompath, topath):
+    def __init__(self,):
         # lets get the model name for use in the schema
-        self.modelname = frompath.split('/')[-1].split('Members.json')[0]
-        self.modelpath = frompath
-        self.schemapath = topath
-        self.leafmodel = {}
+        self.templateinfo = {
+            "prompt": "", # empty string will not display anything
+            "cliname": "",
+            "value": {
+
+            },
+            "commands": {
+                "description": "Commands must be in the format of 'subcmd<x>' which should contain"
+                                "a $ref keyword or the command an be just Attribute : Value"
+            }
+        }
+
+    def getInfo(self):
+        return self.templateinfo
+
+    def setHelp(self, *args, **kwargs):
+        pass
+
+    def getMemberPropertiesPath(self):
+        return self.templateinfo["value"]
+
+    def getCommandPath(self):
+        return self.templateinfo["commands"]
+
+    def setDefault(self, attr, v):
+        # the only required fields
+        if attr in self.getMemberPropertiesPath():
+            self.getMemberPropertiesPath()[attr] = v
+
+    def setLeafMembersRef(self, filename, idx):
+
+        self.getCommandPath().update({
+            "subcmd%s" %(idx) : {
+                "$ref": GENERATED_MODEL_PATH + filename
+            }
+        })
 
     def setAdditionalShowCommands(self):
         self.leafmodel['commands'].update({
@@ -74,7 +92,6 @@ class ModelLeafTemplate(object):
                 "cliname": "brief",
             },
         })
-
 
 
 class LeafTemplate(object):
@@ -124,6 +141,7 @@ class LeafTemplate(object):
                                    "in order for create to be called."
                 }
             }
+
     def getInfo(self):
         return self.templateinfo
 
@@ -135,23 +153,9 @@ class LeafTemplate(object):
 
         return self.templateinfo["properties"]["commands"]["properties"]
 
-    def setPrompt(self, p):
-        self.getMemberPropertiesPath()["prompt"]["default"] = p
-
-    def setCliName(self, n):
-        self.getMemberPropertiesPath()["cliname"]["default"] = n
-
-    def setKey(self, k=False):
-        self.getMemberPropertiesPath()["key"]["default"] = k
-
-    def setDefault(self, d=""):
-        self.getMemberPropertiesPath()["defaultarg"]["default"] = d
-
-    def setType(self, t=str):
-        self.getMemberPropertiesPath()["argtype"]["default"] = t
-
-    def setIsList(self, l=False):
-        self.getMemberPropertiesPath()["islist"]["default"] = l
+    def setDefault(self, attr, v):
+        if attr in self.getMemberPropertiesPath():
+            self.getMemberPropertiesPath()[attr]["default"] = v
 
     def setHelp(self, d, type=None, selections=None, min=None, max=None, len=None, default=None):
         lines = []
@@ -186,6 +190,22 @@ class LeafTemplate(object):
                 "$ref": GENERATED_SCHEMA_PATH + filename
             }
         })
+
+class ModelLeafMemberTemplate(ModelLeafTemplate):
+    '''
+    Class container to serve as a template to hold the attribute members of the model class
+    '''
+    def __init__(self):
+        # the required fields
+        self.templateinfo = {
+                # what gets displayed when a tab is pressed
+                "cliname": ""
+            }
+
+    def getMemberPropertiesPath(self):
+
+        return self.templateinfo
+
 
 class LeafMemberTemplate(LeafTemplate):
     '''
@@ -240,12 +260,16 @@ class LeafMemberTemplate(LeafTemplate):
         return self.templateinfo["properties"]
 
 
-class ModelToLeafSchema(object):
-    def __init__(self, frompath, topath):
+class ModelToLeaf(object):
+    SCHEMA_TYPE = 1
+    MODEL_TYPE = 2
+
+    def __init__(self, modeltype, frompath, topath):
         # lets get the model name for use in the schema
         self.modelname = frompath.split('/')[-1].split('Members.json')[0]
         self.modelpath = frompath
         self.clidatapath = topath
+        self.modeltype = modeltype
         self.model = None
         self.template = None
         self.setTemplate()
@@ -256,14 +280,27 @@ class ModelToLeafSchema(object):
             self.model = json.load(f)
 
     def save(self):
+        filename = self.clidatapath.split('Members.json')[0] + '.json'
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         with open(self.clidatapath.split('Members.json')[0] + '.json', 'w') as f:
             json.dump(self.clidata, f, indent=2)
 
     def setTemplate(self):
-        self.template = LeafTemplate()
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.template = LeafTemplate()
+        else:
+            self.template = ModelLeafTemplate()
 
     def setCliData(self):
         self.clidata = {self.modelname.lower(): {} }
+
+    def setHelp(self):
+        pass
 
     def build(self):
         self.open()
@@ -276,17 +313,15 @@ class ModelToLeafSchema(object):
             {self.modelname.lower(): self.template.getInfo()}
         )
 
-
     def setModelName(self):
-        self.clidata[self.modelname.lower()].update({
-            "objname": {
-            "type": "string",
-            "description": "object name to which references these attributes",
-            "default": "%s" %(self.modelname)
-            }
-        })
-
-
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.clidata[self.modelname.lower()].update({
+                "objname": {
+                "type": "string",
+                "description": "object name to which references these attributes",
+                "default": "%s" %(self.modelname)
+                }
+            })
 
     def setCommands(self):
 
@@ -306,26 +341,32 @@ class ModelToLeafSchema(object):
                 max = member['max'] if member['max'] else None
                 len = member['len'] if member['len'] else None
 
-                memberdata = LeafMemberTemplate()
-                memberdata.setCliName(name.lower())
-                memberdata.setKey(iskey)
-                memberdata.setType(type)
-                memberdata.setIsList(isArray)
-                memberdata.setPrompt("")
-                memberdata.setDefault(default)
-                memberdata.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
-                self.template.setLeafMembersRef(self.modelname+'Members.json', 1)
-
+                memberinfo = LeafMemberTemplate() if self.modeltype == self.SCHEMA_TYPE else ModelLeafMemberTemplate()
+                memberinfo.setDefault("cliname", name.lower())
+                memberinfo.setDefault("key", iskey)
+                memberinfo.setDefault("argtype", type)
+                memberinfo.setDefault("islist", isArray)
+                memberinfo.setDefault("prompt", "")
+                memberinfo.setDefault("defaultarg", default)
+                memberinfo.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
                 #store the keys into the value attribute
-                self.template.getMemberPropertiesPath().update(
-                    {name: memberdata.getInfo()})
-
+                self.template.setLeafMembersRef(self.modelname+'Members.json', 1)
+                if self.modeltype == self.SCHEMA_TYPE:
+                    self.template.templateinfo['properties']['value']["properties"].update({name: memberinfo.getInfo()})
+                else:
+                    self.template.templateinfo['value'].update({name: memberinfo.getInfo()})
 
 # this class will take the generated json data model member files
 # and create a schema from them
-class ModelToLeafMemberSchema(ModelToLeafSchema):
+class ModelToLeafMember(ModelToLeaf):
 
     def save(self):
+        if not os.path.exists(os.path.dirname(self.clidatapath)):
+            try:
+                os.makedirs(os.path.dirname(self.clidatapath))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         with open(self.clidatapath, 'w') as f:
             json.dump(self.clidata, f, indent=2)
 
@@ -337,14 +378,17 @@ class ModelToLeafMemberSchema(ModelToLeafSchema):
         self.setCommands()
 
     def setTemplate(self):
-        self.template = {
-            "commands": {
-                "type": "object",
-                "description": "",
-                "properties": {
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.template = {
+                "commands": {
+                    "type": "object",
+                    "description": "",
+                    "properties": {
+                    }
                 }
             }
-        }
+        else:
+            self.template = {"commands": {}}
 
     def setCliData(self):
         self.clidata = {}
@@ -360,39 +404,42 @@ class ModelToLeafMemberSchema(ModelToLeafSchema):
 
         :return:
         '''
-        self.clidata.update({
-            "defaultref": {
-            "type": "object",
-            "properties": {},
-            "description": "Object which contains defaults for the given object, the common case will "
-                           "be a global object.  Flexswitch Model may have defaults set in model "
-                           "they will be overwriten by what is defined here. If default is not "
-                           "set in model or defaultref, then a 0 (int), true (bool) and '' (string) "
-                           "will be used. This attribute will also be used on a deletion of an "
-                           "attribute within an object.  A 'no attribute' will set the attribute "
-                           "back to default"
-            }
-        })
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.clidata.update({
+                "defaultref": {
+                "type": "object",
+                "properties": {},
+                "description": "Object which contains defaults for the given object, the common case will "
+                               "be a global object.  Flexswitch Model may have defaults set in model "
+                               "they will be overwriten by what is defined here. If default is not "
+                               "set in model or defaultref, then a 0 (int), true (bool) and '' (string) "
+                               "will be used. This attribute will also be used on a deletion of an "
+                               "attribute within an object.  A 'no attribute' will set the attribute "
+                               "back to default"
+                }
+            })
 
     def setCreateWithDefaults(self,):
-        self.clidata.update({
-            "createwithdefault": {
-            "type" : "boolean",
-            "description": "Attribute used to tell the cli whether an object can be created with"
-                           "defaultref and/or default settings.  If this is false, all attributes "
-                           "must be set by user in order for create to be called.",
-            "default": False
-            }
-        })
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.clidata.update({
+                "createwithdefault": {
+                "type" : "boolean",
+                "description": "Attribute used to tell the cli whether an object can be created with"
+                               "defaultref and/or default settings.  If this is false, all attributes "
+                               "must be set by user in order for create to be called.",
+                "default": False
+                }
+            })
 
     def setModelName(self):
-        self.clidata.update({
-            "objname": {
-            "type": "string",
-            "description": "object name to which references these attributes",
-            "default": "%s" %(self.modelname)
-            }
-        })
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.clidata.update({
+                "objname": {
+                "type": "string",
+                "description": "object name to which references these attributes",
+                "default": "%s" %(self.modelname)
+                }
+            })
 
     def setCommands(self):
 
@@ -412,20 +459,21 @@ class ModelToLeafMemberSchema(ModelToLeafSchema):
             if 'State' not in self.modelname or \
                 iskey and 'State' in self.modelname:
 
-                memberinfo = LeafMemberTemplate()
-                memberinfo.setCliName(name.lower())
-                memberinfo.setKey(iskey)
-                memberinfo.setType(type)
-                memberinfo.setIsList(isArray)
-                memberinfo.setPrompt("")
-                memberinfo.setDefault(default)
+                memberinfo = LeafMemberTemplate() if self.modeltype == self.SCHEMA_TYPE else ModelLeafMemberTemplate()
+                memberinfo.setDefault("cliname", name.lower())
+                memberinfo.setDefault("key", iskey)
+                memberinfo.setDefault("argtype", type)
+                memberinfo.setDefault("islist", isArray)
+                memberinfo.setDefault("prompt", "")
+                memberinfo.setDefault("defaultarg", default)
 
                 memberinfo.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
-                self.template["commands"]["properties"].update({name: memberinfo.getInfo()})
+                if self.modeltype == self.SCHEMA_TYPE:
+                    self.template["commands"]["properties"].update({name: memberinfo.getInfo()})
+                else:
+                    self.template["commands"].update({name: memberinfo.getInfo()})
 
         self.clidata.update(self.template)
-
-
 
 
 class ModelToCliSchemaBuilder(object):
@@ -442,13 +490,13 @@ class ModelToCliSchemaBuilder(object):
             for f in filenames:
                 if 'Members' in f:
                     print(f)
+                    for (obj, type, frompath, topath) in (
+                        (ModelToLeaf, ModelToLeaf.SCHEMA_TYPE, self.codegenmodelpath + f, self.schemapath + f),
+                        (ModelToLeafMember, ModelToLeaf.SCHEMA_TYPE, self.codegenmodelpath + f, self.schemapath + f),
+                        (ModelToLeaf, ModelToLeaf.MODEL_TYPE, self.codegenmodelpath + f, self.modelpath + f),
+                        (ModelToLeafMember, ModelToLeaf.MODEL_TYPE, self.codegenmodelpath + f, self.modelpath + f)):
 
-                    for (obj, frompath, topath) in (
-                        (ModelToLeafSchema, self.codegenmodelpath + f, self.schemapath + f),
-                        (ModelToLeafMemberSchema, self.codegenmodelpath + f, self.schemapath + f)):
-                        #(ModelToLeafModel, self.codegenmodelpath + f, self.modelpath)):
-
-                        data = obj(frompath, topath)
+                        data = obj(type, frompath, topath)
                         data.build()
                         data.save()
 
@@ -459,11 +507,11 @@ if __name__ == '__main__':
     parser.add_option("-s", "--schema", action="store",type="string",
                       dest="cli_schema_path",
                       help="Path to the cli model to be used",
-                      default="../schema/")
+                      default="../schema/gen/")
     parser.add_option("-m", "--model", action="store",type="string",
                       dest="cli_model_path",
                       help="Path to the cli model to be used",
-                      default="../models/cisco/")
+                      default="../models/cisco/gen/")
     parser.add_option("-d", "--datamodel", action="store", type="string",
                       dest="data_member_model_path",
                       help="Path to json data model member files",

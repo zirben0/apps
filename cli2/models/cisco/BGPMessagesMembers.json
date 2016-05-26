@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "Received": {
+      "cliname": "received"
+    }, 
+    "Sent": {
+      "cliname": "sent"
+    }
+  }
+}

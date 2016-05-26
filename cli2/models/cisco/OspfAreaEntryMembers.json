@@ -1,0 +1,22 @@
+{
+  "commands": {
+    "AuthType": {
+      "cliname": "authtype"
+    }, 
+    "ImportAsExtern": {
+      "cliname": "importasextern"
+    }, 
+    "AreaNssaTranslatorStabilityInterval": {
+      "cliname": "areanssatranslatorstabilityinterval"
+    }, 
+    "AreaNssaTranslatorRole": {
+      "cliname": "areanssatranslatorrole"
+    }, 
+    "AreaSummary": {
+      "cliname": "areasummary"
+    }, 
+    "AreaId": {
+      "cliname": "areaid"
+    }
+  }
+}

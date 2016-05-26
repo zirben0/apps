@@ -1,0 +1,29 @@
+{
+  "ospfvirtlocallsdbentrystate": {
+    "cliname": "", 
+    "commands": {
+      "subcmd1": {
+        "$ref": "/tmp/snaproute/cli/model/ciscoOspfVirtLocalLsdbEntryStateMembers.json"
+      }, 
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+    }, 
+    "prompt": "", 
+    "value": {
+      "VirtLocalLsdbNeighbor": {
+        "cliname": "virtlocallsdbneighbor"
+      }, 
+      "VirtLocalLsdbLsid": {
+        "cliname": "virtlocallsdblsid"
+      }, 
+      "VirtLocalLsdbTransitArea": {
+        "cliname": "virtlocallsdbtransitarea"
+      }, 
+      "VirtLocalLsdbType": {
+        "cliname": "virtlocallsdbtype"
+      }, 
+      "VirtLocalLsdbRouterId": {
+        "cliname": "virtlocallsdbrouterid"
+      }
+    }
+  }
+}

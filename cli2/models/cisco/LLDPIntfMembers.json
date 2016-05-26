@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "IfIndex": {
+      "cliname": "ifindex"
+    }, 
+    "Enable": {
+      "cliname": "enable"
+    }
+  }
+}

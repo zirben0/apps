@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "SendSummaryOnly": {
+      "cliname": "sendsummaryonly"
+    }, 
+    "ActionType": {
+      "cliname": "actiontype"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }, 
+    "GenerateASSet": {
+      "cliname": "generateasset"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "Precedence": {
+      "cliname": "precedence"
+    }, 
+    "MatchType": {
+      "cliname": "matchtype"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }, 
+    "StatementList": {
+      "cliname": "statementlist"
+    }
+  }
+}
