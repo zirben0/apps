@@ -320,7 +320,7 @@
             "type": "string"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "profile",
             "type": "string"
           }, 
           "islist": {

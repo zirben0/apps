@@ -40,7 +40,7 @@ from optparse import OptionParser
 
 
 GENERATED_SCHEMA_PATH = '/tmp/snaproute/cli/schema/'
-GENERATED_MODEL_PATH = '/tmp/snaproute/cli/model/cisco'
+GENERATED_MODEL_PATH = '/tmp/snaproute/cli/model/cisco/'
 
 class ModelLeafTemplate(object):
     '''
