@@ -1,0 +1,13 @@
+{
+  "commands": {
+    "NextHopIntRef": {
+      "cliname": "nexthopintref"
+    }, 
+    "NextHopIp": {
+      "cliname": "nexthopip"
+    }, 
+    "Weight": {
+      "cliname": "weight"
+    }
+  }
+}

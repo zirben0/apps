@@ -1,0 +1,17 @@
+{
+  "laportchannelstate": {
+    "cliname": "", 
+    "commands": {
+      "subcmd1": {
+        "$ref": "/tmp/snaproute/cli/model/ciscoLaPortChannelStateMembers.json"
+      }, 
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+    }, 
+    "prompt": "", 
+    "value": {
+      "LagId": {
+        "cliname": "lagid"
+      }
+    }
+  }
+}

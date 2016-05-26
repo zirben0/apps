@@ -1,0 +1,19 @@
+{
+  "commands": {
+    "IntfRef": {
+      "cliname": "intfref"
+    }, 
+    "MacAddr": {
+      "cliname": "macaddr"
+    }, 
+    "Type": {
+      "cliname": "type"
+    }, 
+    "Enable": {
+      "cliname": "enable"
+    }, 
+    "IpAddr": {
+      "cliname": "ipaddr"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "BrgIfIndex": {
+      "cliname": "brgifindex"
+    }, 
+    "IfIndex": {
+      "cliname": "ifindex"
+    }
+  }
+}

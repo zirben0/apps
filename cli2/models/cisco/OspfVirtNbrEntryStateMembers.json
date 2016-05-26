@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "VirtNbrArea": {
+      "cliname": "virtnbrarea"
+    }, 
+    "VirtNbrRtrId": {
+      "cliname": "virtnbrrtrid"
+    }
+  }
+}

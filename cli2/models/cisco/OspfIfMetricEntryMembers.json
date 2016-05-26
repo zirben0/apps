@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "IfMetricAddressLessIf": {
+      "cliname": "ifmetricaddresslessif"
+    }, 
+    "IfMetricValue": {
+      "cliname": "ifmetricvalue"
+    }, 
+    "IfMetricTOS": {
+      "cliname": "ifmetrictos"
+    }, 
+    "IfMetricIpAddress": {
+      "cliname": "ifmetricipaddress"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "Conditions": {
+      "cliname": "conditions"
+    }, 
+    "Actions": {
+      "cliname": "actions"
+    }, 
+    "MatchConditions": {
+      "cliname": "matchconditions"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }
+  }
+}

@@ -1,1 +1,4 @@
 *.pyc
+
+cli2/models/cisco/gen/*
+cli2/schema/gen/*

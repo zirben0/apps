@@ -1,0 +1,26 @@
+{
+  "ospflsdbentrystate": {
+    "cliname": "", 
+    "commands": {
+      "subcmd1": {
+        "$ref": "/tmp/snaproute/cli/model/ciscoOspfLsdbEntryStateMembers.json"
+      }, 
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+    }, 
+    "prompt": "", 
+    "value": {
+      "LsdbType": {
+        "cliname": "lsdbtype"
+      }, 
+      "LsdbAreaId": {
+        "cliname": "lsdbareaid"
+      }, 
+      "LsdbLsid": {
+        "cliname": "lsdblsid"
+      }, 
+      "LsdbRouterId": {
+        "cliname": "lsdbrouterid"
+      }
+    }
+  }
+}

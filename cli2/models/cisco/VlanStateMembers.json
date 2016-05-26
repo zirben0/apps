@@ -1,0 +1,7 @@
+{
+  "commands": {
+    "VlanId": {
+      "cliname": "vlanid"
+    }
+  }
+}

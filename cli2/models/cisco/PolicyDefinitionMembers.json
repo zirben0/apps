@@ -1,0 +1,19 @@
+{
+  "commands": {
+    "Priority": {
+      "cliname": "priority"
+    }, 
+    "MatchType": {
+      "cliname": "matchtype"
+    }, 
+    "PolicyType": {
+      "cliname": "policytype"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }, 
+    "StatementList": {
+      "cliname": "statementlist"
+    }
+  }
+}

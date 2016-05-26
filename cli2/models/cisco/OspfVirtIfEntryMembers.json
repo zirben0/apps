@@ -1,0 +1,28 @@
+{
+  "commands": {
+    "VirtIfRetransInterval": {
+      "cliname": "virtifretransinterval"
+    }, 
+    "VirtIfHelloInterval": {
+      "cliname": "virtifhellointerval"
+    }, 
+    "VirtIfAuthType": {
+      "cliname": "virtifauthtype"
+    }, 
+    "VirtIfNeighbor": {
+      "cliname": "virtifneighbor"
+    }, 
+    "VirtIfTransitDelay": {
+      "cliname": "virtiftransitdelay"
+    }, 
+    "VirtIfAreaId": {
+      "cliname": "virtifareaid"
+    }, 
+    "VirtIfAuthKey": {
+      "cliname": "virtifauthkey"
+    }, 
+    "VirtIfRtrDeadInterval": {
+      "cliname": "virtifrtrdeadinterval"
+    }
+  }
+}
