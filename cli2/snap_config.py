@@ -448,7 +448,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         # update all the arguments
                         data = config.getSdkConfig()
                         (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
-
                         r = get_func(*argumentList)
                         if r.status_code in sdk.httpSuccessCodes:
                             # update
