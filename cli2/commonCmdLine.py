@@ -361,9 +361,11 @@ class CommonCmdLine(object):
                     if submodelList:
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
-                            subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                            subcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema)
 
-        self.printCommands(mline, subcommands)
+        returncommands = list(Set(subcommands).difference(mline))
+
+        self.printCommands(mline, returncommands)
 
     def printCommands(self, argv, subcommands):
 
