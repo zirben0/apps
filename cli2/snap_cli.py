@@ -157,7 +157,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                     for x in  submcmd_walk(vv):
                                         newcmdline = currcmdline + x
                                         yield newcmdline
-                                else:
+                                elif type(vv) in (dict, jsonref.JsonRef):
                                     for kkk, vvv in vv.iteritems():
                                         if 'cliname' in kkk:
                                             newcmdline = currcmdline + vvv
@@ -262,7 +262,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     sdk = self.getSdk()
                     ports = sdk.getAllPorts()
                     if ports:
-                        import ipdb; ipdb.set_trace()
                         port_prefix = detect_port_prefix([p['Object']['IntfRef'] for p in ports])
                         self.replace_cli_name('ethernet', port_prefix)
 
@@ -443,7 +442,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     if submodelList:
                             subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                             for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                (valueexpected, objname, keys) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
                                 # we want to keep looping untill there are no more value commands
                                 if valueexpected and mlineLength-1 == i:
                                     self.currentcmd = self.lastcmd

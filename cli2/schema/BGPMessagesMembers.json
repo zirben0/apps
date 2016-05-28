@@ -18,20 +18,24 @@
             "default": "type: BGPCounters.  Rx counters of the BGP neighbor", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "received", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "BGPCounters", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "BGPCounters", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "type: BGPCounters.  Tx counters of the BGP neighbor", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "sent", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "BGPCounters", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "BGPCounters", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }

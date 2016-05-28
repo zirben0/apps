@@ -18,20 +18,24 @@
             "default": " advertise(2)/doNotAdvertise(1)  This object controls the advertisement of stub router LSAs by the router.  The value doNotAdvertise will result in the advertisement of a standard router LSA and is the default value.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "stubrouteradvertisement", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": " MIN -1 MAX 2147483647  The maximum number of non-default AS-external LSAs entries that can be stored in the link state database.  If the value is -1", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "extlsdblimit", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -84,20 +92,24 @@
             "default": "True/False  The router's support for demand routing. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "demandextensions", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -117,20 +129,24 @@
             "default": " MIN 1 MAX 1800  Configured OSPF graceful restart timeout interval.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "restartinterval", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -150,20 +166,24 @@
             "default": "True/False  Indicates metrics used to choose among multiple AS-external LSAs.  When RFC1583Compatibility is set to enabled", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "rfc1583compatibility", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -183,20 +203,24 @@
             "default": "Reference bandwidth in kilobits/second for  calculating default interface metrics.  The default value is 100", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "referencebandwidth", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -216,20 +240,24 @@
             "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "routerid", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -249,20 +277,24 @@
             "default": "True/False  Indicates if strict LSA checking is enabled for graceful restart.  This object is persistent and when written the entity SHOULD save the change to non-volatile  storage.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "restartstrictlsachecking", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -282,20 +314,24 @@
             "default": " MIN 0 MAX 2147483647  The number of seconds that", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "exitoverflowinterval", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -315,20 +351,24 @@
             "default": " disabled(2)/enabled(1)  The administrative status of OSPF in the router.  The value 'enabled' denotes that the OSPF Process is active on at least one interface; 'disabled' disables it on all interfaces.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "adminstat", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -348,20 +388,24 @@
             "default": "A bit mask indicating whether the router is forwarding IP multicast (Class D) datagrams based on the algorithms defined in the multicast extensions to OSPF.  Bit 0", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "multicastextensions", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -381,20 +425,24 @@
             "default": "True/False  A flag to note whether this router is configured as an Autonomous System Border Router.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "asbdrrtrstatus", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -414,20 +462,24 @@
             "default": " plannedAndUnplanned(3)/none(1)/plannedOnly(2)  The router's support for OSPF graceful restart. Options include", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "restartsupport", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -447,20 +499,24 @@
             "default": "True/False  The router's support for type-of-service routing.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "tossupport", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -468,7 +524,7 @@
     }
   }, 
   "createwithdefault": {
-    "default": true, 
+    "default": false, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 

@@ -115,7 +115,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     # try to create a lot of objects
                                     config.setValid(v[basekey]['createwithdefaults'])
                                     delete = True if self.cmdtype == 'delete' else False
-                                    config.set(self.parent.lastcmd, delete, basekey, basevalue)
+                                    config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=True)
                     else:
                         config.setValid(True)
 
@@ -153,42 +153,54 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         # in the format of 'do_<command>'
         # TODO need to add support for when the cli mode does not supply the cliname
         #      in this case need to get the default from the schema model
+
         for model, schema in zip(self.modelList, self.schemaList):
+            ignoreKeys = []
+            if self.objname in schema and \
+                'properties' in schema[self.objname] and \
+                    'value' in schema[self.objname]['properties'] and \
+                        'properties' in schema[self.objname]['properties']['value']:
+                ignoreKeys = schema[self.objname]['properties']['value']['properties'].keys()
+
             for subcmds, cmd in model[self.objname]["commands"].iteritems():
                 # handle the links
                 if 'subcmd' in subcmds:
                     try:
                         if "commands" in cmd:
                             for k,v in cmd["commands"].iteritems():
-                                cmdname = self.getCliName(v)
-                                if cmdname:
-                                    # Note needed for show
-                                    if '-' in cmdname:
-                                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI\n" %(cmdname,))
-                                        self.do_exit([])
-                                        cmdname = cmdname.replace('-', '_')
-                                    setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
-                                    #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
-                        else:
+                                if k not in ignoreKeys:
+                                    cmdname = self.getCliName(v)
+                                    if cmdname:
+                                        # Note needed for show
+                                        if '-' in cmdname:
+                                            sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI\n" %(cmdname,))
+                                            self.do_exit([])
+                                            cmdname = cmdname.replace('-', '_')
+                                        setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                                        #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
+                        elif type(cmd) in (dict, jsonref.JsonRef):
                             # another sub command list
                             for k, v in cmd.iteritems():
-                                cmdname = self.getCliName(v)
-                                if cmdname:
-                                    if '-' in cmdname:
-                                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                                        self.do_exit([])
-                                        cmdname = cmdname.replace('-', '_')
-                                    # Note needed for show
-                                    #if cmdname != self.objname:
-                                    setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
-                                    setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                                if k not in ignoreKeys:
+                                    cmdname = self.getCliName(v)
+                                    if cmdname:
+                                        if '-' in cmdname:
+                                            sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                            self.do_exit([])
+                                            cmdname = cmdname.replace('-', '_')
+                                        # Note needed for show
+                                        #if cmdname != self.objname:
+                                        setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                                        setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
 
                     except Exception as e:
                             sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
-                else:
+                elif subcmds in model[self.objname]:
                     # handle commands when are not links
                     try:
-                        cmdname = self.getCliName(model[self.objname][subcmds]["commands"])
+                        cmdname = None
+                        if subcmds in model[self.objname]:
+                            cmdname = self.getCliName(model[self.objname][subcmds]["commands"])
                         if cmdname:
                             if '-' in cmdname:
                                 sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
@@ -217,36 +229,44 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         # TODO need to add support for when the cli mode does not supply the cliname
         #      in this case need to get the default from the schema model
         for model, schema in zip(self.modelList, self.schemaList):
+            ignoreKeys = []
+            if self.objname in schema and \
+                'properties' in schema[self.objname] and \
+                    'value' in schema[self.objname]['properties'] and \
+                        'properties' in schema[self.objname]['properties']['value']:
+                ignoreKeys = schema[self.objname]['properties']['value']['properties'].keys()
+
             for subcmds, cmd in model[self.objname]["commands"].iteritems():
                 # handle the links
                 if 'subcmd' in subcmds:
                     try:
                         if "commands" in cmd:
                             for k,v in cmd["commands"].iteritems():
-                                cmdname = self.getCliName(v)
-                                # Note needed for show
-                                if '-' in cmdname:
-                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI\n" %(cmdname,))
-                                    self.do_exit([])
-                                    cmdname = cmdname.replace('-', '_')
-                                delattr(self.__class__, "do_" + cmdname)
-                                #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
-                        else:
+                                if k not in ignoreKeys:
+                                    cmdname = self.getCliName(v)
+                                    # Note needed for show
+                                    if '-' in cmdname:
+                                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI\n" %(cmdname,))
+                                        self.do_exit([])
+                                        cmdname = cmdname.replace('-', '_')
+                                    delattr(self.__class__, "do_" + cmdname)
+                                    #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
+                        elif type(cmd) in (dict, jsonref.JsonRef):
                             # another sub command list
                             for k, v in cmd.iteritems():
-                                cmdname = self.getCliName(v)
-                                if '-' in cmdname:
-                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                                    self.do_exit([])
-                                    cmdname = cmdname.replace('-', '_')
-                                # Note needed for show
-                                #if cmdname != self.objname:
-                                delattr(self.__class__, "do_" + cmdname)
-                                delattr(self.__class__, "complete_" + cmdname)
-
+                                if k not in ignoreKeys:
+                                    cmdname = self.getCliName(v)
+                                    if '-' in cmdname:
+                                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                        self.do_exit([])
+                                        cmdname = cmdname.replace('-', '_')
+                                    # Note needed for show
+                                    #if cmdname != self.objname:
+                                    delattr(self.__class__, "do_" + cmdname)
+                                    delattr(self.__class__, "complete_" + cmdname)
                     except Exception as e:
-                            sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
-                else:
+                            sys.stdout.write("Snap_leaf (1): EXCEPTION RAISED: %s" %(e,))
+                elif subcmds in model[self.objname]:
                     # handle commands when are not links
                     try:
                         cmdname = self.getCliName(model[self.objname][subcmds]["commands"])
@@ -256,7 +276,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             cmdname = cmdname.replace('-', '_')
                         delattr(self.__class__, "do_" + cmdname)
                     except Exception as e:
-                            sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
+                            sys.stdout.write("Snap_leaf (2): EXCEPTION RAISED: %s" %(e,))
 
         delattr(self.__class__, "do_no")
         delattr(self.__class__, "complete_no")
@@ -327,7 +347,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             #    #tmpsubcmd = subcmd + vv['cliname']
                             #    tmpsubcmd = vv['cliname']
 
-                        if "commands" in vv:
+                        if "commands" in vv and len(vv) > 0:
                             cmds = self.getCliCmdAttrs(key,
                                                        tmpobjname,
                                                        tmpcreatewithdefault,
@@ -425,8 +445,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             schema = self.schemaList[0]
 
             endprompt = self.baseprompt[-2:]
+
+            parentname = self.parent.lastcmd[-2]
             # should be at config x
-            schemaname = self.getSchemaCommandNameFromCliName(self.objname, model)
+            schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             if schemaname:
                 submodelList = self.getSubCommand(argv[0], model[schemaname]["commands"])
                 subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
@@ -438,7 +460,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 value = None
                 if len(argv) == 2:
                     value = argv[-1]
-
 
                 objname = schemaname
                 for i in range(1, len(argv)-1):
@@ -487,10 +508,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         attrlist = []
         if model:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
-            for cmdobj in [obj for k, obj in model[schemaname]["commands"].iteritems() if "subcmd" in k]:
-                for v in cmdobj["commands"].values():
-                    if v['cliname'] != self.objname:
-                        attrlist.append(v['cliname'])
+            if schemaname in model:
+                for cmdobj in [obj for k, obj in model[schemaname]["commands"].iteritems() if "subcmd" in k]:
+                    if type(cmdobj) in (dict, jsonref.JsonRef):
+                        for v in cmdobj["commands"].values():
+                            if 'cliname' in v and v['cliname'] != self.objname:
+                                attrlist.append(v['cliname'])
         return attrlist
 
     # this complete is meant for sub ethernet commands
@@ -524,12 +547,16 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         #sys.stdout.write("subschemaList %s\n" %(subschemaList,))
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
-                            valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                            #sys.stdout.write("\ncomplete:  10 value expected %s\n" %(valueexpected))
+                            (valueexpected, objname, keys) = self.isValueExpected(mline[i], submodel, subschema)
+                            #sys.stdout.write("\ncomplete:  10 value expected %s command %s\n" %(valueexpected, mline[i]))
                             if valueexpected:
-                                self.commandLen = len(mline)
+                                self.commandLen = len(mline[:i])
+                                #if mlineLength > self.commandLen:
                                 # todo need to do a get to display all the valid keys
-                                return []
+                                config = self.getConfigObj()
+                                values = config.getCommandValues(objanme, keys)
+                                #sys.stdout.write("command: %s %s %s" %(self.commandLen, mline[:1], values))
+                                return values
                             else:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
                             #sys.stdout.write("subcommands %s" %(subcommands,))
@@ -587,6 +614,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.display_help(argv)
 
     def precmd(self, argv):
+
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
@@ -596,27 +624,21 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         if subschema and submodel:
             if mlineLength > 0:
                 self.commandLen = 0
-                try:
-                    for i in range(1, len(mline)-1):
-                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                        if schemaname:
-                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                            submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                            for submodel, subschema in zip(submodelList, subschemaList):
-                                valueexpected = self.isValueExpected(mline[i], submodel, subschema)
-                                if valueexpected:
-                                    if mlineLength - i > 1:
-                                        sys.stdout.write("Invalid command entered, ignoring\n")
-                                        return ''
+                for i in range(1, len(mline)-1):
+                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                    if schemaname:
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            (valueexpected, objname, keys) = self.isValueExpected(mline[i], submodel, subschema)
+                            if valueexpected:
+                                if mlineLength - i > 1:
+                                    sys.stdout.write("Invalid command entered, ignoring\n")
+                                    return ''
 
-                                    # found that if commands are entered after the last command then there can be a problem
-                                    self.commandLen = mlineLength
-                                    self.subcommand = True
-
-                except Exception as e:
-                    sys.stdout.write("precmd: error %s" %(e,))
-                    pass
-
+                                # found that if commands are entered after the last command then there can be a problem
+                                self.commandLen = mlineLength
+                                self.subcommand = True
                 cmd = argv[-1]
                 if cmd in ('?', ) or \
                         (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):

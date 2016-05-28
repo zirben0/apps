@@ -18,20 +18,24 @@
             "default": "Next hop address for the destination", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "nexthop", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "CIDR length of the destination", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "cidrlen", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "uint16", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint16", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -84,20 +92,24 @@
             "default": "Network address of the destination", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "network", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }

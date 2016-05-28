@@ -18,20 +18,24 @@
             "default": "Front panel port name or system assigned interface id", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "intfref", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }

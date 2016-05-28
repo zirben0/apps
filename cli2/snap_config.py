@@ -82,19 +82,28 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         # TODO need to add support for when the cli mode does not supply the cliname
         #      in this case need to get the default from the schema model
         # this loop will setup each of the cliname commands for this model level
+        ignoreKeys = []
+        if self.objname in self.schema and \
+            'properties' in self.schema[self.objname] and \
+                'value' in self.schema[self.objname]['properties'] and \
+                    'properties' in self.schema[self.objname]['properties']['value']:
+            ignoreKeys = self.schema[self.objname]['properties']['value']['properties'].keys()
+
         for subcmds, cmd in self.model[self.objname]["commands"].iteritems():
             # handle the links
             if 'subcmd' in subcmds:
                 try:
                     for k,v in cmd.iteritems():
-                        cmdname = self.getCliName(v)
-                        if '-' in cmdname:
-                            sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                            self.do_exit([])
-                            cmdname = cmdname.replace('-', '_')
+                        # don't add the base key
+                        if k not in ignoreKeys:
+                            cmdname = self.getCliName(v)
+                            if '-' in cmdname:
+                                sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                self.do_exit([])
+                                cmdname = cmdname.replace('-', '_')
 
-                        setattr(self.__class__, "do_" + cmdname, self._cmd_common)
-                        setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                            setattr(self.__class__, "do_" + cmdname, self._cmd_common)
+                            setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
             else:
@@ -210,7 +219,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                            (valueexpected, objname, keys) = self.isValueExpected(mline[i], submodel, subschema)
+                            if valueexpected:
+                                return self.getCommandValues(objname, keys)
+                            else:
+                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -240,10 +253,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             else:
                 return
 
-
         # reset the command len
         self.commandLen = 0
-
         endprompt = ''
         # should be at config x
         schemaname = self.getSchemaCommandNameFromCliName(self.objname, self.model)
@@ -271,6 +282,10 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                     objname = schemaname
                                     if configprompt and self.cmdtype != 'delete':
+                                        if not endprompt:
+                                            endprompt = self.baseprompt[-2:]
+                                            self.prompt = self.baseprompt[:-2] + '-'
+
                                         self.prompt += configprompt + '-'
                                         value = argv[-1]
 
@@ -314,12 +329,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             subcommands += self.getchildrencmds(mline[i], submodel, subschema)
-                            valueexpected = self.isValueExpected(mline[i], submodel, subschema)
+
+                            (valueexpected, objname, keys) = self.isValueExpected(mline[i], submodel, subschema)
                             if valueexpected:
                                 if mlineLength - i > 1:
                                     sys.stdout.write("Invalid command entered, ignoring\n")
                                     return ''
-
+                                #values = self.getCommandValues(objname, keys)
+                                #sys.stdout.write("FOUND values %s" %(values))
                                 self.commandLen = mlineLength
 
             except Exception as e:
@@ -382,7 +399,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         '''
         for config in self.configList:
             if config.name == c.name:
-                return config
+                # lets get a list of keys from the existing config object
+                keyvalues = [x.get()[1:] for x in config.attrList if x.isKey() is not None]
+                for entry in c.attrList:
+                    if entry.isKey() and entry.get()[1:] in keyvalues:
+                        return config
         return None
 
     '''
@@ -415,6 +436,35 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 except Exception as e:
                     sys.stdout.write("FAILED TO GET OBJECT for show state: %s\n" %(e,))
     '''
+    def convertKeyValueToDisplay(self, objName, key, value):
+        #TODO this is a hack need a proper common mechanism to change special values
+        returnval = value
+        if key in ('IntfRef', 'IfIndex' ):
+            # lets strip the string name prepended
+            for x in list(copy.copy(value)):
+                try:
+                    v = string.atoi(x)
+                except ValueError:
+                    # must be a string
+                    returnval = returnval[1:]
+            # TODO not working when this is enabled so going have to look into this later
+            #returnval = '1/' + returnval
+        return returnval
+
+    def getCommandValues(self, objname, keys):
+
+        # get the sdk
+        try:
+            sdk = self.getSdk()
+            funcObjName = objname
+            getall_func = getattr(sdk, 'getAll' + funcObjName + 's')
+            objs = getall_func()
+            if objs:
+                return [self.convertKeyValueToDisplay(objname, keys[0], obj['Object'][keys[0]]) for obj in objs]
+        except Exception as e:
+            sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, key, e,))
+
+        return []
 
     def do_apply(self, argv):
         if self.configList:
@@ -434,7 +484,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                     # tell the user what attributes are being applied
                     #config.show()
-
                     # get the sdk
                     sdk = self.getSdk()
                     funcObjName = config.name

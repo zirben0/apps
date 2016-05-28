@@ -1,59 +1,59 @@
 {
   "commands": {
     "MaxPrefixesRestartTimer": {
-      "cliname": "max_prefixes_restart_timer"
-    },
+      "cliname": "maxprefixesrestarttimer"
+    }, 
     "RouteReflectorClient": {
-      "cliname": "routere_flector_client"
-    },
+      "cliname": "routereflectorclient"
+    }, 
     "Description": {
       "cliname": "description"
-    },
+    }, 
     "MultiHopTTL": {
-      "cliname": "ebgp_multihop"
-    },
+      "cliname": "multihopttl"
+    }, 
     "MaxPrefixesDisconnect": {
-      "cliname": "max_prefixes_disconnect"
-    },
+      "cliname": "maxprefixesdisconnect"
+    }, 
     "LocalAS": {
-      "cliname": "local_as"
-    },
+      "cliname": "localas"
+    }, 
     "ConnectRetryTime": {
-      "cliname": "connect_retry_time"
-    },
+      "cliname": "connectretrytime"
+    }, 
     "KeepaliveTime": {
-      "cliname": "timers_keep_alive"
-    },
+      "cliname": "keepalivetime"
+    }, 
     "AuthPassword": {
-      "cliname": "password"
-    },
+      "cliname": "authpassword"
+    }, 
     "AddPathsMaxTx": {
-      "cliname": "capability_addition_paths_send"
-    },
+      "cliname": "addpathsmaxtx"
+    }, 
     "MultiHopEnable": {
-      "cliname": "multihop_enable"
-    },
+      "cliname": "multihopenable"
+    }, 
     "AddPathsRx": {
-      "cliname": "capability_addition_paths_receive"
-    },
+      "cliname": "addpathsrx"
+    }, 
     "UpdateSource": {
-      "cliname": "update_source"
-    },
+      "cliname": "updatesource"
+    }, 
     "RouteReflectorClusterId": {
-      "cliname": "cluster_id"
-    },
+      "cliname": "routereflectorclusterid"
+    }, 
     "MaxPrefixesThresholdPct": {
-      "cliname": "max_prefixes_threshold_pct"
-    },
+      "cliname": "maxprefixesthresholdpct"
+    }, 
     "HoldTime": {
-      "cliname": "timers_hold_time"
-    },
+      "cliname": "holdtime"
+    }, 
     "MaxPrefixes": {
-      "cliname": "max_prefixes"
-    },
+      "cliname": "maxprefixes"
+    }, 
     "PeerAS": {
-      "cliname": "peer_as"
-    },
+      "cliname": "peeras"
+    }, 
     "Name": {
       "cliname": "name"
     }

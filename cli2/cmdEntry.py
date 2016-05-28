@@ -67,8 +67,9 @@ class CmdSet(object):
     '''
     Hold the attributes related to a cli command given
     '''
-    def __init__(self, cmd, delete, attr, val):
+    def __init__(self, cmd, delete, attr, val, iskey):
         self.cmd = cmd
+        self.iskey = iskey
         self.delete = delete
         self.attr = attr
         self.val = val
@@ -88,6 +89,9 @@ class CmdSet(object):
 
     def get(self):
         return (self.cmd, self.attr, self.val)
+
+    def isKey(self):
+        return self.val if self.isKey else None
 
 class CmdEntry(object):
     '''
@@ -153,7 +157,7 @@ class CmdEntry(object):
 
         return v
 
-    def set(self, fullcmd, delete, k, v):
+    def set(self, fullcmd, delete, k, v, isKey=False):
 
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
@@ -161,7 +165,7 @@ class CmdEntry(object):
                 entry.set(' '.join(fullcmd), delete, k, v)
                 return
 
-        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v))
+        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey))
 
     def clear(self, k=None, v=None, all=None):
         try:

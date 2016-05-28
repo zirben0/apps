@@ -18,20 +18,24 @@
             "default": "", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "protocol", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "Ip Table ACL rule name", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "name", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -84,20 +92,24 @@
             "default": "ACCEPT or DROP", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "action", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -117,20 +129,24 @@
             "default": "ip address of subnet or host", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ipaddr", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -150,20 +166,24 @@
             "default": " default: all", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "all", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "port", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "all", 
             "type": "string"
           }
         }
@@ -183,20 +203,24 @@
             "default": "IfIndex where the acl rule is to be applied default: all", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "all", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "physicalport", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "all", 
             "type": "string"
           }
         }

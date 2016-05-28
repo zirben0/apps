@@ -1,12 +1,5 @@
 {
-  "createwithdefault" : true,
-  "commands" : {
-    "IntfList": {
-      "cliname":  "member_list"
-    },
-    "UntagIntfList": {
-      "cliname": "untag_member_list"
-    },
+  "commands": {
     "VlanId": {
       "cliname": "vlan"
     }

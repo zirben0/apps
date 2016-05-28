@@ -18,20 +18,24 @@
             "default": "Input queue length of the BGP neighbor", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "input", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "Output queue length of the BGP neighbor", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "output", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }

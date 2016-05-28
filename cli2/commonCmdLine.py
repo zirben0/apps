@@ -131,7 +131,7 @@ class CommonCmdLine(object):
     def getSubCommand(self, k, commands, model=None):
         subList = []
         key = k
-        if model:
+        if model and type(model) in (dict, jsonref.JsonRef):
             #print 'getSubCmd: searchKey %s\n' % (k,)
             key = self.getSchemaCommandNameFromCliName(k, model)
             if not key:
@@ -143,42 +143,44 @@ class CommonCmdLine(object):
                 if [x for x in model.keys() if 'subcmd' in x]:
                     for cmd, submodel in model.iteritems():
                         #print 'getSubCommand: cmd ', cmd, submodel
-                        if [y for y in submodel.values() if 'cliname' in y] and key is None:
-                            key = self.getSchemaCommandNameFromCliName(k, submodel)
+                        if type(submodel) in (dict, jsonref.JsonRef):
+                            if [y for y in submodel.values() if 'cliname' in y] and key is None:
+                                key = self.getSchemaCommandNameFromCliName(k, submodel)
 
             if not key:
                 key = k
 
-        for k, v in commands.iteritems():
-            #print "subCommand: key %s k %s v %s\n\n" %(key, k, v)
+        if type(commands) in (dict, jsonref.JsonRef):
+            for k, v in commands.iteritems():
+                #print "subCommand: key %s k %s v %s\n\n" %(key, k, v)
 
-            if k == key:
-                #sys.stdout.write("RETURN 1 %s\n\n"% (v))
-                subList.append(v)
-            else:
-                # looking for subcommand
-                if type(v) in (dict, jsonref.JsonRef):
+                if k == key:
+                    #sys.stdout.write("RETURN 1 %s\n\n"% (v))
+                    subList.append(v)
+                else:
+                    # looking for subcommand
+                    if type(v) in (dict, jsonref.JsonRef):
 
-                    if key in ('?', 'help'):
-                        subList.append(v)
-                    # attribute
-                    elif key in v:
-                        subList.append(v)
-                    # model subcmd
-                    elif key in [vv['cliname'] for vv in v.values() if 'cliname' in vv]:
-                        subList.append(v)
-                    # model command
-                    elif key in [self.getCliName(vv) for kk, vv in v.iteritems() if 'commands' in kk and 'cliname' in vv]:
-                        subList.append(v)
-                    #elif "commands" in v and key in [self.getCliName(vv) for vv in v["commands"].values() if 'cliname' in vv]:
-                    #    subList.append(v)
-                    elif key in [vv['properties']['cliname']['default'] for vv in v.values() if 'properties' in vv and 'cliname' in vv['properties']]:
-                        subList.append(v)
-                    # schema command
-                    elif key in [vv['properties']['cliname']['default'] for kk, vv in v.iteritems() if 'commands' in kk and 'properties' in vv and 'cliname' in vv['properties']]:
-                        subList.append(v)
-                    #elif "commands" in v and key in [vv['properties']['cliname']['default'] for vv in v["commands"]["properties"].values()]:
-                    #    subList.append(v)
+                        if key in ('?', 'help'):
+                            subList.append(v)
+                        # attribute
+                        elif key in v:
+                            subList.append(v)
+                        # model subcmd
+                        elif key in [vv['cliname'] for vv in v.values() if 'cliname' in vv]:
+                            subList.append(v)
+                        # model command
+                        elif key in [self.getCliName(vv) for kk, vv in v.iteritems() if 'commands' in kk and 'cliname' in vv]:
+                            subList.append(v)
+                        #elif "commands" in v and key in [self.getCliName(vv) for vv in v["commands"].values() if 'cliname' in vv]:
+                        #    subList.append(v)
+                        elif key in [vv['properties']['cliname']['default'] for vv in v.values() if 'properties' in vv and 'cliname' in vv['properties']]:
+                            subList.append(v)
+                        # schema command
+                        elif key in [vv['properties']['cliname']['default'] for kk, vv in v.iteritems() if 'commands' in kk and 'properties' in vv and 'cliname' in vv['properties']]:
+                            subList.append(v)
+                        #elif "commands" in v and key in [vv['properties']['cliname']['default'] for vv in v["commands"]["properties"].values()]:
+                        #    subList.append(v)
 
 
         return subList
@@ -215,7 +217,7 @@ class CommonCmdLine(object):
                             #if cliname is None:
                             #    for kk, vv in schemaobj.iteritems():
                             #        cliname = self.getCliName(vv)
-                        else: # just an attribute
+                        elif type(modelobj) in (dict, jsonref.JsonRef): # just an attribute
                             for vv in modelobj.values():
                                 cliname = self.getCliName(vv)
                                 if cliname is not None:
@@ -226,13 +228,14 @@ class CommonCmdLine(object):
         #print '\ngetSchemaCommand:', cliname, model
         #print '\n\n'
         for key, value in model.iteritems():
-            if type(value) == dict:
+            if type(value) in (dict, jsonref.JsonRef):
                 if 'cliname' in value and cliname == value['cliname']:
                     return key
                 else:
                     for k, v in value.iteritems():
-                        if 'cliname' in v and cliname == v['cliname']:
-                            return k
+                        if type(v) in (dict, jsonref.JsonRef):
+                            if 'cliname' in v and cliname == v['cliname']:
+                                return k
         return None
 
 
@@ -257,7 +260,7 @@ class CommonCmdLine(object):
                     if "subcmd" in k:
                         modelobj = model[schemaname]["commands"][k] if k in model[schemaname]["commands"] else None
                         x = []
-                        if modelobj:
+                        if modelobj and type(modelobj) in (dict, jsonref.JsonRef):
                             for kk, vv in modelobj.iteritems():
                                 # leaf node
                                 if kk == "commands":
@@ -282,23 +285,30 @@ class CommonCmdLine(object):
                                                 cliHelpList.append((val[1], val[2]))
 
                                     elif "properties" in vv and "commands" in vv["properties"]:
+                                        # todo need to get proper parsing to find the help
                                         cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
                                         if val[1] is None and cliname:
                                             val[1] = cliname
                                         elif clihelp:
                                             val[2] = clihelp["default"]
-                                        if val[1] and val[2]:
-                                            cliHelpList.append((val[1], val[2]))
+                                        cliHelpList.append((val[1], val[2]))
+                            else:
+                                cliHelpList.append((val[1], val[2]))
         return cliHelpList
 
     def isValueExpected(self, cmd, model, schema):
         schemaname = self.getSchemaCommandNameFromCliName(cmd, model)
         #print 'isValueExpected', schema, schemaname
         if schema:
-            if schemaname in schema:
-                #sys.stdout.write("\nisValueExpected: cmd %s schema %s\n" %(cmd, schema[schemaname].keys()))
-                return "value" in schema[schemaname]["properties"]
-        return False
+            if schemaname in schema and \
+                "properties" in schema[schemaname] and \
+                    "value" in schema[schemaname]["properties"] and \
+                    'properties' in schema[schemaname]['properties']['value']:
+                keys = [k for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if type(v) in (dict, jsonref.JsonRef)]
+                objname = schema[schemaname]['properties']['objname']['default']
+                #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s\n" %(cmd, objname, keys))
+                return (True, objname, keys)
+        return (False, None, [])
 
     def getValue(self, attribute):
 

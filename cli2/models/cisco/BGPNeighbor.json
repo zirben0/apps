@@ -1,19 +1,14 @@
 {
   "bgpneighbor": {
-    "cliname": "", 
+    "prompt": "neighbor",
     "commands": {
-      "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/BGPNeighborMembers.json"
-      }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighborSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "neighbor",
+    "help": "BGP Neighbor Commands",
     "value": {
-      "IfIndex": {
-        "cliname": "ifindex"
-      }, 
       "NeighborAddress": {
-        "cliname": "neighboraddress"
+        "cliname": "neighbor"
       }
     }
   }

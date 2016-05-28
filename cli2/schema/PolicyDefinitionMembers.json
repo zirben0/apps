@@ -18,20 +18,24 @@
             "default": "Priority of the policy w.r.t other policies configured", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "priority", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "all/any  Specifies whether to match all/any of the statements within this policy default: all", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "all", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "matchtype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "all", 
             "type": "string"
           }
         }
@@ -84,20 +92,24 @@
             "default": " BGP/OSPF/ALL  Specifies the intended protocol application for the policy default: ALL", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "ALL", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "policytype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "ALL", 
             "type": "string"
           }
         }
@@ -117,20 +129,24 @@
             "default": "Policy Name", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "name", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -150,20 +166,24 @@
             "default": "type: PolicyDefinitionStmtPriority.  Specifies list of statements along with their precedence order.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "statementlist", 
             "type": "string"
           }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
           "argtype": {
             "default": "PolicyDefinitionStmtPriority", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }

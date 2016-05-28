@@ -39,8 +39,11 @@ import os, copy
 from optparse import OptionParser
 
 
-GENERATED_SCHEMA_PATH = '/tmp/snaproute/cli/schema/'
-GENERATED_MODEL_PATH = '/tmp/snaproute/cli/model/cisco/'
+GENERATED_SCHEMA_PATH = 'file:/tmp/snaproute/cli/schema/'
+GENERATED_MODEL_PATH = 'file:/tmp/snaproute/cli/model/cisco/'
+
+SUBCMD_TEMPLATE = {
+}
 
 class ModelLeafTemplate(object):
     '''
@@ -56,8 +59,6 @@ class ModelLeafTemplate(object):
 
             },
             "commands": {
-                "description": "Commands must be in the format of 'subcmd<x>' which should contain"
-                                "a $ref keyword or the command an be just Attribute : Value"
             }
         }
 
@@ -78,12 +79,16 @@ class ModelLeafTemplate(object):
         if attr in self.getMemberPropertiesPath():
             self.getMemberPropertiesPath()[attr] = v
 
-    def setLeafMembersRef(self, filename, idx):
+    def setSubCommandRef(self, filename):
+        '''
+        This will hold the dynamic subcommand reference that users will need to update to mach
+        the model.
+        :param filename:
+        :return:
+        '''
 
         self.getCommandPath().update({
-            "subcmd%s" %(idx) : {
-                "$ref": GENERATED_MODEL_PATH + filename
-            }
+            "$ref": GENERATED_MODEL_PATH + filename
         })
 
     def setAdditionalShowCommands(self):
@@ -100,6 +105,7 @@ class LeafTemplate(object):
     which must be entered by a user
     '''
     def __init__(self,):
+
         self.templateinfo = {
                 "type" : "object",
                 "properties": {
@@ -127,8 +133,8 @@ class LeafTemplate(object):
                     },
                     "commands" : {
                         "type": "object",
-                        "description": "holds all related sub command attributes related to this Leaf",
                         "properties": {
+                            "$ref": "",
                         }
                     },
                 },
@@ -183,12 +189,16 @@ class LeafTemplate(object):
 
         self.getMemberPropertiesPath()["help"]["default"] = " ".join(lines)
 
-    def setLeafMembersRef(self, filename, idx):
+    def setSubCommandRef(self, filename):
+        '''
+        This will hold the dynamic subcommand reference that users will need to update to mach
+        the model.
+        :param filename:
+        :return:
+        '''
 
         self.getCommandPath().update({
-            "subcmd%s" %(idx) : {
-                "$ref": GENERATED_SCHEMA_PATH + filename
-            }
+            "$ref": GENERATED_SCHEMA_PATH + filename
         })
 
 class ModelLeafMemberTemplate(ModelLeafTemplate):
@@ -237,6 +247,10 @@ class LeafMemberTemplate(LeafTemplate):
                         "type": "string",
                         "default": ""
                     },
+                    "isdefaultset": {
+                        "type": "boolean",
+                        "default": False
+                    },
                     # if a default is set then this will contain a value
                     "defaultarg" : {
                         "type": "string",
@@ -259,7 +273,6 @@ class LeafMemberTemplate(LeafTemplate):
 
         return self.templateinfo["properties"]
 
-
 class ModelToLeaf(object):
     SCHEMA_TYPE = 1
     MODEL_TYPE = 2
@@ -280,15 +293,28 @@ class ModelToLeaf(object):
             self.model = json.load(f)
 
     def save(self):
-        filename = self.clidatapath.split('Members.json')[0] + '.json'
-        if not os.path.exists(os.path.dirname(filename)):
-            try:
-                os.makedirs(os.path.dirname(filename))
-            except OSError as exc: # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
-        with open(self.clidatapath.split('Members.json')[0] + '.json', 'w') as f:
-            json.dump(self.clidata, f, indent=2)
+        '''
+        create two files if they don't exist:
+        1) <ModelName>.json - holds the base class command
+                The template data will then be stored into file
+        2) <ModelName>SubCmds.json - This wil hold the dynamic information for sub commands related to
+                Model command.
+
+        :return:
+        '''
+        for filename, data, overwrite in ((self.clidatapath.split('Members.json')[0] + '.json', self.clidata, True),
+                                          (self.clidatapath.split('Members.json')[0] + 'SubCmds.json', self.clisubcmddata, True)):
+
+            if not os.path.exists(os.path.dirname(filename)):
+                try:
+                    os.makedirs(os.path.dirname(filename))
+                except OSError as exc: # Guard against race condition
+                    if exc.errno != errno.EEXIST:
+                        raise
+
+            if overwrite or not os.path.exists(filename):
+                with open(filename, 'w') as f:
+                    json.dump(data, f, indent=2)
 
     def setTemplate(self):
         if self.modeltype == self.SCHEMA_TYPE:
@@ -298,6 +324,7 @@ class ModelToLeaf(object):
 
     def setCliData(self):
         self.clidata = {self.modelname.lower(): {} }
+        self.clisubcmddata = {}
 
     def setHelp(self):
         pass
@@ -309,13 +336,11 @@ class ModelToLeaf(object):
         self.setCommands()
 
         # lets store off the data now
-        self.clidata.update(
-            {self.modelname.lower(): self.template.getInfo()}
-        )
+        self.clidata[self.modelname.lower()].update(self.template.getInfo())
 
     def setModelName(self):
         if self.modeltype == self.SCHEMA_TYPE:
-            self.clidata[self.modelname.lower()].update({
+            self.template.templateinfo['properties'].update({
                 "objname": {
                 "type": "string",
                 "description": "object name to which references these attributes",
@@ -334,7 +359,7 @@ class ModelToLeaf(object):
                 isArray = member['isArray']
                 description = member['description']
                 default = member['default']
-                isdefaultset = member['isDefaultSet']
+                isdefaultset = member['isDefaultSet'] if 'State' not in self.modelname else True
                 #position = member['position']
                 selections = member['selections']
                 min = member['min'] if member['max'] else None
@@ -348,13 +373,29 @@ class ModelToLeaf(object):
                 memberinfo.setDefault("islist", isArray)
                 memberinfo.setDefault("prompt", "")
                 memberinfo.setDefault("defaultarg", default)
+                memberinfo.setDefault("isdefaultset", isdefaultset)
                 memberinfo.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
                 #store the keys into the value attribute
-                self.template.setLeafMembersRef(self.modelname+'Members.json', 1)
+                self.setLeafMembersRef(self.modelname+'Members.json', 1)
+                self.template.setSubCommandRef(self.modelname+'SubCmds.json')
                 if self.modeltype == self.SCHEMA_TYPE:
                     self.template.templateinfo['properties']['value']["properties"].update({name: memberinfo.getInfo()})
                 else:
                     self.template.templateinfo['value'].update({name: memberinfo.getInfo()})
+
+    def setLeafMembersRef(self, filename, idx):
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.clisubcmddata.update({
+                "subcmd%s" %(idx) : {
+                    "$ref": GENERATED_SCHEMA_PATH + filename
+                }
+            })
+        else:
+            self.clisubcmddata.update({
+                "subcmd%s" %(idx) : {
+                    "$ref": GENERATED_MODEL_PATH + filename
+                }
+            })
 
 # this class will take the generated json data model member files
 # and create a schema from them
@@ -373,7 +414,6 @@ class ModelToLeafMember(ModelToLeaf):
     def build(self):
         self.open()
         self.setModelName()
-        self.setCreateWithDefaults()
         self.setDefaultRef()
         self.setCommands()
 
@@ -392,6 +432,7 @@ class ModelToLeafMember(ModelToLeaf):
 
     def setCliData(self):
         self.clidata = {}
+        self.clisubcmddata = {}
 
     def setDefaultRef(self):
         '''
@@ -419,7 +460,7 @@ class ModelToLeafMember(ModelToLeaf):
                 }
             })
 
-    def setCreateWithDefaults(self,):
+    def setCreateWithDefaults(self, default):
         if self.modeltype == self.SCHEMA_TYPE:
             self.clidata.update({
                 "createwithdefault": {
@@ -427,7 +468,7 @@ class ModelToLeafMember(ModelToLeaf):
                 "description": "Attribute used to tell the cli whether an object can be created with"
                                "defaultref and/or default settings.  If this is false, all attributes "
                                "must be set by user in order for create to be called.",
-                "default": False
+                "default": default
                 }
             })
 
@@ -443,13 +484,16 @@ class ModelToLeafMember(ModelToLeaf):
 
     def setCommands(self):
 
+        default = not False in [member['isDefaultSet'] for member in self.model.values() if not member['isKey']]
+        self.setCreateWithDefaults(default)
+
         for name, member in self.model.iteritems():
             type = member['type']
             iskey = member['isKey']
             isArray = member['isArray']
             description = member['description']
             default = member['default']
-            isdefaultset = member['isDefaultSet']
+            isdefaultset = member['isDefaultSet'] if 'State' not in self.modelname else True
             #position = member['position']
             selections = member['selections']
             min = member['min'] if member['max'] else None

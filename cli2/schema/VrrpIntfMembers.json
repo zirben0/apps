@@ -18,20 +18,24 @@
             "default": "1-255  Sending VRRP router's priority for the virtual router default: 100", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "100", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "priority", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "100", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "1-4095  Time interval between ADVERTISEMENTS default: 1", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "1", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "advertisementinterval", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "1", 
             "type": "string"
           }
         }
@@ -84,20 +92,24 @@
             "default": "True/False  Controls whether a (starting or restarting) higher-priority Backup router preempts a lower-priority Master router default: true", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "true", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "preemptmode", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "true", 
             "type": "string"
           }
         }
@@ -117,20 +129,24 @@
             "default": "Virtual Router Identifier", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "virtualipv4addr", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -150,20 +166,24 @@
             "default": "Interface index for which VRRP Config needs to be done", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ifindex", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -183,20 +203,24 @@
             "default": "Virtual Router's Unique Identifier", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "vrid", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -216,20 +240,24 @@
             "default": "True/False  Controls whether a virtual router in Master state will accept packets addressed to the address owner's IPvX address as its own if it is not the IPvX address owner. default: false", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "false", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "acceptmode", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }
         }

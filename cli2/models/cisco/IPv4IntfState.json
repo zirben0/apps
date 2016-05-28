@@ -1,13 +1,14 @@
 {
   "ipv4intfstate": {
-    "cliname": "", 
+    "prompt": "", 
     "commands": {
       "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/IPv4IntfStateMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4IntfStateMembers.json"
       }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value", 
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4IntfStateSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "", 
     "value": {
       "IntfRef": {
         "cliname": "intfref"

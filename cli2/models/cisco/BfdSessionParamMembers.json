@@ -1,7 +1,7 @@
 {
   "commands": {
     "RequiredMinRxInterval": {
-      "cliname": "echo_rx_interval"
+      "cliname": "interval"
     },
     "AuthType": {
       "cliname": "auth_type"
@@ -10,7 +10,7 @@
       "cliname": "demand_enabled"
     },
     "DesiredMinTxInterval": {
-      "cliname": "echo_interval"
+      "cliname": "slow_timer"
     },
     "AuthenticationEnabled": {
       "cliname": "authentication_enabled"
@@ -19,10 +19,10 @@
       "cliname": "auth_keyid"
     },
     "RequiredMinEchoRxInterval": {
-      "cliname": "requiredminechorxinterval"
+      "cliname": "min_rx"
     },
     "LocalMultiplier": {
-      "cliname": "local_multiplier"
+      "cliname": "multiplier"
     },
     "AuthData": {
       "cliname": "auth_data"

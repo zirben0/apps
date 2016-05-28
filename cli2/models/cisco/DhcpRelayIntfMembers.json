@@ -1,13 +1,13 @@
 {
   "commands": {
     "IfIndex": {
-      "cliname": "ethernet"
-    },
+      "cliname": "ifindex"
+    }, 
     "Enable": {
-      "cliname": "dhcp_enable"
-    },
+      "cliname": "enable"
+    }, 
     "ServerIp": {
-      "cliname": "helper_address"
+      "cliname": "serverip"
     }
   }
 }

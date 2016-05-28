@@ -18,20 +18,24 @@
             "default": "Reference to aggregate member interface", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ifindex", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "int32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }

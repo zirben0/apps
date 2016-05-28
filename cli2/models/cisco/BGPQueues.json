@@ -1,10 +1,10 @@
 {
   "bgpqueues": {
-    "cliname": "", 
+    "prompt": "", 
     "commands": {
       "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
     }, 
-    "prompt": "", 
+    "cliname": "", 
     "value": {}
   }
 }

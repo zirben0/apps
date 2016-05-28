@@ -1,13 +1,11 @@
 {
   "bgppeergroup": {
-    "cliname": "", 
+    "prompt": "peer",
     "commands": {
-      "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/BGPPeerGroupMembers.json"
-      }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPPeerGroupSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "peer",
+    "help": "BGP Peer Group Commands",
     "value": {
       "Name": {
         "cliname": "name"

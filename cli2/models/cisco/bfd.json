@@ -6,7 +6,7 @@
         "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionParam.json"
       },
       "subcmd2": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSession.json"
       }
     }
   }

@@ -1,10 +1,10 @@
 {
   "commands": {
     "IntfRef": {
-      "cliname": "ethernet"
-    },
+      "cliname": "intfref"
+    }, 
     "IpAddr": {
-      "cliname": "address"
+      "cliname": "ipaddr"
     }
   }
 }

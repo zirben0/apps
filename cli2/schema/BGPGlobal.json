@@ -11,19 +11,20 @@
     ], 
     "type": "object", 
     "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalSubCmds.json"
+        }
+      }, 
       "cliname": {
         "default": "", 
         "type": "string", 
         "description": "name used in cli to describe bfd"
       }, 
-      "commands": {
-        "type": "object", 
-        "description": "holds all related sub command attributes related to this Leaf", 
-        "properties": {
-          "subcmd1": {
-            "$ref": "/tmp/snaproute/cli/schema/BGPGlobalMembers.json"
-          }
-        }
+      "help": {
+        "default": "", 
+        "type": "string"
       }, 
       "prompt": {
         "default": "", 
@@ -31,48 +32,53 @@
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
       }, 
-      "help": {
-        "default": "", 
-        "type": "string"
-      }, 
       "value": {
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "RouterId": {
-            "type": "object", 
+          "ASNum": {
+            "type": "object",
             "properties": {
               "key": {
-                "default": true, 
+                "default": false,
                 "type": "boolean"
-              }, 
+              },
               "prompt": {
-                "default": "", 
+                "default": "",
                 "type": "string"
-              }, 
+              },
               "help": {
-                "default": "Router id for BGP global config", 
+                "default": "Local AS for BGP global config",
                 "type": "string"
-              }, 
-              "defaultarg": {
-                "default": "", 
-                "type": "string"
-              }, 
-              "cliname": {
-                "default": "routerid", 
-                "type": "string"
-              }, 
+              },
               "islist": {
-                "default": false, 
+                "default": false,
                 "type": "boolean"
-              }, 
+              },
+              "cliname": {
+                "default": "asnum",
+                "type": "string"
+              },
               "argtype": {
-                "default": "string", 
+                "default": "uint32",
+                "type": "string"
+              },
+              "isdefaultset": {
+                "default": false,
+                "type": "boolean"
+              },
+              "defaultarg": {
+                "default": "",
                 "type": "string"
               }
             }
           }
         }
+      }, 
+      "objname": {
+        "default": "BGPGlobal", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
       }
     }
   }

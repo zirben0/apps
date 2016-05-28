@@ -11,15 +11,20 @@
     ], 
     "type": "object", 
     "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": ""
+        }
+      }, 
       "cliname": {
         "default": "", 
         "type": "string", 
         "description": "name used in cli to describe bfd"
       }, 
-      "commands": {
-        "type": "object", 
-        "description": "holds all related sub command attributes related to this Leaf", 
-        "properties": {}
+      "help": {
+        "default": "", 
+        "type": "string"
       }, 
       "prompt": {
         "default": "", 
@@ -27,14 +32,15 @@
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
       }, 
-      "help": {
-        "default": "", 
-        "type": "string"
-      }, 
       "value": {
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {}
+      }, 
+      "objname": {
+        "default": "NextHopInfo", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
       }
     }
   }

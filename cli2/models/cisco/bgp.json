@@ -1,15 +1,13 @@
 {
-  "bgp": {
-    "cliname" : "bgp",
-    "commands" : {
-      "subcmd1": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalMembers.json"
-      },
-      "subcmd2": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpneighbor.json"
-      },
-      "subcmd3": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/bgppeergroup.json"
+  "bgpglobal": {
+    "prompt": "bgp",
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalSubCmds.json"
+    },
+    "cliname": "bgp",
+    "value": {
+      "ASNum": {
+        "cliname": "bgp"
       }
     }
   }

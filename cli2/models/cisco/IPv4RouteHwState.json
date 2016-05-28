@@ -1,13 +1,14 @@
 {
   "ipv4routehwstate": {
-    "cliname": "", 
+    "prompt": "", 
     "commands": {
       "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/IPv4RouteHwStateMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteHwStateMembers.json"
       }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value", 
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteHwStateSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "", 
     "value": {
       "DestinationNw": {
         "cliname": "destinationnw"

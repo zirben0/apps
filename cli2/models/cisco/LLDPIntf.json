@@ -1,13 +1,14 @@
 {
   "lldpintf": {
-    "cliname": "", 
+    "prompt": "", 
     "commands": {
       "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/LLDPIntfMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPIntfMembers.json"
       }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value", 
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPIntfSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "", 
     "value": {
       "IfIndex": {
         "cliname": "ifindex"

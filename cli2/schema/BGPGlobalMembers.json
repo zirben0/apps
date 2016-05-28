@@ -18,20 +18,24 @@
             "default": "Router id for BGP global config", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "routerid", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "type: SourcePolicyList.  Provide redistribution policies for BGP from different sources default: []", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "[]", 
-            "type": "string"
+          "islist": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "redistribution", 
             "type": "string"
           }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
           "argtype": {
             "default": "SourcePolicyList", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "[]", 
             "type": "string"
           }
         }
@@ -84,20 +92,24 @@
             "default": "Local AS for BGP global config", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "asnum", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -117,20 +129,24 @@
             "default": "Max ECMP paths from Internal BGP neighbors default: 0", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "0", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ibgpmaxpaths", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
+          "defaultarg": {
+            "default": "0", 
             "type": "string"
           }
         }
@@ -150,20 +166,24 @@
             "default": "Max ECMP paths from External BGP neighbors default: 0", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "0", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ebgpmaxpaths", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "uint32", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
+          "defaultarg": {
+            "default": "0", 
             "type": "string"
           }
         }
@@ -183,20 +203,24 @@
             "default": "True/False  Enable/disable ECMP for BGP default: false", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "false", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "usemultiplepaths", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }
         }
@@ -216,20 +240,24 @@
             "default": "True/False  Enable/diable ECMP paths from multiple ASes default: false", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "false", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ebgpallowmultipleas", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }
         }
@@ -237,7 +265,7 @@
     }
   }, 
   "createwithdefault": {
-    "default": true, 
+    "default": false, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 

@@ -1,13 +1,14 @@
 {
   "mactableentrystate": {
-    "cliname": "", 
+    "prompt": "", 
     "commands": {
       "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/MacTableEntryStateMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/MacTableEntryStateMembers.json"
       }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value", 
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/MacTableEntryStateSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "", 
     "value": {
       "MacAddr": {
         "cliname": "macaddr"

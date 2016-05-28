@@ -18,20 +18,24 @@
             "default": "Name of the interface this session has to be established on default: None", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "None", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "interface", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "None", 
             "type": "string"
           }
         }
@@ -51,20 +55,24 @@
             "default": "Module requesting BFD session configuration default: user", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "user", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "owner", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "user", 
             "type": "string"
           }
         }
@@ -84,20 +92,24 @@
             "default": "BFD neighbor IP address", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ipaddr", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "", 
             "type": "string"
           }
         }
@@ -117,20 +129,24 @@
             "default": "True/False  Run BFD sessions on individual link of a LAG if the neighbor is reachable through LAG default: false", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "false", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "perlink", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "bool", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
+          "defaultarg": {
+            "default": "false", 
             "type": "string"
           }
         }
@@ -150,20 +166,24 @@
             "default": "Name of the session parameters object to be applied on this session default: default", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "default", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "paramname", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "default": "string", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "defaultarg": {
+            "default": "default", 
             "type": "string"
           }
         }
@@ -171,7 +191,7 @@
     }
   }, 
   "createwithdefault": {
-    "default": false, 
+    "default": true, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 

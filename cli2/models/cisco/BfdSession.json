@@ -1,16 +1,17 @@
 {
   "bfdsession": {
-    "cliname": "", 
+    "prompt": "", 
     "commands": {
       "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/BfdSessionMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionMembers.json"
       }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value", 
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "bfd_session", 
     "value": {
       "IpAddr": {
-        "cliname": "ipaddr"
+        "cliname": "neighbor_ip"
       }
     }
   }

@@ -11,29 +11,26 @@
     ], 
     "type": "object", 
     "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/StpPortSubCmds.json"
+        }
+      }, 
       "cliname": {
         "default": "", 
         "type": "string", 
         "description": "name used in cli to describe bfd"
       }, 
-      "commands": {
-        "type": "object", 
-        "description": "holds all related sub command attributes related to this Leaf", 
-        "properties": {
-          "subcmd1": {
-            "$ref": "/tmp/snaproute/cli/schema/StpPortMembers.json"
-          }
-        }
+      "help": {
+        "default": "", 
+        "type": "string"
       }, 
       "prompt": {
         "default": "", 
         "displayValue": false, 
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
-      }, 
-      "help": {
-        "default": "", 
-        "type": "string"
       }, 
       "value": {
         "type": "object", 
@@ -54,20 +51,24 @@
                 "default": " MIN 1 MAX 2147483647  The value of the instance of the ifIndex object", 
                 "type": "string"
               }, 
-              "defaultarg": {
-                "default": "", 
-                "type": "string"
+              "islist": {
+                "default": false, 
+                "type": "boolean"
               }, 
               "cliname": {
                 "default": "brgifindex", 
                 "type": "string"
               }, 
-              "islist": {
+              "argtype": {
+                "default": "int32", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "argtype": {
-                "default": "int32", 
+              "defaultarg": {
+                "default": "", 
                 "type": "string"
               }
             }
@@ -87,25 +88,34 @@
                 "default": " MIN 1 MAX 65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
                 "type": "string"
               }, 
-              "defaultarg": {
-                "default": "", 
-                "type": "string"
+              "islist": {
+                "default": false, 
+                "type": "boolean"
               }, 
               "cliname": {
                 "default": "ifindex", 
                 "type": "string"
               }, 
-              "islist": {
+              "argtype": {
+                "default": "int32", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "argtype": {
-                "default": "int32", 
+              "defaultarg": {
+                "default": "", 
                 "type": "string"
               }
             }
           }
         }
+      }, 
+      "objname": {
+        "default": "StpPort", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
       }
     }
   }
