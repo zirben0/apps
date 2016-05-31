@@ -542,7 +542,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")
         for config in self.configList:
-            import ipdb; ipdb.set_trace()
             if config.isValid():
                 config.show()
 

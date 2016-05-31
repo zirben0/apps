@@ -194,7 +194,6 @@ class CmdEntry(object):
         self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey, isattrlist))
 
     def setDict(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
-        import ipdb; ipdb.set_trace()
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
                 # TODO if delete then we may need to remove this command all together

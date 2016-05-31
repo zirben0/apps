@@ -89,7 +89,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         configObj = self.getConfigObj()
         for model, schema in zip(self.modelList, self.schemaList):
 
-            import ipdb; ipdb.set_trace()
             listAttrs =  model[self.objname]['listattrs'] if 'listattrs' in model[self.objname] else []
             # lets get all commands and subcommands for a given config operation
             allCmdsList = self.prepareConfigTreeObjects(None, self.objname, False, model[self.objname]['cliname'], model[self.objname]["commands"], schema[self.objname]["properties"]["commands"]["properties"], listAttrs)
