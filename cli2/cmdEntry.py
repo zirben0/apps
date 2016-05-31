@@ -59,7 +59,6 @@ def getEntryValue(entry):
 
 def getDictEntryValue(entry, attrDict):
     rval = {}
-    import ipdb; ipdb.set_trace()
     if type(entry.val) is list:
         rvallist = []
         for subval in entry.val:

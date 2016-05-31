@@ -91,7 +91,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "802.1Q tag/Vlan ID for vlan being provisioned", 
+            "default": "1-4094  802.1Q tag/Vlan ID for vlan being provisioned", 
             "type": "string"
           }, 
           "islist": {
@@ -103,9 +103,9 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
+            "minimum": 1, 
             "type": "int32", 
-            "maximum": 2147483647
+            "maximum": 4094
           }, 
           "isdefaultset": {
             "default": false, 

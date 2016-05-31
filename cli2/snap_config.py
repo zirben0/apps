@@ -30,6 +30,7 @@ import cmdln
 import json
 import pprint
 import inspect
+import string
 from jsonref import JsonRef
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine
@@ -324,7 +325,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if mlineLength > 0:
             self.commandLen = 0
             try:
-                for i in range(1, len(mline)-1):
+                for i in range(1, len(mline)):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
@@ -334,9 +335,24 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                             (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                             if valueexpected:
-                                if mlineLength - i > 1:
-                                    sys.stdout.write("Invalid command entered, ignoring\n")
+                                #if mlineLength - i > 1:
+                                #    sys.stdout.write("Invalid command entered, ignoring\n")
+                                #    return ''
+                                values = self.getValueSelections(mline[i], submodel, subschema)
+                                if i < mlineLength and values and mline[i+1] not in values:
+                                    sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
                                     return ''
+                                min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                if min is not None and max is not None:
+                                    try:
+                                        num = string.atoi(mline[i+1])
+                                        if num < min or num > max:
+                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                            return ''
+                                    except:
+                                        sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                        return ''
+
                                 #values = self.getCommandValues(objname, keys)
                                 #sys.stdout.write("FOUND values %s" %(values))
                                 self.commandLen = mlineLength
@@ -472,7 +488,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def do_apply(self, argv):
         if self.configList:
 
-            import ipdb; ipdb.set_trace()
             sys.stdout.write("Applying Config:\n")
             # HACK need to make sure global objects are called before other objects
             globalconfigList = []

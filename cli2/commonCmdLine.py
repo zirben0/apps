@@ -332,6 +332,21 @@ class CommonCmdLine(object):
                                 cliHelpList.append((val[1], val[2]))
         return cliHelpList
 
+    def getValueMinMax(self, cmd, model, schema):
+        schemaname = self.getSchemaCommandNameFromCliName(cmd, model)
+        if schema:
+            if schemaname in schema and \
+                "properties" in schema[schemaname] and \
+                    "value" in schema[schemaname]["properties"] and \
+                    'properties' in schema[schemaname]['properties']['value']:
+                keys = [k for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if type(v) in (dict, jsonref.JsonRef)]
+                #objname = schema[schemaname]['properties']['objname']['default']
+                #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s %s\n" %(cmd, objname, keys, schema[schemaname]['properties']['value']['properties']))
+                minmax = [(v['properties']['argtype']['minimum'], v['properties']['argtype']['maximum']) for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if 'properties' in v and 'argtype' in v['properties'] and 'minimum' in v['properties']['argtype'] and k in keys]
+                if minmax:
+                    return minmax[0]
+        return None, None
+
     def getValueSelections(self, cmd, model, schema):
         schemaname = self.getSchemaCommandNameFromCliName(cmd, model)
         if schema:
@@ -341,10 +356,10 @@ class CommonCmdLine(object):
                     'properties' in schema[schemaname]['properties']['value']:
                 keys = [k for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if type(v) in (dict, jsonref.JsonRef)]
                 objname = schema[schemaname]['properties']['objname']['default']
-                #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s\n" %(cmd, objname, keys))
-                if 'argtype' in schema[schemaname]['properties']['value']['properties']['argtype'] \
-                    and 'enum' in schema[schemaname]['properties']['value']['properties']['argtype']:
-                    return schema[schemaname]['properties']['value']['properties']['argtype']['enum']
+                #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s %s\n" %(cmd, objname, keys, schema[schemaname]['properties']['value']['properties']))
+                selections = [v['properties']['argtype']['enum'] for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if 'properties' in v and 'argtype' in v['properties'] and 'enum' in v['properties']['argtype'] and k in keys]
+                if selections:
+                    return selections[0]
         return []
 
     def isValueExpected(self, cmd, model, schema):

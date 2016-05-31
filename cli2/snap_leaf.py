@@ -218,6 +218,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI\n" %(cmdname,))
                                     self.do_exit([])
                                     cmdname = cmdname.replace('-', '_')
+                                #sys.stdout.write("createing do_%s\n" %(cmdname))
+
                                 if not teardown:
                                     setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
                                     #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
@@ -231,10 +233,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             if k not in ignoreKeys:
                                 cmdname = self.getCliName(v)
                                 if cmdname:
+                                    #sys.stdout.write("createing do_%s\n" %(cmdname))
                                     if '-' in cmdname:
                                         sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
                                         self.do_exit([])
                                         cmdname = cmdname.replace('-', '_')
+
                                     # Note needed for show
                                     #if cmdname != self.objname:
                                     if not teardown:
@@ -580,6 +584,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 attrlist.append(v['cliname'])
         return attrlist
 
+    def complete_redistribute(self, text, line, begidx, endidx):
+        return self._cmd_complete_common(text, line, begidx, endidx)
     # this complete is meant for sub ethernet commands
     # for example:
     # >ip address 10.1.1.1
@@ -598,13 +604,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 if f.startswith('do_') and not f.endswith('no'):
                     subcommands.append(f.lstrip('do_'))
         skipValue = False
-        for i in range(1, mlineLength):
+        for i in range(1, mlineLength-1):
             if skipValue:
                 sys.stdout.write("\nvalue expected: i %s mlinelength %s\n" %(i, mlineLength))
                 skipValue = False
                 continue
 
-            sys.stdout.write("complete: mline[%s]=%s\n" %(i, mline[i]))
+            #sys.stdout.write("complete: mline[%s]=%s\n" %(i, mline[i]))
             for model, schema in zip(self.modelList, self.schemaList):
                 #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
@@ -624,23 +630,24 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 #if mlineLength > self.commandLen:
                                 # todo need to do a get to display all the valid keys
                                 config = self.getConfigObj()
-                                sys.stdout.write("\nvalue expected: i %s mlinelength %s" %(i, mlineLength))
-                                if i == mlineLength-1:
-                                    values = config.getCommandValues(objname, keys)
+                                values = self.getValueSelections(mline[i], submodel, subschema)
+                                sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
+                                if (i == mlineLength-1) or (i < mlineLength-1 and mline[i+1] not in values):
+                                    #sys.stdout.write("\nselections: %s\n" %(values))
                                     if not values:
-                                        values = self.getValueSelections(mline[i], submodel, subschema)
-                                    return values
+                                        values = config.getCommandValues(objname, keys)
+                                    subcommands = values
                                 else:
-                                    sys.stdout.write("\nvalue expected: skipping %s" %(mline[i+1]))
+                                    #sys.stdout.write("\nvalue expected: skipping %s" %(mline[i+1]))
                                     subcommands += self.getchildrencmds(mline[i], submodel, subschema)
                                     skipValue = True
                             else:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
-                            sys.stdout.write("subcommands %s" %(subcommands,))
+                            #sys.stdout.write("subcommands %s" %(subcommands,))
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
-        #sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
+        sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
 
         # lets remove any duplicates
         returncommands = list(Set(subcommands).difference(mline))
@@ -718,6 +725,21 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected:
+                                    values = self.getValueSelections(mline[i], submodel, subschema)
+                                    if i < mlineLength and values and mline[i+1] not in values:
+                                        sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                        return ''
+                                    min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                    if min is not None and max is not None:
+                                        try:
+                                            num = strings.atoi(mline[i+1])
+                                            if num < min or num > max:
+                                                sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                return ''
+                                        except:
+                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                            return ''
+
                                     #if mlineLength - i > 1:
                                     #    sys.stdout.write("Invalid command entered, ignoring\n")
                                     #    return ''
