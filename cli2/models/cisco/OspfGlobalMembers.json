@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "StubRouterAdvertisement": {
       "cliname": "stubrouteradvertisement"

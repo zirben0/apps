@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -27,7 +33,10 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
+            "enum": [
+              "permit", 
+              "deny"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -35,8 +44,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "deny", 
-            "type": "string"
+            "default": "deny"
           }
         }
       }, 
@@ -64,7 +72,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -72,8 +79,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -101,7 +107,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -109,8 +114,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -138,7 +142,10 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
+            "enum": [
+              "any", 
+              "all"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -146,17 +153,11 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "all", 
-            "type": "string"
+            "default": "all"
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

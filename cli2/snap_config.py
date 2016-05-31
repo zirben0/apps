@@ -205,7 +205,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 if f.startswith('do_') and not f.endswith('no'):
                     subcommands.append(f.lstrip('do_'))
 
-
         # advance to next submodel and subschema
         for i in range(1, mlineLength):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
@@ -219,9 +218,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                            (valueexpected, objname, keys) = self.isValueExpected(mline[i], submodel, subschema)
+                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                             if valueexpected:
-                                return self.getCommandValues(objname, keys)
+                                values =  self.getCommandValues(objname, keys)
+                                if not values:
+                                    values = self.getValueSelections(mline[i], submodel, subschema)
+                                return values
                             else:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
@@ -330,7 +332,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         for submodel, subschema in zip(submodelList, subschemaList):
                             subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
-                            (valueexpected, objname, keys) = self.isValueExpected(mline[i], submodel, subschema)
+                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                             if valueexpected:
                                 if mlineLength - i > 1:
                                     sys.stdout.write("Invalid command entered, ignoring\n")
@@ -458,9 +460,10 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             sdk = self.getSdk()
             funcObjName = objname
             getall_func = getattr(sdk, 'getAll' + funcObjName + 's')
-            objs = getall_func()
-            if objs:
-                return [self.convertKeyValueToDisplay(objname, keys[0], obj['Object'][keys[0]]) for obj in objs]
+            if getall_func:
+                objs = getall_func()
+                if objs:
+                    return [self.convertKeyValueToDisplay(objname, keys[0], obj['Object'][keys[0]]) for obj in objs]
         except Exception as e:
             sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, key, e,))
 
@@ -539,6 +542,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")
         for config in self.configList:
+            import ipdb; ipdb.set_trace()
             if config.isValid():
                 config.show()
 

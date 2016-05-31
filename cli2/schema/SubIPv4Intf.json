@@ -60,7 +60,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "string", 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -68,8 +67,7 @@
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }, 
@@ -97,7 +95,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "string", 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -105,8 +102,7 @@
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }

@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "SendSummaryOnly": {
       "cliname": "sendsummaryonly"

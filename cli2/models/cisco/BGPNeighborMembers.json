@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "BfdEnable": {
       "cliname": "bfd_enable"

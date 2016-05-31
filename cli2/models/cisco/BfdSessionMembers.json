@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "Interface": {
       "cliname": "ethernet"

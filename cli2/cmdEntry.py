@@ -55,7 +55,7 @@ def getEntryAttribute(entry):
     return entry.attr
 
 def getEntryValue(entry):
-    return entry.val
+    return "%s" % entry.val
 
 def getEntryCmd(entry):
     return entry.cmd
@@ -67,31 +67,57 @@ class CmdSet(object):
     '''
     Hold the attributes related to a cli command given
     '''
-    def __init__(self, cmd, delete, attr, val, iskey):
+    def __init__(self, cmd, delete, attr, val, iskey, islist):
         self.cmd = cmd
         self.iskey = iskey
+        self.islist = islist
         self.delete = delete
         self.attr = attr
-        self.val = val
+        self.val = [val] if type(val) is not list and self.islist else val
         self.date = time.ctime()
 
     def __str__(self,):
         lines = "cmd: %s\ndelete %s\n attr %s\n val %s\n date %s\n" %(self.cmd, self.delete, self.attr, self.val, self.date)
         return lines
 
-
-    def set(self, cmd, delete, attr, val):
+    def setDict(self, cmd, delete, attr, data):
         self.cmd = cmd
         self.delete = delete
         self.attr = attr
-        self.val = val
+        if self.islist:
+            delIdx = -1
+            for i, v in enumerate(self.val):
+                if v[attr] == data[attr]:
+                    delIdx = i
+
+            if delIdx != -1:
+                del self.val[delIdx]
+            self.val.append(data)
+        else:
+            self.val = data
+        self.date = time.ctime()
+
+    def set(self, cmd, delete, attr, val):
+        if type(val) == dict:
+            self.setDict(cmd, delete, attr, val)
+            return
+        self.cmd = cmd
+        self.delete = delete
+        self.attr = attr
+        if self.islist:
+            if type(val) is list:
+                self.val += val
+            else:
+                self.val.append(val)
+        else:
+            self.val = val
         self.date = time.ctime()
 
     def get(self):
         return (self.cmd, self.attr, self.val)
 
     def isKey(self):
-        return self.val if self.isKey else None
+        return self.isKey if self.isKey else None
 
 class CmdEntry(object):
     '''
@@ -157,7 +183,7 @@ class CmdEntry(object):
 
         return v
 
-    def set(self, fullcmd, delete, k, v, isKey=False):
+    def set(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
 
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
@@ -165,7 +191,17 @@ class CmdEntry(object):
                 entry.set(' '.join(fullcmd), delete, k, v)
                 return
 
-        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey))
+        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey, isattrlist))
+
+    def setDict(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
+        import ipdb; ipdb.set_trace()
+        for entry in self.attrList:
+            if getEntryAttribute(entry) == k:
+                # TODO if delete then we may need to remove this command all together
+                entry.set(' '.join(fullcmd), delete, k, v)
+                return
+
+        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey, isattrlist))
 
     def clear(self, k=None, v=None, all=None):
         try:
@@ -263,4 +299,4 @@ class CmdEntry(object):
         width = 30
         print indent([labels]+rows, hasHeader=True, separateRows=False,
                      prefix=' ', postfix=' ', headerChar= '-', delim='    ',
-                     wrapfunc=lambda x: wrap_onspace_strict(x,width))
+                     wrapfunc=lambda x: wrap_onspace_strict(x, width))

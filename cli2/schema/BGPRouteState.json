@@ -60,7 +60,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "string", 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -68,8 +67,7 @@
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }, 
@@ -97,16 +95,16 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "uint16", 
-                "type": "string"
+                "minimum": 0, 
+                "type": "uint16", 
+                "maximum": 65536
               }, 
               "isdefaultset": {
                 "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }, 
@@ -134,7 +132,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "string", 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -142,8 +139,7 @@
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }

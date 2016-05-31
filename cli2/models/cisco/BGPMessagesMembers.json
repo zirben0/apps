@@ -1,10 +1,20 @@
 {
+  "listattrs": [
+    [
+      "subcmd1", 
+      "Received"
+    ], 
+    [
+      "subcmd2", 
+      "Sent"
+    ]
+  ], 
   "commands": {
-    "Received": {
-      "cliname": "received"
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPCounters.json"
     }, 
-    "Sent": {
-      "cliname": "sent"
+    "subcmd2": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPCounters.json"
     }
   }
 }

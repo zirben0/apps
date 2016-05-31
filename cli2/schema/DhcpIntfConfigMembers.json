@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -27,7 +33,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -35,8 +40,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -64,7 +68,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -72,8 +75,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -101,7 +103,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -109,8 +110,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -138,16 +138,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -175,7 +173,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -183,8 +180,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -212,7 +208,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -220,8 +215,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -249,7 +243,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -257,8 +250,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -286,7 +278,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -294,8 +285,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -323,7 +313,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -331,17 +320,11 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

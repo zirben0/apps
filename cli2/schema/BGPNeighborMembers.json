@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": true, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -27,16 +33,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "false", 
-            "type": "string"
+            "default": "false"
           }
         }
       }, 
@@ -64,16 +68,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -101,7 +105,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -109,8 +112,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -138,16 +140,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint8", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -175,16 +177,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "false", 
-            "type": "string"
+            "default": "false"
           }
         }
       }, 
@@ -212,16 +212,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -249,16 +249,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "60", 
-            "type": "string"
+            "default": "60"
           }
         }
       }, 
@@ -286,16 +286,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint8", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -323,16 +323,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "false", 
-            "type": "string"
+            "default": "false"
           }
         }
       }, 
@@ -360,16 +358,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "false", 
-            "type": "string"
+            "default": "false"
           }
         }
       }, 
@@ -397,7 +393,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -405,8 +400,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -434,7 +428,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -442,8 +435,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -471,16 +463,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -508,16 +500,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint8", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "80", 
-            "type": "string"
+            "default": "80"
           }
         }
       }, 
@@ -545,16 +537,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint8", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -582,7 +574,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -590,8 +581,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -619,16 +609,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "180", 
-            "type": "string"
+            "default": "180"
           }
         }
       }, 
@@ -656,16 +646,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -693,16 +683,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "false", 
-            "type": "string"
+            "default": "false"
           }
         }
       }, 
@@ -710,7 +698,7 @@
         "type": "object", 
         "properties": {
           "key": {
-            "default": false,
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -730,16 +718,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -767,7 +755,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -775,8 +762,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "default", 
-            "type": "string"
+            "default": "default"
           }
         }
       }, 
@@ -804,7 +790,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -812,8 +797,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -841,25 +825,20 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "60", 
-            "type": "string"
+            "default": "60"
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

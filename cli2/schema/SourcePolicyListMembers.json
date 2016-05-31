@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -27,7 +33,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -35,8 +40,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -44,7 +48,7 @@
         "type": "object", 
         "properties": {
           "key": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -52,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Source Protocol(s) which BGP is interested in. Multiple sources can be specified as comma separated strings when the same policy needs to be applied", 
+            "default": "CONNECTED/STATIC/OSPF  Source Protocol(s) which BGP is interested in. Multiple sources can be specified as comma separated strings when the same policy needs to be applied", 
             "type": "string"
           }, 
           "islist": {
@@ -64,7 +68,11 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
+            "enum": [
+              "CONNECTED", 
+              "STATIC", 
+              "OSPF"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -72,17 +80,11 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

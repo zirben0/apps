@@ -1,4 +1,15 @@
 {
+  "listattrs": [
+    [
+      "subcmd1", 
+      "Redistribution"
+    ]
+  ], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -27,7 +38,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -35,45 +45,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }
-        }
-      }, 
-      "Redistribution": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: SourcePolicyList.  Provide redistribution policies for BGP from different sources default: []", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "redistribution", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "default": "SourcePolicyList", 
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "[]", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -101,16 +73,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -138,18 +110,21 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
+      }, 
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/schema/SourcePolicyList.json"
       }, 
       "EBGPMaxPaths": {
         "type": "object", 
@@ -175,16 +150,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "uint32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0", 
-            "type": "string"
+            "default": "0"
           }
         }
       }, 
@@ -212,16 +187,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "false", 
-            "type": "string"
+            "default": "false"
           }
         }
       }, 
@@ -249,25 +222,18 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "bool", 
-            "type": "string"
+            "type": "bool"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "false", 
-            "type": "string"
+            "default": "false"
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

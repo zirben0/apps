@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -15,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 0 MAX 30  The Type of Service associated with the metric.  On creation", 
+            "default": "0-30  The Type of Service associated with the metric.  On creation", 
             "type": "string"
           }, 
           "islist": {
@@ -27,16 +33,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 30
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -64,7 +70,9 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
+            "enum": [
+              "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -72,8 +80,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -89,7 +96,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 0 MAX 16777215  The metric value applied at the indicated Type of Service.  By default", 
+            "default": "0-16777215  The metric value applied at the indicated Type of Service.  By default", 
             "type": "string"
           }, 
           "islist": {
@@ -101,16 +108,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 16777215
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -138,25 +145,25 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "enum": [
+              3, 
+              2, 
+              1
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

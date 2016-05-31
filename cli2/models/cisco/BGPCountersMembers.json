@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "Notification": {
       "cliname": "notification"

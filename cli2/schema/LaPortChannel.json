@@ -60,16 +60,16 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "int32", 
-                "type": "string"
+                "minimum": -2147483648, 
+                "type": "int32", 
+                "maximum": 2147483647
               }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }

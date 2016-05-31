@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " MIN 1 MAX 16777215  VNI domain", 
+                "default": "0-16777215  VNI domain", 
                 "type": "string"
               }, 
               "islist": {
@@ -60,16 +60,16 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "uint32", 
-                "type": "string"
+                "minimum": 0, 
+                "type": "uint32", 
+                "maximum": 16777215
               }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }

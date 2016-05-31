@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "RouterId": {
       "cliname": "routerid"

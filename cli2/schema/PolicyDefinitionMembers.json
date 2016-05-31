@@ -1,4 +1,15 @@
 {
+  "listattrs": [
+    [
+      "subcmd1", 
+      "StatementList"
+    ]
+  ], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -27,18 +38,21 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
+      }, 
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinitionStmtPriority.json"
       }, 
       "MatchType": {
         "type": "object", 
@@ -64,7 +78,10 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
+            "enum": [
+              "all", 
+              "any"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -72,8 +89,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "all", 
-            "type": "string"
+            "default": "all"
           }
         }
       }, 
@@ -101,7 +117,11 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
+            "enum": [
+              "BGP", 
+              "OSPF", 
+              "ALL"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -109,8 +129,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "ALL", 
-            "type": "string"
+            "default": "ALL"
           }
         }
       }, 
@@ -138,7 +157,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -146,54 +164,11 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }
-        }
-      }, 
-      "StatementList": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: PolicyDefinitionStmtPriority.  Specifies list of statements along with their precedence order.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "statementlist", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "default": "PolicyDefinitionStmtPriority", 
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

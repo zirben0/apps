@@ -442,7 +442,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     if submodelList:
                             subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                             for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                (valueexpected, objname, keys) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
                                 # we want to keep looping untill there are no more value commands
                                 if valueexpected and mlineLength-1 == i:
                                     self.currentcmd = self.lastcmd

@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": true, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -27,7 +33,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -35,8 +40,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -64,7 +68,18 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "string", 
+            "enum": [
+              "crit", 
+              "err", 
+              "warn", 
+              "alert", 
+              "emerg", 
+              "notice", 
+              "info", 
+              "debug", 
+              "trace", 
+              "off"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -72,17 +87,11 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "info", 
-            "type": "string"
+            "default": "info"
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

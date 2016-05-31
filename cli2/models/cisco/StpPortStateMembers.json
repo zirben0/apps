@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "BrgIfIndex": {
       "cliname": "brgifindex"

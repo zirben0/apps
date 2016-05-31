@@ -23,7 +23,7 @@
         "description": "name used in cli to describe bfd"
       }, 
       "help": {
-        "default": "", 
+        "default": "1-4094 802.1Q tag/Vlan ID for vlan being provisioned",
         "type": "string"
       }, 
       "prompt": {
@@ -60,16 +60,16 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "int32", 
-                "type": "string"
+                "minimum": -2147483648, 
+                "type": "int32", 
+                "maximum": 2147483647
               }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }

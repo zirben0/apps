@@ -1,16 +1,22 @@
 {
+  "listattrs": [
+    [
+      "subcmd1", 
+      "Redistribution"
+    ]
+  ], 
   "commands": {
     "RouterId": {
       "cliname": "router_id"
     }, 
-    "Redistribution": {
-      "cliname": "redistribution"
-    },
     "ASNum": {
       "cliname": "bgp"
     },
     "IBGPMaxPaths": {
       "cliname": "maximum_ibgp_paths"
+    },
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/SourcePolicyList.json"
     }, 
     "EBGPMaxPaths": {
       "cliname": "maximum_paths"

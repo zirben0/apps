@@ -35,7 +35,7 @@
 #   'selections' - If there are any string or enumerated values which are selectable for the user
 #
 import json
-import os, copy
+import os, copy, sys, string
 from optparse import OptionParser
 
 
@@ -44,6 +44,12 @@ GENERATED_MODEL_PATH = 'file:/tmp/snaproute/cli/model/cisco/'
 
 SUBCMD_TEMPLATE = {
 }
+
+def isboolean(v):
+    return v.lower() in ('bool', 'boolean')
+
+def isCommonType(t):
+    return t.startswith('int') or t.startswith('uint') or t in ('string', 'bool', 'boolean', 'char')
 
 class ModelLeafTemplate(object):
     '''
@@ -59,7 +65,7 @@ class ModelLeafTemplate(object):
 
             },
             "commands": {
-            }
+            },
         }
 
     def getInfo(self):
@@ -98,6 +104,39 @@ class ModelLeafTemplate(object):
             },
         })
 
+    def setArgType(self, type, selections=None, min=None, max=None):
+
+        def isnumeric(type):
+            return type in defaultMinMaxDict.keys()
+
+        defaultMinMaxDict = {
+            'int8': (-128, 127),
+            'int16': (32768, 32767),
+            'int32': (-2147483648, 2147483647),
+            'int64': (-9223372036854775808, 9223372036854775807),
+            'uint8': (0, 255),
+            'uint16': (0, pow(2,16)),
+            'uint32': (0, pow(2,32)),
+            'uint64': (0, pow(2,64)),
+        }
+        if 'argtype' in self.getMemberPropertiesPath():
+            self.getMemberPropertiesPath()['argtype']["type"] = type
+            if selections and ("SELECTION" or "selections" in selections):
+                # selections should be separated by /
+                s = selections.split('/')
+                if isnumeric(type):
+                    s = [x.split('(')[1].rstrip(')') for x in s]
+                else:
+                    s = [x.split('(')[0] for x in s]
+                self.getMemberPropertiesPath()['argtype']["enum"] = s
+
+            if isnumeric(type):
+                if min is not None and max is not None:
+                    self.getMemberPropertiesPath()['argtype']["minimum"] = string.atoi(min)
+                    self.getMemberPropertiesPath()['argtype']["maximum"] = string.atoi(max)
+                else:
+                    self.getMemberPropertiesPath()[attr]["minimum"] = defaultMinMaxDict[type][0]
+                    self.getMemberPropertiesPath()[attr]["maximum"] = defaultMinMaxDict[type][1]
 
 class LeafTemplate(object):
     '''
@@ -162,6 +201,42 @@ class LeafTemplate(object):
     def setDefault(self, attr, v):
         if attr in self.getMemberPropertiesPath():
             self.getMemberPropertiesPath()[attr]["default"] = v
+
+    def setArgType(self, type, selections=None, min=None, max=None):
+
+        def isnumeric(type):
+            return type in defaultMinMaxDict.keys()
+
+        defaultMinMaxDict = {
+            'int8': (-128, 127),
+            'int16': (32768, 32767),
+            'int32': (-2147483648, 2147483647),
+            'int64': (-9223372036854775808, 9223372036854775807),
+            'uint8': (0, 255),
+            'uint16': (0, pow(2,16)),
+            'uint32': (0, pow(2,32)),
+            'uint64': (0, pow(2,64)),
+        }
+        if 'argtype' in self.getMemberPropertiesPath():
+            self.getMemberPropertiesPath()['argtype']["type"] = type
+            if selections and ("SELECTION" or "selections" in selections):
+                # selections should be separated by /
+                s = [x.lstrip(' ').rstrip(' ') for x in selections.split('/')]
+                if len(s) and 'MIN' not in s[0]:
+                    if isnumeric(type):
+                        if '(' in s[0]:
+                            s = [int(x.split('(')[1].rstrip(')')) for x in s if len(x.split('(')) > 1]
+                        else:
+                            s = [int(x) for x in s]
+                    self.getMemberPropertiesPath()['argtype']["enum"] = s
+
+            if isnumeric(type):
+                if min is not None and max is not None:
+                    self.getMemberPropertiesPath()['argtype']["minimum"] = min
+                    self.getMemberPropertiesPath()['argtype']["maximum"] = max
+                else:
+                    self.getMemberPropertiesPath()['argtype']["minimum"] = defaultMinMaxDict[type][0]
+                    self.getMemberPropertiesPath()['argtype']["maximum"] = defaultMinMaxDict[type][1]
 
     def setHelp(self, d, type=None, selections=None, min=None, max=None, len=None, default=None):
         lines = []
@@ -243,9 +318,9 @@ class LeafMemberTemplate(LeafTemplate):
                         "default": "TODO"
                     },
                     # describes the type of the value that needs to be supplied
+                    # if arg type will contain an enum if SELECTION is set in the model
                     "argtype": {
-                        "type": "string",
-                        "default": ""
+                        "type": "string"
                     },
                     "isdefaultset": {
                         "type": "boolean",
@@ -253,7 +328,6 @@ class LeafMemberTemplate(LeafTemplate):
                     },
                     # if a default is set then this will contain a value
                     "defaultarg" : {
-                        "type": "string",
                         "default": ""
                     },
                     # is the attribute a list of type?
@@ -355,13 +429,12 @@ class ModelToLeaf(object):
             iskey = member['isKey']
             if iskey:
                 type = member['type']
-                iskey = member['isKey']
                 isArray = member['isArray']
                 description = member['description']
                 default = member['default']
                 isdefaultset = member['isDefaultSet'] if 'State' not in self.modelname else True
                 #position = member['position']
-                selections = member['selections']
+                selections = member['selections'] if member['selections'] else None
                 min = member['min'] if member['max'] else None
                 max = member['max'] if member['max'] else None
                 len = member['len'] if member['len'] else None
@@ -369,7 +442,7 @@ class ModelToLeaf(object):
                 memberinfo = LeafMemberTemplate() if self.modeltype == self.SCHEMA_TYPE else ModelLeafMemberTemplate()
                 memberinfo.setDefault("cliname", name.lower())
                 memberinfo.setDefault("key", iskey)
-                memberinfo.setDefault("argtype", type)
+                memberinfo.setArgType(type, selections, min, max)
                 memberinfo.setDefault("islist", isArray)
                 memberinfo.setDefault("prompt", "")
                 memberinfo.setDefault("defaultarg", default)
@@ -424,11 +497,13 @@ class ModelToLeafMember(ModelToLeaf):
                     "type": "object",
                     "description": "",
                     "properties": {
-                    }
-                }
+                    },
+                },
+                "listattrs":[]
             }
         else:
-            self.template = {"commands": {}}
+            self.template = {"commands": {},
+                             "listattrs": []}
 
     def setCliData(self):
         self.clidata = {}
@@ -486,7 +561,7 @@ class ModelToLeafMember(ModelToLeaf):
 
         default = not False in [member['isDefaultSet'] for member in self.model.values() if not member['isKey']]
         self.setCreateWithDefaults(default)
-
+        subcmdIdx = 1
         for name, member in self.model.iteritems():
             type = member['type']
             iskey = member['isKey']
@@ -504,18 +579,31 @@ class ModelToLeafMember(ModelToLeaf):
                 iskey and 'State' in self.modelname:
 
                 memberinfo = LeafMemberTemplate() if self.modeltype == self.SCHEMA_TYPE else ModelLeafMemberTemplate()
-                memberinfo.setDefault("cliname", name.lower())
-                memberinfo.setDefault("key", iskey)
-                memberinfo.setDefault("argtype", type)
-                memberinfo.setDefault("islist", isArray)
-                memberinfo.setDefault("prompt", "")
-                memberinfo.setDefault("defaultarg", default)
+                if isCommonType(type):
+                    memberinfo.setDefault("cliname", name.lower())
+                    memberinfo.setDefault("key", iskey)
+                    memberinfo.setArgType(type, selections, min, max)
+                    memberinfo.setDefault("islist", isArray)
+                    memberinfo.setDefault("prompt", "")
+                    memberinfo.setDefault("defaultarg", default)
 
-                memberinfo.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
-                if self.modeltype == self.SCHEMA_TYPE:
-                    self.template["commands"]["properties"].update({name: memberinfo.getInfo()})
-                else:
-                    self.template["commands"].update({name: memberinfo.getInfo()})
+                    memberinfo.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
+                    if self.modeltype == self.SCHEMA_TYPE:
+                        self.template["commands"]["properties"].update({name: memberinfo.getInfo()})
+                    else:
+                        self.template["commands"].update({name: memberinfo.getInfo()})
+                else: # complex key
+                    memberinfo = LeafMemberTemplate() if self.modeltype == self.SCHEMA_TYPE else ModelLeafMemberTemplate()
+                    subcmd = "subcmd%s" % subcmdIdx
+                    if self.modeltype == self.SCHEMA_TYPE:
+                        self.template["commands"]["properties"].update({subcmd:
+                                                                    {"$ref": GENERATED_SCHEMA_PATH + type + '.json'}})
+                    else:
+                        self.template["commands"].update({subcmd:
+                                                    {"$ref": GENERATED_MODEL_PATH + type + '.json'}})
+                    # store mapping of attr to actually model attribute
+                    self.template['listattrs'].append([subcmd, name])
+                    subcmdIdx += 1
 
         self.clidata.update(self.template)
 
@@ -529,10 +617,11 @@ class ModelToCliSchemaBuilder(object):
         self.codegenmodelpath = model_member_path
 
 
-    def build(self):
+    def build(self, fileList=None):
         for root, dirs, filenames in os.walk(self.codegenmodelpath):
             for f in filenames:
-                if 'Members' in f:
+                if 'Members' in f and \
+                        (not fileList or f in fileList):
                     print(f)
                     for (obj, type, frompath, topath) in (
                         (ModelToLeaf, ModelToLeaf.SCHEMA_TYPE, self.codegenmodelpath + f, self.schemapath + f),
@@ -560,6 +649,10 @@ if __name__ == '__main__':
                       dest="data_member_model_path",
                       help="Path to json data model member files",
                       default='../../../../../reltools/codegentools/._genInfo/')
+    parser.add_option("-f", "--file", action="store", type="string",
+                      dest="model_object_file_list",
+                      help="List of files which to run codegen against seperated by ',' ",
+                      default=None)
 
     (options, args) = parser.parse_args()
 
@@ -567,4 +660,5 @@ if __name__ == '__main__':
     x = ModelToCliSchemaBuilder(options.cli_schema_path,
                                 options.cli_model_path,
                                 options.data_member_model_path)
-    x.build()
+    fileList = options.model_object_file_list.split(',') if options.model_object_file_list is not None else []
+    x.build(fileList)

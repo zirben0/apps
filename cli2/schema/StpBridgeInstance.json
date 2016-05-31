@@ -56,20 +56,20 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "vlan", 
+                "default": "brg_vlan",
                 "type": "string"
               }, 
               "argtype": {
-                "default": "uint16", 
-                "type": "string"
+                "minimum": 0, 
+                "type": "uint16", 
+                "maximum": 65536
               }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }

@@ -11,5 +11,4 @@
   "subcmd4": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/Vlan.json"
   }
-
 }

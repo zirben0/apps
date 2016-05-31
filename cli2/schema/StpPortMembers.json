@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -15,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 1 MAX 2147483647  The value of the instance of the ifIndex object", 
+            "default": "0-2147483647  The value of the instance of the ifIndex object", 
             "type": "string"
           }, 
           "islist": {
@@ -27,16 +33,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -52,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 1 MAX 65535  The contribution of this port to the path cost of paths towards the spanning tree root which include this port.  802.1D-1998 recommends that the default value of this parameter be in inverse proportion to    the speed of the attached LAN.  New implementations should support PathCost32. If the port path costs exceeds the maximum value of this object then this object should report the maximum value", 
+            "default": "0-65535  The contribution of this port to the path cost of paths towards the spanning tree root which include this port.  802.1D-1998 recommends that the default value of this parameter be in inverse proportion to    the speed of the attached LAN.  New implementations should support PathCost32. If the port path costs exceeds the maximum value of this object then this object should report the maximum value", 
             "type": "string"
           }, 
           "islist": {
@@ -64,16 +70,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 65535
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -101,16 +107,20 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "enum": [
+              2, 
+              1
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -138,16 +148,20 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "enum": [
+              2, 
+              1
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -175,16 +189,20 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "enum": [
+              2, 
+              1
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -212,16 +230,20 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "enum": [
+              2, 
+              1
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -237,7 +259,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 0 MAX 255  The value of the priority field that is contained in the first (in network byte order) octet of the (2 octet long) Port ID.  The other octet of the Port ID is given by the value of StpPort. On bridges supporting IEEE 802.1t or IEEE 802.1w", 
+            "default": "0-255  The value of the priority field that is contained in the first (in network byte order) octet of the (2 octet long) Port ID.  The other octet of the Port ID is given by the value of StpPort. On bridges supporting IEEE 802.1t or IEEE 802.1w", 
             "type": "string"
           }, 
           "islist": {
@@ -249,16 +271,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 255
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -286,16 +308,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -323,16 +345,20 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "enum": [
+              2, 
+              1
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -360,16 +386,21 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": -2147483648, 
+            "enum": [
+              0, 
+              1, 
+              2
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -385,7 +416,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 1 MAX 65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
+            "default": "0-65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
             "type": "string"
           }, 
           "islist": {
@@ -397,16 +428,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 65535
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -422,7 +453,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 0 MAX 200000000  The administratively assigned value for the contribution of this port to the path cost of paths toward the spanning tree root.  Writing a value of '0' assigns the automatically calculated default Path Cost value to the port.  If the default Path Cost is being used", 
+            "default": "0-200000000  The administratively assigned value for the contribution of this port to the path cost of paths toward the spanning tree root.  Writing a value of '0' assigns the automatically calculated default Path Cost value to the port.  If the default Path Cost is being used", 
             "type": "string"
           }, 
           "islist": {
@@ -434,16 +465,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 200000000
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }, 
@@ -459,7 +490,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 1 MAX 200000000  The contribution of this port to the path cost of paths towards the spanning tree root which include this port.  802.1D-1998 recommends that the default value of this parameter be in inverse proportion to the speed of the attached LAN.  This object replaces PathCost to support IEEE 802.1t.", 
+            "default": "0-200000000  The contribution of this port to the path cost of paths towards the spanning tree root which include this port.  802.1D-1998 recommends that the default value of this parameter be in inverse proportion to the speed of the attached LAN.  This object replaces PathCost to support IEEE 802.1t.", 
             "type": "string"
           }, 
           "islist": {
@@ -471,25 +502,20 @@
             "type": "string"
           }, 
           "argtype": {
-            "default": "int32", 
-            "type": "string"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 200000000
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

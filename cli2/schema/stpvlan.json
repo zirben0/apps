@@ -4,12 +4,12 @@
     "properties" : {
       "prompt" : {
         "type": "string",
-        "default" : "vlan"
+        "default" : "brg"
       },
       "cliname" : {
         "type" : "string",
         "description" : "name used in cli to describe ethernet",
-        "default" : "vlan"
+        "default" : "brg_vlan"
       },
       "value" : {
         "type" : "integer",

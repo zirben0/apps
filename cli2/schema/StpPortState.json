@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " MIN 1 MAX 2147483647  The value of the instance of the ifIndex object", 
+                "default": "0-2147483647  The value of the instance of the ifIndex object", 
                 "type": "string"
               }, 
               "islist": {
@@ -60,16 +60,16 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "int32", 
-                "type": "string"
+                "minimum": 0, 
+                "type": "int32", 
+                "maximum": 2147483647
               }, 
               "isdefaultset": {
                 "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }, 
@@ -85,7 +85,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " MIN 1 MAX 65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
+                "default": "0-65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
                 "type": "string"
               }, 
               "islist": {
@@ -97,16 +97,16 @@
                 "type": "string"
               }, 
               "argtype": {
-                "default": "int32", 
-                "type": "string"
+                "minimum": 0, 
+                "type": "int32", 
+                "maximum": 65535
               }, 
               "isdefaultset": {
                 "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "", 
-                "type": "string"
+                "default": ""
               }
             }
           }

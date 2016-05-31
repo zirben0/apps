@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "Priority": {
       "cliname": "priority"
@@ -16,7 +17,7 @@
       "cliname": "forceversion"
     }, 
     "Vlan": {
-      "cliname": "vlan"
+      "cliname": "brg_vlan"
     }, 
     "ForwardDelay": {
       "cliname": "forwarddelay"
