@@ -472,6 +472,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def do_apply(self, argv):
         if self.configList:
 
+            import ipdb; ipdb.set_trace()
             sys.stdout.write("Applying Config:\n")
             # HACK need to make sure global objects are called before other objects
             globalconfigList = []

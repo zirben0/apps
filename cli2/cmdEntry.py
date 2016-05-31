@@ -57,6 +57,23 @@ def getEntryAttribute(entry):
 def getEntryValue(entry):
     return "%s" % entry.val
 
+def getDictEntryValue(entry, attrDict):
+    rval = {}
+    import ipdb; ipdb.set_trace()
+    if type(entry.val) is list:
+        rvallist = []
+        for subval in entry.val:
+            for key, val in subval.iteritems():
+                newKey = attrDict[key]['key']
+                rval.update({newKey: val})
+            rvallist.append(rval)
+        return rvallist
+    else:
+        for key, val in entry.val.iteritems():
+            newKey = attrDict[key]['key']
+            rval = {newKey: val}
+            return rval
+
 def getEntryCmd(entry):
     return entry.cmd
 
@@ -227,24 +244,28 @@ class CmdEntry(object):
             for kk, vv in copy.deepcopy(self.keysDict).iteritems():
                 if kk == getEntryAttribute(entry):
                     # overwrite the default value
-                    value = None
+                    attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
                     if self.keysDict[kk]['isarray']:
-                        if isnumeric(self.keysDict[kk]['type']):
+                        if isnumeric(attrtype):
                             l = [convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
                             value = [int(x) for x in l]
-                        elif isboolean(self.keysDict[kk]['type']):
+                        elif isboolean(attrtype):
                             l = [convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
                             value = [convertStrBoolToBool(x) for x in l]
-                        else:
+                        elif attrtype in ('str', 'string'):
                             value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
+                        else: # struct
+                            value = getDictEntryValue(entry, vv['value'][0])
 
                     else:
-                        if isnumeric(self.keysDict[kk]['type']):
+                        if isnumeric(attrtype):
                             value = convertStrNumToNum(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
-                        elif isboolean(self.keysDict[kk]['type']):
+                        elif isboolean(attrtype):
                             value = convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
-                        else:
+                        elif attrtype in ('str', 'string'):
                             value = getEntryValue(self.updateSpecialValueCases(vv['key'], entry))
+                        else:
+                            value = getDictEntryValue(entry, vv['value'][0])
 
                     if readdata:
                         del readdata[vv['key']]
@@ -258,22 +279,38 @@ class CmdEntry(object):
             if v['key'] not in newdict:
                 value = None
                 if not readdata:
+                    attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
+
                     if self.keysDict[kk]['isarray']:
-                        if isnumeric(self.keysDict[kk]['type']):
+                        if isnumeric(attrtype):
                             l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
                             value = [int(x) for x in l]
-                        elif isboolean(self.keysDict[kk]['type']):
+                        elif isboolean(attrtype):
                             l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
                             value = [convertStrBoolToBool(x) for x in l]
-                        else:
+                        elif attrtype in ('str', 'string'):
                             value = [x.lstrip('').rstrip('') for x in v['value'].split(",")]
-                    else:
-                        if isnumeric(self.keysDict[kk]['type']):
-                            value = convertStrNumToNum(v['value'])
-                        elif isboolean(self.keysDict[kk]['type']):
-                            value = convertStrBoolToBool(v['value'])
                         else:
-                            value = v['value']
+                            value = {}
+                            for v in v['value'][0].values():
+                                value.update({vv['key'] : vv['value']['default']})
+
+                            value = [value]
+
+                    else:
+                        if isnumeric(attrtype):
+                            value = convertStrNumToNum(v['value']['default'])
+                        elif isboolean(attrtype):
+                            value = convertStrBoolToBool(v['value']['default'])
+                        elif attrtype in ('str', 'string'):
+                            value = v['value']['default']
+                        else:
+                            value = {}
+                            for vv in v['value'][0].values():
+                                value.update({vv['key'] : vv['value']['default']})
+
+
+
                 elif v['key'] in readdata:
                     value = readdata[v['key']]
 
