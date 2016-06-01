@@ -5,10 +5,10 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinitionStmtPrioritySubCmds.json"
     },
     "help" : "Policy Statement",
-    "cliname": "policy_statement",
+    "cliname": "statement",
     "value": {
       "Priority": {
-        "cliname": "policy_statement"
+        "cliname": "statement"
       }
     }
   }
