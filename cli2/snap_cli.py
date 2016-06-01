@@ -435,11 +435,12 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
         if mlineLength > 0:
             try:
+
                 for i in range(1, mlineLength):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    if submodelList:
+                        if submodelList:
                             subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                             for subsubmodel, subsubschema in zip(submodelList, subschemaList):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
