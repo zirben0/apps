@@ -1,13 +1,10 @@
 {
   "dhcpintfconfig": {
-    "cliname": "", 
-    "commands": {
-      "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/DhcpIntfConfigMembers.json"
-      }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
-    }, 
     "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpIntfConfigSubCmds.json"
+    }, 
+    "cliname": "", 
     "value": {
       "IntfRef": {
         "cliname": "intfref"

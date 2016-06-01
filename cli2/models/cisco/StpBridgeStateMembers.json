@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "Vlan": {
       "cliname": "vlan"

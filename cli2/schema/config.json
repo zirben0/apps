@@ -24,7 +24,7 @@
             "$ref": "file:/tmp/snaproute/cli/schema/interface.json"
           },
           "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/vlan.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/Vlan.json"
           },
           "subcmd3": {
             "$ref": "file:/tmp/snaproute/cli/schema/router.json"
@@ -37,6 +37,15 @@
           },
           "subcmd6": {
             "$ref": "file:/tmp/snaproute/cli/schema/feature.json"
+          },
+          "subcmd7": {
+            "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinition.json"
+          },
+          "subcmd8": {
+            "$ref": "file:/tmp/snaproute/cli/schema/PolicyStmt.json"
+          },
+          "subcmd9": {
+            "$ref": "file:/tmp/snaproute/cli/schema/PolicyCondition.json"
           }
         }
       }

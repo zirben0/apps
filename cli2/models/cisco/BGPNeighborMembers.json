@@ -1,7 +1,8 @@
 {
+  "listattrs": [], 
   "commands": {
     "BfdEnable": {
-      "cliname": "bfd_enable"
+      "cliname": "bfd"
     },
     "RouteReflectorClusterId": {
       "cliname": "cluster_id"

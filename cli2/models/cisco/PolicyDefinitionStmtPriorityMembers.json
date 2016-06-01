@@ -1,7 +1,8 @@
 {
+  "listattrs": [], 
   "commands": {
     "Priority": {
-      "cliname": "priority"
+      "cliname": "policy_statement"
     }, 
     "Statement": {
       "cliname": "statement"

@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "DNSServerAddr": {
       "cliname": "dnsserveraddr"

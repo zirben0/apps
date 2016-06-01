@@ -1,0 +1,11 @@
+{
+  "subcmd1": {
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalMembers.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPNeighbor.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPPeerGroup.json"
+  }
+}

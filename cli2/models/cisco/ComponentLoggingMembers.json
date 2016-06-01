@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "Module": {
       "cliname": "module"

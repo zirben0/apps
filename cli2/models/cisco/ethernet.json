@@ -7,10 +7,13 @@
         "$ref": "file:/tmp/snaproute/cli/model/cisco/PortMembers.json"
       },
       "subcmd2": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/ip.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ethip.json"
       },
       "subcmd3": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/stpinterface.json"
+      },
+      "subcmd4": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/Vlan.json"
       }
     }
   }

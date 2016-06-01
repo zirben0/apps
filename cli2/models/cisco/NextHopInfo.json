@@ -1,10 +1,14 @@
 {
   "nexthopinfo": {
-    "cliname": "", 
-    "commands": {
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
-    }, 
     "prompt": "", 
-    "value": {}
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/NextHopInfoSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "NextHopIp": {
+        "cliname": "nexthopip"
+      }
+    }
   }
 }

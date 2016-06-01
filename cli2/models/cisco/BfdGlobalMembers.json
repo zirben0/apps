@@ -1,7 +1,8 @@
 {
+  "listattrs": [], 
   "commands": {
     "Enable": {
-      "cliname": "bfd"
+      "cliname": "enable"
     }
   }
 }

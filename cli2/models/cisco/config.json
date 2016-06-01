@@ -7,7 +7,7 @@
         "$ref": "file:/tmp/snaproute/cli/model/cisco/interface.json"
       },
       "subcmd2" : {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/vlan.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/Vlan.json"
       },
       "subcmd3" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/router.json"
@@ -20,6 +20,15 @@
       },
       "subcmd6" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/feature.json"
+      },
+      "subcmd7": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinition.json"
+      },
+      "subcmd8": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyStmt.json"
+      },
+      "subcmd9": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyCondition.json"
       }
     }
   } 

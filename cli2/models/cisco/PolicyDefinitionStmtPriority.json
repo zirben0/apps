@@ -1,10 +1,15 @@
 {
   "policydefinitionstmtpriority": {
-    "cliname": "", 
+    "prompt": "statement",
     "commands": {
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
-    }, 
-    "prompt": "", 
-    "value": {}
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinitionStmtPrioritySubCmds.json"
+    },
+    "help" : "Policy Statement",
+    "cliname": "policy_statement",
+    "value": {
+      "Priority": {
+        "cliname": "policy_statement"
+      }
+    }
   }
 }

@@ -11,29 +11,26 @@
     ], 
     "type": "object", 
     "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/RouteDistanceStateSubCmds.json"
+        }
+      }, 
       "cliname": {
         "default": "", 
         "type": "string", 
         "description": "name used in cli to describe bfd"
       }, 
-      "commands": {
-        "type": "object", 
-        "description": "holds all related sub command attributes related to this Leaf", 
-        "properties": {
-          "subcmd1": {
-            "$ref": "/tmp/snaproute/cli/schema/RouteDistanceStateMembers.json"
-          }
-        }
+      "help": {
+        "default": "", 
+        "type": "string"
       }, 
       "prompt": {
         "default": "", 
         "displayValue": false, 
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
-      }, 
-      "help": {
-        "default": "", 
-        "type": "string"
       }, 
       "value": {
         "type": "object", 
@@ -54,25 +51,32 @@
                 "default": "RouteDistanceState protocol", 
                 "type": "string"
               }, 
-              "defaultarg": {
-                "default": "", 
-                "type": "string"
+              "islist": {
+                "default": false, 
+                "type": "boolean"
               }, 
               "cliname": {
                 "default": "protocol", 
                 "type": "string"
               }, 
-              "islist": {
-                "default": false, 
+              "argtype": {
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": true, 
                 "type": "boolean"
               }, 
-              "argtype": {
-                "default": "string", 
-                "type": "string"
+              "defaultarg": {
+                "default": ""
               }
             }
           }
         }
+      }, 
+      "objname": {
+        "default": "RouteDistanceState", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
       }
     }
   }

@@ -1,16 +1,13 @@
 {
   "stpbridgeinstance": {
-    "cliname": "", 
-    "commands": {
-      "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/StpBridgeInstanceMembers.json"
-      }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
-    }, 
     "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeInstanceSubCmds.json"
+    }, 
+    "cliname": "", 
     "value": {
       "Vlan": {
-        "cliname": "vlan"
+        "cliname": "brg_vlan"
       }
     }
   }

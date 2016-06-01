@@ -1,4 +1,15 @@
 {
+  "listattrs": [
+    [
+      "subcmd1", 
+      "StatementList"
+    ]
+  ], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -15,26 +26,33 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Priority of the policy w.r.t other policies configured", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "priority", 
+            "default": "0-255  Priority of the policy w.r.t other policies configured", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "cliname": {
+            "default": "priority", 
             "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 255
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
+      }, 
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinitionStmtPriority.json"
       }, 
       "MatchType": {
         "type": "object", 
@@ -51,21 +69,27 @@
             "default": "all/any  Specifies whether to match all/any of the statements within this policy default: all", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "all", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "matchtype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "enum": [
+              "all", 
+              "any"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": "all"
           }
         }
       }, 
@@ -84,21 +108,28 @@
             "default": " BGP/OSPF/ALL  Specifies the intended protocol application for the policy default: ALL", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "ALL", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "policytype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "enum": [
+              "BGP", 
+              "OSPF", 
+              "ALL"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": "ALL"
           }
         }
       }, 
@@ -117,63 +148,27 @@
             "default": "Policy Name", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "name", 
             "type": "string"
           }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
           "argtype": {
-            "default": "string", 
             "type": "string"
-          }
-        }
-      }, 
-      "StatementList": {
-        "type": "object", 
-        "properties": {
-          "key": {
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: PolicyDefinitionStmtPriority.  Specifies list of statements along with their precedence order.", 
-            "type": "string"
           }, 
           "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "statementlist", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "PolicyDefinitionStmtPriority", 
-            "type": "string"
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

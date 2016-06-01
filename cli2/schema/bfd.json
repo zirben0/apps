@@ -23,7 +23,10 @@
             "$ref": "file:/tmp/snaproute/cli/schema/BfdSessionParam.json"
           },
           "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/BfdSessionMembers.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/BfdSession.json"
+          },
+          "subcmd3": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BfdGlobalMembers.json"
           }
         }
       }

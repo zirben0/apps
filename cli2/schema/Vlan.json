@@ -11,29 +11,26 @@
     ], 
     "type": "object", 
     "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/VlanSubCmds.json"
+        }
+      }, 
       "cliname": {
         "default": "", 
         "type": "string", 
         "description": "name used in cli to describe bfd"
       }, 
-      "commands": {
-        "type": "object", 
-        "description": "holds all related sub command attributes related to this Leaf", 
-        "properties": {
-          "subcmd1": {
-            "$ref": "/tmp/snaproute/cli/schema/VlanMembers.json"
-          }
-        }
+      "help": {
+        "default": "1-4094  802.1Q tag/Vlan ID for vlan being provisioned",
+        "type": "string"
       }, 
       "prompt": {
         "default": "", 
         "displayValue": false, 
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
-      }, 
-      "help": {
-        "default": "", 
-        "type": "string"
       }, 
       "value": {
         "type": "object", 
@@ -51,28 +48,37 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "802.1Q tag/Vlan ID for vlan being provisioned", 
-                "type": "string"
-              }, 
-              "defaultarg": {
-                "default": "", 
-                "type": "string"
-              }, 
-              "cliname": {
-                "default": "vlanid", 
+                "default": "1-4094  802.1Q tag/Vlan ID for vlan being provisioned", 
                 "type": "string"
               }, 
               "islist": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "argtype": {
-                "default": "int32", 
+              "cliname": {
+                "default": "vlanid", 
                 "type": "string"
+              }, 
+              "argtype": {
+                "minimum": 1, 
+                "type": "int32", 
+                "maximum": 4094
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "defaultarg": {
+                "default": ""
               }
             }
           }
         }
+      }, 
+      "objname": {
+        "default": "Vlan", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
       }
     }
   }

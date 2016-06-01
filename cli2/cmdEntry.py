@@ -55,7 +55,23 @@ def getEntryAttribute(entry):
     return entry.attr
 
 def getEntryValue(entry):
-    return entry.val
+    return "%s" % entry.val
+
+def getDictEntryValue(entry, attrDict):
+    rval = {}
+    if type(entry.val) is list:
+        rvallist = []
+        for subval in entry.val:
+            for key, val in subval.iteritems():
+                newKey = attrDict[key]['key']
+                rval.update({newKey: val})
+            rvallist.append(rval)
+        return rvallist
+    else:
+        for key, val in entry.val.iteritems():
+            newKey = attrDict[key]['key']
+            rval = {newKey: val}
+            return rval
 
 def getEntryCmd(entry):
     return entry.cmd
@@ -67,27 +83,57 @@ class CmdSet(object):
     '''
     Hold the attributes related to a cli command given
     '''
-    def __init__(self, cmd, delete, attr, val):
+    def __init__(self, cmd, delete, attr, val, iskey, islist):
         self.cmd = cmd
+        self.iskey = iskey
+        self.islist = islist
         self.delete = delete
         self.attr = attr
-        self.val = val
+        self.val = [val] if type(val) is not list and self.islist else val
         self.date = time.ctime()
 
     def __str__(self,):
-        lines = "cmd: %s\ndelete %s\n attr %s\n val %s\n date %s\n" %(self.cmd, self.delete, self.attr, self.val, self.date)
+        lines = "cmd: %s\niskey %s\ndelete %s\nattr %s\nval %s\ndate %s\n" %(self.cmd, self.iskey, self.delete, self.attr, self.val, self.date)
         return lines
 
-
-    def set(self, cmd, delete, attr, val):
+    def setDict(self, cmd, delete, attr, data):
         self.cmd = cmd
         self.delete = delete
         self.attr = attr
-        self.val = val
+        if self.islist:
+            delIdx = -1
+            for i, v in enumerate(self.val):
+                if v[attr] == data[attr]:
+                    delIdx = i
+
+            if delIdx != -1:
+                del self.val[delIdx]
+            self.val.append(data)
+        else:
+            self.val = data
+        self.date = time.ctime()
+
+    def set(self, cmd, delete, attr, val):
+        if type(val) == dict:
+            self.setDict(cmd, delete, attr, val)
+            return
+        self.cmd = cmd
+        self.delete = delete
+        self.attr = attr
+        if self.islist:
+            if type(val) is list:
+                self.val += val
+            else:
+                self.val.append(val)
+        else:
+            self.val = val
         self.date = time.ctime()
 
     def get(self):
         return (self.cmd, self.attr, self.val)
+
+    def isKey(self):
+        return self.isKey
 
 class CmdEntry(object):
     '''
@@ -153,15 +199,29 @@ class CmdEntry(object):
 
         return v
 
-    def set(self, fullcmd, delete, k, v):
+    def set(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
+        for entry in self.attrList:
+            if getEntryAttribute(entry) == k:
+                if entry.iskey == True:
+                    # not allowed to update keys
+                    return
+                # TODO if delete then we may need to remove this command all together
+                # HACK: should fix higher layers to pass in correct values for now
+                # key is only set when config is initially created, so if attr is updated
+                # then we don't want to overwrite it
+                entry.set(' '.join(fullcmd), delete, k, v)
+                return
 
+        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey, isattrlist))
+
+    def setDict(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
                 # TODO if delete then we may need to remove this command all together
                 entry.set(' '.join(fullcmd), delete, k, v)
                 return
 
-        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v))
+        self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey, isattrlist))
 
     def clear(self, k=None, v=None, all=None):
         try:
@@ -188,24 +248,28 @@ class CmdEntry(object):
             for kk, vv in copy.deepcopy(self.keysDict).iteritems():
                 if kk == getEntryAttribute(entry):
                     # overwrite the default value
-                    value = None
+                    attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
                     if self.keysDict[kk]['isarray']:
-                        if isnumeric(self.keysDict[kk]['type']):
+                        if isnumeric(attrtype):
                             l = [convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
                             value = [int(x) for x in l]
-                        elif isboolean(self.keysDict[kk]['type']):
+                        elif isboolean(attrtype):
                             l = [convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
                             value = [convertStrBoolToBool(x) for x in l]
-                        else:
+                        elif attrtype in ('str', 'string'):
                             value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
+                        else: # struct
+                            value = getDictEntryValue(entry, vv['value'][0])
 
                     else:
-                        if isnumeric(self.keysDict[kk]['type']):
+                        if isnumeric(attrtype):
                             value = convertStrNumToNum(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
-                        elif isboolean(self.keysDict[kk]['type']):
+                        elif isboolean(attrtype):
                             value = convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
-                        else:
+                        elif attrtype in ('str', 'string'):
                             value = getEntryValue(self.updateSpecialValueCases(vv['key'], entry))
+                        else:
+                            value = getDictEntryValue(entry, vv['value'][0])
 
                     if readdata:
                         del readdata[vv['key']]
@@ -219,22 +283,38 @@ class CmdEntry(object):
             if v['key'] not in newdict:
                 value = None
                 if not readdata:
+                    attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
+
                     if self.keysDict[kk]['isarray']:
-                        if isnumeric(self.keysDict[kk]['type']):
+                        if isnumeric(attrtype):
                             l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
                             value = [int(x) for x in l]
-                        elif isboolean(self.keysDict[kk]['type']):
+                        elif isboolean(attrtype):
                             l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
                             value = [convertStrBoolToBool(x) for x in l]
-                        else:
+                        elif attrtype in ('str', 'string'):
                             value = [x.lstrip('').rstrip('') for x in v['value'].split(",")]
-                    else:
-                        if isnumeric(self.keysDict[kk]['type']):
-                            value = convertStrNumToNum(v['value'])
-                        elif isboolean(self.keysDict[kk]['type']):
-                            value = convertStrBoolToBool(v['value'])
                         else:
-                            value = v['value']
+                            value = {}
+                            for v in v['value'][0].values():
+                                value.update({vv['key'] : vv['value']['default']})
+
+                            value = [value]
+
+                    else:
+                        if isnumeric(attrtype):
+                            value = convertStrNumToNum(v['value']['default'])
+                        elif isboolean(attrtype):
+                            value = convertStrBoolToBool(v['value']['default'])
+                        elif attrtype in ('str', 'string'):
+                            value = v['value']['default']
+                        else:
+                            value = {}
+                            for vv in v['value'][0].values():
+                                value.update({vv['key'] : vv['value']['default']})
+
+
+
                 elif v['key'] in readdata:
                     value = readdata[v['key']]
 
@@ -259,4 +339,4 @@ class CmdEntry(object):
         width = 30
         print indent([labels]+rows, hasHeader=True, separateRows=False,
                      prefix=' ', postfix=' ', headerChar= '-', delim='    ',
-                     wrapfunc=lambda x: wrap_onspace_strict(x,width))
+                     wrapfunc=lambda x: wrap_onspace_strict(x, width))

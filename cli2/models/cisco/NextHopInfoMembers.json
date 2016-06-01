@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "NextHopIntRef": {
       "cliname": "nexthopintref"

@@ -1,4 +1,5 @@
 {
+  "listattrs": [], 
   "commands": {
     "AuthType": {
       "cliname": "authtype"

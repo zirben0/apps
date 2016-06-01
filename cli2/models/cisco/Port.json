@@ -1,16 +1,13 @@
 {
   "port": {
-    "cliname": "", 
+    "prompt": "eth",
     "commands": {
-      "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/PortMembers.json"
-      }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PortSubCmds.json"
     }, 
-    "prompt": "", 
+    "cliname": "ethernet",
     "value": {
       "IntfRef": {
-        "cliname": "intfref"
+        "cliname": "ethernet"
       }
     }
   }

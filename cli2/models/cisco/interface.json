@@ -4,7 +4,7 @@
     "cliname" : "interface",
     "commands" : {
       "subcmd1": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/ethernet.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/Port.json"
       },
       "subcmd2": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/svi.json"

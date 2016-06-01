@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -18,21 +24,23 @@
             "default": "Mac address associated with this port", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "macaddr", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -51,21 +59,23 @@
             "default": "User provided string description default: FP Port", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "FP Port", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "description", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": "FP Port"
           }
         }
       }, 
@@ -84,21 +94,23 @@
             "default": "Front panel port name or system assigned interface id", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "intfref", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -114,24 +126,30 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Duplex setting for this port", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "duplex", 
+            "default": " Half Duplex/Full Duplex  Duplex setting for this port", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "cliname": {
+            "default": "duplex", 
             "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "Half Duplex", 
+              "Full Duplex"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -150,21 +168,23 @@
             "default": "Type of media inserted into this port", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "mediatype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -183,21 +203,25 @@
             "default": "Maximum transmission unit size for this port", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "mtu", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -213,24 +237,48 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Type of internal phy interface", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "phyintftype", 
+            "default": " GMII/SGMII/QSMII/SFI/XFI/XAUI/XLAUI/RXAUI/CR/CR2/CR4/KR/KR2/KR4/SR/SR2/SR4/SR10/LR/LR4  Type of internal phy interface", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "cliname": {
+            "default": "phyintftype", 
             "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "GMII", 
+              "SGMII", 
+              "QSMII", 
+              "SFI", 
+              "XFI", 
+              "XAUI", 
+              "XLAUI", 
+              "RXAUI", 
+              "CR", 
+              "CR2", 
+              "CR4", 
+              "KR", 
+              "KR2", 
+              "KR4", 
+              "SR", 
+              "SR2", 
+              "SR4", 
+              "SR10", 
+              "LR", 
+              "LR4"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -246,24 +294,30 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Administrative state of this port", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "adminstate", 
+            "default": " ON/OFF  Administrative state of this port", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "cliname": {
+            "default": "adminstate", 
             "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "ON", 
+              "OFF"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -279,24 +333,30 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Break out mode for the port. Only applicable on ports that support breakout. Valid modes - 1x40", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "breakoutmode", 
+            "default": " 1x40(1)/4x10(2)  Break out mode for the port. Only applicable on ports that support breakout. Valid modes - 1x40", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "cliname": {
+            "default": "breakoutmode", 
             "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "1x40(1)", 
+              "4x10(2)"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -315,21 +375,25 @@
             "default": "System assigned interface id for this port. Read only attribute", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ifindex", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -345,24 +409,30 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Autonegotiation setting for this port", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "autoneg", 
+            "default": " ON/OFF  Autonegotiation setting for this port", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
+          "cliname": {
+            "default": "autoneg", 
             "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "ON", 
+              "OFF"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -378,33 +448,32 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Port speed in Mbps", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "speed", 
+            "default": "0-100000  Port speed in Mbps", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "cliname": {
+            "default": "speed", 
             "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 100000
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

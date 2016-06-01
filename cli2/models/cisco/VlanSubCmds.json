@@ -1,0 +1,8 @@
+{
+  "subcmd1": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/VlanMembers.json"
+  },
+  "subcmd2": {
+     "$ref": "file:/tmp/snaproute/cli/model/cisco/vlanip.json"
+  }
+}

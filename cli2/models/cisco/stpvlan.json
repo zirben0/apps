@@ -1,6 +1,6 @@
 {
   "stpvlan": {
-    "cliname" : "vlan",
+    "cliname" : "brg_vlan",
     "commands" : {
       "subcmd1": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeInstanceMembers.json"

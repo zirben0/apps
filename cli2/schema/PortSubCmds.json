@@ -1,0 +1,14 @@
+{
+  "subcmd1": {
+    "$ref": "file:/tmp/snaproute/cli/schema/PortMembers.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/schema/ethip.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/schema/stpinterface.json"
+  },
+  "subcmd4": {
+    "$ref": "file:/tmp/snaproute/cli/schema/Vlan.json"
+  }
+}

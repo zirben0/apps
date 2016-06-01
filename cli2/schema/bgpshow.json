@@ -16,8 +16,51 @@
         "default": "Configure IP features"
       },
       "value": {
-        "type": "integer",
-        "default" : "trigger to know that a value is expected"
+        "type": "object",
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate",
+        "properties": {
+          "ASNum": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "default": true,
+                "type": "boolean"
+              },
+              "prompt": {
+                "default": "",
+                "type": "string"
+              },
+              "help": {
+                "default": "Local AS for BGP global config",
+                "type": "string"
+              },
+              "islist": {
+                "default": false,
+                "type": "boolean"
+              },
+              "cliname": {
+                "default": "asnum",
+                "type": "string"
+              },
+              "argtype": {
+                "type": "string"
+              },
+              "isdefaultset": {
+                "default": false,
+                "type": "boolean"
+              },
+              "defaultarg": {
+                "default": "",
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "objname": {
+        "default": "BGPGlobal",
+        "type": "string",
+        "description": "object name to which references these attributes"
       },
       "commands": {
         "type": "object",

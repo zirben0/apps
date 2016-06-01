@@ -1,10 +1,15 @@
 {
   "sourcepolicylist": {
-    "cliname": "", 
+    "prompt": "policy",
     "commands": {
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/SourcePolicyListSubCmds.json"
     }, 
-    "prompt": "", 
-    "value": {}
+    "cliname": "redistribute",
+    "help" : "Provide redistribution policies for BGP from different sources",
+    "value": {
+      "Sources": {
+        "cliname": "redistribute"
+      }
+    }
   }
 }

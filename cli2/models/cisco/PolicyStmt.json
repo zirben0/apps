@@ -1,16 +1,14 @@
 {
   "policystmt": {
-    "cliname": "", 
+    "prompt": "route-policy-statement",
     "commands": {
-      "subcmd1": {
-        "$ref": "/tmp/snaproute/cli/model/cisco/PolicyStmtMembers.json"
-      }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
-    }, 
-    "prompt": "", 
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyStmtSubCmds.json"
+    },
+    "help": "Policy Statement",
+    "cliname": "route_policy_statement",
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "route_policy_statement"
       }
     }
   }

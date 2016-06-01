@@ -1,10 +1,11 @@
 {
+  "listattrs": [], 
   "commands": {
     "Policy": {
       "cliname": "policy"
     }, 
     "Sources": {
-      "cliname": "sources"
+      "cliname": "redistribute"
     }
   }
 }

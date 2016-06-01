@@ -1,80 +1,30 @@
 {
-  "commands": {
-    "type": "object", 
-    "description": "", 
-    "properties": {
-      "Received": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: BGPCounters.  Rx counters of the BGP neighbor", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "received", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "BGPCounters", 
-            "type": "string"
-          }
-        }
-      }, 
-      "Sent": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: BGPCounters.  Tx counters of the BGP neighbor", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "sent", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "BGPCounters", 
-            "type": "string"
-          }
-        }
-      }
-    }
-  }, 
+  "listattrs": [
+    [
+      "subcmd1", 
+      "Received"
+    ], 
+    [
+      "subcmd2", 
+      "Sent"
+    ]
+  ], 
   "createwithdefault": {
     "default": false, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/schema/BGPCounters.json"
+      }, 
+      "subcmd2": {
+        "$ref": "file:/tmp/snaproute/cli/schema/BGPCounters.json"
+      }
+    }
   }, 
   "defaultref": {
     "type": "object", 
