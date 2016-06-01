@@ -8,7 +8,7 @@
       "cliname": "cluster_id"
     },
     "PeerGroup": {
-      "cliname": "inherit_peer_template_name"
+      "cliname": "peer_group"
     },
     "MultiHopTTL": {
       "cliname": "ebgp_multihop"
