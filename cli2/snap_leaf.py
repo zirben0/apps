@@ -33,6 +33,7 @@ from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from cmdEntry import CmdEntry, isboolean, isnumeric
+from const import *
 
 # used to
 class SetAttrFunc(object):
@@ -109,15 +110,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 # and fill in what commands were entered by the user
                 for k, v in objDict.iteritems():
                     config = CmdEntry(k, objDict[k])
-                    if self.cmdtype != 'show':
-                        lastcmd = self.parent.lastcmd[-2] if 'now' not in self.cmdtype else self.parent.lastcmd[-1]
+                    if COMMAND_TYPE_SHOW not in self.cmdtype:
+                        lastcmd = self.parent.lastcmd[-2] if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
                         if cliname == lastcmd:
                             for kk in v.keys():
                                 if kk == cliname:
-                                    basekey = self.parent.lastcmd[-2]  if 'now' not in self.cmdtype else self.parent.lastcmd[-1]
-                                    basevalue = self.parent.lastcmd[-1]  if 'now' not in self.cmdtype else None
+                                    basekey = self.parent.lastcmd[-2]  if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
+                                    basevalue = self.parent.lastcmd[-1]  if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
 
-                                    delete = True if self.cmdtype == 'delete' else False
+                                    delete = True if COMMAND_TYPE_DELETE in self.cmdtype else False
 
                                     if basevalue is None:
                                         basevalue = self.getCommandDefaultAttrValue([basekey], delcmd=delete)
@@ -135,7 +136,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     cfg = configObj.doesConfigExist(config)
                     if not cfg:
                         configObj.configList.append(config)
-                    elif cfg and 'delete' in self.cmdtype:
+                    elif cfg and COMMAND_TYPE_DELETE in self.cmdtype:
                         # let remove the previous command if it was set
                         # or lets delete the config
                         if len(config.attrList) > 1:
@@ -149,7 +150,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 return False
                             except ValueError:
                                 pass
-        return True if 'now' not in self.cmdtype else False
+        return True if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else False
 
     def getCmdKeysToIgnore(self, objname, schema):
         '''
@@ -563,7 +564,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
                     if schemaname:
                         configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                        if self.cmdtype != 'delete':
+                        if COMMAND_TYPE_DELETE not in self.cmdtype:
                             self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
                         value = None
@@ -582,13 +583,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         if schemaname:
                                             configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                             objname = schemaname
-                                            if configprompt and self.cmdtype != 'delete':
+                                            if configprompt and COMMAND_TYPE_DELETE not in sel.cmdtype:
                                                 self.prompt += configprompt + '-'
                                                 value = argv[-1]
 
                         if value != None:
                             self.prompt += value + endprompt
-                        elif self.cmdtype != 'delete':
+                        elif COMMAND_TYPE_DELETE not in self.cmdtype:
                             self.prompt = self.prompt[:-1] + endprompt
                         self.stop = True
                         prevcmd = self.currentcmd
@@ -600,8 +601,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if c.applybaseconfig(argv[-2]):
                             c.cmdloop()
                         self.setupCommands()
-                        if self.cmdtype == 'delete':
-                            self.cmdtype = 'config'
+                        if COMMAND_TYPE_DELETE in self.cmdtype:
+                            self.cmdtype = COMMAND_TYPE_CONFIG
 
                         self.subcommand = False
                         self.prompt = self.baseprompt

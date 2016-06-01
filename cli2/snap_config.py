@@ -37,6 +37,7 @@ from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from snap_leaf import LeafCmd
 from cmdEntry import *
+from const import *
 
 pp = pprint.PrettyPrinter(indent=2)
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
@@ -188,7 +189,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def _cmd_do_delete(self, argv):
 
-        self.cmdtype = 'delete'
+        self.cmdtype = COMMAND_TYPE_DELETE
         self._cmd_common(argv[1:])
 
     def _cmd_complete_common(self, text, line, begidx, endidx):
@@ -270,7 +271,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
             if schemaname:
                 configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                if self.cmdtype != 'delete' and configprompt:
+                if COMMAND_TYPE_DELETE not in self.cmdtype and configprompt:
                     endprompt = self.baseprompt[-2:]
                     self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
@@ -288,7 +289,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     if schemaname:
                                         configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                         objname = schemaname
-                                        if configprompt and self.cmdtype != 'delete':
+                                        if configprompt and COMMAND_TYPE_DELETE not in self.cmdtype:
                                             if not endprompt:
                                                 endprompt = self.baseprompt[-2:]
                                                 self.prompt = self.baseprompt[:-2] + '-'
@@ -298,7 +299,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                 if value != None:
                     self.prompt += value + endprompt
-                elif self.cmdtype != 'delete' and self.prompt[:-1] != "#":
+                elif COMMAND_TYPE_DELETE not in self.cmdtype and self.prompt[:-1] != "#":
                     self.prompt = self.prompt[:-1] + endprompt
                 self.stop = True
                 prevcmd = self.currentcmd
@@ -310,7 +311,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 # bfd enable
                 cliname = argv[-2]
                 if self.valueexpected == SUBCOMMAND_VALUE_EXPECTED:
-                    self.cmdtype += 'now'
+                    self.cmdtype += COMMAND_TYPE_CONFIG_NOW
                     cliname = argv[-1]
 
                 self.teardownCommands()
@@ -319,9 +320,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     c.cmdloop()
                 self.setupCommands()
 
-                self.cmdtype = self.cmdtype.rstrip('now')
-                if self.cmdtype == 'delete':
-                    self.cmdtype = 'config'
+                self.cmdtype = self.cmdtype.rstrip(COMMAND_TYPE_CONFIG_NOW)
+                if COMMAND_TYPE_DELETE in self.cmdtype:
+                    self.cmdtype = COMMAND_TYPE_CONFIG
 
                 self.prompt = self.baseprompt
                 self.currentcmd = prevcmd
