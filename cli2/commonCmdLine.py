@@ -30,6 +30,7 @@ from jsonschema import Draft4Validator
 import pprint
 import requests
 from tablePrint import indent, wrap_onspace_strict
+from cmdEntry import isboolean, isnumeric
 
 USING_READLINE = True
 try:
@@ -44,6 +45,14 @@ try:
 except:   se
 
 pp = pprint.PrettyPrinter(indent=2)
+
+# this is not a terminating command
+SUBCOMMAND_VALUE_NOT_EXPECTED = 1
+# this is a terminating command which expects a value from user
+SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE = 2
+# this is a terminating command but no value is necessary
+SUBCOMMAND_VALUE_EXPECTED = 3
+
 
 class CommonCmdLine(object):
 
@@ -198,6 +207,7 @@ class CommonCmdLine(object):
                                             # sub commands part of a leaf
                                             #elif kkk in listattrDict:
                                             #    subList.append(vvv)
+
                                 elif 'commands' in kk and 'cliname' not in vv:
                                     for kkk, vvv in vv.iteritems():
                                         if 'subcmd' in kkk:
@@ -210,6 +220,7 @@ class CommonCmdLine(object):
                                             # sub commands part of a leaf
                                             #elif kkk in listattrDict:
                                             #    subList.append(vvv)
+
                                 elif kk == key:
                                     subList.append(vv)
 
@@ -375,6 +386,68 @@ class CommonCmdLine(object):
                     return selections[0]
         return []
 
+    def commandAttrsLoop(self, modelcmds, schemacmds):
+        for attr, val in modelcmds.iteritems():
+            yield (attr, val), (attr, schemacmds[attr])
+
+    def isCommandLeafAttrs(self, modelcmds, schemacmds):
+        return "commands" in modelcmds and "commands" in schemacmds
+
+    def isLeafValueExpected(self, cliname, modelcmds, schemacmds):
+        keys = []
+        objname = None
+        expected = SUBCOMMAND_VALUE_NOT_EXPECTED
+        help = ''
+        for (mattr, mattrval), (sattr, sattrval) in self.commandAttrsLoop(modelcmds["commands"], schemacmds["commands"]["properties"]):
+            if sattrval['properties']['key']['default']:
+                keys.append(sattr)
+
+            if 'cliname' in mattrval and mattrval['cliname'] == cliname:
+                help = ''
+                if 'enum' in sattrval['properties']['argtype']:
+                    help = "/".join(sattrval['properties']['argtype']['enum']) + '\n'
+                    if len(sattrval['properties']['argtype']['enum']) == 2:
+                        expected = SUBCOMMAND_VALUE_EXPECTED
+                if 'type' in sattrval['properties']['argtype'] and isboolean(sattrval['properties']['argtype']['type']):
+                    expected = SUBCOMMAND_VALUE_EXPECTED
+
+                objname = schemacmds['objname']['default']
+                help += sattrval['properties']['help']['default']
+        return (expected, objname, keys, help)
+
+
+    def getModelDefaultAttrVal(self, argv, schemaname, model, schema, delcmd=False):
+
+        # touching an attribute within this command tree, but we need to find out which subcmd contains
+        # the attribute
+        for modelcmds, schemacmds in zip(model[schemaname]["commands"].values(), schema[schemaname]["properties"]["commands"]["properties"].values()):
+            #leaf attr model
+            if self.isCommandLeafAttrs(modelcmds,schemacmds):
+
+                for (mattr, mattrval), (sattr, sattrval) in self.commandAttrsLoop(modelcmds["commands"], schemacmds["commands"]["properties"]):
+                    if 'cliname' in mattrval and mattrval['cliname'] == argv[0]:
+                        # we want opposite of default if boolean delete
+                        if delcmd:
+                            # lets do the opposite of default value if enums length is 2
+                            # or if we have a boolean value.
+                            # this helps when setting string based boolean values
+                            if 'enum' in sattrval['properties']['argtype'] and \
+                                len(sattrval['properties']['argtype']['enum']) == 2 and \
+                                    sattrval['properties']['isdefaultset']['default']:
+                                for enum in sattrval['properties']['argtype']['enum']:
+                                    if enum != sattrval['properties']['defaultarg']['default']:
+                                        return enum
+                            elif isboolean(sattrval['properties']['argtype']['type']) and \
+                                sattrval['properties']['isdefaultset']['default']:
+                                return not sattrval['properties']['defaultarg']['default']
+
+                        # setting default value
+                        return sattrval['properties']['defaultarg']['default'] if sattrval['properties']['isdefaultset']['default'] else None
+        return None
+
+
+
+
     def isValueExpected(self, cmd, model, schema):
         schemaname = self.getSchemaCommandNameFromCliName(cmd, model)
         #print 'isValueExpected', schema, schemaname
@@ -385,15 +458,23 @@ class CommonCmdLine(object):
                     'properties' in schema[schemaname]['properties']['value']:
                 keys = [k for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if type(v) in (dict, jsonref.JsonRef)]
                 help = ''
+                expected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE
                 for k, v in schema[schemaname]['properties']['value']['properties'].iteritems():
                     if 'properties' in v and 'argtype' in v['properties'] and 'enum' in v['properties']['argtype']:
                         help = "/".join(v['properties']['argtype']['enum']) + '\n'
+                        # special case don't need a value (default will be taken when applied)
+                        if len(v['properties']['argtype']['enum']) == 2:
+                            expected  = SUBCOMMAND_VALUE_EXPECTED
+                    elif 'properties' in v and 'argtype' in v['properties'] and 'type' in v['properties']['argtype']:
+                        if isboolean(v['properties']['argtype']['type']):
+                            expected = SUBCOMMAND_VALUE_EXPECTED
+
 
                 objname = schema[schemaname]['properties']['objname']['default']
                 help += schema[schemaname]['properties']['help']['default']
                 #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s\n" %(cmd, objname, keys))
-                return (True, objname, keys, help)
-        return (False, None, [], "")
+                return (expected, objname, keys, help)
+        return (SUBCOMMAND_VALUE_NOT_EXPECTED, None, [], "")
 
     def getValue(self, attribute):
 
@@ -454,7 +535,7 @@ class CommonCmdLine(object):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                         if i == mlineLength - 1:
-                            if valueexpected:
+                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 cmd = " ".join(argv[:-1])
                                 helpcommands = [[cmd, help]]
                             else:

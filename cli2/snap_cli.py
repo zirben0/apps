@@ -41,7 +41,8 @@ from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
 from snap_config import ConfigCmd
 from snap_show import ShowCmd
-from commonCmdLine import CommonCmdLine, USING_READLINE
+from commonCmdLine import CommonCmdLine, USING_READLINE, \
+    SUBCOMMAND_VALUE_NOT_EXPECTED, SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from flexswitchV2 import FlexSwitch
 from flexprint import FlexPrint
 from sets import Set
@@ -435,7 +436,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
         if mlineLength > 0:
             try:
-
                 for i in range(1, mlineLength):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
@@ -445,7 +445,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                             for subsubmodel, subsubschema in zip(submodelList, subschemaList):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
                                 # we want to keep looping untill there are no more value commands
-                                if valueexpected and mlineLength-1 == i:
+                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED and mlineLength-1 == i:
                                     self.currentcmd = self.lastcmd
                                     c = ShowCmd(self, subsubmodel, subsubschema)
                                     c.show(mline, all=(i == mlineLength-1))

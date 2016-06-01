@@ -31,7 +31,8 @@ import inspect
 from jsonref import JsonRef
 
 from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine
+from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
+    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from snap_leaf import LeafCmd
 from cmdEntry import CmdEntry
 

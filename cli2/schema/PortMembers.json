@@ -307,17 +307,17 @@
           }, 
           "argtype": {
             "enum": [
-              "ON", 
-              "OFF"
+              "UP",
+              "DOWN"
             ], 
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "DOWN"
           }
         }
       }, 

@@ -33,7 +33,8 @@ import inspect
 import string
 from jsonref import JsonRef
 from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine
+from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
+    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
@@ -65,6 +66,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.cmdtype = cmdtype
         #store all the pending configuration objects
         self.configList = []
+        self.valueexpected = SUBCOMMAND_VALUE_NOT_EXPECTED
 
         self.setupCommands()
 
@@ -220,11 +222,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
                             (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            if valueexpected:
-                                values =  self.getCommandValues(objname, keys)
-                                if not values:
-                                    values = self.getValueSelections(mline[i], submodel, subschema)
-                                return values
+                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                    values = self.getCommandValues(objname, keys)
+                                    if not values:
+                                        values = self.getValueSelections(mline[i], submodel, subschema)
+                                    return values
                             else:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
@@ -303,16 +306,38 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 # stop the command loop for config as we will be running a new cmd loop
                 cmdln.Cmdln.stop = True
 
+                # this code was added to handle admin state changes for global objects
+                # bfd enable
+                cliname = argv[-2]
+                if self.valueexpected == SUBCOMMAND_VALUE_EXPECTED:
+                    self.cmdtype += 'now'
+                    cliname = argv[-1]
+
                 self.teardownCommands()
-                c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
-                if c.applybaseconfig(argv[-2]):
+                c = LeafCmd(objname, cliname, self.cmdtype, self, self.prompt, submodelList, subschemaList)
+                if c.applybaseconfig(cliname):
                     c.cmdloop()
                 self.setupCommands()
+
+                self.cmdtype = self.cmdtype.rstrip('now')
                 if self.cmdtype == 'delete':
                     self.cmdtype = 'config'
 
                 self.prompt = self.baseprompt
                 self.currentcmd = prevcmd
+                # lets clear the config
+                delconfigList = []
+                for config in self.configList:
+                    if not config.isPending():
+                        config.clear(None, None, all=True)
+                        if config.isEntryEmpty():
+                            delconfigList.append(config)
+
+                for delconfig in delconfigList:
+                    self.configList.remove(delconfig)
+
+
+
         if self.stop:
             self.cmdloop()
 
@@ -331,32 +356,53 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     if schemaname:
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
-
-                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            if valueexpected:
-                                #if mlineLength - i > 1:
-                                #    sys.stdout.write("Invalid command entered, ignoring\n")
-                                #    return ''
-                                values = self.getValueSelections(mline[i], submodel, subschema)
-                                if i < mlineLength and values and mline[i+1] not in values:
-                                    sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
-                                    return ''
-                                min,max = self.getValueMinMax(mline[i], submodel, subschema)
-                                if min is not None and max is not None:
-                                    try:
-                                        num = string.atoi(mline[i+1])
-                                        if num < min or num > max:
-                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                        if submodelList and subschemaList:
+                            for submodel, subschema in zip(submodelList, subschemaList):
+                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                                (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                    #if mlineLength - i > 1:
+                                    #    sys.stdout.write("Invalid command entered, ignoring\n")
+                                    #    return ''
+                                    if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                        values = self.getValueSelections(mline[i], submodel, subschema)
+                                        if i < mlineLength and values and mline[i+1] not in values:
+                                            sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
                                             return ''
-                                    except:
-                                        sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
-                                        return ''
+                                        min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                        if min is not None and max is not None:
+                                            try:
+                                                num = string.atoi(mline[i+1])
+                                                if num < min or num > max:
+                                                    sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                    return ''
+                                            except:
+                                                sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                return ''
 
-                                #values = self.getCommandValues(objname, keys)
-                                #sys.stdout.write("FOUND values %s" %(values))
-                                self.commandLen = len(mline[:i]) + 1
+                                        #values = self.getCommandValues(objname, keys)
+                                        #sys.stdout.write("FOUND values %s" %(values))
+                                        self.commandLen = len(mline[:i]) + 1
+                                    else:
+                                        self.commandLen = len(mline[:i])
+                                    self.valueexpected = valueexpected
+                                elif i == mlineLength - 1 and mline[i+1] in subcommands:
+                                    schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
+                                    if schemaname:
+                                        for (submodelkey, submodel), (subschemakey, subschema) in zip(submodel[schemaname]["commands"].iteritems(),
+                                                                                                      subschema[schemaname]['properties']["commands"]["properties"].iteritems()):
+                                            if 'subcmd' in submodelkey:
+                                                if self.isCommandLeafAttrs(submodel, subschema):
+                                                    #leaf attr model
+                                                    (valueexpected, objname, keys, help) = self.isLeafValueExpected(mline[i+1], submodel, subschema)
+                                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                                        if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                                            self.commandLen = len(mline[:i]) + 2
+                                                        else:
+                                                            self.commandLen = len(mline[:i]) + 1
+                                                    else:
+                                                        self.commandLen = len(mline[:i])
+                                                    self.valueexpected = valueexpected
 
             except Exception as e:
                 sys.stdout.write("precmd: error %s" %(e,))
@@ -425,36 +471,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         return config
         return None
 
-    '''
-    def show_state(self, all=False):
-
-        configObj = self.getConfigObj()
-        if configObj and configObj.configList:
-            sys.stdout.write("Applying Show:\n")
-            # tell the user what attributes are being applied
-            for i in range(len(configObj.configList)):
-                config = configObj.configList[-(i+1)]
-
-                # get the sdk
-                sdk = self.getSdkShow()
-
-                funcObjName = config.name
-                try:
-                    if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName + 'States')
-                        printall_func()
-                    else:
-                        # update all the arguments so that the values get set in the get_sdk_...
-                        print_func = getattr(sdk, 'print' + funcObjName + 'State')
-                        data = config.getSdkConfig()
-                        (argumentList, kwargs) = self.get_sdk_func_key_values(data, print_func)
-                        print_func(*argumentList)
-
-                    # remove the configuration as it has been applied
-                    config.clear(None, None, all=True)
-                except Exception as e:
-                    sys.stdout.write("FAILED TO GET OBJECT for show state: %s\n" %(e,))
-    '''
     def convertKeyValueToDisplay(self, objName, key, value):
         #TODO this is a hack need a proper common mechanism to change special values
         returnval = value
@@ -529,6 +545,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     sys.stdout.write("command update FAILED:\n%s %s\n sent %s %s" %(r.status_code, r.json()['Error'], argumentList, kwargs))
                                 else:
                                     sys.stdout.write("update SUCCESS:\n" )
+                                    # set configuration to applied state
+                                    config.setPending(False)
                                     config.show()
 
                         elif r.status_code == 404:
@@ -540,15 +558,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                 sys.stdout.write("command create FAILED:\n%s %s\n sent %s %s " %(r.status_code, r.json()['Error'], argumentList, kwargs))
                             else:
                                 sys.stdout.write("create SUCCESS:\n" )
+                                # set configuration to applied state
+                                config.setPending(False)
                                 config.show()
 
                         else:
                             sys.stdout.write("Command Get FAILED\n%s %s\n sent %s %s" %(r.status_code, r.json()['Error'], argumentList, kwargs))
 
-                        # remove the configuration as it has been applied
-                        config.clear(None, None, all=True)
-                        if config.isEntryEmpty():
-                            delconfigList.append(config)
                     except Exception as e:
                         sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
 

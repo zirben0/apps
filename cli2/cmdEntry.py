@@ -147,9 +147,9 @@ class CmdEntry(object):
         # so this flag will allow config obj to know
         # to send this config to hw
         self.valid = False
-        # if the base key command was added
-        # then the config may be pending waiting for the
-        # second attribute to be set on the object
+        # Used to determine if the configuration is pending
+        # or not. Once applied then should clear everything
+        # that is not a key.
         self.pending = True
         # This is a delete command, meaning we want to
         # update to a default or delete an object
@@ -175,14 +175,27 @@ class CmdEntry(object):
     def isValid(self):
         return self.valid
 
+    def isPending(self):
+        return self.pending
+
     def setValid(self, v):
         self.valid = v
 
     def setPending(self, p):
         self.pending = p
 
+        #TODO should we clear out existing applied config, and leave the key, does not hurt
+        # if attributes are still available cause you can update them if they change
+
     def setDelete(self, d):
         self.delete = d
+
+    def isAttrSet(self, attr):
+
+        for entry in self.attrList:
+            if getEntryAttribute(entry) == attr:
+                return True
+        return False
 
     def updateSpecialValueCases(self, k, v):
         '''
@@ -210,8 +223,10 @@ class CmdEntry(object):
                 # key is only set when config is initially created, so if attr is updated
                 # then we don't want to overwrite it
                 entry.set(' '.join(fullcmd), delete, k, v)
+                self.setPending(True)
                 return
 
+        self.setPending(True)
         self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey, isattrlist))
 
     def setDict(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
@@ -330,7 +345,11 @@ class CmdEntry(object):
         Display the output of a commands as entered by a user
         :return:
         '''
-        sys.stdout.write('\tobject: %s\n' %(self.name))
+        pending = 'PENDING CONFIG'
+        if not self.isPending():
+            pending = 'APPLIED CONFIG'
+
+        sys.stdout.write('\tobject: %s   status: %s\n' %(self.name, pending))
 
         labels = ('command', 'attr', 'value', 'time provisioned')
         rows = []
