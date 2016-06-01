@@ -93,7 +93,7 @@ class CmdSet(object):
         self.date = time.ctime()
 
     def __str__(self,):
-        lines = "cmd: %s\ndelete %s\n attr %s\n val %s\n date %s\n" %(self.cmd, self.delete, self.attr, self.val, self.date)
+        lines = "cmd: %s\niskey %s\ndelete %s\nattr %s\nval %s\ndate %s\n" %(self.cmd, self.iskey, self.delete, self.attr, self.val, self.date)
         return lines
 
     def setDict(self, cmd, delete, attr, data):
@@ -133,7 +133,7 @@ class CmdSet(object):
         return (self.cmd, self.attr, self.val)
 
     def isKey(self):
-        return self.isKey if self.isKey else None
+        return self.isKey
 
 class CmdEntry(object):
     '''
@@ -200,10 +200,15 @@ class CmdEntry(object):
         return v
 
     def set(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
-
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
+                if entry.iskey == True:
+                    # not allowed to update keys
+                    return
                 # TODO if delete then we may need to remove this command all together
+                # HACK: should fix higher layers to pass in correct values for now
+                # key is only set when config is initially created, so if attr is updated
+                # then we don't want to overwrite it
                 entry.set(' '.join(fullcmd), delete, k, v)
                 return
 

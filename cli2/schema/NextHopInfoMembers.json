@@ -48,7 +48,7 @@
         "type": "object", 
         "properties": {
           "key": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -91,7 +91,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Weight of the next hop default: 0", 
+            "default": "0-31  Weight of the next hop default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -103,9 +103,9 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
+            "minimum": 0, 
             "type": "int32", 
-            "maximum": 2147483647
+            "maximum": 31
           }, 
           "isdefaultset": {
             "default": false, 

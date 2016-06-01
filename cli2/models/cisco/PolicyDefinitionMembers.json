@@ -6,20 +6,17 @@
     ]
   ], 
   "commands": {
-    "Priority": {
-      "cliname": "priority"
-    }, 
     "subcmd1": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinitionStmtPriority.json"
     }, 
     "MatchType": {
-      "cliname": "matchtype"
+      "cliname": "match_type"
     }, 
     "PolicyType": {
-      "cliname": "policytype"
+      "cliname": "policy_type"
     }, 
     "Name": {
-      "cliname": "name"
+      "cliname": "route_policy"
     }
   }
 }

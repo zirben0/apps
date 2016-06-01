@@ -27,7 +27,7 @@ import sys
 import cmdln
 import json
 import jsonref
-
+import string
 from sets import Set
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine
@@ -222,9 +222,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                                 if not teardown:
                                     setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
-                                    #setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
+                                    setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
                                 else:
                                     delattr(self.__class__, "do_" + cmdname)
+                                    delattr(self.__class__, "complete_" + cmdname)
 
                     # subcmd is a ref, typically this means that this is a container leaf
                     elif isbranch(cmd):
@@ -384,7 +385,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             cmdDict.update({tmpsubcmd : {'key': key,
                                                     'createwithdefaults' : tmpcreatewithdefault,
                                                     'subcommand' : subcmd,
-                                                    'objname' : objname,
+                                                    'objname' :  objname,
                                                     'value': cmds,
                                                     'isarray': isList,
                                                     'type': tmpobjname}})
@@ -432,11 +433,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self._cmd_common(argv)
 
     def _cmd_common(self, argv):
-
-        def isAttrPartOfConfigObj(key, subkey):
-            return ((key in (v['subcommand'], None)) and x == subkey) or \
-                                (type(v['value']) is list and key in v['value'][0].keys())
-
         delete = False
         mline = argv
         if len(argv) > 0 and argv[0] == 'no':
@@ -454,7 +450,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             configObj = self.getConfigObj()
             if configObj:
                 for config in configObj.configList:
-
                     for k, v in config.keysDict.iteritems():
                         # is key part of the subcommand
                         # is subkey == attr k
@@ -468,7 +463,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             else:
                                 # store the attribute into the config
                                 config.set(self.lastcmd, delete, subkey, value, isattrlist=v['isarray'])
-                        elif (type(v['value']) is list and subkey in v['value'][0].keys()):
+                        elif (type(v['value']) is list and len(v['value']) and subkey in v['value'][0].keys()):
                             # lets set the
                             if len(config.attrList) > 1 and delete:
                                 config.clear(subkey, value)
@@ -520,57 +515,57 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 submodelList = self.getSubCommand(argv[0], model[schemaname]["commands"])
                 subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
                 if submodelList and subschemaList:
+
                     schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
-                    configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                    if self.cmdtype != 'delete':
-                        self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
+                    if schemaname:
+                        configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
+                        if self.cmdtype != 'delete':
+                            self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
-                    value = None
-                    if configprompt and len(argv) == 2:
-                        value = argv[-1]
+                        value = None
+                        if configprompt and len(argv) == 2:
+                            value = argv[-1]
 
-                    objname = schemaname
-                    for i in range(1, len(argv)-1):
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
-                            if schemaname:
-                                submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
-                                subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                                for submodel, subschema in zip(submodelList, subschemaList):
-                                    schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
-                                    if schemaname:
-                                        configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
-                                        objname = schemaname
-                                        if configprompt and self.cmdtype != 'delete':
-                                            self.prompt += configprompt + '-'
-                                            value = argv[-1]
+                        objname = schemaname
+                        for i in range(1, len(argv)-1):
+                            for submodel, subschema in zip(submodelList, subschemaList):
+                                schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
+                                if schemaname:
+                                    submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
+                                    subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                                    for submodel, subschema in zip(submodelList, subschemaList):
+                                        schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
+                                        if schemaname:
+                                            configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
+                                            objname = schemaname
+                                            if configprompt and self.cmdtype != 'delete':
+                                                self.prompt += configprompt + '-'
+                                                value = argv[-1]
 
-                    if value != None:
-                        self.prompt += value + endprompt
-                    elif self.cmdtype != 'delete':
-                        self.prompt = self.prompt[:-1] + endprompt
-                    self.stop = True
-                    prevcmd = self.currentcmd
-                    self.currentcmd = self.lastcmd
-                    # stop the command loop for config as we will be running a new cmd loop
-                    cmdln.Cmdln.stop = True
-                    self.teardownCommands()
-                    c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
-                    if c.applybaseconfig(argv[-2]):
-                        c.cmdloop()
-                    self.setupCommands()
-                    if self.cmdtype == 'delete':
-                        self.cmdtype = 'config'
+                        if value != None:
+                            self.prompt += value + endprompt
+                        elif self.cmdtype != 'delete':
+                            self.prompt = self.prompt[:-1] + endprompt
+                        self.stop = True
+                        prevcmd = self.currentcmd
+                        self.currentcmd = self.lastcmd
+                        # stop the command loop for config as we will be running a new cmd loop
+                        cmdln.Cmdln.stop = True
+                        self.teardownCommands()
+                        c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
+                        if c.applybaseconfig(argv[-2]):
+                            c.cmdloop()
+                        self.setupCommands()
+                        if self.cmdtype == 'delete':
+                            self.cmdtype = 'config'
 
-                    self.subcommand = False
-                    self.prompt = self.baseprompt
-                    self.currentcmd = prevcmd
+                        self.subcommand = False
+                        self.prompt = self.baseprompt
+                        self.currentcmd = prevcmd
 
         # lets restart the cmdloop
         if self.stop:
             self.cmdloop()
-
-
 
     def getchildrencmds(self, parentname, model, schema):
         attrlist = []
@@ -603,10 +598,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             for f in dir(self.__class__):
                 if f.startswith('do_') and not f.endswith('no'):
                     subcommands.append(f.lstrip('do_'))
+
         skipValue = False
-        for i in range(1, mlineLength-1):
+        for i in range(1, mlineLength):
             if skipValue:
-                sys.stdout.write("\nvalue expected: i %s mlinelength %s\n" %(i, mlineLength))
+                #sys.stdout.write("\nvalue expected: i %s mlinelength %s\n" %(i, mlineLength))
                 skipValue = False
                 continue
 
@@ -614,40 +610,43 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             for model, schema in zip(self.modelList, self.schemaList):
                 #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
+                #sys.stdout.write("schemaname: %s\n" %(schemaname))
                 if schemaname:
                     #sys.stdout.write("\nschemaname %s\n\n" %(schemaname))
-                    submodelList = self.getSubCommand(mline[i], model[schemaname]["commands"])
-                    #sys.stdout.write("submoduleList %s\n" %(submodelList,))
-                    if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
-                        #sys.stdout.write("subschemaList %s\n" %(subschemaList,))
+                    submodelList, subschemaList = self.getSubCommand(mline[i], model[schemaname]["commands"]), \
+                                                    self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
+                    #sys.stdout.write("submoduleList %s\nsubschemaList %s\n" %(submodelList, subschemaList))
+                    if submodelList and subschemaList:
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
                             (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                             #sys.stdout.write("\ncomplete:  10 value expected %s command %s\n" %(valueexpected, mline[i]))
                             if valueexpected:
-                                self.commandLen = len(mline[:i])
+                                #self.commandLen = len(mline[:i])
                                 #if mlineLength > self.commandLen:
                                 # todo need to do a get to display all the valid keys
                                 config = self.getConfigObj()
                                 values = self.getValueSelections(mline[i], submodel, subschema)
-                                sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
-                                if (i == mlineLength-1) or (i < mlineLength-1 and mline[i+1] not in values):
+                                if not values:
+                                    values = config.getCommandValues(objname, keys)
+                                #sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
+                                # expect value but no value supplied
+                                if (i == mlineLength-1):
                                     #sys.stdout.write("\nselections: %s\n" %(values))
-                                    if not values:
-                                        values = config.getCommandValues(objname, keys)
                                     subcommands = values
-                                else:
-                                    #sys.stdout.write("\nvalue expected: skipping %s" %(mline[i+1]))
-                                    subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                                # expect value and something supplied
+                                elif (i == mlineLength-2 and mline[i+1] not in values):
+                                    subcommands = values
                                     skipValue = True
                             else:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
                             #sys.stdout.write("subcommands %s" %(subcommands,))
+                    else:
+                        sys.logger.write("model commands: %s\n" %(model[schemaname]["commands"]))
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
-        sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
+        #sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
 
         # lets remove any duplicates
         returncommands = list(Set(subcommands).difference(mline))
@@ -709,44 +708,44 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
 
-
         if subschema and submodel:
             if mlineLength > 0:
                 self.commandLen = 0
-                for i in range(1, len(mline)-1):
+                for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
                         subschemaList, submodelList = self.getSubCommand(mline[i],
                                                                          subschema[schemaname]["properties"]["commands"]["properties"],
                                                                          submodel[schemaname]["commands"]), \
                                                         self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-
                         if subschemaList and submodelList:
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                                if valueexpected:
-                                    values = self.getValueSelections(mline[i], submodel, subschema)
-                                    if i < mlineLength and values and mline[i+1] not in values:
-                                        sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
-                                        return ''
-                                    min,max = self.getValueMinMax(mline[i], submodel, subschema)
-                                    if min is not None and max is not None:
-                                        try:
-                                            num = strings.atoi(mline[i+1])
-                                            if num < min or num > max:
+                                if i == (mlineLength - 1):
+                                    if valueexpected:
+                                        #if mlineLength - i > 1:
+                                        #    sys.stdout.write("Invalid command entered, ignoring\n")
+                                        #    return ''
+
+                                        values = self.getValueSelections(mline[i], submodel, subschema)
+                                        if i < mlineLength and values and mline[i+1] not in values:
+                                            sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                            return ''
+                                        min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                        if min is not None and max is not None:
+                                            try:
+                                                num = string.atoi(mline[i+1])
+                                                if num < min or num > max:
+                                                    sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                    return ''
+                                            except:
                                                 sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                                 return ''
-                                        except:
-                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
-                                            return ''
 
-                                    #if mlineLength - i > 1:
-                                    #    sys.stdout.write("Invalid command entered, ignoring\n")
-                                    #    return ''
 
-                                    # found that if commands are entered after the last command then there can be a problem
-                                    self.commandLen = mlineLength
-                                    self.subcommand = True
+                                        # found that if commands are entered after the last command then there can be a problem
+                                        self.commandLen = len(mline[:i]) + 1
+                                        self.subcommand = True
                 cmd = argv[-1]
                 if cmd in ('?', ) or \
                         (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):

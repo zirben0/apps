@@ -1,13 +1,14 @@
 {
   "bfdsessionparam": {
-    "prompt": "", 
+    "prompt": "param",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionParamSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Session Parameters",
+    "cliname": "param",
     "value": {
       "Name": {
-        "cliname": "profile_name"
+        "cliname": "param"
       }
     }
   }

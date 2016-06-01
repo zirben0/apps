@@ -18,12 +18,12 @@
         }
       }, 
       "cliname": {
-        "default": "sourcepolicylist",
+        "default": "", 
         "type": "string", 
-        "description": "Provide redistribution policies for BGP from different sources"
+        "description": "name used in cli to describe bfd"
       }, 
       "help": {
-        "default": "Provide redistribution policies for BGP from different sources",
+        "default": "", 
         "type": "string"
       }, 
       "prompt": {

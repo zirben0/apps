@@ -5,4 +5,5 @@
   "subcmd2": {
     "$ref": "file:/tmp/snaproute/cli/schema/vlanip.json"
   }
+
 }

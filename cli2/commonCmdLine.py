@@ -151,6 +151,7 @@ class CommonCmdLine(object):
                 key = commandkey
 
         if type(commands) in (dict, jsonref.JsonRef):
+
             for k, v in commands.iteritems():
                 #print "subCommand: key %s k %s v %s\n\n" %(key, k, v)
 
@@ -182,23 +183,35 @@ class CommonCmdLine(object):
                         #elif "commands" in v and key in [vv['properties']['cliname']['default'] for vv in v["commands"]["properties"].values()]:
                         #    subList.append(v
                         elif 'subcmd' in k:
+                            #import ipdb; ipdb.set_trace()
+                            listattrDict = dict(v['listattrs']) if 'listattrs' in v else {}
                             for kk, vv in v.iteritems():
                                 if 'commands' in kk and 'properties' in vv and 'cliname' not in vv['properties']:
                                     for kkk, vvv in vv['properties'].iteritems():
                                         if 'subcmd' in kkk:
+                                            # all commands are subcmds
                                             for kkkk, vvvv in vvv.iteritems():
-                                                if 'properties' in vvvv and 'cliname' in vvvv['properties'] and key == vvvv['properties']['cliname']['default']:
+                                                if kkkk == key:
                                                     subList.append(vvv)
+                                                elif 'properties' in vvvv and 'cliname' in vvvv['properties'] and key == vvvv['properties']['cliname']['default']:
+                                                    subList.append(vvv)
+                                            # sub commands part of a leaf
+                                            #elif kkk in listattrDict:
+                                            #    subList.append(vvv)
                                 elif 'commands' in kk and 'cliname' not in vv:
                                     for kkk, vvv in vv.iteritems():
                                         if 'subcmd' in kkk:
+                                            # all commands are subcmds
                                             for kkkk, vvvv in vvv.iteritems():
-                                                if 'cliname' in vvvv and key == vvvv['cliname']:
+                                                if kkk == key:
                                                     subList.append(vvv)
+                                                elif 'cliname' in vvvv and key == vvvv['cliname']:
+                                                    subList.append(vvv)
+                                            # sub commands part of a leaf
+                                            #elif kkk in listattrDict:
+                                            #    subList.append(vvv)
                                 elif kk == key:
                                     subList.append(vv)
-
-
 
         return subList
 
@@ -428,7 +441,7 @@ class CommonCmdLine(object):
         mlineLength = len(mline)
         submodel = self.model
         subschema = self.schema
-        subcommands = []
+        helpcommands = []
 
         # advance to next submodel and subschema
         for i in range(1, mlineLength):

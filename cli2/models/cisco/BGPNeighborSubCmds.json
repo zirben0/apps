@@ -1,5 +1,8 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighborMembers.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSession.json"
   }
 }

@@ -126,7 +126,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Duplex setting for this port", 
+            "default": " Half Duplex/Full Duplex  Duplex setting for this port", 
             "type": "string"
           }, 
           "islist": {
@@ -138,6 +138,10 @@
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "Half Duplex", 
+              "Full Duplex"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -233,7 +237,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Type of internal phy interface", 
+            "default": " GMII/SGMII/QSMII/SFI/XFI/XAUI/XLAUI/RXAUI/CR/CR2/CR4/KR/KR2/KR4/SR/SR2/SR4/SR10/LR/LR4  Type of internal phy interface", 
             "type": "string"
           }, 
           "islist": {
@@ -245,6 +249,28 @@
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "GMII", 
+              "SGMII", 
+              "QSMII", 
+              "SFI", 
+              "XFI", 
+              "XAUI", 
+              "XLAUI", 
+              "RXAUI", 
+              "CR", 
+              "CR2", 
+              "CR4", 
+              "KR", 
+              "KR2", 
+              "KR4", 
+              "SR", 
+              "SR2", 
+              "SR4", 
+              "SR10", 
+              "LR", 
+              "LR4"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -268,7 +294,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Administrative state of this port", 
+            "default": " ON/OFF  Administrative state of this port", 
             "type": "string"
           }, 
           "islist": {
@@ -280,6 +306,10 @@
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "ON", 
+              "OFF"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -303,7 +333,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Break out mode for the port. Only applicable on ports that support breakout. Valid modes - 1x40", 
+            "default": " 1x40(1)/4x10(2)  Break out mode for the port. Only applicable on ports that support breakout. Valid modes - 1x40", 
             "type": "string"
           }, 
           "islist": {
@@ -315,6 +345,10 @@
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "1x40(1)", 
+              "4x10(2)"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -375,7 +409,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Autonegotiation setting for this port", 
+            "default": " ON/OFF  Autonegotiation setting for this port", 
             "type": "string"
           }, 
           "islist": {
@@ -387,6 +421,10 @@
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "ON", 
+              "OFF"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {

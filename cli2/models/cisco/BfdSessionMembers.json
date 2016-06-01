@@ -8,7 +8,7 @@
       "cliname": "owner"
     }, 
     "IpAddr": {
-      "cliname": "neighbor_ip"
+      "cliname": "neighbor"
     }, 
     "PerLink": {
       "cliname": "perlink"

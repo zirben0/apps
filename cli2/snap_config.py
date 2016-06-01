@@ -277,20 +277,21 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
                         if schemaname:
-                            submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
-                            subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                            for submodel, subschema in zip(submodelList, subschemaList):
-                                schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
-                                if schemaname:
-                                    configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
-                                    objname = schemaname
-                                    if configprompt and self.cmdtype != 'delete':
-                                        if not endprompt:
-                                            endprompt = self.baseprompt[-2:]
-                                            self.prompt = self.baseprompt[:-2] + '-'
+                            submodelList, subschemaList = self.getSubCommand(argv[i], submodel[schemaname]["commands"]), \
+                                                            self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            if submodelList and subschemaList:
+                                for submodel, subschema in zip(submodelList, subschemaList):
+                                    schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
+                                    if schemaname:
+                                        configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
+                                        objname = schemaname
+                                        if configprompt and self.cmdtype != 'delete':
+                                            if not endprompt:
+                                                endprompt = self.baseprompt[-2:]
+                                                self.prompt = self.baseprompt[:-2] + '-'
 
-                                        self.prompt += configprompt + '-'
-                                        value = argv[-1]
+                                            self.prompt += configprompt + '-'
+                                            value = argv[-1]
 
                 if value != None:
                     self.prompt += value + endprompt
@@ -355,7 +356,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                                 #values = self.getCommandValues(objname, keys)
                                 #sys.stdout.write("FOUND values %s" %(values))
-                                self.commandLen = mlineLength
+                                self.commandLen = len(mline[:i]) + 1
 
             except Exception as e:
                 sys.stdout.write("precmd: error %s" %(e,))
@@ -418,7 +419,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         for config in self.configList:
             if config.name == c.name:
                 # lets get a list of keys from the existing config object
-                keyvalues = [x.get()[1:] for x in config.attrList if x.isKey() is not None]
+                keyvalues = [x.get()[1:] for x in config.attrList if x.isKey() == True]
                 for entry in c.attrList:
                     if entry.isKey() and entry.get()[1:] in keyvalues:
                         return config
@@ -487,7 +488,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def do_apply(self, argv):
         if self.configList:
-
+            #import ipdb; ipdb.set_trace()
             sys.stdout.write("Applying Config:\n")
             # HACK need to make sure global objects are called before other objects
             globalconfigList = []

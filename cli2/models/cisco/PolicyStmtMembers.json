@@ -8,10 +8,10 @@
       "cliname": "conditions"
     }, 
     "Name": {
-      "cliname": "name"
+      "cliname": "route_policy_statement"
     }, 
     "MatchConditions": {
-      "cliname": "matchconditions"
+      "cliname": "match_conditions"
     }
   }
 }
