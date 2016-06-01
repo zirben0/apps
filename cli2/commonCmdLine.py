@@ -524,6 +524,9 @@ class CommonCmdLine(object):
         subschema = self.schema
         helpcommands = []
 
+        if mlineLength == 1:
+            helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
+
         # advance to next submodel and subschema
         for i in range(1, mlineLength):
             if mline[i-1] in submodel:
