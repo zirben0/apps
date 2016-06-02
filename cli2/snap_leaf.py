@@ -88,6 +88,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.setupCommands()
 
     def applybaseconfig(self, cliname):
+        '''
+        Function is called to apply the command used when creating this class.
+        Basically this should mean that a KEY for a given object / command is being
+        created.
+        :param cliname:
+        :return:
+        '''
         configObj = self.getConfigObj()
         for model, schema in zip(self.modelList, self.schemaList):
 
@@ -154,7 +161,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def getCmdKeysToIgnore(self, objname, schema):
         '''
-        Ignore keys which are keys as they were a command that was already entered
+        Ignore an objects value keys because they were used to get to a config mode. And should
+        not be displayed as part of the config help or <tab> completion
         '''
         ignoreKeys = []
         if objname in schema and \
@@ -469,7 +477,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         return value
 
     def _cmd_common(self, argv):
-
         delete = False
         mline = argv
         if len(argv) > 0 and argv[0] == 'no':

@@ -34,6 +34,7 @@ import readline
 import rlcompleter
 import glob
 import shutil
+import time
 from collections import Counter
 from itertools import izip_longest
 from optparse import OptionParser
@@ -103,6 +104,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             sys.stdout.write("schema and model mismatch")
             sys.exit(0)
 
+        while not self.waitForSystemToBeReady():
+            time.sleep(1)
+
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model["commands"].iteritems():
             # handle the links
@@ -136,11 +140,40 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
 
 
+
         self.setBanner(switch_ip)
+
+    def waitForSystemToBeReady (self) :
+
+        httpSuccessCodes = [200, 201, 202, 204]
+
+        r = self.sdk.getSystemStatusState("")
+        if r.status_code in httpSuccessCodes:
+            resp = r.json()
+            if resp['Object']['Ready'] == True:
+                sys.stdout.write('System Is ready\n')
+                return True
+            else:
+                sys.stdout.write('System Is not ready yet\n')
+                return False
+        return False
 
     def setBanner(self, switch_ip):
 
-        self.intro = "FlexSwitch Console Version 1.0, Connected to: " + self.switch_name
+        self.intro = " _______  __       __________   ___      _______.____    __    ____  __  .___________.  ______  __    __\n" \
+                     "|   ____||  |     |   ____\  \ /  /     /       |\   \  /  \  /   / |  | |           | /      ||  |  |  |\n" \
+                     "|  |__   |  |     |  |__   \  V  /     |   (----` \   \/    \/   /  |  | `---|  |----`|  ,----'|  |__|  |\n" \
+                     "|   __|  |  |     |   __|   >   <       \   \      \            /   |  |     |  |     |  |     |   __   |\n" \
+                     "|  |     |  `----.|  |____ /  .  \  .----)   |      \    /\    /    |  |     |  |     |  `----.|  |  |  |\n" \
+                     "|__|     |_______||_______/__/ \__\ |_______/        \__/  \__/     |__|     |__|      \______||__|  |__|\n"
+        self.intro +="                                _______  __       __ \n" \
+                     "                               /       ||  |     |  |\n" \
+                     "                              |   ,----||  |     |  |\n" \
+                     "                              |   |     |  |     |  |\n" \
+                     "                              |   `----.|  `----.|  |\n" \
+                     "                               \_______||_______||__|\n"
+
+        self.intro += "\nFlexSwitch Console Version 1.0, Connected to: " + self.switch_name
         self.intro += "\nUsing %s style cli\n" %(self.model["style"],)
 
     def do_show_cli(self, arv):
