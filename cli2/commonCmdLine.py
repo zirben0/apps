@@ -441,6 +441,7 @@ class CommonCmdLine(object):
                                 sattrval['properties']['isdefaultset']['default']:
                                 return not sattrval['properties']['defaultarg']['default']
 
+
                         # setting default value
                         return sattrval['properties']['defaultarg']['default'] if sattrval['properties']['isdefaultset']['default'] else None
         return None
