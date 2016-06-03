@@ -331,12 +331,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         :return: list of commands available from this leaf class
         '''
 
-        def isLeaf():
-            pass
-
-        def isLeafAttr():
-            pass
-
         def getObjNameAndCreateWithDefaultFromSchema(schema, model, objname, createwithdefault):
             objname = objname
             createwithdefault = createwithdefault
@@ -392,11 +386,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             cmds = self.prepareConfigTreeObjects(key,
                                                        tmpobjname,
                                                        tmpcreatewithdefault,
-                                                       subcmd,
+                                                       tmpsubcmd,
                                                        vv["commands"],
                                                        subtmpschema["commands"]["properties"],
                                                        listAttrs)
-                            #cmdList += cmds
+                            cmdList += cmds
+
                             # lets add the attribute to the subcmd
                             cmdDict.update({tmpsubcmd : {'key': key,
                                                     'createwithdefaults' : tmpcreatewithdefault,
