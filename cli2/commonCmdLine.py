@@ -427,7 +427,7 @@ class CommonCmdLine(object):
                             # this helps when setting string based boolean values
                             if 'enum' in sattrval['properties']['argtype'] and \
                                     len(sattrval['properties']['argtype']['enum']) == 2 and \
-                                    (sattrval['properties']['isdefaultset']['default'].lower() in \
+                                    (sattrval['properties']['defaultarg']['default'].lower() in \
                                             (snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES +
                                                     snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES)):
                                 for enum in sattrval['properties']['argtype']['enum']:
