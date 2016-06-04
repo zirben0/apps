@@ -1,6 +1,7 @@
 {
   "style": "snap",
   "prompt": ">",
+  "version": "1.0.0",
   "commands": {
     "privilege": {
       "prompt": "#",

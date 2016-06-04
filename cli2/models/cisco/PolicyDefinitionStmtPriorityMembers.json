@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "Priority": {
-      "cliname": "statement"
+      "cliname": "priority_stmt"
     }, 
     "Statement": {
       "cliname": "match_statement"

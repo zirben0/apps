@@ -1,14 +1,14 @@
 {
   "policydefinitionstmtpriority": {
-    "prompt": "statement",
+    "prompt": "stmt",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinitionStmtPrioritySubCmds.json"
     },
     "help" : "Policy Statement",
-    "cliname": "statement",
+    "cliname": "priority_stmt",
     "value": {
       "Priority": {
-        "cliname": "statement"
+        "cliname": "priority_stmt"
       }
     }
   }

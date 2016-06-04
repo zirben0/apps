@@ -1,6 +1,9 @@
 {
   "svi": {
     "prompt" : "svi",
-    "cliname" : "vlan"
+    "cliname" : "vlan",
+    "commands": {
+
+    }
   }
 }

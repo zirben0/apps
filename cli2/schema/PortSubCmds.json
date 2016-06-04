@@ -7,8 +7,5 @@
   },
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/schema/stpinterface.json"
-  },
-  "subcmd4": {
-    "$ref": "file:/tmp/snaproute/cli/schema/Vlan.json"
   }
 }

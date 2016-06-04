@@ -31,13 +31,13 @@ import json
 import pprint
 import inspect
 import string
+import snapcliconst
 from jsonref import JsonRef
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from snap_leaf import LeafCmd
 from cmdEntry import *
-from const import *
 
 pp = pprint.PrettyPrinter(indent=2)
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
@@ -189,7 +189,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def _cmd_do_delete(self, argv):
 
-        self.cmdtype = COMMAND_TYPE_DELETE
+        self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
         self._cmd_common(argv[1:])
 
     def _cmd_complete_common(self, text, line, begidx, endidx):
@@ -271,7 +271,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
             if schemaname:
                 configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                if COMMAND_TYPE_DELETE not in self.cmdtype and configprompt:
+                if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype and configprompt:
                     endprompt = self.baseprompt[-2:]
                     self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
@@ -289,7 +289,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     if schemaname:
                                         configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                         objname = schemaname
-                                        if configprompt and COMMAND_TYPE_DELETE not in self.cmdtype:
+                                        if configprompt and snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
                                             if not endprompt:
                                                 endprompt = self.baseprompt[-2:]
                                                 self.prompt = self.baseprompt[:-2] + '-'
@@ -299,7 +299,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                 if value != None:
                     self.prompt += value + endprompt
-                elif COMMAND_TYPE_DELETE not in self.cmdtype and self.prompt[:-1] != "#":
+                elif snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype and self.prompt[:-1] != "#":
                     self.prompt = self.prompt[:-1] + endprompt
                 self.stop = True
                 prevcmd = self.currentcmd
@@ -311,7 +311,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 # bfd enable
                 cliname = argv[-2]
                 if self.valueexpected == SUBCOMMAND_VALUE_EXPECTED:
-                    self.cmdtype += COMMAND_TYPE_CONFIG_NOW
+                    self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
                     cliname = argv[-1]
 
                 self.teardownCommands()
@@ -320,9 +320,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     c.cmdloop()
                 self.setupCommands()
 
-                self.cmdtype = self.cmdtype.rstrip(COMMAND_TYPE_CONFIG_NOW)
-                if COMMAND_TYPE_DELETE in self.cmdtype:
-                    self.cmdtype = COMMAND_TYPE_CONFIG
+                self.cmdtype = self.cmdtype.rstrip(snapcliconst.COMMAND_TYPE_CONFIG_NOW)
+                if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+                    self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
                 self.prompt = self.baseprompt
                 self.currentcmd = prevcmd
@@ -336,8 +336,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                 for delconfig in delconfigList:
                     self.configList.remove(delconfig)
-
-
 
         if self.stop:
             self.cmdloop()
@@ -447,8 +445,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             for k in getKeys:
                 if k in data:
                     argumentList.append(data[k])
+                    if lengthkwargs > 0:
+                        if k in data:
+                            del data[k]
 
-            data = {}
+            if lengthkwargs == 0:
+                data = {}
         elif 'update' in func.__name__:
             for k in getKeys:
                 if k in data:
@@ -475,14 +477,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def convertKeyValueToDisplay(self, objName, key, value):
         #TODO this is a hack need a proper common mechanism to change special values
         returnval = value
-        if key in ('IntfRef', 'IfIndex' ):
+        if key in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
             # lets strip the string name prepended
-            for x in list(copy.copy(value)):
-                try:
-                    v = string.atoi(x)
-                except ValueError:
-                    # must be a string
-                    returnval = returnval[1:]
+            returnval = returnval.replace(snapcliconst.PORT_NAME_PREFIX, "")
             # TODO not working when this is enabled so going have to look into this later
             #returnval = '1/' + returnval
         return returnval
@@ -526,48 +523,65 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     funcObjName = config.name
 
                     #lets see if the object exists, by doing a get first
-                    get_func = getattr(sdk, 'get' + funcObjName)
-                    update_func = getattr(sdk, 'update' + funcObjName)
-                    create_func = getattr(sdk, 'create' + funcObjName)
+                    # the only case in which a function should not exist
+                    # is if it is a sub attrbute.
+                    if hasattr(sdk, 'get' + funcObjName):
+                        get_func = getattr(sdk, 'get' + funcObjName)
+                        update_func = getattr(sdk, 'update' + funcObjName)
+                        create_func = getattr(sdk, 'create' + funcObjName)
+                        try:
+                            data = config.getSdkConfig()
+                            (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
+                            # update all the arguments
+                            r = get_func(*argumentList)
+                            if r.status_code in sdk.httpSuccessCodes:
+                                # update
+                                data = config.getSdkConfig(readdata=r.json()['Object'])
+                                (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
+                                if len(kwargs) > 0:
+                                    r = update_func(*argumentList, **kwargs)
+                                    # succes or '500' nothing updated no changes ocurred
+                                    if r.status_code not in sdk.httpSuccessCodes + ['500']:
+                                        sys.stdout.write("command update FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                    else:
+                                        sys.stdout.write("update SUCCESS:\n" )
+                                        # set configuration to applied state
+                                        config.setPending(False)
+                                        config.show()
+                                    sys.stdout.write("sdk:%s(%s,%s)\n" %(update_func.__name__,
+                                                                      ",".join(["%s" %(x) for x in argumentList]),
+                                                                      ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
 
-                    try:
-                        # update all the arguments
-                        data = config.getSdkConfig()
-                        (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
-                        r = get_func(*argumentList)
-                        if r.status_code in sdk.httpSuccessCodes:
-                            # update
-                            data = config.getSdkConfig(readdata=r.json()['Object'])
-                            (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
-                            if len(kwargs) > 0:
-                                r = update_func(*argumentList, **kwargs)
-                                # succes or '500' nothing updated no changes ocurred
-                                if r.status_code not in sdk.httpSuccessCodes + ['500']:
-                                    sys.stdout.write("command update FAILED:\n%s %s\n sent %s %s" %(r.status_code, r.json()['Error'], argumentList, kwargs))
+
+                            elif r.status_code == 404:
+                                # create
+                                data = config.getSdkConfig()
+                                (argumentList, kwargs) = self.get_sdk_func_key_values(data, create_func)
+                                if kwargs:
+                                    r = create_func(*argumentList, **kwargs)
                                 else:
-                                    sys.stdout.write("update SUCCESS:\n" )
+                                    r = create_func(*argumentList)
+                                if r.status_code not in sdk.httpSuccessCodes:
+                                    sys.stdout.write("command create FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                else:
+                                    sys.stdout.write("create SUCCESS:\n" )
                                     # set configuration to applied state
                                     config.setPending(False)
                                     config.show()
+                                sys.stdout.write("sdk:%s(%s,%s)\n" %(create_func.__name__,
+                                                                  ",".join(["%s" %(x) for x in argumentList]),
+                                                                  ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
 
-                        elif r.status_code == 404:
-                            # create
-                            data = config.getSdkConfig()
-                            (argumentList, kwargs) = self.get_sdk_func_key_values(data, create_func)
-                            r = create_func(*argumentList)
-                            if r.status_code not in sdk.httpSuccessCodes:
-                                sys.stdout.write("command create FAILED:\n%s %s\n sent %s %s " %(r.status_code, r.json()['Error'], argumentList, kwargs))
                             else:
-                                sys.stdout.write("create SUCCESS:\n" )
-                                # set configuration to applied state
-                                config.setPending(False)
-                                config.show()
+                                sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
+                                      ",".join(["%s" %(x) for x in argumentList]),
+                                      ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
 
-                        else:
-                            sys.stdout.write("Command Get FAILED\n%s %s\n sent %s %s" %(r.status_code, r.json()['Error'], argumentList, kwargs))
 
-                    except Exception as e:
-                        sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+
+                        except Exception as e:
+                            sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
 
             if delconfigList:
                 for config in delconfigList:

@@ -28,12 +28,12 @@ import cmdln
 import json
 import jsonref
 import string
+import snapcliconst
 from sets import Set
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
-from cmdEntry import CmdEntry, isboolean, isnumeric
-from const import *
+from cmdEntry import CmdEntry, isboolean, isnumeric, convertStrBoolToBool, convertStrNumToNum
 
 # used to
 class SetAttrFunc(object):
@@ -117,15 +117,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 # and fill in what commands were entered by the user
                 for k, v in objDict.iteritems():
                     config = CmdEntry(k, objDict[k])
-                    if COMMAND_TYPE_SHOW not in self.cmdtype:
-                        lastcmd = self.parent.lastcmd[-2] if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
+                    if snapcliconst.COMMAND_TYPE_SHOW not in self.cmdtype:
+                        lastcmd = self.parent.lastcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
                         if cliname == lastcmd:
                             for kk in v.keys():
                                 if kk == cliname:
-                                    basekey = self.parent.lastcmd[-2]  if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
-                                    basevalue = self.parent.lastcmd[-1]  if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
+                                    basekey = self.parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
+                                    basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
 
-                                    delete = True if COMMAND_TYPE_DELETE in self.cmdtype else False
+                                    delete = True if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype else False
 
                                     if basevalue is None:
                                         basevalue = self.getCommandDefaultAttrValue([basekey], delcmd=delete)
@@ -143,7 +143,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     cfg = configObj.doesConfigExist(config)
                     if not cfg:
                         configObj.configList.append(config)
-                    elif cfg and COMMAND_TYPE_DELETE in self.cmdtype:
+                    elif cfg and snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                         # let remove the previous command if it was set
                         # or lets delete the config
                         if len(config.attrList) > 1:
@@ -157,7 +157,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 return False
                             except ValueError:
                                 pass
-        return True if COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else False
+        return True if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else False
 
     def getCmdKeysToIgnore(self, objname, schema):
         '''
@@ -471,6 +471,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         return value
 
+    def convertStrValueToType(self, argtype, value):
+
+        if isboolean(argtype):
+            return convertStrBoolToBool(value)
+        elif isnumeric(argtype):
+            return convertStrNumToNum(value)
+        return value
+
+
     def _cmd_common(self, argv):
         delete = False
         mline = argv
@@ -517,17 +526,23 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             else:
                                 # TODO this will need to be updated once we allow for multiple attributes
                                 # to be set at the same time.
-                                if self.parent.lastcmd[-2] not in [vv['subcommand'] for vv in v['value'][0].values()]:
+                                if self.parent.lastcmd[-2] in [vv['subcommand'] for vv in v['value'][0].values()]:
                                     # change the subkey to be the list key so that we don't create a new attr update
                                     attrkey = self.parent.lastcmd[-2]
-                                    data = {self.parent.lastcmd[-2]: self.parent.lastcmd[-1],
-                                            subkey: value}
-                                else:
-                                    attrkey = subkey
-                                    data = {subkey: value}
+                                    data = {}
                                     for kk, vv in v['value'][0].iteritems():
                                         if kk != subkey:
-                                            data.update({kk: vv['value']['default']})
+                                            data.update({self.parent.lastcmd[-2]: self.convertStrValueToType(vv['type']['type'], self.parent.lastcmd[-1])})
+                                        else:
+                                            data.update({subkey: self.convertStrValueToType(vv['type']['type'], value)})
+                                else:
+                                    attrkey = subkey
+                                    data = {}
+                                    for kk, vv in v['value'][0].iteritems():
+                                        if kk == subkey:
+                                            data.update({subkey: self.convertStrValueToType(vv['type']['type'], value)})
+                                        else:
+                                            data.update({kk: self.convertStrValueToType(vv['type']['type'], vv['value']['default'])})
 
                                 # store the attribute into the config
                                 config.setDict(self.lastcmd, delete, attrkey, data, isattrlist=v['isarray'])
@@ -566,7 +581,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
                     if schemaname:
                         configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                        if COMMAND_TYPE_DELETE not in self.cmdtype:
+                        if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
                             self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
                         value = None
@@ -585,13 +600,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         if schemaname:
                                             configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                             objname = schemaname
-                                            if configprompt and COMMAND_TYPE_DELETE not in sel.cmdtype:
+                                            if configprompt and snapcliconst.COMMAND_TYPE_DELETE not in sel.cmdtype:
                                                 self.prompt += configprompt + '-'
                                                 value = argv[-1]
 
                         if value != None:
                             self.prompt += value + endprompt
-                        elif COMMAND_TYPE_DELETE not in self.cmdtype:
+                        elif snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
                             self.prompt = self.prompt[:-1] + endprompt
                         self.stop = True
                         prevcmd = self.currentcmd
@@ -603,8 +618,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if c.applybaseconfig(argv[-2]):
                             c.cmdloop()
                         self.setupCommands()
-                        if COMMAND_TYPE_DELETE in self.cmdtype:
-                            self.cmdtype = COMMAND_TYPE_CONFIG
+                        if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+                            self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
                         self.subcommand = False
                         self.prompt = self.baseprompt

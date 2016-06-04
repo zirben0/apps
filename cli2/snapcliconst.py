@@ -28,4 +28,12 @@ COMMAND_TYPE_CONFIG = 'config'
 COMMAND_TYPE_SHOW = 'show'
 COMMAND_TYPE_CONFIG_NOW = 'now'
 
+# these model attribute names will possibly have the cliname changed within the cli
+# model to a name picked by asicd.conf to represent a port
+DYNAMIC_MODEL_ATTR_NAME_LIST = ('IntfRef', 'IfIndex', 'Port')
 
+# lets keep track of the various two value names that might not need to be represented in the cli
+CLI_COMMAND_POSITIVE_TRUTH_VALUES = ('true', 'on', 'enable', 'up', '1')
+CLI_COMMAND_NEGATIVE_TRUTH_VALUES = ('false', 'off', 'disable', 'down', '0')
+
+PORT_NAME_PREFIX = 'ethernet'

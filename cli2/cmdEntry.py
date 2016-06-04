@@ -29,6 +29,7 @@ import copy
 import string
 from tablePrint import indent, wrap_onspace_strict
 import time
+import snapcliconst
 ATTRIBUTE = 0
 VALUE = 1
 
@@ -206,7 +207,7 @@ class CmdEntry(object):
         :param v: CmdSet
         :return:
         '''
-        if k in ('IntfRef', 'IfIndex', 'Port'):
+        if k in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
             if "/" in v.val:
                 v.val = v.attr + v.val.split('/')[1]
 
@@ -266,13 +267,13 @@ class CmdEntry(object):
                     attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
                     if self.keysDict[kk]['isarray']:
                         if isnumeric(attrtype):
-                            l = [convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
+                            l = [convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in entry.val]
                             value = [int(x) for x in l]
                         elif isboolean(attrtype):
-                            l = [convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
+                            l = [convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in entry.val]
                             value = [convertStrBoolToBool(x) for x in l]
                         elif attrtype in ('str', 'string'):
-                            value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
+                            value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in entry.val]
                         else: # struct
                             value = getDictEntryValue(entry, vv['value'][0])
 

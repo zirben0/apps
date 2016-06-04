@@ -35,10 +35,12 @@ import rlcompleter
 import glob
 import shutil
 import time
+import snapcliconst
 from collections import Counter
 from itertools import izip_longest
 from optparse import OptionParser
 from jsonschema import Draft4Validator
+
 #from snap_global import Global_CmdLine
 from snap_config import ConfigCmd
 from snap_show import ShowCmd
@@ -67,6 +69,9 @@ class CmdFunc(object):
 
 
 class CmdLine(cmdln.Cmdln, CommonCmdLine):
+
+    httpSuccessCodes = [200, 201, 202, 204]
+
     """
     Help may be requested at any point in a command by entering
     a question mark '?'.  If nothing matches, the help list will
@@ -96,6 +101,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         # the model and some info needs to be gathered from system to populate the
         # cli accordingly
         CommonCmdLine.__init__(self, None, switch_ip, schema_path, model_path, self.name)
+        while not self.waitForSystemToBeReady():
+            time.sleep(1)
 
         # lets make sure the model is correct
         valid = self.validateSchemaAndModel()
@@ -104,8 +111,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             sys.stdout.write("schema and model mismatch")
             sys.exit(0)
 
-        while not self.waitForSystemToBeReady():
-            time.sleep(1)
 
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model["commands"].iteritems():
@@ -145,10 +150,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
     def waitForSystemToBeReady (self) :
 
-        httpSuccessCodes = [200, 201, 202, 204]
-
         r = self.sdk.getSystemStatusState("")
-        if r.status_code in httpSuccessCodes:
+        if r.status_code in self.httpSuccessCodes:
             resp = r.json()
             if resp['Object']['Ready'] == True:
                 sys.stdout.write('System Is ready\n')
@@ -226,12 +229,26 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
 
     def replace_cli_name(self, name, newname):
+        '''
+        The cli supports replacing any attribute with another.  This is mainly used
+        to replace the ethernet keyword with the prefix used to describe ports
+        :param name: name looking for in model
+        :param newname: name to replace 'name' with
+        :return:
+        '''
         def submcmd_walk(name, newname, subcmd):
             if type(subcmd) in (dict, jsonref.JsonRef):
                 for k, v in subcmd.iteritems():
                     if type(v) in (dict, jsonref.JsonRef):
                         if 'cliname' in v and v['cliname'] == name:
                             v['cliname'] = newname
+
+                        if 'value' in v:
+                            # reached the attributes
+                            for kk, vv in v['value'].iteritems():
+                                if 'cliname' in vv and vv['cliname'] == name:
+                                    vv['cliname'] = newname
+
                         if 'commands' in v:
                             for kk, vv in v['commands'].iteritems():
                                 if 'subcmd' in kk:
@@ -267,7 +284,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             prefixes = []
             for chars in izip_longest(*strings, fillvalue=''):
                 char, count = Counter(chars).most_common(1)[0]
-                if count == 1:
+                if count == 1 and len(strings) > 1:
                     break
                 elif count < threshold:
                     if prefix:
@@ -276,10 +293,10 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 prefix.append(char)
             if prefix:
                 prefixes.append((''.join(prefix), threshold))
-            #print prefixes
-            #print max([x[1] for x in prefixes])
+            print prefixes
+            print max([x[1] for x in prefixes])
             maxprefix = [y[0] for y in prefixes if y[1] == max([x[1] for x in prefixes])][0]
-            return maxprefix
+            return maxprefix if len(strings) > 1 else maxprefix[:-1]
 
         if self.model is None or self.schema is None:
             sys.exit(2)
@@ -293,19 +310,20 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 # update to add the prompt prefix
                 self.model["prompt-prefix"] = self.switch_name
                 try:
+                    # lets replace the key word ethernet with the discovered prefix from
+                    # the snapos ports
                     sdk = self.getSdk()
                     ports = sdk.getAllPorts()
                     if ports:
-                        port_prefix = detect_port_prefix([p['Object']['IntfRef'] for p in ports])
-                        self.replace_cli_name('ethernet', port_prefix)
+                        snapcliconst.PORT_NAME_PREFIX = detect_port_prefix([p['Object']['IntfRef'] for p in ports])
+                        # NOTE: it is a requirement that the model use a pre-set name 'ethernet' to
+                        # describe physical ports
+                        self.replace_cli_name('ethernet', snapcliconst.PORT_NAME_PREFIX)
 
                 except Exception as e:
                     sys.stdout.write("Failed to find port prefix exiting CLI, is switch %s accessable?\n" %(self.switch_name))
                     self.do_exit([])
 
-                #with open(self.modelpath, 'w') as f:
-                #    jsonref.dump(self.model, f, indent=2)
-                #self.setModel()
                 self.setPrompt()
 
                 # lets validate the model against the json schema
@@ -351,13 +369,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         if self.stop:
             self.cmdloop()
-
-    def xdo_help(self, arg):
-        doc_strings = [ (i[3:], getattr(self, i).__doc__)
-            for i in dir(self) if i.startswith('do_') ]
-        doc_strings = [ '  %s\t%s\n' % (i, j)
-            for i, j in doc_strings if j is not None ]
-        sys.stdout.write('%s\n' % ''.join(doc_strings))
 
     @cmdln.alias("conf t", "configure t", "configure term", "conf term", "configure terminal", "config t")
     # match for schema cmd object
@@ -411,26 +422,17 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
         subcommands = self.getchildrencmds(mline[0], submodelList[0], subschemaList[0])
         if mlineLength > 0:
-            try:
-                for i in range(1, mlineLength):
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                        if submodelList:
-                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                            for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                #valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                                # we want to keep looping untill there are no more value commands
-                                #if valueexpected and mlineLength-1 == i:
-                                subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
-
-
-            except Exception:
-                pass
-
-        # todo should look next command so that this is not 'sort of hard coded'
-        # todo should to a getall at this point to get all of the interface types once a type is found
-        #sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
+            for i in range(1, mlineLength):
+                for submodel, subschema in zip(submodelList, subschemaList):
+                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                    if submodelList:
+                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                        for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                            #valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                            # we want to keep looping untill there are no more value commands
+                            #if valueexpected and mlineLength-1 == i:
+                            subcommands += self.getchildrencmds(mline[i], subsubmodel, subsubschema)
 
         # lets remove any duplicates
         returncommands = list(Set(subcommands).difference(mline))
@@ -438,9 +440,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         if len(text) == 0 and len(returncommands) == len(subcommands):
             #sys.stdout.write("just before return %s" %(returncommands))
             return returncommands
-        #elif len(text) == 0:
-        #    # todo get all values ?
-        #    pass
+
         # lets only get commands which are a partial of what was entered
         returncommands = [k for k in returncommands if k.startswith(text)]
 
@@ -461,32 +461,39 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         if mline[-1] in ('help', '?'):
             self.display_show_help(mline)
             return argv
-
-        functionNameAsString = sys._getframe().f_code.co_name
-        name = functionNameAsString.split("_")[-1]
         mlineLength = len(mline)
-        submodelList = self.getSubCommand(name, self.model["commands"])
-        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
-        if mlineLength > 0:
-            try:
-                for i in range(1, mlineLength):
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                        submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                        if submodelList:
-                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                            for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                                # we want to keep looping untill there are no more value commands
-                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED and mlineLength-1 == i:
-                                    self.currentcmd = self.lastcmd
-                                    c = ShowCmd(self, subsubmodel, subsubschema)
-                                    c.show(mline, all=(i == mlineLength-1))
-                                    self.currentcmd = []
 
 
-            except Exception:
-                pass
+        if 'run' in mline:
+            self.currentcmd = self.lastcmd
+            c = ShowCmd(self, self.model['commands']['subcmd1'], self.schema['properties']['commands']['properties']['subcmd1'])
+            c.show(mline, all=True)
+            return
+        else:
+            functionNameAsString = sys._getframe().f_code.co_name
+            name = functionNameAsString.split("_")[-1]
+            submodelList = self.getSubCommand(name, self.model["commands"])
+            subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
+            if mlineLength > 0:
+                try:
+                    for i in range(1, mlineLength):
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                            submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                            if submodelList:
+                                subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                                for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                                    (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                    # we want to keep looping untill there are no more value commands
+                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED and mlineLength-1 == i:
+                                        self.currentcmd = self.lastcmd
+                                        c = ShowCmd(self, subsubmodel, subsubschema)
+                                        c.show(mline, all=(i == mlineLength-1))
+                                        self.currentcmd = []
+
+
+                except Exception:
+                    pass
 
         if self.stop:
             self.cmdloop()

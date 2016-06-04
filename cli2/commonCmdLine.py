@@ -29,6 +29,7 @@ import sys
 from jsonschema import Draft4Validator
 import pprint
 import requests
+import snapcliconst
 from tablePrint import indent, wrap_onspace_strict
 from cmdEntry import isboolean, isnumeric
 
@@ -73,8 +74,7 @@ class CommonCmdLine(object):
         self.setModel()
         self.currentcmd = []
 
-    def getSdk(self):
-        sdk = True
+    def getRootAttr(self, attr):
         parent = self.parent
         child = self
 
@@ -83,40 +83,24 @@ class CommonCmdLine(object):
 
         # to prevent looping forever going to not accept
         # a tree larger than 10 levels
-        root = None
-        while root is None:
+        rootAttr = None
+        while rootAttr is None:
             # root node has no parent
             # and it holds the sdk
             if parent is None:
-                root = child.sdk
+                rootAttr = getattr(child, attr)
             else:
                 child = parent
 
-            if not root:
+            if not rootAttr:
                 parent = getparent(child)
-        return root
+        return rootAttr
+
+    def getSdk(self):
+        return self.getRootAttr('sdk')
 
     def getSdkShow(self):
-        parent = self.parent
-        child = self
-
-        def getparent(child):
-            return child.parent
-
-        # to prevent looping forever going to not accept
-        # a tree larger than 10 levels
-        root = None
-        while root is None:
-            # root node has no parent
-            # and it holds the sdk
-            if parent is None:
-                root = child.sdkshow
-            else:
-                child = parent
-
-            if not root:
-                parent = getparent(child)
-        return root
+        return self.getRootAttr('sdkshow')
 
     def getConfigObj(self):
         child = self
@@ -133,8 +117,6 @@ class CommonCmdLine(object):
                 config = parent
             child = parent
             parent = getparent(child)
-
-
         return config
 
     def getSubCommand(self, commandkey, commands, model=None):
@@ -386,6 +368,18 @@ class CommonCmdLine(object):
                     return selections[0]
         return []
 
+    def commandBranchLoop(self, model, schema):
+        for key, val in model.iteritems():
+            # key : value['comamnds'] and/or value['prompt'] and/or value['cliname']
+            if 'commands' not in key and 'commands' in val:
+                for (mcmds, mvalues), (scmds, svalues) in zip(val['commands'].iteritems(), schema['properties']['commands']['properties'].iteritems()):
+                    if 'subcmd' in mcmds:
+                        # two cases attr object or another branch
+                        pass
+            elif 'commands' in key:
+                #yield self.commandAttrsLoop(val["commands"], schema["properties"]["commands"]["properties"])
+                pass
+
     def commandAttrsLoop(self, modelcmds, schemacmds):
         for attr, val in modelcmds.iteritems():
             yield (attr, val), (attr, schemacmds[attr])
@@ -432,8 +426,10 @@ class CommonCmdLine(object):
                             # or if we have a boolean value.
                             # this helps when setting string based boolean values
                             if 'enum' in sattrval['properties']['argtype'] and \
-                                len(sattrval['properties']['argtype']['enum']) == 2 and \
-                                    sattrval['properties']['isdefaultset']['default']:
+                                    len(sattrval['properties']['argtype']['enum']) == 2 and \
+                                    (sattrval['properties']['isdefaultset']['default'].lower() in \
+                                            (snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES +
+                                                    snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES)):
                                 for enum in sattrval['properties']['argtype']['enum']:
                                     if enum != sattrval['properties']['defaultarg']['default']:
                                         return enum
@@ -625,6 +621,13 @@ class CommonCmdLine(object):
                     child = parent
                     parent = child.parent
 
+    def do_version(self, argv):
+        '''
+        Show cli version and flexswitch version
+        :param argv:
+        :return:
+        '''
+        self.sdkshow.printSystemSwVersionStates()
 
     def precmd(self, argv):
         if len(argv) > 0:
