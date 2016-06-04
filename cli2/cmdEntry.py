@@ -38,16 +38,21 @@ def isnumeric(v):
     return v in ('int', 'uint', 'uint8', 'int8', 'uint16', 'int16', 'uint32', 'int32')
 
 def isboolean(v):
-    return v.lower() in ('bool', 'boolean')
+    return v and v.lower() in ('bool', 'boolean')
 
 def convertStrBoolToBool(v):
-    if v.lower() in ('true', '1'):
+    if v and str(v).lower() in ('true', '1'):
         return True
+    elif v and type(v) is bool:
+        return v
     return False
 
 def convertStrNumToNum(v):
     try:
-        val = string.atoi(v)
+        if isinstance(v, unicode):
+            val = string.atoi(v.decode('ascii'))
+        elif isinstance(v, str):
+            val = string.atoi(v)
     except Exception:
         val = 0
     return val
@@ -314,9 +319,7 @@ class CmdEntry(object):
                             value = {}
                             for v in v['value'][0].values():
                                 value.update({vv['key'] : vv['value']['default']})
-
                             value = [value]
-
                     else:
                         if isnumeric(attrtype):
                             value = convertStrNumToNum(v['value']['default'])
@@ -326,11 +329,9 @@ class CmdEntry(object):
                             value = v['value']['default']
                         else:
                             value = {}
-                            for vv in v['value'][0].values():
-                                value.update({vv['key'] : vv['value']['default']})
-
-
-
+                            if type(v['value']) is list and len(v['value']):
+                                for vv in v['value'][0].values():
+                                    value.update({vv['key'] : vv['value']['default']})
                 elif v['key'] in readdata:
                     value = readdata[v['key']]
 

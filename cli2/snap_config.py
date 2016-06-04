@@ -561,7 +561,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     r = create_func(*argumentList, **kwargs)
                                 else:
                                     r = create_func(*argumentList)
-                                if r.status_code not in sdk.httpSuccessCodes:
+                                if r.status_code not in sdk.httpSuccessCodes + [500]:
                                     sys.stdout.write("command create FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
                                 else:
                                     sys.stdout.write("create SUCCESS:\n" )
@@ -577,9 +577,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                 sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
                                       ",".join(["%s" %(x) for x in argumentList]),
                                       ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
-
-
-
                         except Exception as e:
                             sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
 

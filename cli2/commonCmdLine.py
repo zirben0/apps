@@ -368,18 +368,6 @@ class CommonCmdLine(object):
                     return selections[0]
         return []
 
-    def commandBranchLoop(self, model, schema):
-        for key, val in model.iteritems():
-            # key : value['comamnds'] and/or value['prompt'] and/or value['cliname']
-            if 'commands' not in key and 'commands' in val:
-                for (mcmds, mvalues), (scmds, svalues) in zip(val['commands'].iteritems(), schema['properties']['commands']['properties'].iteritems()):
-                    if 'subcmd' in mcmds:
-                        # two cases attr object or another branch
-                        pass
-            elif 'commands' in key:
-                #yield self.commandAttrsLoop(val["commands"], schema["properties"]["commands"]["properties"])
-                pass
-
     def commandAttrsLoop(self, modelcmds, schemacmds):
         for attr, val in modelcmds.iteritems():
             yield (attr, val), (attr, schemacmds[attr])
