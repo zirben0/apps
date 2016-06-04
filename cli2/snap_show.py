@@ -41,7 +41,7 @@ from cmdEntry import CmdEntry, isboolean, isnumeric
 try:
     from flexswitchV2 import FlexSwitch
     JSON_MODELS_DIR='../../../../reltools/codegentools/._genInfo/'
-    MODELS_DIR = '../../models/'
+    MODELS_DIR = './'
 except:
     sys.path.append('/opt/flexswitch/sdk/py/')
     MODELS_DIR='/opt/flexswitch/models/'
