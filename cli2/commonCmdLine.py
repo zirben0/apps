@@ -31,7 +31,6 @@ import pprint
 import requests
 import snapcliconst
 from tablePrint import indent, wrap_onspace_strict
-from cmdEntry import isboolean, isnumeric
 
 USING_READLINE = True
 try:
@@ -61,6 +60,10 @@ class CommonCmdLine(object):
     def __init__(self, parent, switch_ip, schema_path, model_path, layer):
         if not USING_READLINE:
             self.completekey = None
+        self.objname = None
+        # dependency on CmdLine that these are set after the init
+        #self.sdk = None
+        #self.sdkshow = None
         self.config = None
         self.parent = parent
         self.switch_ip = switch_ip
@@ -102,23 +105,41 @@ class CommonCmdLine(object):
     def getSdkShow(self):
         return self.getRootAttr('sdkshow')
 
+    def getShowObj(self,):
+        return self.getObjByInstanceType('ShowCmd')
+
     def getConfigObj(self):
+        return self.getObjByInstanceType('ConfigCmd')
+
+    def getRootObj(self):
+        return self.getObjByInstanceType('CmdLine')
+
+    def getObjByInstanceType(self, instname):
+        """
+        Get object by walking the tree to find the instance
+        For now we are using this to find the instance who
+        has the attribute configList which contains all
+        the config entries
+        :return:
+        """
         child = self
         config = None
         def getparent(child):
             return child.parent
-
-        if hasattr(child, 'configList'):
+        if child.__class__.__name__ == instname:
             config = child
 
         parent = getparent(child)
         while parent is not None and config is None:
-            if hasattr(parent, 'configList'):
+            if parent.__class__.__name__ == instname:
                 config = parent
             child = parent
             parent = getparent(child)
         return config
 
+    # TODO write more readable logic to get a model commands sub command obj
+    # This is a critical function as all complete_, and do_ functions use
+    # this
     def getSubCommand(self, commandkey, commands, model=None):
         subList = []
         key = commandkey
@@ -209,20 +230,13 @@ class CommonCmdLine(object):
         return subList
 
     def getchildrencmds(self, parentname, model, schema):
-        # working model
-        #if model:
-        #    return [self.getCliName(cmdobj.values()[0]) for cmdobj in [obj for k, obj in model[parentname]["commands"].iteritems() if "subcmd" in k]]
         cliNameList = []
         if schema:
-            #print '\n\ngetchildrencmds: ', schema, parentname
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
-            #print '\n\ngetchildrencmds: ', schemaname
             if schemaname in schema:
-                for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
-                    #print 'getchildrencmds: ', k, schemaobj
-                    modelobj = model[schemaname]["commands"][k] if k in model[schemaname]["commands"] else None
-                    #print 'getchildrencmds: ', modelobj
-
+                for k, schemaobj in snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema).iteritems():
+                    modelobj = snapcliconst.GET_MODEL_COMMANDS(schemaname, model)[k] \
+                                    if k in snapcliconst.GET_MODEL_COMMANDS(schemaname, model) else None
                     if modelobj:
                         if "subcmd" in k:
                             for kk, vv in modelobj.iteritems():
@@ -235,11 +249,6 @@ class CommonCmdLine(object):
                                     cliname = self.getCliName(vv)
                                     if cliname != None:
                                         cliNameList.append(cliname)
-                            # did not find the name in the model lets get from schema
-                            # DON'T do this as the model is the master display for commands
-                            #if cliname is None:
-                            #    for kk, vv in schemaobj.iteritems():
-                            #        cliname = self.getCliName(vv)
                         elif type(modelobj) in (dict, jsonref.JsonRef): # just an attribute
                             for vv in modelobj.values():
                                 cliname = self.getCliName(vv)
@@ -276,7 +285,7 @@ class CommonCmdLine(object):
 
         schemaname = self.getSchemaCommandNameFromCliName(cliname, model)
         if schema:
-            for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
+            for k, schemaobj in snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema).iteritems():
                 if "subcmd" in k:
                    for kk in schemaobj.keys():
                        if 'createwithdefault' in kk:
@@ -289,9 +298,10 @@ class CommonCmdLine(object):
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             if schemaname in schema:
-                for k, schemaobj in schema[schemaname]["properties"]["commands"]["properties"].iteritems():
+                for k, schemaobj in snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema).iteritems():
                     if "subcmd" in k:
-                        modelobj = model[schemaname]["commands"][k] if k in model[schemaname]["commands"] else None
+                        modelobj = snapcliconst.GET_MODEL_COMMANDS(schemaname, model)[k] \
+                                    if k in snapcliconst.GET_MODEL_COMMANDS(schemaname, model) else None
                         x = []
                         if modelobj and type(modelobj) in (dict, jsonref.JsonRef):
                             listattrDict = {}
@@ -390,7 +400,8 @@ class CommonCmdLine(object):
                     help = "/".join(sattrval['properties']['argtype']['enum']) + '\n'
                     if len(sattrval['properties']['argtype']['enum']) == 2:
                         expected = SUBCOMMAND_VALUE_EXPECTED
-                if 'type' in sattrval['properties']['argtype'] and isboolean(sattrval['properties']['argtype']['type']):
+                if 'type' in sattrval['properties']['argtype'] and \
+                        snapcliconst.isboolean(sattrval['properties']['argtype']['type']):
                     expected = SUBCOMMAND_VALUE_EXPECTED
 
                 objname = schemacmds['objname']['default']
@@ -402,62 +413,70 @@ class CommonCmdLine(object):
 
         # touching an attribute within this command tree, but we need to find out which subcmd contains
         # the attribute
-        for modelcmds, schemacmds in zip(model[schemaname]["commands"].values(), schema[schemaname]["properties"]["commands"]["properties"].values()):
+        for modelkeys, modelcmds in snapcliconst.GET_MODEL_COMMANDS(schemaname, model).iteritems():
+            schemacmds = snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema)[modelkeys]
             #leaf attr model
             if self.isCommandLeafAttrs(modelcmds,schemacmds):
-
                 for (mattr, mattrval), (sattr, sattrval) in self.commandAttrsLoop(modelcmds["commands"], schemacmds["commands"]["properties"]):
                     if 'cliname' in mattrval and mattrval['cliname'] == argv[0]:
+                        isDefaultSet = snapcliconst.getSchemaCommandAttrIsDefaultSet(sattrval)
+                        defaultArg = snapcliconst.getSchemaCommandAttrDefaultArg(sattrval)
                         # we want opposite of default if boolean delete
                         if delcmd:
                             # lets do the opposite of default value if enums length is 2
                             # or if we have a boolean value.
                             # this helps when setting string based boolean values
-                            if 'enum' in sattrval['properties']['argtype'] and \
-                                    len(sattrval['properties']['argtype']['enum']) == 2 and \
-                                    (sattrval['properties']['defaultarg']['default'].lower() in \
-                                            (snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES +
-                                                    snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES)):
-                                for enum in sattrval['properties']['argtype']['enum']:
-                                    if enum != sattrval['properties']['defaultarg']['default']:
+                            argtype = snapcliconst.getValueArgumentType(sattrval)
+                            selections = snapcliconst.getValueArgumentSelections(sattrval)
+                            if selections and \
+                                    argtype and \
+                                not snapcliconst.isSelectionTypeNotNeeded(selections, argtype):
+                                for enum in selections:
+                                    if enum != defaultArg:
                                         return enum
-                            elif isboolean(sattrval['properties']['argtype']['type']) and \
-                                sattrval['properties']['isdefaultset']['default']:
-                                return not sattrval['properties']['defaultarg']['default']
-
+                            elif snapcliconst.isboolean(argtype) and \
+                                isDefaultSet:
+                                return not defaultArg
 
                         # setting default value
-                        return sattrval['properties']['defaultarg']['default'] if sattrval['properties']['isdefaultset']['default'] else None
+                        return defaultArg if isDefaultSet else None
         return None
 
-
-
-
     def isValueExpected(self, cmd, model, schema):
+        '''
+        Function used by most complete functions to determine based on the cmd
+        and model/schema if a value is needed by the user or if the next cmd
+        is another command.  If a value is expected this function may
+        return valid values from model enums, so that the user knows what to
+        add in the case an attribute is a selection attribute.
+        :param cmd:
+        :param model:
+        :param schema:
+        :return:
+        '''
+
         schemaname = self.getSchemaCommandNameFromCliName(cmd, model)
-        #print 'isValueExpected', schema, schemaname
-        if schema:
-            if schemaname in schema and \
-                "properties" in schema[schemaname] and \
-                    "value" in schema[schemaname]["properties"] and \
-                    'properties' in schema[schemaname]['properties']['value']:
-                keys = [k for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if type(v) in (dict, jsonref.JsonRef)]
+        if schema and schemaname in schema:
+            schemaValues = snapcliconst.getValueInSchema(schema[schemaname])
+            if schemaValues:
+                keys = [k for k, v in schemaValues.iteritems() if type(v) in (dict, jsonref.JsonRef)]
                 help = ''
                 expected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE
-                for k, v in schema[schemaname]['properties']['value']['properties'].iteritems():
-                    if 'properties' in v and 'argtype' in v['properties'] and 'enum' in v['properties']['argtype']:
-                        help = "/".join(v['properties']['argtype']['enum']) + '\n'
+                for k, v in schemaValues.iteritems():
+                    argtype = snapcliconst.getValueArgumentType(v)
+                    enums = snapcliconst.getValueArgumentSelections(v)
+                    if enums:
+                        help = "/".join(enums) + '\n'
                         # special case don't need a value (default will be taken when applied)
-                        if len(v['properties']['argtype']['enum']) == 2:
+                        if not snapcliconst.isSelectionTypeNotNeeded(enums, argtype):
                             expected  = SUBCOMMAND_VALUE_EXPECTED
-                    elif 'properties' in v and 'argtype' in v['properties'] and 'type' in v['properties']['argtype']:
-                        if isboolean(v['properties']['argtype']['type']):
+                    elif argtype:
+                        if snapcliconst.isboolean(argtype):
                             expected = SUBCOMMAND_VALUE_EXPECTED
 
+                objname = snapcliconst.getSchemaObjName(schemaname, schema)
+                help += snapcliconst.getSchemaHelp(schemaname, schema)
 
-                objname = schema[schemaname]['properties']['objname']['default']
-                help += schema[schemaname]['properties']['help']['default']
-                #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s\n" %(cmd, objname, keys))
                 return (expected, objname, keys, help)
         return (SUBCOMMAND_VALUE_NOT_EXPECTED, None, [], "")
 
@@ -518,8 +537,8 @@ class CommonCmdLine(object):
                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                 if schemaname:
                     submodelList, subschemaList = self.getSubModelSubSchemaListFromCommand(mline[i],
-                                                                                      submodel[schemaname]["commands"],
-                                                                                      subschema[schemaname]["properties"]["commands"]["properties"])
+                                                                                      snapcliconst.GET_MODEL_COMMANDS(schemaname, submodel),
+                                                                                      snapcliconst.GET_SCHEMA_COMMANDS(schemaname, subschema))
                     for submodel, subschema in zip(submodelList, subschemaList):
                         (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                         if i == mlineLength - 1:
@@ -583,6 +602,10 @@ class CommonCmdLine(object):
         configObj = self.getConfigObj()
         if configObj:
             configObj.do_apply(argv)
+            # lets move user back to config base
+            # once the apply command has been entered
+            if not self.__class__.__name__ ==  "ConfigCmd":
+                self.do_exit(argv)
 
     def do_showunapplied(self, argv):
         configObj = self.getConfigObj()
@@ -615,7 +638,9 @@ class CommonCmdLine(object):
         :param argv:
         :return:
         '''
-        self.sdkshow.printSystemSwVersionStates()
+        rootObj = self.getRootObj()
+        if rootObj:
+            rootObj.sdkshow.printSystemSwVersionStates()
 
     def precmd(self, argv):
         if len(argv) > 0:

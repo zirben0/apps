@@ -39,6 +39,16 @@ from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
+try:
+    from flexswitchV2 import FlexSwitch
+    JSON_MODELS_DIR='../../../../reltools/codegentools/._genInfo/'
+    MODELS_DIR = './'
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    MODELS_DIR='/opt/flexswitch/models/'
+    JSON_MODELS_DIR=MODELS_DIR
+    from flexswitchV2 import FlexSwitch
+
 pp = pprint.PrettyPrinter(indent=2)
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
@@ -223,6 +233,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
                             (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                            #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                     values = self.getCommandValues(objname, keys)
@@ -341,6 +352,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             self.cmdloop()
 
     def precmd(self, argv):
+
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
@@ -496,93 +508,202 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 if objs:
                     return [self.convertKeyValueToDisplay(objname, keys[0], obj['Object'][keys[0]]) for obj in objs]
         except Exception as e:
-            sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, key, e,))
+            sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, keys, e,))
 
         return []
 
-    def do_apply(self, argv):
-        if self.configList:
-            #import ipdb; ipdb.set_trace()
-            sys.stdout.write("Applying Config:\n")
-            # HACK need to make sure global objects are called before other objects
-            globalconfigList = []
-            otherconfig = []
+    def getConfigOrder(self, configList):
+        '''
+        It is important that we apply deletes before create in particular order.
+        It is equally important that certain configuration be applied before others
+
+        IMPORTANT to note that configOrder.json is manually created file so if more
+        objects are added/deleted then this file needs to be updated.
+        :param configList:
+        :return:
+        '''
+        cfgorder = []
+        delcfgorder = []
+        with open(MODELS_DIR + 'configOrder.json', 'r') as f:
+            cfgorder = json.load(f,)['Order']
+            delcfgorder = list(reversed(cfgorder))
+
+        for objname in delcfgorder:
             for config in self.configList:
-                if "global" in config.name.lower():
-                    globalconfigList.append(config)
-                else:
-                    otherconfig.append(config)
-            delconfigList = []
-            for config in globalconfigList + otherconfig:
-                if config.isValid():
+                if config.name == objname and config.delete:
+                    yield config
 
-                    # tell the user what attributes are being applied
-                    #config.show()
-                    # get the sdk
-                    sdk = self.getSdk()
-                    funcObjName = config.name
+        for objname in cfgorder:
+            for config in self.configList:
+                if config.name == objname and not config.delete:
+                    yield config
 
-                    #lets see if the object exists, by doing a get first
-                    # the only case in which a function should not exist
-                    # is if it is a sub attrbute.
-                    if hasattr(sdk, 'get' + funcObjName):
-                        get_func = getattr(sdk, 'get' + funcObjName)
-                        update_func = getattr(sdk, 'update' + funcObjName)
-                        create_func = getattr(sdk, 'create' + funcObjName)
-                        try:
-                            data = config.getSdkConfig()
-                            (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
-                            # update all the arguments
-                            r = get_func(*argumentList)
-                            if r.status_code in sdk.httpSuccessCodes:
-                                # update
-                                data = config.getSdkConfig(readdata=r.json()['Object'])
-                                (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
-                                if len(kwargs) > 0:
-                                    r = update_func(*argumentList, **kwargs)
-                                    # succes or '500' nothing updated no changes ocurred
-                                    if r.status_code not in sdk.httpSuccessCodes + ['500']:
-                                        sys.stdout.write("command update FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
-                                    else:
-                                        sys.stdout.write("update SUCCESS:\n" )
-                                        # set configuration to applied state
-                                        config.setPending(False)
-                                        config.show()
-                                    sys.stdout.write("sdk:%s(%s,%s)\n" %(update_func.__name__,
-                                                                      ",".join(["%s" %(x) for x in argumentList]),
-                                                                      ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+        yield None
 
+    def do_apply(self, argv):
+        PROCESS_CONFIG = 1
+        ROLLBACK_CONFIG = 2
+        ROLLBACK_UPDATE = 1
+        ROLLBACK_CREATE = 2
+        ROLLBACK_DELETE = 3
 
-                            elif r.status_code == 404:
-                                # create
-                                data = config.getSdkConfig()
-                                (argumentList, kwargs) = self.get_sdk_func_key_values(data, create_func)
-                                if kwargs:
-                                    r = create_func(*argumentList, **kwargs)
+        if self.configList:
+            sys.stdout.write("Applying Config:\n")
+
+            clearAppliedList = []
+            rollbackData = {}
+            failurecfg = False
+            for stage in (PROCESS_CONFIG, ROLLBACK_CONFIG):
+                # if no failures occured then ignore rolling back config
+                if stage == ROLLBACK_CONFIG and not failurecfg:
+                    continue
+
+                # apply delete config before create
+                for config in self.getConfigOrder(self.configList):
+                    # don't process other commands if any of them failed
+                    # during second pass we will rollback the config
+                    if config and config.isValid() and \
+                            ((not failurecfg and stage == PROCESS_CONFIG) or
+                             stage == ROLLBACK_CONFIG):
+
+                        # get the sdk
+                        sdk = self.getSdk()
+                        funcObjName = config.name
+
+                        #lets see if the object exists, by doing a get first
+                        # the only case in which a function should not exist
+                        # is if it is a sub attrbute.
+                        if hasattr(sdk, 'get' + funcObjName):
+                            get_func = getattr(sdk, 'get' + funcObjName)
+                            update_func = getattr(sdk, 'update' + funcObjName)
+                            create_func = getattr(sdk, 'create' + funcObjName)
+                            delete_func = getattr(sdk, 'delete' + funcObjName)
+                            try:
+                                origData = None
+                                if stage != ROLLBACK_CONFIG:
+                                    data = config.getSdkConfig()
+                                    (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
+                                    # update all the arguments
+                                    r = get_func(*argumentList)
+                                    origData = r.json()['Object']
+                                    status_code = r.status_code
+                                    if status_code not in sdk.httpSuccessCodes + [404]:
+                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                        sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
+                                              ",".join(["%s" %(x) for x in argumentList]),
+                                              ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
                                 else:
-                                    r = create_func(*argumentList)
-                                if r.status_code not in sdk.httpSuccessCodes + [500]:
-                                    sys.stdout.write("command create FAILED:\n%s %s\n" %(r.status_code, r.json()['Error']))
-                                else:
-                                    sys.stdout.write("create SUCCESS:\n" )
-                                    # set configuration to applied state
-                                    config.setPending(False)
-                                    config.show()
-                                sys.stdout.write("sdk:%s(%s,%s)\n" %(create_func.__name__,
-                                                                  ",".join(["%s" %(x) for x in argumentList]),
-                                                                  ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+                                    status_code = rollbackData[funcObjName]
+                                    origData = rollbackData[funcObjName][1]
 
-                            else:
-                                sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
-                                sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
-                                      ",".join(["%s" %(x) for x in argumentList]),
-                                      ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
-                        except Exception as e:
-                            sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+                                if status_code in sdk.httpSuccessCodes + [ROLLBACK_UPDATE] and \
+                                        not config.delete:
+                                    # update
+                                    (failurecfg, delList) = self.applyUpdateNodeConfig(sdk, config, update_func, origData, (stage == ROLLBACK_CONFIG))
+                                    if not failurecfg and stage == PROCESS_CONFIG:
+                                        clearAppliedList += delList
+                                        rollbackData[funcObjName] = (ROLLBACK_UPDATE, origData)
 
-            if delconfigList:
-                for config in delconfigList:
-                    self.configList.remove(config)
+                                elif status_code in (404, ROLLBACK_DELETE):
+                                    # create
+                                    (failurecfg, delList) = self.applyCreateNodeConfig(sdk, config, create_func)
+                                    if not failurecfg and stage == PROCESS_CONFIG:
+                                        clearAppliedList += delList
+                                        rollbackData[funcObjName] = (ROLLBACK_CREATE, origData)
+
+                                elif status_code in (ROLLBACK_CREATE,) or \
+                                    config.delete:
+                                    # delete
+                                    (failurecfg, delList) = self.applyDeleteNodeConfig(sdk, config, delete_func)
+                                    if not failurecfg and stage == PROCESS_CONFIG:
+                                        clearAppliedList += delList
+                                        rollbackData[funcObjName] = (ROLLBACK_DELETE, origData)
+
+                            except Exception as e:
+                                sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+
+            if clearAppliedList:
+                for config in clearAppliedList:
+                    if config:
+                        self.configList.remove(config)
+
+    def applyCreateNodeConfig(self, sdk, config, create_func):
+        failurecfg = False
+        delconfigList = []
+        data = config.getSdkConfig()
+        (argumentList, kwargs) = self.get_sdk_func_key_values(data, create_func)
+        if kwargs:
+            r = create_func(*argumentList, **kwargs)
+        else:
+            r = create_func(*argumentList)
+        if r.status_code not in (sdk.httpSuccessCodes + [500]):
+            sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
+            failurecfg = True
+        else:
+            sys.stdout.write("create SUCCESS:\n")
+            if r.status_code == 500:
+                sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
+
+            # set configuration to applied state
+            config.setPending(False)
+            config.show()
+            delconfigList.append(config)
+        sys.stdout.write("sdk:%s(%s,%s)\n" % (create_func.__name__,
+                                              ",".join(["%s" % (x) for x in argumentList]),
+                                              ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+        return failurecfg, delconfigList
+
+    def applyDeleteNodeConfig(self, sdk, config, delete_func):
+        failurecfg = False
+        delconfigList = []
+        data = config.getSdkConfig()
+        (argumentList, kwargs) = self.get_sdk_func_key_values(data, delete_func)
+        if kwargs:
+            r = delete_func(*argumentList, **kwargs)
+        else:
+            r = delete_func(*argumentList)
+        if r.status_code not in (sdk.httpSuccessCodes + [500]):
+            sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
+            failurecfg = True
+        else:
+            sys.stdout.write("delete SUCCESS:\n")
+            if r.status_code == 500:
+                sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
+
+            # set configuration to applied state
+            config.setPending(False)
+            config.show()
+            delconfigList.append(config)
+        sys.stdout.write("sdk:%s(%s,%s)\n" % (delete_func.__name__,
+                                              ",".join(["%s" % (x) for x in argumentList]),
+                                              ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+        return failurecfg, delconfigList
+
+
+    def applyUpdateNodeConfig(self, sdk, config, update_func, readdata=None, rollback=False):
+        delconfigList = []
+        failurecfg = False
+        data = config.getSdkConfig(readdata=readdata, rollback=rollback)
+        (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
+        if len(kwargs) > 0:
+            r = update_func(*argumentList, **kwargs)
+            # succes or '500' nothing updated no changes ocurred
+            if r.status_code not in (sdk.httpSuccessCodes + [500]):
+                sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
+                failurecfg = True
+            else:
+                sys.stdout.write("update SUCCESS:\n")
+                if r.status_code == 500:
+                    sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
+
+                # set configuration to applied state
+                config.setPending(False)
+                config.show()
+                delconfigList.append(config)
+            sys.stdout.write("sdk:%s(%s,%s)\n" % (update_func.__name__,
+                                                  ",".join(["%s" % (x) for x in argumentList]),
+                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+        return (failurecfg, delconfigList)
 
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")

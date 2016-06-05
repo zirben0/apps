@@ -36,7 +36,7 @@ from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from snap_leaf import LeafCmd
-from cmdEntry import CmdEntry, isboolean, isnumeric, convertStrBoolToBool, convertStrNumToNum
+from cmdEntry import CmdEntry
 
 try:
     from flexswitchV2 import FlexSwitch
@@ -68,12 +68,12 @@ def convertPortToSpecialFmt(modelname, value):
 def convertStrValueToValueType(attrtype, value):
 
     rvalue = value
-    if isboolean(attrtype):
+    if snapcliconst.isboolean(attrtype):
         if isinstance(value, unicode) or isinstance(value, str):
-            rvalue = convertStrBoolToBool(value)
-    elif isnumeric(attrtype):
+            rvalue = snapcliconst.convertStrBoolToBool(value)
+    elif snapcliconst.isnumeric(attrtype):
         if isinstance(value, unicode) or isinstance(value, str):
-            rvalue = convertStrNumToNum(value)
+            rvalue = snapcliconst.convertStrNumToNum(value)
 
     return rvalue
 
@@ -81,7 +81,7 @@ def convertStrValueToValueType(attrtype, value):
 def convertCmdToSpecialFmt(modelname, v):
     attrtype, cliname, value, defaultvalue = v['type'], v['cliname'], v['value'], v['defaultvalue']
     line = ''
-    if isboolean(attrtype):
+    if snapcliconst.isboolean(attrtype):
         if type(defaultvalue) == str and defaultvalue.lower() == 'false' or \
                 defaultvalue == False:
             line = " no %s" %(cliname, )
@@ -106,7 +106,7 @@ def convertCmdToSpecialFmt(modelname, v):
             newvalue = ",".join(["%s" % (convertPortToSpecialFmt(modelname, x)) for x in value])
             line = " %s %s" %(cliname, newvalue)
 
-    elif isnumeric(attrtype):
+    elif snapcliconst.isnumeric(attrtype):
         if type(value) not in (list, dict):
             line = " %s %s" %(cliname, value)
         elif type(value) == list:
@@ -149,7 +149,6 @@ def convertRawConfigtoTreeCli(cls):
 
                 line += convertCmdToSpecialFmt(k, v)
                 yield lvl, line
-
         for sc in c.subcfg:
             if lvl >= 1:
                 sc.cmd = " " * lvl + sc.cmd
@@ -630,12 +629,12 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def show_state(self, all=False):
-        configObj = self.getConfigObj()
-        if configObj and configObj.configList:
+        showObj = self.getShowObj()
+        if showObj and showObj.configList:
             sys.stdout.write("Applying Show:\n")
             # tell the user what attributes are being applied
-            for i in range(len(configObj.configList)):
-                config = configObj.configList[-(i+1)]
+            for i in range(len(showObj.configList)):
+                config = showObj.configList[-(i+1)]
                 #config.show()
 
                 # get the sdk

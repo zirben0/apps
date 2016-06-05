@@ -33,7 +33,7 @@ from sets import Set
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
-from cmdEntry import CmdEntry, isboolean, isnumeric, convertStrBoolToBool, convertStrNumToNum
+from cmdEntry import CmdEntry
 
 # used to
 class SetAttrFunc(object):
@@ -473,10 +473,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def convertStrValueToType(self, argtype, value):
 
-        if isboolean(argtype):
-            return convertStrBoolToBool(value)
-        elif isnumeric(argtype):
-            return convertStrNumToNum(value)
+        if snapcliconst.isboolean(argtype):
+            return snapcliconst.convertStrBoolToBool(value)
+        elif snapcliconst.isnumeric(argtype):
+            return snapcliconst.convertStrNumToNum(value)
         return value
 
 
@@ -600,7 +600,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         if schemaname:
                                             configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                             objname = schemaname
-                                            if configprompt and snapcliconst.COMMAND_TYPE_DELETE not in sel.cmdtype:
+                                            if configprompt and snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
                                                 self.prompt += configprompt + '-'
                                                 value = argv[-1]
 
@@ -643,6 +643,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def complete_redistribute(self, text, line, begidx, endidx):
         return self._cmd_complete_common(text, line, begidx, endidx)
+
     # this complete is meant for sub ethernet commands
     # for example:
     # >ip address 10.1.1.1
@@ -702,8 +703,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             else:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
                             #sys.stdout.write("subcommands %s" %(subcommands,))
-                    else:
-                        sys.logger.write("model commands: %s\n" %(model[schemaname]["commands"]))
+                    #else:
+                    #    sys.stdout.write("model commands: %s\n" %(model[schemaname]["commands"]))
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -762,13 +763,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.display_help(argv)
 
     def precmd(self, argv):
-
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
 
+        import ipdb; ipdb.set_trace()
         if subschema and submodel:
             if mlineLength > 0:
                 self.commandLen = 0
