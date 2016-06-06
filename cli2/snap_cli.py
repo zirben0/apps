@@ -530,7 +530,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
 
     def precmd(self, argv):
-        if '?' in argv[-1]:
+        if argv and '?' in argv[-1]:
             self.display_help(argv)
             return ''
 
