@@ -111,6 +111,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             sys.stdout.write("schema and model mismatch")
             sys.exit(0)
 
+        self.setupcommands()
+        self.setBanner(switch_ip)
+
+
+    def setupcommands(self, teardown=False):
 
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model["commands"].iteritems():
@@ -125,9 +130,14 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                             cmdname = cmdname.replace('-', '_')
 
                         funcname = "do_" + cmdname
-                        setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(k,))))
-                        if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
-                            setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
+                        if not teardown:
+                            setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(k,))))
+                            if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
+                                setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
+                        else:
+                            delattr(self.__class__, funcname)
+                            if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
+                                delattr(self.__class__, "complete_" + cmdname)
                 except Exception as e:
                     sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
             else:
@@ -140,13 +150,16 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         cmdname = cmdname.replace('-', '_')
 
                     funcname = "do_" + cmdname
-                    setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(subcmds,))))
+                    if not teardown:
+                        setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(subcmds,))))
+                    else:
+                        delattr(self.__class__, funcname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
 
+    def teardowncommands(self):
 
-
-        self.setBanner(switch_ip)
+        self.setupcommands(teardown=True)
 
     def waitForSystemToBeReady (self) :
 
@@ -399,8 +412,10 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 prevcmd = self.currentcmd
                 self.currentcmd = self.lastcmd
 
+                self.teardowncommands()
                 c = ConfigCmd("config", self, name, self.prompt, submodel, subschema)
                 c.cmdloop()
+                self.setupcommands()
                 # clear the command if we return
                 self.currentcmd = prevcmd
                 # return prompt to the base of this class
