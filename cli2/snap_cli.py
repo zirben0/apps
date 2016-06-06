@@ -513,6 +513,15 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             sys.stdout.write('Quiting Shell\n')
             sys.exit(0)
 
+
+    def precmd(self, argv):
+        if '?' in argv[-1]:
+            self.display_help(argv)
+            return ''
+
+        return argv
+
+
 class PrepareModel(object):
     def __init__(self, cli_model_path, cli_schema_path):
         # path location on the local drive where the cli model is located

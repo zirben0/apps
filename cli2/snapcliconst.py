@@ -68,10 +68,10 @@ def convertStrNumToNum(v):
 
 # model macros
 def GET_MODEL_COMMANDS(schemaname, model):
-    return model[schemaname]["commands"]
+    return model[schemaname]["commands"] if schemaname in model else model["commands"]
 
 def GET_SCHEMA_COMMANDS(schemaname, schema):
-    return schema[schemaname]["properties"]["commands"]["properties"]
+    return schema[schemaname]["properties"]["commands"]["properties"] if schemaname in schema else schema["properties"]["commands"]["properties"]
 
 def getValueInSchema(schema):
     '''
@@ -120,7 +120,9 @@ def isSelectionTypeNotNeeded(selections, argtype):
 def getSchemaObjName(schemaname, schema):
     return schema[schemaname]['properties']['objname']['default']
 
-def getSchemaHelp(schemaname, schema):
+def getHelp(schemaname, model, schema):
+    if 'help' in model[schemaname]:
+        return model[schemaname]['help']
     return schema[schemaname]['properties']['help']['default']
 
 def getSchemaCommandAttrDefaultArg(command):

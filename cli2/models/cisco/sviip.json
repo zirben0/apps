@@ -1,0 +1,14 @@
+{
+  "sviip": {
+    "cliname": "ip",
+    "help": "Interface IP address",
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv4sviintfmembers.json"
+      },
+      "subcmd2": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntf.json"
+      }
+    }
+  }
+}

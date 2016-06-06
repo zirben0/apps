@@ -367,41 +367,41 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 # this means that this is a reference to a struct or list of structs
                 elif "subcmd" in k and type(v) in (dict, jsonref.JsonRef):
                     for kk, vv in tmpmodel.iteritems():
+                        if kk in v:
+                            subtmpschema = v[kk]['properties']
+                            if 'objname' in subtmpschema:
+                                tmpobjname = subtmpschema['objname']['default']
 
-                        subtmpschema = v[kk]['properties']
-                        if 'objname' in subtmpschema:
-                            tmpobjname = subtmpschema['objname']['default']
+                            tmpsubcmd = None
+                            if 'cliname' in vv:
+                                tmpsubcmd = vv['cliname']
 
-                        tmpsubcmd = None
-                        if 'cliname' in vv:
-                            tmpsubcmd = vv['cliname']
+                            if "commands" in vv and len(vv) > 0:
+                                attrDict = dict(listAttrs)
+                                key = key
+                                isList = False
+                                if k in attrDict:
+                                    key = attrDict[k]
+                                    isList = True
 
-                        if "commands" in vv and len(vv) > 0:
-                            attrDict = dict(listAttrs)
-                            key = key
-                            isList = False
-                            if k in attrDict:
-                                key = attrDict[k]
-                                isList = True
+                                # lets create the object, and tie it to the local object
+                                cmds = self.prepareConfigTreeObjects(key,
+                                                           tmpobjname,
+                                                           tmpcreatewithdefault,
+                                                           tmpsubcmd,
+                                                           vv["commands"],
+                                                           subtmpschema["commands"]["properties"],
+                                                           listAttrs)
+                                cmdList += cmds
 
-                            # lets create the object, and tie it to the local object
-                            cmds = self.prepareConfigTreeObjects(key,
-                                                       tmpobjname,
-                                                       tmpcreatewithdefault,
-                                                       tmpsubcmd,
-                                                       vv["commands"],
-                                                       subtmpschema["commands"]["properties"],
-                                                       listAttrs)
-                            cmdList += cmds
-
-                            # lets add the attribute to the subcmd
-                            cmdDict.update({tmpsubcmd : {'key': key,
-                                                    'createwithdefaults' : tmpcreatewithdefault,
-                                                    'subcommand' : subcmd,
-                                                    'objname' :  objname,
-                                                    'value': cmds,
-                                                    'isarray': isList,
-                                                    'type': tmpobjname}})
+                                # lets add the attribute to the subcmd
+                                cmdDict.update({tmpsubcmd : {'key': key,
+                                                        'createwithdefaults' : tmpcreatewithdefault,
+                                                        'subcommand' : subcmd,
+                                                        'objname' :  objname,
+                                                        'value': cmds,
+                                                        'isarray': isList,
+                                                        'type': tmpobjname}})
 
                 else:
                     key = k
@@ -502,7 +502,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             # key value supplied
             key = self.parentcliname if not self.subcommand else None
             subkey = mline[0]
-            value = mline[1]
+            value = mline[1] if not delete else None
 
             configObj = self.getConfigObj()
             if configObj:

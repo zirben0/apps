@@ -297,55 +297,54 @@ class CommonCmdLine(object):
         cliHelpList = []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
-            if schemaname in schema:
-                for k, schemaobj in snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema).iteritems():
-                    if "subcmd" in k:
-                        modelobj = snapcliconst.GET_MODEL_COMMANDS(schemaname, model)[k] \
-                                    if k in snapcliconst.GET_MODEL_COMMANDS(schemaname, model) else None
-                        x = []
-                        if modelobj and type(modelobj) in (dict, jsonref.JsonRef):
-                            listattrDict = {}
-                            if 'listattrs' in modelobj:
-                                listattrDict = dict(modelobj['listattrs'])
-                            for kk, vv in modelobj.iteritems():
+            for k, schemaobj in snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema).iteritems():
+                if "subcmd" in k:
+                    modelobj = snapcliconst.GET_MODEL_COMMANDS(schemaname, model)[k] \
+                                if k in snapcliconst.GET_MODEL_COMMANDS(schemaname, model) else None
+                    x = []
+                    if modelobj and type(modelobj) in (dict, jsonref.JsonRef):
+                        listattrDict = {}
+                        if 'listattrs' in modelobj:
+                            listattrDict = dict(modelobj['listattrs'])
+                        for kk, vv in modelobj.iteritems():
+                            # leaf node
+                            if kk == "commands":
+                                for kkk, vvv in vv.iteritems():
+                                    if kkk in listattrDict:
+                                        if type(vvv) in (dict, jsonref.JsonRef):
+                                            for kkkk, vvvv in vvv.iteritems():
+                                                if 'cliname' in vvvv.keys():
+                                                    x.append([listattrDict[kkk], vvvv['cliname'], None])
+                                    else:
+                                        x.append([kkk, self.getCliName(vvv), self.getCliHelp(vvv)])
+                            elif type(vv) == dict:
+                                x.append([kk, self.getCliName(vv), self.getCliHelp(vv)])
+                    # did not find the name in the model lets get from schema
+                    for val in x:
+                        if val[1] is None or val[2] is None:
+                            for kk, vv in schemaobj.iteritems():
                                 # leaf node
                                 if kk == "commands":
-                                    for kkk, vvv in vv.iteritems():
-                                        if kkk in listattrDict:
-                                            if type(vvv) in (dict, jsonref.JsonRef):
-                                                for kkkk, vvvv in vvv.iteritems():
-                                                    if 'cliname' in vvvv.keys():
-                                                        x.append([listattrDict[kkk], vvvv['cliname'], None])
-                                        else:
-                                            x.append([kkk, self.getCliName(vvv), self.getCliHelp(vvv)])
-                                elif type(vv) == dict:
-                                    x.append([kk, self.getCliName(vv), self.getCliHelp(vv)])
-                        # did not find the name in the model lets get from schema
-                        for val in x:
-                            if val[1] is None or val[2] is None:
-                                for kk, vv in schemaobj.iteritems():
-                                    # leaf node
-                                    if kk == "commands":
-                                        for kkk, vvv in vv["properties"].iteritems():
-                                            if kkk == val[0]:
-                                                if "properties" in vvv:
-                                                    cliname, clihelp = self.getCliName(vvv["properties"]), self.getCliHelp(vvv["properties"])
-                                                    if val[1] is None:
-                                                        val[1] = cliname["default"]
-                                                    else:
-                                                        val[2] = clihelp["default"]
+                                    for kkk, vvv in vv["properties"].iteritems():
+                                        if kkk == val[0]:
+                                            if "properties" in vvv:
+                                                cliname, clihelp = self.getCliName(vvv["properties"]), self.getCliHelp(vvv["properties"])
+                                                if val[1] is None:
+                                                    val[1] = cliname["default"]
+                                                else:
+                                                    val[2] = clihelp["default"]
 
-                                                    cliHelpList.append((val[1], val[2]))
-                                    elif "properties" in vv and "commands" in vv["properties"]:
-                                        # todo need to get proper parsing to find the help
-                                        cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
-                                        if val[1] is None and cliname:
-                                            val[1] = cliname
-                                        elif clihelp:
-                                            val[2] = clihelp["default"]
-                                        cliHelpList.append((val[1], val[2]))
-                            else:
-                                cliHelpList.append((val[1], val[2]))
+                                                cliHelpList.append((val[1], val[2]))
+                                elif "properties" in vv and "commands" in vv["properties"]:
+                                    # todo need to get proper parsing to find the help
+                                    cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
+                                    if val[1] is None and cliname:
+                                        val[1] = cliname
+                                    elif clihelp:
+                                        val[2] = clihelp["default"]
+                                    cliHelpList.append((val[1], val[2]))
+                        else:
+                            cliHelpList.append((val[1], val[2]))
         return cliHelpList
 
     def getValueMinMax(self, cmd, model, schema):
@@ -475,9 +474,10 @@ class CommonCmdLine(object):
                             expected = SUBCOMMAND_VALUE_EXPECTED
 
                 objname = snapcliconst.getSchemaObjName(schemaname, schema)
-                help += snapcliconst.getSchemaHelp(schemaname, schema)
+                help += snapcliconst.getHelp(schemaname, model, schema)
 
                 return (expected, objname, keys, help)
+
                 # lets check to see if this schema is a command attribute schema
         return (SUBCOMMAND_VALUE_NOT_EXPECTED, None, [], "")
 
@@ -528,7 +528,7 @@ class CommonCmdLine(object):
         submodel = self.model
         subschema = self.schema
         helpcommands = []
-
+        import ipdb; ipdb.set_trace()
         if mlineLength == 1:
             helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
 
