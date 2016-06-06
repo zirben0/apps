@@ -1,4 +1,4 @@
-#!/usr/lib/python
+#!/usr/bin/python
 #
 #Copyright [2016] [SnapRoute Inc]
 #
@@ -195,7 +195,6 @@ class CommonCmdLine(object):
                         #elif "commands" in v and key in [vv['properties']['cliname']['default'] for vv in v["commands"]["properties"].values()]:
                         #    subList.append(v
                         elif 'subcmd' in k:
-                            #import ipdb; ipdb.set_trace()
                             listattrDict = dict(v['listattrs']) if 'listattrs' in v else {}
                             for kk, vv in v.iteritems():
                                 if 'commands' in kk and 'properties' in vv and 'cliname' not in vv['properties']:

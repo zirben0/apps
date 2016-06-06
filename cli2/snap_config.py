@@ -180,12 +180,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def cmdloop(self, intro=None):
-        #try:
-            #import ipdb; ipdb.set_trace()
         cmdln.Cmdln.cmdloop(self)
-        #except KeyboardInterrupt:
-        #    self.intro = '\n'
-        #    self.cmdloop()
 
     def _cmd_complete_delete(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %('no ' + self.objname, line, text, not text))

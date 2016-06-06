@@ -1,4 +1,4 @@
-#!/usr/lib/python
+#!/usr/bin/python
 #
 #Copyright [2016] [SnapRoute Inc]
 #
