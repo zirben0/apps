@@ -528,7 +528,6 @@ class CommonCmdLine(object):
         submodel = self.model
         subschema = self.schema
         helpcommands = []
-        import ipdb; ipdb.set_trace()
         if mlineLength == 1:
             helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
 

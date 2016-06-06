@@ -188,7 +188,6 @@ class CmdEntry(object):
         :param v: CmdSet
         :return:
         '''
-        import ipdb; ipdb.set_trace()
         if k in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
             if "/" in v.val:
                 v.val = v.attr + v.val.split('/')[1]

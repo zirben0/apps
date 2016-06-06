@@ -331,86 +331,102 @@ class ShowRun(object):
             return 'commands' in mobj.keys()
 
         def getModelAttrFromMatchAttr(matchattr, mobj, sobj):
-            for (mcmds, mvalues), (scmds, svalues) in zip(mobj['commands'].iteritems(), sobj['properties']['commands']['properties'].iteritems()):
+            for (mcmds, mvalues) in mobj['commands'].iteritems():
+                svalues = sobj['properties']['commands']['properties'] if 'properties' in sobj else sobj['commands']['properties'][mcmds]
                 if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
                     for mattr, mattrobj in mvalues['commands'].iteritems():
                         if 'cliname' in mattrobj and \
                                         mattrobj['cliname'] == matchattr:
                             return mattr
+                else:
+                    # commands are already the attributes
+                    if 'cliname' in mvalues and \
+                                    mvalues['cliname'] == matchattr:
+                        return mcmds
+
         if 'commands' not in schema.keys():
             for (mkey, mobj) in model.iteritems():
-                sobj = schema[mkey]
+                if mkey in schema:
+                    sobj = schema[mkey]
 
-                if 'cliname' in mobj:
-                    if mobj['cliname'] != 'config':
-                        cmd += " " + mobj['cliname']
+                    if 'cliname' in mobj:
+                        if mobj['cliname'] != 'config':
+                            cmd += " " + mobj['cliname']
 
-                #import ipdb; ipdb.set_trace()
-                # found an object via schema
-                if isModelObj(mobj, sobj):
-                    objname = sobj['properties']['objname']['default']
+                    # found an object via schema
+                    if isModelObj(mobj, sobj):
+                        objname = sobj['properties']['objname']['default']
 
-                    for cfgObj in self.getNewConfigObj(objname,
-                                                       getModelAttrFromMatchAttr(matchattr, mobj, sobj),
-                                                       convertStrValueToValueType(matchattrtype, matchvalue)):
-                        # lets get an element from the raw config json objects
-                        if cfgObj or subattrobj:
-                            element = ConfigElement()
-                            pelement.setSubCfg(element)
-                            element.setFormat(pelement.fmt)
-                            element.setCmd(cmd)
-                            # found an element lets populate the contents of the element from this object
-                            element.setObjName(objname)
-                            for attr, attrobj in mobj['value'].iteritems():
-                                defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
-                                attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
-                                value = cfgObj[attr] if cfgObj else subattrobj[attr]
-                                element.setObjKeyVal(attr,
-                                                     attrtype,
-                                                     attrobj['cliname'],
-                                                     convertStrValueToValueType(attrtype, value),
-                                                     convertStrValueToValueType(attrtype, defaultVal))
+                        for cfgObj in self.getNewConfigObj(objname,
+                                                           getModelAttrFromMatchAttr(matchattr, mobj, sobj),
+                                                           convertStrValueToValueType(matchattrtype, matchvalue)):
+                            # lets get an element from the raw config json objects
+                            if cfgObj or subattrobj:
+                                element = ConfigElement()
+                                pelement.setSubCfg(element)
+                                element.setFormat(pelement.fmt)
+                                element.setCmd(cmd)
+                                # found an element lets populate the contents of the element from this object
+                                element.setObjName(objname)
+                                for attr, attrobj in mobj['value'].iteritems():
+                                    defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
+                                    attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
+                                    value = cfgObj[attr] if cfgObj else subattrobj[attr]
+                                    element.setObjKeyVal(attr,
+                                                         attrtype,
+                                                         attrobj['cliname'],
+                                                         convertStrValueToValueType(attrtype, value),
+                                                         convertStrValueToValueType(attrtype, defaultVal))
 
-                            # lets get key attributes for this model object
-                            # the attributes that we are interested in will come from the model
-                            # lets find the attr obj
-                            for (mcmds, mvalues) in mobj['commands'].iteritems():
-                                svalues = sobj['properties']['commands']['properties'][mcmds]
-                                if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
-                                    for mattr, mattrobj in mvalues['commands'].iteritems():
-                                        if 'cliname' in mattrobj and \
-                                                        mattrobj['cliname'] != matchattr:
-                                            defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
-                                            attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
-                                            value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
-                                            element.setAttributes(mattr,
-                                                                  mattrobj['cliname'],
-                                                                  attrtype,
-                                                                  convertStrValueToValueType(attrtype, value),
-                                                                  convertStrValueToValueType(attrtype, defaultVal))
+                                # lets get key attributes for this model object
+                                # the attributes that we are interested in will come from the model
+                                # lets find the attr obj
+                                for (mcmds, mvalues) in mobj['commands'].iteritems():
+                                    svalues = sobj['properties']['commands']['properties'][mcmds]
+                                    if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
+                                        for mattr, mattrobj in mvalues['commands'].iteritems():
+                                            if 'cliname' in mattrobj and \
+                                                            mattrobj['cliname'] != matchattr:
+                                                defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
+                                                attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
+                                                value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
+                                                element.setAttributes(mattr,
+                                                                      mattrobj['cliname'],
+                                                                      attrtype,
+                                                                      convertStrValueToValueType(attrtype, value),
+                                                                      convertStrValueToValueType(attrtype, defaultVal))
 
-                            # sub model objects
-                            for (mcmds, mvalues) in mobj['commands'].iteritems():
-                                svalues = sobj['properties']['commands']['properties'][mcmds]
-                                if 'subcmd' in mcmds:
-                                    if not isLeafAttrObj(mvalues, svalues):
-                                        self.buildTreeObj('',
-                                                          element,
-                                                          element.objKeyVal['type'],
-                                                          element.objKeyVal['cliname'],
-                                                          element.objKeyVal['value'],
-                                                          mvalues,
-                                                          svalues)
-                                    else:
-                                        if len(mvalues['listattrs']) > 0:
-                                            for (submcmds, submvalues) in mvalues['commands'].iteritems():
-                                                subsvalues = svalues['commands']['properties'][submcmds]
-                                                for subcmd, subattr in mvalues['listattrs']:
-                                                    if submcmds == subcmd:
-                                                        # reached a sub attribute
-                                                        # lets get the match attr for this object
-                                                        if type(cfgObj[subattr]) is list:
-                                                            for subobj in cfgObj[subattr]:
+                                # sub model objects
+                                for (mcmds, mvalues) in mobj['commands'].iteritems():
+                                    svalues = sobj['properties']['commands']['properties'][mcmds]
+                                    if 'subcmd' in mcmds:
+                                        if not isLeafAttrObj(mvalues, svalues):
+                                            self.buildTreeObj('',
+                                                              element,
+                                                              element.objKeyVal['type'],
+                                                              element.objKeyVal['cliname'],
+                                                              element.objKeyVal['value'],
+                                                              mvalues,
+                                                              svalues)
+                                        else:
+                                            if len(mvalues['listattrs']) > 0:
+                                                for (submcmds, submvalues) in mvalues['commands'].iteritems():
+                                                    subsvalues = svalues['commands']['properties'][submcmds]
+                                                    for subcmd, subattr in mvalues['listattrs']:
+                                                        if submcmds == subcmd:
+                                                            # reached a sub attribute
+                                                            # lets get the match attr for this object
+                                                            if type(cfgObj[subattr]) is list:
+                                                                for subobj in cfgObj[subattr]:
+                                                                    self.buildTreeObj('',
+                                                                                      element,
+                                                                                      None,
+                                                                                      None,
+                                                                                      None,
+                                                                                      submvalues,
+                                                                                      subsvalues,
+                                                                                      subattrobj=subobj)
+                                                            else:
                                                                 self.buildTreeObj('',
                                                                                   element,
                                                                                   None,
@@ -418,47 +434,39 @@ class ShowRun(object):
                                                                                   None,
                                                                                   submvalues,
                                                                                   subsvalues,
-                                                                                  subattrobj=subobj)
-                                                        else:
-                                                            self.buildTreeObj('',
-                                                                              element,
-                                                                              None,
-                                                                              None,
-                                                                              None,
-                                                                              submvalues,
-                                                                              subsvalues,
-                                                                              subattrobj=cfgObj[subattr])
+                                                                                  subattrobj=cfgObj[subattr])
 
-                else:
-                    # since we are not a model object we are either a leaf or a branch
-                    # branch objects we need to retain the parent matchattr and matchvalue
-                    for (mcmds, mvalues) in mobj['commands'].iteritems():
-                        svalues = sobj['properties']['commands']['properties'][mcmds]
-                        if 'subcmd' in mcmds:
-                            if not isLeafAttrObj(mvalues, svalues):
-                                self.buildTreeObj(cmd,
-                                                  pelement,
-                                                  None,
-                                                  None,
-                                                  None,
-                                                  mvalues,
-                                                  svalues)
-                            else:
-                                self.buildTreeObj(cmd,
-                                                  pelement,
-                                                  matchattrtype,
-                                                  matchattr,
-                                                  matchvalue,
-                                                  mvalues,
-                                                  svalues)
+                    else:
+                        # since we are not a model object we are either a leaf or a branch
+                        # branch objects we need to retain the parent matchattr and matchvalue
+                        for (mcmds, mvalues) in mobj['commands'].iteritems():
+                            svalues = sobj['properties']['commands']['properties'][mcmds]
+                            if 'subcmd' in mcmds:
+                                if not isLeafAttrObj(mvalues, svalues):
+                                    self.buildTreeObj(cmd,
+                                                      pelement,
+                                                      None,
+                                                      None,
+                                                      None,
+                                                      mvalues,
+                                                      svalues)
+                                else:
+                                    self.buildTreeObj(cmd,
+                                                      pelement,
+                                                      matchattrtype,
+                                                      matchattr,
+                                                      matchvalue,
+                                                      mvalues,
+                                                      svalues)
         else:
             # lets handle a leaf members
             if 'objname' in schema:
                 objname = schema['objname']['default']
 
                 # lets get an element from the raw config json objects
+                modelMatchAttrName = getModelAttrFromMatchAttr(matchattr, model, schema)
                 for cfgObj in self.getNewConfigObj(objname,
-                                                   convertStrValueToValueType(matchattrtype, matchattr),
+                                                   modelMatchAttrName,
                                                    convertStrValueToValueType(matchattrtype, matchvalue)):
                     if cfgObj or subattrobj:
                         element = ConfigElement()
@@ -487,7 +495,7 @@ class ShowRun(object):
                             svalues = schema['commands']['properties'][mcmds]
                             if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
                                 for mattr, mattrobj in mvalues['commands'].iteritems():
-                                    if mcmds != matchattr:
+                                    if mcmds != modelMatchAttrName:
                                         defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
                                         attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
                                         value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
@@ -497,7 +505,7 @@ class ShowRun(object):
                                                               convertStrValueToValueType(attrtype, value),
                                                               convertStrValueToValueType(attrtype, defaultVal))
                             else:
-                                if mcmds != matchattr:
+                                if mcmds != modelMatchAttrName:
                                     element.setCmd(cmd)
                                     defaultVal = svalues['properties']['defaultarg']['default']
                                     attrtype = svalues['properties']['argtype']['type']
