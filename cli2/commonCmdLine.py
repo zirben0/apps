@@ -478,6 +478,7 @@ class CommonCmdLine(object):
                 help += snapcliconst.getSchemaHelp(schemaname, schema)
 
                 return (expected, objname, keys, help)
+                # lets check to see if this schema is a command attribute schema
         return (SUBCOMMAND_VALUE_NOT_EXPECTED, None, [], "")
 
     def getValue(self, attribute):

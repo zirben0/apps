@@ -130,6 +130,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     if basevalue is None:
                                         basevalue = self.getCommandDefaultAttrValue([basekey], delcmd=delete)
 
+                                    config.setDelete(delete)
+
                                     # letting me know that the parent config can
                                     # create a default object, otherwise engine will
                                     # try to create a lot of objects
@@ -494,9 +496,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         if value is not None:
             mline += [value]
 
-        if len(mline) < 2:
+        if len(mline) < 2 and not delete:
             return
-        elif len(mline) == 2:
+        elif (len(mline) == 2 and not delete) or (len(mline) == 1 and delete):
             # key value supplied
             key = self.parentcliname if not self.subcommand else None
             subkey = mline[0]
@@ -513,7 +515,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if ((key in (v['subcommand'], None)) and
                             k == subkey and
                                 (type(v['value']) is not list)):
+
+                            if delete and not config.valid:
+                                config.setDelete(True)
+
                             config.setValid(True)
+
                             if config.isAttrSet(subkey) and delete:
                                 config.clear(subkey, value)
                             else:
@@ -550,12 +557,16 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             # key + subkey + value supplied
             key = mline[0]
             subkey = mline[1]
-            value = mline[2]
+            value = mline[2] if not delete else None
             configObj = self.getConfigObj()
             if configObj:
                 for config in configObj.configList:
                     if len([x for x,v in config.keysDict.iteritems() if v['subcommand'] == key and x == subkey]) == 1:
+                        if delete and not config.valid:
+                            config.setDelete(True)
+
                         config.setValid(True)
+
                         if len(config.attrList) > 1 and delete:
                             config.clear(subkey, value)
                         else:
@@ -763,13 +774,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.display_help(argv)
 
     def precmd(self, argv):
-        mlineLength = len(argv) - (1 if 'no' in argv else 0)
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
+        mlineLength = len(mline)
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
 
-        import ipdb; ipdb.set_trace()
         if subschema and submodel:
             if mlineLength > 0:
                 self.commandLen = 0
@@ -785,10 +795,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                                 if i == (mlineLength - 1):
                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                        #if mlineLength - i > 1:
-                                        #    sys.stdout.write("Invalid command entered, ignoring\n")
-                                        #    return ''
-
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                         if i < mlineLength and values and mline[i+1] not in values:
                                             sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))

@@ -270,7 +270,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 self.cmdloop()
             else:
                 return
-
         # reset the command len
         self.commandLen = 0
         endprompt = ''
@@ -453,7 +452,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         argumentList = []
         # set all the args
         if 'create' in func.__name__ or \
-           'get' in func.__name__:
+           'get' in func.__name__ or \
+           'delete' in func.__name__:
             for k in getKeys:
                 if k in data:
                     argumentList.append(data[k])
@@ -549,7 +549,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         if self.configList:
             sys.stdout.write("Applying Config:\n")
-
             clearAppliedList = []
             rollbackData = {}
             failurecfg = False
@@ -585,13 +584,22 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
                                     # update all the arguments
                                     r = get_func(*argumentList)
-                                    origData = r.json()['Object']
                                     status_code = r.status_code
                                     if status_code not in sdk.httpSuccessCodes + [404]:
                                         sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
                                         sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
                                               ",".join(["%s" %(x) for x in argumentList]),
                                               ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+                                    elif status_code not in [404]: # not found
+                                        origData = r.json()['Object']
+                                    elif status_code in [404] and config.delete:
+                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                        sys.stdout.write("warning: nothing to delete invalidating command\n")
+                                        sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
+                                              ",".join(["%s" %(x) for x in argumentList]),
+                                              ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+                                        clearAppliedList.append(config)
+                                        continue
                                 else:
                                     status_code = rollbackData[funcObjName]
                                     origData = rollbackData[funcObjName][1]
@@ -662,7 +670,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             r = delete_func(*argumentList, **kwargs)
         else:
             r = delete_func(*argumentList)
-        if r.status_code not in (sdk.httpSuccessCodes + [500]):
+        if r.status_code not in (sdk.httpSuccessCodes + [410]): # 410 - Done
             sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
             failurecfg = True
         else:
