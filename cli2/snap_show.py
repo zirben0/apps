@@ -40,7 +40,6 @@ from cmdEntry import CmdEntry
 
 try:
     from flexswitchV2 import FlexSwitch
-    JSON_MODELS_DIR='../../../../reltools/codegentools/._genInfo/'
     MODELS_DIR = './'
 except:
     sys.path.append('/opt/flexswitch/sdk/py/')
@@ -280,12 +279,6 @@ class ShowRun(object):
 
         with open(MODELS_DIR + 'genObjectConfig.json') as objInfoFile:
             self.objects = json.load(objInfoFile)
-
-        for obj in self.objects.keys():
-            attrInfoFile = JSON_MODELS_DIR+'%sMembers.json' %(obj)
-            with open(attrInfoFile) as hdl :
-                gObjectsInfo[obj] = json.load(hdl)
-
 
     def getRawConfigFromNode(self):
 

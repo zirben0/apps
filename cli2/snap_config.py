@@ -41,12 +41,10 @@ from cmdEntry import *
 
 try:
     from flexswitchV2 import FlexSwitch
-    JSON_MODELS_DIR='../../../../reltools/codegentools/._genInfo/'
     MODELS_DIR = './'
 except:
     sys.path.append('/opt/flexswitch/sdk/py/')
     MODELS_DIR='/opt/flexswitch/models/'
-    JSON_MODELS_DIR=MODELS_DIR
     from flexswitchV2 import FlexSwitch
 
 pp = pprint.PrettyPrinter(indent=2)
