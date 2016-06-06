@@ -401,8 +401,7 @@ class ShowRun(object):
                                 svalues = sobj['properties']['commands']['properties'][mcmds]
                                 if 'subcmd' in mcmds:
                                     if not isLeafAttrObj(mvalues, svalues):
-                                        cmd = ''
-                                        self.buildTreeObj(cmd,
+                                        self.buildTreeObj('',
                                                           element,
                                                           element.objKeyVal['type'],
                                                           element.objKeyVal['cliname'],
@@ -416,11 +415,10 @@ class ShowRun(object):
                                                 for subcmd, subattr in mvalues['listattrs']:
                                                     if submcmds == subcmd:
                                                         # reached a sub attribute
-                                                        cmd = ''
                                                         # lets get the match attr for this object
                                                         if type(cfgObj[subattr]) is list:
                                                             for subobj in cfgObj[subattr]:
-                                                                self.buildTreeObj(cmd,
+                                                                self.buildTreeObj('',
                                                                                   element,
                                                                                   None,
                                                                                   None,
@@ -429,7 +427,7 @@ class ShowRun(object):
                                                                                   subsvalues,
                                                                                   subattrobj=subobj)
                                                         else:
-                                                            self.buildTreeObj(cmd,
+                                                            self.buildTreeObj('',
                                                                               element,
                                                                               None,
                                                                               None,
