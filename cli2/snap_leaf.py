@@ -735,10 +735,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         return returncommands
 
-    def show_state(self, all=False):
-        configObj = self.getConfigObj()
-        if configObj:
-            configObj.show_state(all)
+    def do_show(self, argv):
+        root = self.getRootObj()
+        if root:
+            if hasattr(root, '_cmd_show'):
+                root._cmd_show(argv)
 
     def display_help(self, argv):
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]

@@ -553,6 +553,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         yield None
 
+    def do_show(self, argv):
+        root = self.getRootObj()
+        if root:
+            if hasattr(root, '_cmd_show'):
+                root._cmd_show(argv)
+
     def do_apply(self, argv):
         PROCESS_CONFIG = 1
         ROLLBACK_CONFIG = 2

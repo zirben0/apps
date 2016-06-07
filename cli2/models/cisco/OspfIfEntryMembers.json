@@ -10,17 +10,14 @@
     "IfType": {
       "cliname": "iftype"
     }, 
-    "IfAuthKey": {
-      "cliname": "ifauthkey"
-    }, 
     "IfIpAddress": {
       "cliname": "ifipaddress"
     }, 
     "IfAdminStat": {
       "cliname": "ifadminstat"
     }, 
-    "IfMulticastForwarding": {
-      "cliname": "ifmulticastforwarding"
+    "IfAuthKey": {
+      "cliname": "ifauthkey"
     }, 
     "IfRtrPriority": {
       "cliname": "ifrtrpriority"
@@ -36,9 +33,6 @@
     }, 
     "IfHelloInterval": {
       "cliname": "ifhellointerval"
-    }, 
-    "IfDemand": {
-      "cliname": "ifdemand"
     }, 
     "IfTransitDelay": {
       "cliname": "iftransitdelay"
