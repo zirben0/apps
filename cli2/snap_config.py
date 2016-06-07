@@ -377,6 +377,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     #    sys.stdout.write("Invalid command entered, ignoring\n")
                                     #    return ''
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                        values = self.getCommandValues(objname, keys)
+                                        if i < mlineLength and values and mline[i+1] not in values:
+                                            snapcliconst.printErrorValueCmd(i, mline)
+                                            sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                            return ''
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                         if i < mlineLength and values and mline[i+1] not in values:
                                             snapcliconst.printErrorValueCmd(i, mline)
