@@ -456,7 +456,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                             #valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
                             # we want to keep looping untill there are no more value commands
                             #if valueexpected and mlineLength-1 == i:
-                            subcommands += self.getchildrencmds(mline[i], subsubmodel, subsubschema)
+                            subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
 
         # lets remove any duplicates
         returncommands = list(Set(subcommands).difference(mline))
