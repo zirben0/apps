@@ -575,7 +575,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     if not failurecfg:
                         continue
                     else:
-                        import ipdb; ipdb.set_trace()
                         sys.stdout.write("*************CONFIG FAILED ROLLING BACK ANY SUCCESSFUL CONFIG*************\n")
 
                 # apply delete config before create
@@ -722,7 +721,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # succes
             errorStr = r.json()['Error']
             if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
-                import ipdb; ipdb.set_trace()
                 sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, errorStr))
                 failurecfg = True
             else:
