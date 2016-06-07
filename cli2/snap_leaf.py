@@ -819,9 +819,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         submodel = self.modelList[0] if self.modelList else None
 
         cmd = argv[-1] if argv else ''
-        if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no'):
+        if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
             self.display_help(argv)
             return ''
+        if cmd in ('!', ):
+            self.do_exit(argv)
+            return ''
+
+        #import ipdb; ipdb.set_trace()
         if subschema and submodel:
             if mlineLength > 0:
                 self.commandLen = 0
@@ -835,35 +840,37 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if subschemaList and submodelList:
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                                if i == (mlineLength - 1):
-                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                        values = self.getValueSelections(mline[i], submodel, subschema)
-                                        if i < mlineLength and values and mline[i+1] not in values:
-                                            snapcliconst.printErrorValueCmd(i, mline)
-                                            sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
-                                            return ''
-                                        min,max = self.getValueMinMax(mline[i], submodel, subschema)
-                                        if min is not None and max is not None:
-                                            try:
-                                                num = string.atoi(mline[i+1])
-                                                if num < min or num > max:
-                                                    snapcliconst.printErrorValueCmd(i, mline)
-                                                    sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
-                                                    return ''
-                                            except:
+                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                    values = self.getValueSelections(mline[i], submodel, subschema)
+                                    if i < mlineLength and values and mline[i+1] not in values:
+                                        snapcliconst.printErrorValueCmd(i, mline)
+                                        sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                        return ''
+                                    min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                    if min is not None and max is not None:
+                                        try:
+                                            num = string.atoi(mline[i+1])
+                                            if num < min or num > max:
+                                                snapcliconst.printErrorValueCmd(i, mline)
                                                 sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                                 return ''
+                                        except:
+                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                            return ''
 
 
-                                        # found that if commands are entered after the last command then there can be a problem
-                                        self.commandLen = len(mline[:i]) + 1
-                                    else:
-                                        self.commandLen = len(mline[:i])
+                                    # found that if commands are entered after the last command then there can be a problem
+                                    self.commandLen = len(mline[:i]) + 1
                                     self.subcommand = True
+                                else:
+                                    self.commandLen = len(mline[:i])
+
                         else:
-                            self.commandLen = len(mline[:i]) + 1
-                            if i == (mlineLength - 1):
-                                self.subcommand = True
+                            #self.commandLen = len(mline[:i]) + 1
+                            #if i == (mlineLength - 1):
+                            #    (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                            #    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                            #        self.subcommand = True
 
                             def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
 
@@ -894,6 +901,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                     sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                                                     return ''
                                                     else:
+                                                        self.subcommand = True
                                                         for subkey in attrvalue.keys():
                                                             checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
                                 return argv

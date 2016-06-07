@@ -161,13 +161,22 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         self.setupcommands(teardown=True)
 
+    def isSystemReady(self):
+        return self.waitForSystemToBeReady()
+
     def waitForSystemToBeReady (self) :
+
+        #typically we will allow for system to be ready if confd and sysd are ready
+        # we know sysd is ready by the successful retrieval of SystemStatus
+        # so we just need to check that confd is up
+        requiredDaemons = ['confd',]
 
         r = self.sdk.getSystemStatusState("")
         if r.status_code in self.httpSuccessCodes:
             resp = r.json()
-            if resp['Object']['Ready'] == True:
-                sys.stdout.write('System Is ready\n')
+            if resp['Object']['Ready'] == True or \
+                len(frozenset(requiredDaemons).intersection([x.get('name', None) for x in resp['Object']['FlexDaemons'] if x.get('State', 'down') == 'up'])) == 1:
+                #sys.stdout.write('System Is ready\n')
                 return True
             else:
                 sys.stdout.write('System Is not ready yet\n')
@@ -306,8 +315,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 prefix.append(char)
             if prefix:
                 prefixes.append((''.join(prefix), threshold))
-            print prefixes
-            print max([x[1] for x in prefixes])
+            #print prefixes
+            #print max([x[1] for x in prefixes])
             maxprefix = [y[0] for y in prefixes if y[1] == max([x[1] for x in prefixes])][0]
             return maxprefix if len(strings) > 1 else maxprefix[:-1]
 
@@ -533,7 +542,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         if argv and '?' in argv[-1]:
             self.display_help(argv)
             return ''
-
+        if argv and '!' in argv[-1]:
+            self.do_exit(argv)
+            return ''
         return argv
 
 

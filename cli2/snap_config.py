@@ -354,8 +354,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if mlineLength > 0:
 
             cmd = argv[-1]
-            if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no'):
+            if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
                 self.display_help(argv)
+                return ''
+            if cmd in ('!',):
+                self.do_exit(argv)
                 return ''
 
             self.commandLen = 0
@@ -523,15 +526,30 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             cfgorder = json.load(f,)['Order']
             delcfgorder = list(reversed(cfgorder))
 
+        # certain objects have a specific order that need to be configured in
+        # but not all objects have a dependency.  Lets configure those objects
+        # which are part of the dependency list then apply everything else
+        attemptedApplyConfigList = []
         for objname in delcfgorder:
             for config in self.configList:
                 if config.name == objname and config.delete:
+                    attemptedApplyConfigList.append(config)
                     yield config
 
         for objname in cfgorder:
             for config in self.configList:
                 if config.name == objname and not config.delete:
+                    attemptedApplyConfigList.append(config)
                     yield config
+
+        for config in self.configList:
+            if config.delete and config not in attemptedApplyConfigList:
+                attemptedApplyConfigList.remove(config)
+                yield config
+
+        for config in self.configList:
+            if not config.delete and config not in attemptedApplyConfigList:
+                yield config
 
         yield None
 
@@ -542,15 +560,23 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         ROLLBACK_CREATE = 2
         ROLLBACK_DELETE = 3
 
-        if self.configList:
+        root = self.getRootObj()
+
+        if self.configList and \
+                root.isSystemReady():
+
             sys.stdout.write("Applying Config:\n")
             clearAppliedList = []
             rollbackData = {}
             failurecfg = False
             for stage in (PROCESS_CONFIG, ROLLBACK_CONFIG):
                 # if no failures occured then ignore rolling back config
-                if stage == ROLLBACK_CONFIG and not failurecfg:
-                    continue
+                if stage == ROLLBACK_CONFIG:
+                    if not failurecfg:
+                        continue
+                    else:
+                        import ipdb; ipdb.set_trace()
+                        sys.stdout.write("*************CONFIG FAILED ROLLING BACK ANY SUCCESSFUL CONFIG*************\n")
 
                 # apply delete config before create
                 for config in self.getConfigOrder(self.configList):
@@ -596,8 +622,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                         clearAppliedList.append(config)
                                         continue
                                 else:
-                                    status_code = rollbackData[funcObjName]
-                                    origData = rollbackData[funcObjName][1]
+                                    if config in rollbackData:
+                                        status_code = rollbackData[config]
+                                        origData = rollbackData[funcObjName][1]
+                                    else:
+                                        continue
 
                                 if status_code in sdk.httpSuccessCodes + [ROLLBACK_UPDATE] and \
                                         not config.delete:
@@ -605,14 +634,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     (failurecfg, delList) = self.applyUpdateNodeConfig(sdk, config, update_func, origData, (stage == ROLLBACK_CONFIG))
                                     if not failurecfg and stage == PROCESS_CONFIG:
                                         clearAppliedList += delList
-                                        rollbackData[funcObjName] = (ROLLBACK_UPDATE, origData)
+                                        rollbackData[config] = (ROLLBACK_UPDATE, origData)
 
                                 elif status_code in (404, ROLLBACK_DELETE):
                                     # create
                                     (failurecfg, delList) = self.applyCreateNodeConfig(sdk, config, create_func)
                                     if not failurecfg and stage == PROCESS_CONFIG:
                                         clearAppliedList += delList
-                                        rollbackData[funcObjName] = (ROLLBACK_CREATE, origData)
+                                        rollbackData[config] = (ROLLBACK_CREATE, origData)
 
                                 elif status_code in (ROLLBACK_CREATE,) or \
                                     config.delete:
@@ -620,7 +649,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     (failurecfg, delList) = self.applyDeleteNodeConfig(sdk, config, delete_func)
                                     if not failurecfg and stage == PROCESS_CONFIG:
                                         clearAppliedList += delList
-                                        rollbackData[funcObjName] = (ROLLBACK_DELETE, origData)
+                                        rollbackData[config] = (ROLLBACK_DELETE, origData)
 
                             except Exception as e:
                                 sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
@@ -639,12 +668,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             r = create_func(*argumentList, **kwargs)
         else:
             r = create_func(*argumentList)
-        if r.status_code not in (sdk.httpSuccessCodes + [500]):
+        if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
             sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
             failurecfg = True
         else:
-            sys.stdout.write("create SUCCESS:\n")
-            if r.status_code == 500:
+            sys.stdout.write("create SUCCESS:   http status code: %s\n" % (r.status_code,))
+            if r.json()['Error']:
                 sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
 
             # set configuration to applied state
@@ -665,12 +694,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             r = delete_func(*argumentList, **kwargs)
         else:
             r = delete_func(*argumentList)
-        if r.status_code not in (sdk.httpSuccessCodes + [410]): # 410 - Done
+        if r.status_code not in (sdk.httpSuccessCodes + [410]) and ('exists' and 'Nothing to be updated') not in errorStr: # 410 - Done
             sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
             failurecfg = True
         else:
-            sys.stdout.write("delete SUCCESS:\n")
-            if r.status_code == 500:
+            sys.stdout.write("delete SUCCESS:   http status code: %s\n" % (r.status_code,))
+            if r.json()['Error']:
                 sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
 
             # set configuration to applied state
@@ -690,13 +719,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
         if len(kwargs) > 0:
             r = update_func(*argumentList, **kwargs)
-            # succes or '500' nothing updated no changes ocurred
-            if r.status_code not in (sdk.httpSuccessCodes + [500]):
-                sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
+            # succes
+            errorStr = r.json()['Error']
+            if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
+                import ipdb; ipdb.set_trace()
+                sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, errorStr))
                 failurecfg = True
             else:
-                sys.stdout.write("update SUCCESS:\n")
-                if r.status_code == 500:
+                sys.stdout.write("update SUCCESS:   http status code: %s\n" % (r.status_code,))
+                if r.json()['Error']:
                     sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
 
                 # set configuration to applied state
