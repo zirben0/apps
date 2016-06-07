@@ -341,6 +341,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         # NOTE: it is a requirement that the model use a pre-set name 'ethernet' to
                         # describe physical ports
                         self.replace_cli_name('ethernet', snapcliconst.PORT_NAME_PREFIX)
+                    else:
+                        sys.stdout.write("Failed to find ports in system, was DB deleted?\n")
+                        self.do_exit([])
 
                 except Exception as e:
                     sys.stdout.write("Failed to find port prefix exiting CLI, is switch %s accessable?\n" %(self.switch_name))

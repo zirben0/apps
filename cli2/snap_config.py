@@ -629,7 +629,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                 else:
                                     if config in rollbackData:
                                         status_code = rollbackData[config]
-                                        origData = rollbackData[funcObjName][1]
+                                        origData = rollbackData[config][1]
                                     else:
                                         continue
 
@@ -673,13 +673,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             r = create_func(*argumentList, **kwargs)
         else:
             r = create_func(*argumentList)
+        errorStr = r.json()['Error']
         if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
-            sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
+            sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, errorStr))
             failurecfg = True
         else:
             sys.stdout.write("create SUCCESS:   http status code: %s\n" % (r.status_code,))
             if r.json()['Error']:
-                sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
+                sys.stdout.write("warning return code: %s\n" % (errorStr))
 
             # set configuration to applied state
             config.setPending(False)
@@ -699,13 +700,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             r = delete_func(*argumentList, **kwargs)
         else:
             r = delete_func(*argumentList)
+
+        errorStr = r.json()['Error']
         if r.status_code not in (sdk.httpSuccessCodes + [410]) and ('exists' and 'Nothing to be updated') not in errorStr: # 410 - Done
-            sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, r.json()['Error']))
+            sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, errorStr))
             failurecfg = True
         else:
             sys.stdout.write("delete SUCCESS:   http status code: %s\n" % (r.status_code,))
             if r.json()['Error']:
-                sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
+                sys.stdout.write("warning return code: %s\n" % (errorStr))
 
             # set configuration to applied state
             config.setPending(False)
@@ -732,7 +735,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             else:
                 sys.stdout.write("update SUCCESS:   http status code: %s\n" % (r.status_code,))
                 if r.json()['Error']:
-                    sys.stdout.write("warning return code: %s\n" % (r.json()['Error']))
+                    sys.stdout.write("warning return code: %s\n" % (errorStr))
 
                 # set configuration to applied state
                 config.setPending(False)

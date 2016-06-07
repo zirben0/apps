@@ -113,11 +113,6 @@ def isSelectionTypeNotNeeded(selections, argtype):
     :param attrtype:
     :return:
     '''
-    #sys.stdout.write("isSelectionTypeNeeded numsel %s isboolean %s isnumeric %s frozenset %s\n"
-    #                 %(len(selections) == 2,
-    #                    not isboolean(argtype),
-    #                    not isnumeric(argtype),
-    #                    frozenset(CLI_COMMAND_NEGATIVE_TRUTH_VALUES + CLI_COMMAND_POSITIVE_TRUTH_VALUES).intersection([str(x).lower() for x in enums])))
     return len(selections) == 2 and \
                 (not isboolean(argtype) and
                     not isnumeric(argtype)

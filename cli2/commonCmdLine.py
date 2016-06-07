@@ -425,21 +425,52 @@ class CommonCmdLine(object):
                         isDefaultSet = snapcliconst.getSchemaCommandAttrIsDefaultSet(sattrval)
                         defaultArg = snapcliconst.getSchemaCommandAttrDefaultArg(sattrval)
                         # we want opposite of default if boolean delete
-                        if delcmd:
-                            # lets do the opposite of default value if enums length is 2
-                            # or if we have a boolean value.
-                            # this helps when setting string based boolean values
-                            argtype = snapcliconst.getValueArgumentType(sattrval)
-                            selections = snapcliconst.getValueArgumentSelections(sattrval)
-                            if selections and \
-                                    argtype and \
-                                not snapcliconst.isSelectionTypeNotNeeded(selections, argtype):
-                                for enum in selections:
-                                    if enum != defaultArg:
-                                        return enum
-                            elif snapcliconst.isboolean(argtype) and \
-                                isDefaultSet:
-                                return not defaultArg
+                        # lets do the opposite of default value if enums length is 2
+                        # or if we have a boolean value.
+                        # this helps when setting string based boolean values
+                        argtype = snapcliconst.getValueArgumentType(sattrval)
+                        selections = snapcliconst.getValueArgumentSelections(sattrval)
+                        if selections and \
+                                argtype and \
+                            snapcliconst.isSelectionTypeNotNeeded(selections, argtype):
+
+                            if delcmd:
+                                # lets determine the value based on whether this is a delcmd
+                                # or not
+                                # special case hack!!!
+                                if mattrval['cliname'] in ('shutdown', ):
+                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
+                                    for k in selections:
+                                        if rv and k.lower() == rv[0]:
+                                            return k
+
+                                else:
+                                    rv = list(frozenset([str(x).lower() for x in selections]).itersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
+                                    for k in selections:
+                                        if rv and k.lower() == rv[0]:
+                                            return k
+                            else:
+                                # lets determine the value based on whether this is a delcmd
+                                # or not
+                                # special case hack!!!
+                                if mattrval['cliname'] in ('shutdown', ):
+                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
+                                    for k in selections:
+                                        if rv and k.lower() == rv[0]:
+                                            return k
+                                else:
+                                    rv = list(frozenset([str(x).lower() for x in selections]).itersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
+                                    for k in selections:
+                                        if rv and  k.lower() == rv[0]:
+                                            return k
+                            return None
+                        elif snapcliconst.isboolean(argtype):
+
+                            if delcmd:
+                                rv = False
+                            else:
+                                rv = True
+                            return rv
 
                         # setting default value
                         return defaultArg if isDefaultSet else None

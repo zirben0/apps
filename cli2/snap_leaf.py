@@ -489,6 +489,23 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             mline = argv[1:]
             delete = True
 
+        def isInvalidCommand(mline, delete):
+            return len(mline) < 2 and not delete
+
+        def isKeyValueCommand(mline, delete):
+
+            # command is key value
+            if len(mline) == 2 and not delete:
+                return True
+            elif len(mline) == 2 and len(frozenset([str(mline[-1]).lower()]).intersection(
+                snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES + snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES)) == 1:
+                return True
+            # command is a delete command which does not require a value
+            elif len(mline) == 1 and delete:
+                return True
+
+            return False
+
         # lets fill in a default value if one is not supplied.  This is only
         # valid for boolean attributes and attributes which only contain two
         # enum types
@@ -496,13 +513,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         if value is not None:
             mline += [value]
 
-        if len(mline) < 2 and not delete:
+        if isInvalidCommand(mline, delete):
             return
-        elif (len(mline) == 2 and not delete) or (len(mline) == 1 and delete):
+        elif isKeyValueCommand(mline, delete):
             # key value supplied
             key = self.parentcliname if not self.subcommand else None
             subkey = mline[0]
-            value = mline[1] if not delete else None
+            value = mline[1] if len(mline) == 2 else None
 
             configObj = self.getConfigObj()
             if configObj:
@@ -827,7 +844,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             self.do_exit(argv)
             return ''
 
-        #import ipdb; ipdb.set_trace()
         if subschema and submodel:
             if mlineLength > 0:
                 self.commandLen = 0
@@ -879,7 +895,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
                                     if 'subcmd' in mcmd:
                                         if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                            if i == (mlineLength - 2): # value expected from attrs
+                                            if i == (mlineLength - 2):  # value expected from attrs
+
                                                 # reached attribute values
                                                 for attr, attrvalue in mcmdvalues['commands'].iteritems():
                                                     sattrvalue = scmdvalues['commands']['properties'][attr]
