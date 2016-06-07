@@ -5,7 +5,7 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/VlanSubCmds.json"
     }, 
     "prompt": "vlan",
-    "help": "Vlan Commands",
+    "help": "1-4094  802.1Q tag/Vlan ID for vlan being provisioned",
     "value": {
       "VlanId": {
         "cliname": "vlan"

@@ -81,8 +81,8 @@ def convertCmdToSpecialFmt(modelname, v):
     attrtype, cliname, value, defaultvalue = v['type'], v['cliname'], v['value'], v['defaultvalue']
     line = ''
     if snapcliconst.isboolean(attrtype):
-        if type(defaultvalue) == str and defaultvalue.lower() == 'false' or \
-                defaultvalue == False:
+        if (type(value) == str and value.lower() == 'false') or \
+                value == False:
             line = " no %s" %(cliname, )
         else:
             line = " %s" %(cliname, )

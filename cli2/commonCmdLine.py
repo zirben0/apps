@@ -293,7 +293,7 @@ class CommonCmdLine(object):
         return False
 
     def getchildrenhelpcmds(self, parentname, model, schema):
-        cliHelpList = []
+        cliHelpList = [["<cr>", ""]]
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             for k, schemaobj in snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema).iteritems():
@@ -333,7 +333,8 @@ class CommonCmdLine(object):
                                                 else:
                                                     val[2] = clihelp["default"]
 
-                                                cliHelpList.append((val[1], val[2]))
+                                                if val[1] != parentname:
+                                                    cliHelpList.append((val[1], val[2]))
                                 elif "properties" in vv and "commands" in vv["properties"]:
                                     # todo need to get proper parsing to find the help
                                     cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
@@ -341,7 +342,8 @@ class CommonCmdLine(object):
                                         val[1] = cliname
                                     elif clihelp:
                                         val[2] = clihelp["default"]
-                                    cliHelpList.append((val[1], val[2]))
+                                    if val[1] != parentname:
+                                        cliHelpList.append((val[1], val[2]))
                         else:
                             cliHelpList.append((val[1], val[2]))
         return cliHelpList
@@ -356,7 +358,9 @@ class CommonCmdLine(object):
                 keys = [k for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if type(v) in (dict, jsonref.JsonRef)]
                 #objname = schema[schemaname]['properties']['objname']['default']
                 #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s %s\n" %(cmd, objname, keys, schema[schemaname]['properties']['value']['properties']))
-                minmax = [(v['properties']['argtype']['minimum'], v['properties']['argtype']['maximum']) for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if 'properties' in v and 'argtype' in v['properties'] and 'minimum' in v['properties']['argtype'] and k in keys]
+                minmax = [(v['properties']['argtype']['minimum'],
+                           v['properties']['argtype']['maximum']) for k, v in schema[schemaname]['properties']['value']['properties'].iteritems()
+                                            if 'properties' in v and 'argtype' in v['properties'] and 'minimum' in v['properties']['argtype'] and k in keys]
                 if minmax:
                     return minmax[0]
         return None, None
@@ -371,7 +375,8 @@ class CommonCmdLine(object):
                 keys = [k for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if type(v) in (dict, jsonref.JsonRef)]
                 objname = schema[schemaname]['properties']['objname']['default']
                 #sys.stdout.write("\nisValueExpected: cmd %s objname %s flex keys %s %s\n" %(cmd, objname, keys, schema[schemaname]['properties']['value']['properties']))
-                selections = [v['properties']['argtype']['enum'] for k, v in schema[schemaname]['properties']['value']['properties'].iteritems() if 'properties' in v and 'argtype' in v['properties'] and 'enum' in v['properties']['argtype'] and k in keys]
+                selections = [v['properties']['argtype']['enum'] for k, v in schema[schemaname]['properties']['value']['properties'].iteritems()
+                                            if 'properties' in v and 'argtype' in v['properties'] and 'enum' in v['properties']['argtype'] and k in keys]
                 if selections:
                     return selections[0]
         return []
@@ -538,14 +543,28 @@ class CommonCmdLine(object):
                     submodelList, subschemaList = self.getSubModelSubSchemaListFromCommand(mline[i],
                                                                                       snapcliconst.GET_MODEL_COMMANDS(schemaname, submodel),
                                                                                       snapcliconst.GET_SCHEMA_COMMANDS(schemaname, subschema))
-                    for submodel, subschema in zip(submodelList, subschemaList):
-                        (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                        if i == mlineLength - 1:
-                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                cmd = " ".join(argv[:-1])
-                                helpcommands = [[cmd, help]]
-                            else:
-                                helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                    if submodelList and subschemaList:
+                        for submodel, subschema in zip(submodelList, subschemaList):
+                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                            if i == mlineLength - 1:
+                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                    cmd = " ".join(argv[:-1])
+                                    helpcommands = [[cmd, help]]
+                                else:
+                                    helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                    else:
+                        if 'commands' in model[schemaname]:
+                            for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                                scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                                if 'subcmd' in mcmd:
+                                    if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                                        if i == (mlineLength - 1): # value expected from attrs
+                                            # reached attribute values
+                                            for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                                if attrvalue['cliname'] == mline[i]:
+                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
+                                                    subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                                       snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
 
         self.printCommands(mline, helpcommands)
 

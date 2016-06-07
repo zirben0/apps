@@ -24,6 +24,7 @@
 #
 
 import string
+import sys
 
 COMMAND_TYPE_DELETE = 'delete'
 COMMAND_TYPE_CONFIG = 'config'
@@ -64,6 +65,13 @@ def convertStrNumToNum(v):
     except Exception:
         val = 0
     return val
+
+def printErrorValueCmd(i, mline):
+    lenstr = len(" ".join(mline[:-1]))
+    sys.stdout.write("%s\n" %(" ".join(mline)))
+    spaces = " " * lenstr
+    sys.stdout.write("%s\n" %(spaces + " ^"))
+
 
 
 # model macros
@@ -130,3 +138,30 @@ def getSchemaCommandAttrDefaultArg(command):
 
 def getSchemaCommandAttrIsDefaultSet(command):
     return command['properties']['isdefaultset']['default']
+
+def getSchemaAttrSelection(value):
+    if 'properties' in value and \
+            value['properties'] and \
+                    'argtype' in value['properties'] and \
+                    'enum' in value['properties']['argtype']:
+        return value['properties']['argtype']['enum']
+    return []
+
+def getSchemaAttrMinMax(value):
+    if 'properties' in value and \
+            value['properties'] and \
+                    'argtype' in value['properties'] and \
+                    'minimum' in value['properties']['argtype']:
+        return (value['properties']['argtype']['minimum'],value['properties']['argtype']['maximum'])
+    return (None, None)
+
+def getAttrHelp(mvalue, svalue):
+    if 'help' in mvalue:
+        return mvalue['help']
+    return svalue['properties']['help']['default']
+
+def getAttrCliName(mvalue, svalue):
+    if 'cliname' in mvalue:
+        return mvalue['cliname']
+    return svalue['properties']['cliname']['default']
+

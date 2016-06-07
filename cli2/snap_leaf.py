@@ -745,7 +745,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         mline = [parentcmd] + argv[:-1]
         mlineLength = len(mline)
 
-        subcommands = []
+        subcommands = [["<cr>", ""]]
         if mlineLength == 1:
             for model, schema in zip(self.modelList, self.schemaList):
                 subcommands = self.getchildrenhelpcmds(mline[0], model, schema)
@@ -767,6 +767,44 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     subcommands = [[cmd, help]]
                                 else:
                                     subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                    else:
+
+                        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
+                                subcommands = []
+                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                                    if 'subcmd' in mcmd:
+                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                                            if i == (mlineLength - 1): # value expected from attrs
+                                                # reached attribute values
+                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
+                                                    if 'cliname' in attrvalue:
+                                                        if attrvalue['cliname'] == mline[i]:
+                                                            subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                                    else:
+                                                        for subkey in attrvalue.keys():
+                                                            subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+                                return subcommands
+
+                        subcommands += checkAttributevalues(argv, mlineLength, schemaname, model, schema)
+
+                        '''
+                        if 'commands' in model[schemaname]:
+                            for mcmd, mcmdvalues in model[schemaname]['commands'].iteritems():
+                                scmdvalues = schema[schemaname]['properties']['commands']['properties'][mcmd]
+                                if 'subcmd' in mcmd:
+                                    if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                                        if i == (mlineLength - 1): # value expected from attrs
+                                            # reached attribute values
+                                            for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                                sattrvalue = scmdvalues['commands']['properties'][attr]
+                                                if 'cliname' in attrvalue:
+                                                    if attrvalue['cliname'] == mline[i]:
+                                                        subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                        '''
 
         self.printCommands(mline, subcommands)
 
@@ -780,6 +818,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
 
+        cmd = argv[-1] if argv else ''
+        if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no'):
+            self.display_help(argv)
+            return ''
         if subschema and submodel:
             if mlineLength > 0:
                 self.commandLen = 0
@@ -797,6 +839,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                         if i < mlineLength and values and mline[i+1] not in values:
+                                            snapcliconst.printErrorValueCmd(i, mline)
                                             sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
                                             return ''
                                         min,max = self.getValueMinMax(mline[i], submodel, subschema)
@@ -804,6 +847,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                             try:
                                                 num = string.atoi(mline[i+1])
                                                 if num < min or num > max:
+                                                    snapcliconst.printErrorValueCmd(i, mline)
                                                     sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                                     return ''
                                             except:
@@ -816,11 +860,44 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     else:
                                         self.commandLen = len(mline[:i])
                                     self.subcommand = True
-                cmd = argv[-1]
-                if cmd in ('?', ) or \
-                        (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):
-                    self.display_help(argv)
-                    return ''
+                        else:
+                            self.commandLen = len(mline[:i]) + 1
+                            if i == (mlineLength - 1):
+                                self.subcommand = True
 
+                            def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
+
+                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                                    if 'subcmd' in mcmd:
+                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                                            if i == (mlineLength - 2): # value expected from attrs
+                                                # reached attribute values
+                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
+                                                    if 'cliname' in attrvalue:
+                                                        if attrvalue['cliname'] == mline[i]:
+                                                            values = snapcliconst.getSchemaAttrSelection(sattrvalue)
+                                                            if values and mline[i+1] not in values:
+                                                                snapcliconst.printErrorValueCmd(i, mline)
+                                                                sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                                                return ''
+                                                            min,max = snapcliconst.getSchemaAttrMinMax(sattrvalue)
+                                                            if min is not None and max is not None:
+                                                                try:
+                                                                    num = string.atoi(mline[i+1])
+                                                                    if num < min or num > max:
+                                                                        snapcliconst.printErrorValueCmd(i, mline)
+                                                                        sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                                        return ''
+                                                                except:
+                                                                    sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                                    return ''
+                                                    else:
+                                                        for subkey in attrvalue.keys():
+                                                            checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+                                return argv
+
+                            return checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema)
 
         return argv

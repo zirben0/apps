@@ -352,6 +352,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         submodel = self.model
         subcommands = []
         if mlineLength > 0:
+
+            cmd = argv[-1]
+            if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no'):
+                self.display_help(argv)
+                return ''
+
             self.commandLen = 0
             try:
                 for i in range(1, len(mline)):
@@ -370,6 +376,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                         if i < mlineLength and values and mline[i+1] not in values:
+                                            snapcliconst.printErrorValueCmd(i, mline)
                                             sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
                                             return ''
                                         min,max = self.getValueMinMax(mline[i], submodel, subschema)
@@ -377,6 +384,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                             try:
                                                 num = string.atoi(mline[i+1])
                                                 if num < min or num > max:
+                                                    snapcliconst.printErrorValueCmd(i, mline)
                                                     sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                                     return ''
                                             except:
@@ -410,12 +418,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             except Exception as e:
                 sys.stdout.write("precmd: error %s" %(e,))
                 pass
-
-            cmd = argv[-1]
-            if cmd in ('?', ) or \
-                    (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):
-                self.display_help(argv)
-                return ''
 
         return argv
 

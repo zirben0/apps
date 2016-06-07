@@ -40,7 +40,7 @@
             "type": "object",
             "properties": {
               "key": {
-                "default": true,
+                "default": false,
                 "type": "boolean"
               },
               "prompt": {
@@ -60,15 +60,16 @@
                 "type": "string"
               },
               "argtype": {
-                "type": "string"
+                "minimum": 0,
+                "type": "uint32",
+                "maximum": 4294967296
               },
               "isdefaultset": {
                 "default": false,
                 "type": "boolean"
               },
               "defaultarg": {
-                "default": "",
-                "type": "string"
+                "default": ""
               }
             }
           }
