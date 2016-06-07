@@ -567,7 +567,6 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
             ce.dump()
 
         else:
-
             lastcmd = argv[-1] if all else argv[-2] if argv[-1] != 'brief' else argv[-3]
             schemaname = self.getSchemaCommandNameFromCliName(lastcmd, self.model)
             if schemaname:
