@@ -584,7 +584,7 @@ class CommonCmdLine(object):
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
                     else:
-                        if 'commands' in model[schemaname]:
+                        if 'commands' in submodel[schemaname]:
                             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
                                 scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
                                 if 'subcmd' in mcmd:

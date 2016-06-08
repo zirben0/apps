@@ -263,6 +263,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 self.cmdloop()
             else:
                 return
+
         # reset the command len
         self.commandLen = 0
         endprompt = ''
@@ -345,6 +346,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def precmd(self, argv):
 
+        import ipdb; ipdb.set_trace()
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
@@ -497,7 +499,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             returnval = returnval.replace(snapcliconst.PORT_NAME_PREFIX, "")
             # TODO not working when this is enabled so going have to look into this later
             #returnval = '1/' + returnval
-        return returnval
+        return str(returnval)
 
     def getCommandValues(self, objname, keys):
 
