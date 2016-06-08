@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -18,21 +24,23 @@
             "default": "Used in conjuction with IpPrefix to specify specify the IP Prefix to match on when the ConditionType is MatchDstIpPrefix/MatchSrcIpPrefix.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "masklengthrange", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -51,21 +59,28 @@
             "default": " MatchProtocol/MatchDstIpPrefix/MatchSrcIpPrefix  Specifies the match criterion this condition defines", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "conditiontype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "enum": [
+              "MatchProtocol", 
+              "MatchDstIpPrefix", 
+              "MatchSrcIpPrefix"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -84,21 +99,29 @@
             "default": "CONNECTED/STATIC/OSPF/BGP  Protocol to match on if the ConditionType is set to MatchProtocol", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "protocol", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "enum": [
+              "CONNECTED", 
+              "STATIC", 
+              "OSPF", 
+              "BGP"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -117,21 +140,23 @@
             "default": "PolicyConditionName", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "name", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -150,30 +175,27 @@
             "default": "Used in conjunction with MaskLengthRange to specify the IP Prefix to match on when the ConditionType is MatchDstIpPrefix/MatchSrcIpPrefix.", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ipprefix", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

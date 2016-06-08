@@ -1,0 +1,14 @@
+{
+  "arpglobal": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpGlobalSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Vrf": {
+        "cliname": "vrf"
+      }
+    }
+  }
+}

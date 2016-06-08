@@ -2,9 +2,6 @@
   "bfdfeature": {
     "cliname" : "bfd",
     "commands" : {
-      "subcmd1": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdGlobalMembers.json"
-      }
     }
   }
 }

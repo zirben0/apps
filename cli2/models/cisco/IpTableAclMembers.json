@@ -1,0 +1,23 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Protocol": {
+      "cliname": "protocol"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }, 
+    "Action": {
+      "cliname": "action"
+    }, 
+    "IpAddr": {
+      "cliname": "ipaddr"
+    }, 
+    "Port": {
+      "cliname": "port"
+    }, 
+    "PhysicalPort": {
+      "cliname": "physicalport"
+    }
+  }
+}

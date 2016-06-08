@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "VlanId": {
+      "cliname": "vlanid"
+    }, 
+    "Vni": {
+      "cliname": "vni"
+    }
+  }
+}

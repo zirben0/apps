@@ -1,0 +1,14 @@
+{
+  "componentlogging": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/ComponentLoggingSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Module": {
+        "cliname": "module"
+      }
+    }
+  }
+}

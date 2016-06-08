@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IfIndex": {
+      "cliname": "ifindex"
+    }, 
+    "VRID": {
+      "cliname": "vrid"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "NbrIpAddr": {
+      "cliname": "nbripaddr"
+    }, 
+    "NbrAddressLessIndex": {
+      "cliname": "nbraddresslessindex"
+    }
+  }
+}

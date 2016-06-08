@@ -1,0 +1,17 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Action": {
+      "cliname": "action"
+    }, 
+    "Conditions": {
+      "cliname": "conditions"
+    }, 
+    "Name": {
+      "cliname": "route_policy_statement"
+    }, 
+    "MatchConditions": {
+      "cliname": "match_conditions"
+    }
+  }
+}

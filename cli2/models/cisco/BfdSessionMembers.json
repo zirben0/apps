@@ -1,17 +1,18 @@
 {
+  "listattrs": [], 
   "commands": {
     "Interface": {
-        "cliname":  "interface"
-    },
+      "cliname": "ethernet"
+    }, 
     "Owner": {
-        "cliname":  "owner"
-    },
+      "cliname": "owner"
+    }, 
     "IpAddr": {
-        "cliname":  "ipaddr"
-    },
+      "cliname": "neighbor"
+    }, 
     "PerLink": {
-        "cliname":  "perlink"
-    },
+      "cliname": "perlink"
+    }, 
     "ParamName": {
       "cliname": "profile_name"
     }

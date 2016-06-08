@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": true, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -18,21 +24,23 @@
             "default": "List of interface names or ifindex values to  be added as untagged members of the vlan", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "untagintflist", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -51,21 +59,23 @@
             "default": "List of interface names or ifindex values to  be added as tagged members of the vlan", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "intflist", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -81,33 +91,32 @@
             "type": "string"
           }, 
           "help": {
-            "default": "802.1Q tag/Vlan ID for vlan being provisioned", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "vlanid", 
+            "default": "1-4094  802.1Q tag/Vlan ID for vlan being provisioned", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "cliname": {
+            "default": "vlanid", 
             "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 1, 
+            "type": "int32", 
+            "maximum": 4094
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

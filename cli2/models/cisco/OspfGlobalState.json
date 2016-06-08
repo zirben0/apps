@@ -1,0 +1,14 @@
+{
+  "ospfglobalstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfGlobalStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "RouterId": {
+        "cliname": "routerid"
+      }
+    }
+  }
+}

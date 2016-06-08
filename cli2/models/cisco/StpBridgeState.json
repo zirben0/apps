@@ -1,0 +1,14 @@
+{
+  "stpbridgestate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Vlan": {
+        "cliname": "vlan"
+      }
+    }
+  }
+}

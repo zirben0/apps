@@ -1,0 +1,17 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Sha1": {
+      "cliname": "sha1"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }, 
+    "Branch": {
+      "cliname": "branch"
+    }, 
+    "Time": {
+      "cliname": "time"
+    }
+  }
+}

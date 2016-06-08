@@ -1,0 +1,14 @@
+{
+  "lldpintf": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPIntfSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IfIndex": {
+        "cliname": "ifindex"
+      }
+    }
+  }
+}

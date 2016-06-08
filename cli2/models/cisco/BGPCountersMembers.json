@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Notification": {
+      "cliname": "notification"
+    }, 
+    "Update": {
+      "cliname": "update"
+    }
+  }
+}

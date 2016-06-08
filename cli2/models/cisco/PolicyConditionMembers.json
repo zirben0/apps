@@ -1,0 +1,20 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "MaskLengthRange": {
+      "cliname": "mask_length_range"
+    }, 
+    "ConditionType": {
+      "cliname": "condition_type"
+    }, 
+    "Protocol": {
+      "cliname": "protocol"
+    }, 
+    "Name": {
+      "cliname": "route_policy_condition"
+    }, 
+    "IpPrefix": {
+      "cliname": "ip_prefix"
+    }
+  }
+}

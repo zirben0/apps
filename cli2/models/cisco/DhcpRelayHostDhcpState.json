@@ -1,0 +1,14 @@
+{
+  "dhcprelayhostdhcpstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayHostDhcpStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "MacAddr": {
+        "cliname": "macaddr"
+      }
+    }
+  }
+}

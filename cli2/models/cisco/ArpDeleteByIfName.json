@@ -1,0 +1,14 @@
+{
+  "arpdeletebyifname": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpDeleteByIfNameSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IfName": {
+        "cliname": "ifname"
+      }
+    }
+  }
+}

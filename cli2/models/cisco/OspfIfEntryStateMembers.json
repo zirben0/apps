@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IfIpAddress": {
+      "cliname": "ifipaddress"
+    }, 
+    "AddressLessIf": {
+      "cliname": "addresslessif"
+    }
+  }
+}

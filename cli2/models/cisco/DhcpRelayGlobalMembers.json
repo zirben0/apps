@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Enable": {
+      "cliname": "enable"
+    }, 
+    "DhcpRelay": {
+      "cliname": "dhcprelay"
+    }
+  }
+}

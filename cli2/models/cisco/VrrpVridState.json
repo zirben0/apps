@@ -1,0 +1,17 @@
+{
+  "vrrpvridstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/VrrpVridStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IfIndex": {
+        "cliname": "ifindex"
+      }, 
+      "VRID": {
+        "cliname": "vrid"
+      }
+    }
+  }
+}

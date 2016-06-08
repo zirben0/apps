@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -18,21 +24,23 @@
             "default": "Comma seperated List of DNS Server Address DEFAULT", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "dnsserveraddr", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -51,21 +59,23 @@
             "default": "Broadcast Address DEFAULT", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "broadcastaddr", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -84,21 +94,23 @@
             "default": "Range of IP Addresses DEFAULT", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "ipaddrrange", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -117,21 +129,23 @@
             "default": "True/False  Enable and Disable Control DEFAULT", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "enable", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -150,21 +164,23 @@
             "default": "Router Address DEFAULT", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "routeraddr", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -183,21 +199,23 @@
             "default": "Interface name or ifindex of L3 interface object on which Dhcp Server need to be configured", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "intfref", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -216,21 +234,23 @@
             "default": "Domain Name Address DEFAULT", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "domainname", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -249,21 +269,23 @@
             "default": "Subnet Mask", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "subnetmask", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -282,30 +304,27 @@
             "default": "Subnet", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "subnet", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

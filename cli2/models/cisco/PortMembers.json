@@ -1,4 +1,5 @@
 {
+  "listattrs": [],
   "commands" : {
     "AdminState": {
       "cliname": "shutdown"
@@ -11,9 +12,6 @@
     },
     "Duplex": {
       "cliname": "duplex"
-    },
-    "MacAddr": {
-      "cliname": "mac_address"
     },
     "Mtu": {
       "cliname": "mtu"

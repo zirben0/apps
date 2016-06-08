@@ -1,0 +1,38 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Intf": {
+      "cliname": "intf"
+    }, 
+    "TOS": {
+      "cliname": "tos"
+    }, 
+    "Vni": {
+      "cliname": "vni"
+    }, 
+    "Mtu": {
+      "cliname": "mtu"
+    }, 
+    "InnerVlanHandlingMode": {
+      "cliname": "innervlanhandlingmode"
+    }, 
+    "IntfRef": {
+      "cliname": "intfref"
+    }, 
+    "DstIp": {
+      "cliname": "dstip"
+    }, 
+    "VlanId": {
+      "cliname": "vlanid"
+    }, 
+    "TTL": {
+      "cliname": "ttl"
+    }, 
+    "SrcIp": {
+      "cliname": "srcip"
+    }, 
+    "DstUDP": {
+      "cliname": "dstudp"
+    }
+  }
+}

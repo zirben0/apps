@@ -1,0 +1,17 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "LsdbType": {
+      "cliname": "lsdbtype"
+    }, 
+    "LsdbAreaId": {
+      "cliname": "lsdbareaid"
+    }, 
+    "LsdbLsid": {
+      "cliname": "lsdblsid"
+    }, 
+    "LsdbRouterId": {
+      "cliname": "lsdbrouterid"
+    }
+  }
+}

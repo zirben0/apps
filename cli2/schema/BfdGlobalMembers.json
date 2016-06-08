@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": true, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -18,21 +24,23 @@
             "default": "True/False  Global BFD state in this VRF default: true", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "true", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "enable", 
             "type": "string"
           }, 
-          "islist": {
-            "default": false, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": true, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
-            "type": "string"
+          "defaultarg": {
+            "default": "true"
           }
         }
       }, 
@@ -44,37 +52,34 @@
             "type": "boolean"
           }, 
           "prompt": {
-            "default": "default", 
+            "default": "", 
             "type": "string"
           }, 
           "help": {
             "default": "VRF id where BFD is globally enabled or disabled default: default", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "default", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "vrf", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": "default"
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

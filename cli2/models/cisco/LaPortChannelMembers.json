@@ -1,0 +1,35 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "LagId": {
+      "cliname": "lagid"
+    }, 
+    "LagType": {
+      "cliname": "lagtype"
+    }, 
+    "Members": {
+      "cliname": "members"
+    }, 
+    "SystemIdMac": {
+      "cliname": "systemidmac"
+    }, 
+    "MinLinks": {
+      "cliname": "minlinks"
+    }, 
+    "SystemPriority": {
+      "cliname": "systempriority"
+    }, 
+    "Interval": {
+      "cliname": "interval"
+    }, 
+    "LacpMode": {
+      "cliname": "lacpmode"
+    }, 
+    "AdminState": {
+      "cliname": "adminstate"
+    }, 
+    "LagHash": {
+      "cliname": "laghash"
+    }
+  }
+}

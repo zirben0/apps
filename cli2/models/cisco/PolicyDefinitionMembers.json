@@ -1,0 +1,22 @@
+{
+  "listattrs": [
+    [
+      "subcmd1", 
+      "StatementList"
+    ]
+  ], 
+  "commands": {
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinitionStmtPriority.json"
+    }, 
+    "MatchType": {
+      "cliname": "match_type"
+    }, 
+    "PolicyType": {
+      "cliname": "policy_type"
+    }, 
+    "Name": {
+      "cliname": "route_policy"
+    }
+  }
+}

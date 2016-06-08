@@ -1,0 +1,13 @@
+{
+  "vlanip": {
+    "cliname" : "ip",
+    "commands": {
+      "subcmd1" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv4vlanintfmembers.json"
+      },
+      "subcmd2" : {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntfMembers.json"
+      }
+    }
+  }
+}

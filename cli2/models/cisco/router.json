@@ -4,7 +4,7 @@
     "cliname" : "router", 
     "commands" : {
       "subcmd1": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/bgp.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobal.json"
       }
     }
   }

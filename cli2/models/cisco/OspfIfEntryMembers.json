@@ -1,0 +1,44 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AddressLessIf": {
+      "cliname": "addresslessif"
+    }, 
+    "IfRetransInterval": {
+      "cliname": "ifretransinterval"
+    }, 
+    "IfType": {
+      "cliname": "iftype"
+    }, 
+    "IfIpAddress": {
+      "cliname": "ifipaddress"
+    }, 
+    "IfAdminStat": {
+      "cliname": "ifadminstat"
+    }, 
+    "IfAuthKey": {
+      "cliname": "ifauthkey"
+    }, 
+    "IfRtrPriority": {
+      "cliname": "ifrtrpriority"
+    }, 
+    "IfAreaId": {
+      "cliname": "ifareaid"
+    }, 
+    "IfPollInterval": {
+      "cliname": "ifpollinterval"
+    }, 
+    "IfAuthType": {
+      "cliname": "ifauthtype"
+    }, 
+    "IfHelloInterval": {
+      "cliname": "ifhellointerval"
+    }, 
+    "IfTransitDelay": {
+      "cliname": "iftransitdelay"
+    }, 
+    "IfRtrDeadInterval": {
+      "cliname": "ifrtrdeadinterval"
+    }
+  }
+}

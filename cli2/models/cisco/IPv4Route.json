@@ -1,0 +1,16 @@
+{
+  "ipv4route": {
+    "prompt": "", 
+    "commands": {
+    },
+    "cliname": "route",
+    "value": {
+      "DestinationNw": {
+        "cliname": "destinationnw"
+      }, 
+      "NetworkMask": {
+        "cliname": "networkmask"
+      }
+    }
+  }
+}

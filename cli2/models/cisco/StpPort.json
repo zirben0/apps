@@ -1,0 +1,17 @@
+{
+  "stpport": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/StpPortSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "BrgIfIndex": {
+        "cliname": "brgifindex"
+      }, 
+      "IfIndex": {
+        "cliname": "ifindex"
+      }
+    }
+  }
+}

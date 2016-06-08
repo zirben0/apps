@@ -1,13 +1,14 @@
 {
+  "listattrs": [], 
   "commands": {
     "NextHop": {
       "cliname": "nexthop"
-    },
-    "Network": {
-        "cliname": "network"
-    },
+    }, 
     "CIDRLen": {
-        "cliname": "cidrlen"
+      "cliname": "cidrlen"
+    }, 
+    "Network": {
+      "cliname": "network"
     }
   }
 }

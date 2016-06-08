@@ -1,0 +1,14 @@
+{
+  "mactableentrystate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/MacTableEntryStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "MacAddr": {
+        "cliname": "macaddr"
+      }
+    }
+  }
+}

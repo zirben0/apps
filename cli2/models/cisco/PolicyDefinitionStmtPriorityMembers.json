@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Priority": {
+      "cliname": "priority_stmt"
+    }, 
+    "Statement": {
+      "cliname": "match_statement"
+    }
+  }
+}

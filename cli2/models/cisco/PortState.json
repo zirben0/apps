@@ -1,0 +1,14 @@
+{
+  "portstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PortStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IntfRef": {
+        "cliname": "intfref"
+      }
+    }
+  }
+}

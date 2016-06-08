@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Logging": {
+      "cliname": "logging"
+    }, 
+    "Vrf": {
+      "cliname": "vrf"
+    }
+  }
+}

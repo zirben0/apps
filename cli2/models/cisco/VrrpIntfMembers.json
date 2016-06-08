@@ -1,0 +1,26 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Priority": {
+      "cliname": "priority"
+    }, 
+    "AdvertisementInterval": {
+      "cliname": "advertisementinterval"
+    }, 
+    "PreemptMode": {
+      "cliname": "preemptmode"
+    }, 
+    "VirtualIPv4Addr": {
+      "cliname": "virtualipv4addr"
+    }, 
+    "IfIndex": {
+      "cliname": "ifindex"
+    }, 
+    "VRID": {
+      "cliname": "vrid"
+    }, 
+    "AcceptMode": {
+      "cliname": "acceptmode"
+    }
+  }
+}

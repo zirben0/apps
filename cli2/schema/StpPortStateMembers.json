@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -15,24 +21,28 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 1 MAX 2147483647  The value of the instance of the ifIndex object", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "brgifindex", 
+            "default": "0-2147483647  The value of the instance of the ifIndex object", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "cliname": {
+            "default": "brgifindex", 
             "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -48,33 +58,32 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MIN 1 MAX 65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "ifindex", 
+            "default": "0-65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
             "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "int32", 
+          "cliname": {
+            "default": "ifindex", 
             "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 65535
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

@@ -7,6 +7,10 @@
         "description" : "config name used",
         "default" : "show"
       },
+      "help" : {
+        "type" : "string",
+        "default" : "Show commands"
+      },
       "commands" : {
         "type": "object",
         "description": "holds all related commands related to ethernet port",
@@ -15,7 +19,7 @@
             "$ref": "file:/tmp/snaproute/cli/schema/interface.json"
           },
           "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/vlan.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/Vlan.json"
           },
           "subcmd3": {
             "$ref": "file:/tmp/snaproute/cli/schema/router.json"

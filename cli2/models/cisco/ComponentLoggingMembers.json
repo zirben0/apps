@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Module": {
+      "cliname": "module"
+    }, 
+    "Level": {
+      "cliname": "level"
+    }
+  }
+}

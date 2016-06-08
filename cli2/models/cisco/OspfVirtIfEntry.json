@@ -1,0 +1,17 @@
+{
+  "ospfvirtifentry": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfVirtIfEntrySubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "VirtIfAreaId": {
+        "cliname": "virtifareaid"
+      }, 
+      "VirtIfNeighbor": {
+        "cliname": "virtifneighbor"
+      }
+    }
+  }
+}

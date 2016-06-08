@@ -1,10 +1,11 @@
 {
+  "listattrs": [], 
   "commands": {
-    "NeighborAddress": {
-        "cliname": "neighboraddress"
-    },
     "IfIndex": {
-        "cliname": "ifindex"
+      "cliname": "ifindex"
+    }, 
+    "NeighborAddress": {
+      "cliname": "neighboraddress"
     }
   }
 }

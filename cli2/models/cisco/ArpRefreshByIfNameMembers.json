@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IfName": {
+      "cliname": "ifname"
+    }
+  }
+}

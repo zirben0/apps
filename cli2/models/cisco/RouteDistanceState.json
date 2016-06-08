@@ -1,0 +1,14 @@
+{
+  "routedistancestate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/RouteDistanceStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Protocol": {
+        "cliname": "protocol"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AdvRouter": {
+      "cliname": "advrouter"
+    }, 
+    "LSId": {
+      "cliname": "lsid"
+    }, 
+    "LSType": {
+      "cliname": "lstype"
+    }
+  }
+}

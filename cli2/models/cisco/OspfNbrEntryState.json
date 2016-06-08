@@ -1,0 +1,17 @@
+{
+  "ospfnbrentrystate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfNbrEntryStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "NbrIpAddr": {
+        "cliname": "nbripaddr"
+      }, 
+      "NbrAddressLessIndex": {
+        "cliname": "nbraddresslessindex"
+      }
+    }
+  }
+}

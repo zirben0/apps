@@ -1,0 +1,15 @@
+{
+  "bgppeergroup": {
+    "prompt": "peer",
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPPeerGroupSubCmds.json"
+    },
+    "help": "BGP Peer Commands",
+    "cliname": "peer",
+    "value": {
+      "Name": {
+        "cliname": "peer"
+      }
+    }
+  }
+}

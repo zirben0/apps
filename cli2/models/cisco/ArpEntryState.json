@@ -1,0 +1,14 @@
+{
+  "arpentrystate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpEntryStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IpAddr": {
+        "cliname": "ipaddr"
+      }
+    }
+  }
+}

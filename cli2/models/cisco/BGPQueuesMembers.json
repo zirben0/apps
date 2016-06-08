@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Input": {
+      "cliname": "input"
+    }, 
+    "Output": {
+      "cliname": "output"
+    }
+  }
+}

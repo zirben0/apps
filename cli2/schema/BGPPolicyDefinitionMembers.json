@@ -1,41 +1,19 @@
 {
+  "listattrs": [
+    [
+      "subcmd1", 
+      "StatementList"
+    ]
+  ], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
     "properties": {
-      "Precedence": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Precedence of the policy definition", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "precedence", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "argtype": {
-            "default": "int32", 
-            "type": "string"
-          }
-        }
-      }, 
       "MatchType": {
         "type": "object", 
         "properties": {
@@ -51,23 +29,32 @@
             "default": " All/Any  Match type for policy definition", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "matchtype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "enum": [
+              "All", 
+              "Any"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
+      }, 
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/schema/BGPPolicyDefinitionStmtPrecedence.json"
       }, 
       "Name": {
         "type": "object", 
@@ -84,25 +71,27 @@
             "default": "Name of the BGP policy definition", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "name", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
-      "StatementList": {
+      "Precedence": {
         "type": "object", 
         "properties": {
           "key": {
@@ -114,33 +103,32 @@
             "type": "string"
           }, 
           "help": {
-            "default": "type: BGPPolicyDefinitionStmtPrecedence.  Precedence of statements in the policy", 
-            "type": "string"
-          }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "cliname": {
-            "default": "statementlist", 
+            "default": "Precedence of the policy definition", 
             "type": "string"
           }, 
           "islist": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "BGPPolicyDefinitionStmtPrecedence", 
+          "cliname": {
+            "default": "precedence", 
             "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 

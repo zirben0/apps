@@ -1,0 +1,20 @@
+{
+  "bgproutestate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPRouteStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "NextHop": {
+        "cliname": "nexthop"
+      }, 
+      "CIDRLen": {
+        "cliname": "cidrlen"
+      }, 
+      "Network": {
+        "cliname": "network"
+      }
+    }
+  }
+}

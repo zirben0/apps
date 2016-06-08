@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Vrf": {
+      "cliname": "vrf"
+    }, 
+    "Timeout": {
+      "cliname": "timeout"
+    }
+  }
+}

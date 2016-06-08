@@ -1,4 +1,10 @@
 {
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": true, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
   "commands": {
     "type": "object", 
     "description": "", 
@@ -18,21 +24,25 @@
             "default": "Required minimum rx interval in ms default: 1000", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "1000", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "requiredminrxinterval", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
+          "defaultarg": {
+            "default": "1000"
           }
         }
       }, 
@@ -51,21 +61,30 @@
             "default": " metmd5/keyedmd5/metsha1/keyedsha1/simple  Authentication type default: simple", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "simple", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "authtype", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "enum": [
+              "metmd5", 
+              "keyedmd5", 
+              "metsha1", 
+              "keyedsha1", 
+              "simple"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": "simple"
           }
         }
       }, 
@@ -84,21 +103,23 @@
             "default": "True/False  Enable or disable demand mode default: false", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "false", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "demandenabled", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
-            "type": "string"
+          "defaultarg": {
+            "default": "false"
           }
         }
       }, 
@@ -117,21 +138,25 @@
             "default": "Desired minimum tx interval in ms default: 1000", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "1000", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "desiredmintxinterval", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
+          "defaultarg": {
+            "default": "1000"
           }
         }
       }, 
@@ -150,21 +175,23 @@
             "default": "True/False  Enable or disable authentication default: false", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "false", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "authenticationenabled", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "bool", 
-            "type": "string"
+          "defaultarg": {
+            "default": "false"
           }
         }
       }, 
@@ -183,21 +210,25 @@
             "default": "Authentication key id default: 1", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "1", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "authkeyid", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
+          "defaultarg": {
+            "default": "1"
           }
         }
       }, 
@@ -216,21 +247,25 @@
             "default": "Required minimum echo rx interval in ms default: 0", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "0", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "requiredminechorxinterval", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
+          "defaultarg": {
+            "default": "0"
           }
         }
       }, 
@@ -249,21 +284,25 @@
             "default": "Detection multiplier default: 3", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "3", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "localmultiplier", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "uint32", 
-            "type": "string"
+          "defaultarg": {
+            "default": "3"
           }
         }
       }, 
@@ -282,21 +321,23 @@
             "default": "Authentication password default: snaproute", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "snaproute", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "authdata", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": "snaproute"
           }
         }
       }, 
@@ -315,30 +356,27 @@
             "default": "Session parameters", 
             "type": "string"
           }, 
-          "defaultarg": {
-            "default": "", 
-            "type": "string"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "cliname": {
             "default": "name", 
             "type": "string"
           }, 
-          "islist": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "argtype": {
-            "default": "string", 
-            "type": "string"
+          "defaultarg": {
+            "default": ""
           }
         }
       }
     }
-  }, 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
   "defaultref": {
     "type": "object", 
