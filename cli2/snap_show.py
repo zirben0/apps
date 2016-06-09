@@ -389,12 +389,14 @@ class ShowRun(object):
                                                             mattrobj['cliname'] != matchattr:
                                                 defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
                                                 attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
-                                                value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
-                                                element.setAttributes(mattr,
-                                                                      mattrobj['cliname'],
-                                                                      attrtype,
-                                                                      convertStrValueToValueType(attrtype, value),
-                                                                      convertStrValueToValueType(attrtype, defaultVal))
+                                                if (cfgObj and  mattr in cfgObj) or \
+                                                        (subattrobj and mattr in subattrobj):
+                                                    value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
+                                                    element.setAttributes(mattr,
+                                                                          mattrobj['cliname'],
+                                                                          attrtype,
+                                                                          convertStrValueToValueType(attrtype, value),
+                                                                          convertStrValueToValueType(attrtype, defaultVal))
 
                                 # sub model objects
                                 for (mcmds, mvalues) in mobj['commands'].iteritems():
