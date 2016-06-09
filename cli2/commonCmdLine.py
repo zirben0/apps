@@ -458,7 +458,7 @@ class CommonCmdLine(object):
                                             return k
 
                                 else:
-                                    rv = list(frozenset([str(x).lower() for x in selections]).itersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
+                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
                                     for k in selections:
                                         if rv and k.lower() == rv[0]:
                                             return k
@@ -472,7 +472,7 @@ class CommonCmdLine(object):
                                         if rv and k.lower() == rv[0]:
                                             return k
                                 else:
-                                    rv = list(frozenset([str(x).lower() for x in selections]).itersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
+                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
                                     for k in selections:
                                         if rv and  k.lower() == rv[0]:
                                             return k

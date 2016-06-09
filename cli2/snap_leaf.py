@@ -104,7 +104,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     # todo need to check keys
                     for entry in config.attrList:
                         if entry.isKey() and \
-                                ((entry.attr == attr and entry.val != val) or
+                                ((entry.attr == attr and entry.val == val) or
                                 (entry.attr != attr)):
                             return config
             return None
@@ -532,13 +532,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
             return False
 
-
         # lets fill in a default value if one is not supplied.  This is only
         # valid for boolean attributes and attributes which only contain two
         # enum types
         value = self.getCommandDefaultAttrValue(mline, delcmd=delete)
         if value is not None:
-            mline += [value]
+            mline += [str(value)]
         if isInvalidCommand(mline, delete):
             return
         elif isKeyValueCommand(mline, delete):

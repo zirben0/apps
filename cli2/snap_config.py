@@ -375,6 +375,10 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                        if i+1 > mlineLength:
+                                            sys.stdout.write("\nERROR Value expected\n")
+                                            return ''
+
                                         cmdvalue = mline[i+1]
                                         if len(frozenset(keys).intersection(snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST)) == 1:
                                             if "/" in cmdvalue:

@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "Module": {
-      "cliname": "module"
+      "cliname": "logging"
     }, 
     "Level": {
       "cliname": "level"

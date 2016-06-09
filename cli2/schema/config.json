@@ -48,10 +48,13 @@
             "$ref": "file:/tmp/snaproute/cli/schema/PolicyCondition.json"
           },
           "subcmd10": {
-            "$ref": "file:/tmp/snaproute/cli/schema/SystemLogging.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/ComponentLogging.json"
           },
           "subcmd11": {
             "$ref": "file:/tmp/snaproute/cli/schema/ArpGlobal.json"
+          },
+          "subcmd12": {
+            "$ref": "file:/tmp/snaproute/cli/schema/ComponentLogging.json"
           }
         }
       }
