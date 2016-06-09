@@ -167,6 +167,8 @@ class ConfigMonitor (object) :
 
     def saveConfig(self) :
         for objName, objInfo  in self.objects.iteritems ():
+            if 'LaPortChannel' in objName:
+                continue
             if 'w' in objInfo['access'] :
                 methodName = 'getAll'+objName+'s'
                 method =  getattr(self.swtch, methodName, None)
