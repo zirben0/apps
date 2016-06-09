@@ -583,7 +583,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                             # or a commands containing attributes of an object, which should hold
                             # the object in question associated with this command.
                             if "objname" in kk:
-                                config = CmdEntry(v['objname']['default'], {})
+                                config = CmdEntry(self, v['objname']['default'], {})
                                 config.setValid(True)
                                 self.configList.append(config)
 

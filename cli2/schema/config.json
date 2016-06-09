@@ -49,9 +49,6 @@
           },
           "subcmd10": {
             "$ref": "file:/tmp/snaproute/cli/schema/SystemLogging.json"
-          },
-          "subcmd11": {
-            "$ref": "file:/tmp/snaproute/cli/schema/SystemParam.json"
           }
         }
       }

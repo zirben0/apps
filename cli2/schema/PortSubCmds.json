@@ -4,5 +4,8 @@
   },
   "subcmd2": {
     "$ref": "file:/tmp/snaproute/cli/schema/ethip.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/schema/VrrpIntf.json"
   }
 }

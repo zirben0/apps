@@ -1,7 +1,7 @@
 {
-  "port": {
+  "vrrpintf": {
     "createwithdefault": {
-      "default": false,
+      "default": true, 
       "type": "boolean", 
       "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
     }, 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/PortSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/VrrpIntfSubCmds.json"
         }
       }, 
       "cliname": {
@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "IntfRef": {
+          "IfIndex": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "Front panel port name or system assigned interface id", 
+                "default": "Interface index for which VRRP Config needs to be done", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,11 +56,50 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "intfref", 
+                "default": "ifindex", 
                 "type": "string"
               }, 
               "argtype": {
+                "minimum": -2147483648, 
+                "type": "int32", 
+                "maximum": 2147483647
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }
+            }
+          }, 
+          "VRID": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
                 "type": "string"
+              }, 
+              "help": {
+                "default": "Virtual Router's Unique Identifier", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "cliname": {
+                "default": "vrid", 
+                "type": "string"
+              }, 
+              "argtype": {
+                "minimum": -2147483648, 
+                "type": "int32", 
+                "maximum": 2147483647
               }, 
               "isdefaultset": {
                 "default": false, 
@@ -74,7 +113,7 @@
         }
       }, 
       "objname": {
-        "default": "Port", 
+        "default": "VrrpIntf", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

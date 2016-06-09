@@ -35,6 +35,7 @@ import rlcompleter
 import glob
 import shutil
 import time
+import requests
 import snapcliconst
 from collections import Counter
 from itertools import izip_longest
@@ -96,6 +97,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.tmp_remove_priveledge = None
         self.sdk = FlexSwitch(switch_ip, 8080)
         self.sdkshow = FlexPrint(switch_ip, 8080)
+        self.IntfRefToIfIndexDict = {}
+        self.IfIndexToIntfRef = {}
 
         # this must be called after sdk setting as the common init is valididating
         # the model and some info needs to be gathered from system to populate the
@@ -111,6 +114,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             sys.stdout.write("schema and model mismatch")
             sys.exit(0)
 
+        self.discoverPortInfo()
         self.setupcommands()
         self.setBanner(switch_ip)
 
@@ -171,11 +175,18 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         # so we just need to check that confd is up
         requiredDaemons = ['confd',]
 
-        r = self.sdk.getSystemStatusState("")
+        try:
+            r = self.sdk.getSystemStatusState("")
+        except requests.exceptions.ConnectionError:
+            sys.stdout.write("Unable to connect to system, flexswitch confd may not be up yet.\n")
+            return False
+
         if r.status_code in self.httpSuccessCodes:
             resp = r.json()
+            #for x in resp['Object']['FlexDaemons']:
+            #    print x['Name'], x['State']
             if resp['Object']['Ready'] == True or \
-                len(frozenset(requiredDaemons).intersection([x.get('name', None) for x in resp['Object']['FlexDaemons'] if x.get('State', 'down') == 'up'])) == 1:
+                len(frozenset(requiredDaemons).intersection([x.get('Name', None) for x in resp['Object']['FlexDaemons'] if str(x.get('State', 'down')) == 'up'])) == 1:
                 #sys.stdout.write('System Is ready\n')
                 return True
             else:
@@ -200,6 +211,19 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
         self.intro += "\nFlexSwitch Console Version 1.0, Connected to: " + self.switch_name
         self.intro += "\nUsing %s style cli\n" %(self.model["style"],)
+
+    def discoverPortInfo(self):
+        """
+        Get all the ports in the system and store the IntfRef and IfIndex mappings
+        :return:
+        """
+        ports = self.sdk.getAllPorts()
+        for port in ports:
+            p = port['Object']
+            ifIndex = p['IfIndex']
+            intfRef = p['IntfRef']
+            self.IfIndexToIntfRef[ifIndex] = intfRef
+            self.IntfRefToIfIndexDict[intfRef] = ifIndex
 
     def do_show_cli(self, arv):
 

@@ -105,6 +105,21 @@ class CommonCmdLine(object):
     def getSdkShow(self):
         return self.getRootAttr('sdkshow')
 
+    def getIfIndexToIntfRef(self, ifIndex):
+        num = ifIndex
+        try:
+            if type(idx) in (unicode, str):
+                num = int(str(ifIndex))
+        except ValueError:
+            return None
+
+        data = self.getRootAttr('IfIndexToIntfRef')
+        return data.get(num, None)
+
+    def getIntfRefToIfIndex(self, intfRef):
+        data = self.getRootAttr('IfIndexToIntfRef')
+        return data.get(intfRef, None)
+
     def getShowObj(self,):
         return self.getObjByInstanceType('ShowCmd')
 
@@ -144,20 +159,18 @@ class CommonCmdLine(object):
         subList = []
         key = commandkey
         if model and type(model) in (dict, jsonref.JsonRef):
-            #print 'getSubCmd: searchKey %s\n' % (k,)
             key = self.getSchemaCommandNameFromCliName(commandkey, model)
             if not key:
                 if 'commands' in model:
                     for cmd, submodel in model["commands"].iteritems():
-                        #print 'getSubCommand: cmd ', cmd, submodel
                         if 'subcmd' in cmd and key is None:
                             key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
                 if [x for x in model.keys() if 'subcmd' in x]:
                     for cmd, submodel in model.iteritems():
-                        #print 'getSubCommand: cmd ', cmd, submodel
                         if type(submodel) in (dict, jsonref.JsonRef):
-                            if [y for y in submodel.values() if 'cliname' in y] and key is None:
-                                key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
+                            for y in submodel.values():
+                                if 'cliname' in y and y['cliname'] == commandkey:
+                                    key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
 
             if not key:
                 key = commandkey
@@ -171,7 +184,7 @@ class CommonCmdLine(object):
                     #sys.stdout.write("RETURN 1 %s\n\n"% (v))
                     subList.append(v)
                 else:
-                    # looking for subcommand
+                     # looking for subcommand
                     if type(v) in (dict, jsonref.JsonRef):
 
                         if key in ('?', 'help'):
