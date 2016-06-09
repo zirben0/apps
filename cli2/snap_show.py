@@ -368,16 +368,17 @@ class ShowRun(object):
                                 element.setCmd(cmd)
                                 # found an element lets populate the contents of the element from this object
                                 element.setObjName(objname)
-                                for attr, attrobj in mobj['value'].iteritems():
-                                    defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
-                                    attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
-                                    value = cfgObj[attr] if cfgObj else subattrobj[attr]
-                                    element.setObjKeyVal(attr,
-                                                         attrtype,
-                                                         attrobj['cliname'],
-                                                         convertStrValueToValueType(attrtype, value),
-                                                         convertStrValueToValueType(attrtype, defaultVal))
-
+                                if 'value' in mobj:
+                                    for attr, attrobj in mobj['value'].iteritems():
+                                        defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
+                                        attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
+                                        value = cfgObj[attr] if cfgObj else subattrobj[attr]
+                                        element.setObjKeyVal(attr,
+                                                             attrtype,
+                                                             attrobj['cliname'],
+                                                             convertStrValueToValueType(attrtype, value),
+                                                             convertStrValueToValueType(attrtype, defaultVal))
+                                
                                 # lets get key attributes for this model object
                                 # the attributes that we are interested in will come from the model
                                 # lets find the attr obj

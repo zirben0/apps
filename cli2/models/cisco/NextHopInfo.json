@@ -7,7 +7,7 @@
     "cliname": "", 
     "value": {
       "NextHopIp": {
-        "cliname": "nexthopip"
+        "cliname": "nexthop_ip"
       }
     }
   }

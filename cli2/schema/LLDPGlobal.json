@@ -1,5 +1,5 @@
 {
-  "arpglobal": {
+  "lldpglobal": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/ArpGlobalSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/LLDPGlobalSubCmds.json"
         }
       }, 
       "cliname": {
@@ -31,9 +31,9 @@
         "displayValue": false, 
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
-      }, 
+      },
       "objname": {
-        "default": "ArpGlobal", 
+        "default": "LLDPGlobal", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

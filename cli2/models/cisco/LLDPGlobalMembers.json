@@ -1,14 +1,11 @@
 {
   "listattrs": [], 
   "commands": {
-    "WatchDog": {
-      "cliname": "watchdog"
-    }, 
     "Enable": {
       "cliname": "enable"
     }, 
-    "Name": {
-      "cliname": "daemon"
+    "Vrf": {
+      "cliname": "lldp"
     }
   }
 }

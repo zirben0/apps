@@ -108,7 +108,7 @@ class CommonCmdLine(object):
     def getIfIndexToIntfRef(self, ifIndex):
         num = ifIndex
         try:
-            if type(idx) in (unicode, str):
+            if type(ifIndex) in (unicode, str):
                 num = int(str(ifIndex))
         except ValueError:
             return None
@@ -607,8 +607,8 @@ class CommonCmdLine(object):
                                             for attr, attrvalue in mcmdvalues['commands'].iteritems():
                                                 if attrvalue['cliname'] == mline[i]:
                                                     sattrvalue = scmdvalues['commands']['properties'][attr]
-                                                    subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                                       snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                                    helpcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                                         snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
 
         self.printCommands(mline, helpcommands)
 
