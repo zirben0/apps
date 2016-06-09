@@ -7,6 +7,10 @@
         "description" : "config name used",
         "default" : "show"
       },
+      "help" : {
+        "type" : "string",
+        "default" : "Show commands"
+      },
       "commands" : {
         "type": "object",
         "description": "holds all related commands related to ethernet port",

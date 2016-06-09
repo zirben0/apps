@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": false, 
+    "default": true, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "IfIndex where lldp needs to be configured", 
+            "default": "IfIndex where lldp needs is enabled/disabled", 
             "type": "string"
           }, 
           "islist": {
@@ -58,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  Enable/Disable lldp config Per Port", 
+            "default": "True/False  Enable/Disable lldp config Per Port default: true", 
             "type": "string"
           }, 
           "islist": {
@@ -77,7 +77,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "true"
           }
         }
       }

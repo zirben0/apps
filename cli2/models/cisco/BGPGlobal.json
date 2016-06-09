@@ -4,7 +4,7 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalSubCmds.json"
     },
-    "help" : "Border Gateway Protocol Commands (BGP)",
+    "help" : "Local AS for BGP global config",
     "cliname": "bgp",
     "value": {
       "ASNum": {

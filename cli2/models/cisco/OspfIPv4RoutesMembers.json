@@ -1,0 +1,47 @@
+{
+  "listattrs": [
+    [
+      "subcmd1", 
+      "LSOrigin"
+    ], 
+    [
+      "subcmd2", 
+      "NextHops"
+    ]
+  ], 
+  "commands": {
+    "AreaId": {
+      "cliname": "areaid"
+    }, 
+    "NumOfPaths": {
+      "cliname": "numofpaths"
+    }, 
+    "DestId": {
+      "cliname": "destid"
+    }, 
+    "OptCapabilities": {
+      "cliname": "optcapabilities"
+    }, 
+    "DestType": {
+      "cliname": "desttype"
+    }, 
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfLsaKey.json"
+    }, 
+    "PathType": {
+      "cliname": "pathtype"
+    }, 
+    "subcmd2": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfNextHop.json"
+    }, 
+    "Cost": {
+      "cliname": "cost"
+    }, 
+    "AddrMask": {
+      "cliname": "addrmask"
+    }, 
+    "Type2Cost": {
+      "cliname": "type2cost"
+    }
+  }
+}

@@ -29,6 +29,9 @@
       },
       "subcmd9": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyCondition.json"
+      },
+      "subcmd10": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemLogging.json"
       }
     }
   } 

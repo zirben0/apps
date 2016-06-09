@@ -2,28 +2,28 @@
   "ethip": {
     "type" : "object",
     "properties" : {
-      "prompt" : {
+      "prompt": {
         "type": "string",
-        "default" : ""
+        "default": ""
       },
-      "cliname" : {
-        "type" : "string",
-        "description" : "name used in cli to describe ip",
-        "default" : "ip"
+      "cliname": {
+        "type": "string",
+        "description": "name used in cli to describe ip",
+        "default": "ip"
       },
       "help": {
-        "type" : "string",
+        "type": "string",
         "default": "Configure IP features"
       },
       "commands": {
         "type": "object",
         "description": "Base commands",
         "properties": {
-          "subcmd1" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/ipv4ethintfmembers.json"
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/ipv4ethintfmembers.json"
           },
-          "subcmd2" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/DhcpRelayIntfMembers.json"
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayIntf.json"
           }
         }
       }

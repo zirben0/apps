@@ -46,6 +46,12 @@
           },
           "subcmd9": {
             "$ref": "file:/tmp/snaproute/cli/schema/PolicyCondition.json"
+          },
+          "subcmd10": {
+            "$ref": "file:/tmp/snaproute/cli/schema/SystemLogging.json"
+          },
+          "subcmd11": {
+            "$ref": "file:/tmp/snaproute/cli/schema/SystemParam.json"
           }
         }
       }

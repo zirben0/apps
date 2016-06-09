@@ -31,11 +31,21 @@ import json
 import pprint
 import inspect
 import string
+import snapcliconst
 from jsonref import JsonRef
 from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine
+from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
+    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from snap_leaf import LeafCmd
 from cmdEntry import *
+
+try:
+    from flexswitchV2 import FlexSwitch
+    MODELS_DIR = './'
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    MODELS_DIR='/opt/flexswitch/models/'
+    from flexswitchV2 import FlexSwitch
 
 pp = pprint.PrettyPrinter(indent=2)
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
@@ -65,6 +75,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.cmdtype = cmdtype
         #store all the pending configuration objects
         self.configList = []
+        self.valueexpected = SUBCOMMAND_VALUE_NOT_EXPECTED
 
         self.setupCommands()
 
@@ -169,12 +180,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def cmdloop(self, intro=None):
-        #try:
-            #import ipdb; ipdb.set_trace()
         cmdln.Cmdln.cmdloop(self)
-        #except KeyboardInterrupt:
-        #    self.intro = '\n'
-        #    self.cmdloop()
 
     def _cmd_complete_delete(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %('no ' + self.objname, line, text, not text))
@@ -186,7 +192,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def _cmd_do_delete(self, argv):
 
-        self.cmdtype = 'delete'
+        self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
         self._cmd_common(argv[1:])
 
     def _cmd_complete_common(self, text, line, begidx, endidx):
@@ -220,11 +226,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
                             (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            if valueexpected:
-                                values =  self.getCommandValues(objname, keys)
-                                if not values:
-                                    values = self.getValueSelections(mline[i], submodel, subschema)
-                                return values
+                            #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
+                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                    values = self.getCommandValues(objname, keys)
+                                    if not values:
+                                        values = self.getValueSelections(mline[i], submodel, subschema)
+                                    return values
                             else:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
 
@@ -267,7 +275,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
             if schemaname:
                 configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                if self.cmdtype != 'delete' and configprompt:
+                if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype and configprompt:
                     endprompt = self.baseprompt[-2:]
                     self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
 
@@ -285,7 +293,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     if schemaname:
                                         configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                         objname = schemaname
-                                        if configprompt and self.cmdtype != 'delete':
+                                        if configprompt and snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
                                             if not endprompt:
                                                 endprompt = self.baseprompt[-2:]
                                                 self.prompt = self.baseprompt[:-2] + '-'
@@ -295,7 +303,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
                 if value != None:
                     self.prompt += value + endprompt
-                elif self.cmdtype != 'delete' and self.prompt[:-1] != "#":
+                elif snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype and self.prompt[:-1] != "#":
                     self.prompt = self.prompt[:-1] + endprompt
                 self.stop = True
                 prevcmd = self.currentcmd
@@ -303,20 +311,42 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 # stop the command loop for config as we will be running a new cmd loop
                 cmdln.Cmdln.stop = True
 
+                # this code was added to handle admin state changes for global objects
+                # bfd enable
+                cliname = argv[-2]
+                if self.valueexpected == SUBCOMMAND_VALUE_EXPECTED:
+                    self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
+                    cliname = argv[-1]
+
                 self.teardownCommands()
-                c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
-                if c.applybaseconfig(argv[-2]):
+                c = LeafCmd(objname, cliname, self.cmdtype, self, self.prompt, submodelList, subschemaList)
+                if c.applybaseconfig(cliname):
                     c.cmdloop()
                 self.setupCommands()
-                if self.cmdtype == 'delete':
-                    self.cmdtype = 'config'
+
+                self.cmdtype = self.cmdtype.rstrip(snapcliconst.COMMAND_TYPE_CONFIG_NOW)
+                if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+                    self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
                 self.prompt = self.baseprompt
                 self.currentcmd = prevcmd
+                # lets clear the config
+                delconfigList = []
+                for config in self.configList:
+                    if not config.isPending():
+                        config.clear(None, None, all=True)
+                        if config.isEntryEmpty():
+                            delconfigList.append(config)
+
+                for delconfig in delconfigList:
+                    self.configList.remove(delconfig)
+
         if self.stop:
             self.cmdloop()
 
     def precmd(self, argv):
+
+        import ipdb; ipdb.set_trace()
         mlineLength = len(argv) - (1 if 'no' in argv else 0)
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
@@ -324,6 +354,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         submodel = self.model
         subcommands = []
         if mlineLength > 0:
+
+            cmd = argv[-1]
+            if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
+                self.display_help(argv)
+                return ''
+            if cmd in ('!',):
+                self.do_exit(argv)
+                return ''
+
             self.commandLen = 0
             try:
                 for i in range(1, len(mline)):
@@ -331,42 +370,64 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     if schemaname:
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
-
-                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            if valueexpected:
-                                #if mlineLength - i > 1:
-                                #    sys.stdout.write("Invalid command entered, ignoring\n")
-                                #    return ''
-                                values = self.getValueSelections(mline[i], submodel, subschema)
-                                if i < mlineLength and values and mline[i+1] not in values:
-                                    sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
-                                    return ''
-                                min,max = self.getValueMinMax(mline[i], submodel, subschema)
-                                if min is not None and max is not None:
-                                    try:
-                                        num = string.atoi(mline[i+1])
-                                        if num < min or num > max:
-                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                        if submodelList and subschemaList:
+                            for submodel, subschema in zip(submodelList, subschemaList):
+                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                                (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                    #if mlineLength - i > 1:
+                                    #    sys.stdout.write("Invalid command entered, ignoring\n")
+                                    #    return ''
+                                    if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                        values = self.getCommandValues(objname, keys)
+                                        if i < mlineLength and values and mline[i+1] not in values:
+                                            snapcliconst.printErrorValueCmd(i, mline)
+                                            sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
                                             return ''
-                                    except:
-                                        sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
-                                        return ''
+                                        values = self.getValueSelections(mline[i], submodel, subschema)
+                                        if i < mlineLength and values and mline[i+1] not in values:
+                                            snapcliconst.printErrorValueCmd(i, mline)
+                                            sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                            return ''
+                                        min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                        if min is not None and max is not None:
+                                            try:
+                                                num = string.atoi(mline[i+1])
+                                                if num < min or num > max:
+                                                    snapcliconst.printErrorValueCmd(i, mline)
+                                                    sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                    return ''
+                                            except:
+                                                sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                return ''
 
-                                #values = self.getCommandValues(objname, keys)
-                                #sys.stdout.write("FOUND values %s" %(values))
-                                self.commandLen = len(mline[:i]) + 1
+                                        #values = self.getCommandValues(objname, keys)
+                                        #sys.stdout.write("FOUND values %s" %(values))
+                                        self.commandLen = len(mline[:i]) + 1
+                                    else:
+                                        self.commandLen = len(mline[:i])
+                                    self.valueexpected = valueexpected
+                                elif i == mlineLength - 1 and mline[i+1] in subcommands:
+                                    schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
+                                    if schemaname:
+                                        for (submodelkey, submodel), (subschemakey, subschema) in zip(submodel[schemaname]["commands"].iteritems(),
+                                                                                                      subschema[schemaname]['properties']["commands"]["properties"].iteritems()):
+                                            if 'subcmd' in submodelkey:
+                                                if self.isCommandLeafAttrs(submodel, subschema):
+                                                    #leaf attr model
+                                                    (valueexpected, objname, keys, help) = self.isLeafValueExpected(mline[i+1], submodel, subschema)
+                                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                                        if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                                            self.commandLen = len(mline[:i]) + 2
+                                                        else:
+                                                            self.commandLen = len(mline[:i]) + 1
+                                                    else:
+                                                        self.commandLen = len(mline[:i])
+                                                    self.valueexpected = valueexpected
 
             except Exception as e:
                 sys.stdout.write("precmd: error %s" %(e,))
                 pass
-
-            cmd = argv[-1]
-            if cmd in ('?', ) or \
-                    (mlineLength < self.commandLen and cmd not in ("exit", "end", "help", "no")):
-                self.display_help(argv)
-                return ''
 
         return argv
 
@@ -396,12 +457,17 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         argumentList = []
         # set all the args
         if 'create' in func.__name__ or \
-           'get' in func.__name__:
+           'get' in func.__name__ or \
+           'delete' in func.__name__:
             for k in getKeys:
                 if k in data:
                     argumentList.append(data[k])
+                    if lengthkwargs > 0:
+                        if k in data:
+                            del data[k]
 
-            data = {}
+            if lengthkwargs == 0:
+                data = {}
         elif 'update' in func.__name__:
             for k in getKeys:
                 if k in data:
@@ -425,50 +491,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         return config
         return None
 
-    '''
-    def show_state(self, all=False):
-
-        configObj = self.getConfigObj()
-        if configObj and configObj.configList:
-            sys.stdout.write("Applying Show:\n")
-            # tell the user what attributes are being applied
-            for i in range(len(configObj.configList)):
-                config = configObj.configList[-(i+1)]
-
-                # get the sdk
-                sdk = self.getSdkShow()
-
-                funcObjName = config.name
-                try:
-                    if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName + 'States')
-                        printall_func()
-                    else:
-                        # update all the arguments so that the values get set in the get_sdk_...
-                        print_func = getattr(sdk, 'print' + funcObjName + 'State')
-                        data = config.getSdkConfig()
-                        (argumentList, kwargs) = self.get_sdk_func_key_values(data, print_func)
-                        print_func(*argumentList)
-
-                    # remove the configuration as it has been applied
-                    config.clear(None, None, all=True)
-                except Exception as e:
-                    sys.stdout.write("FAILED TO GET OBJECT for show state: %s\n" %(e,))
-    '''
     def convertKeyValueToDisplay(self, objName, key, value):
         #TODO this is a hack need a proper common mechanism to change special values
         returnval = value
-        if key in ('IntfRef', 'IfIndex' ):
+        if key in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
             # lets strip the string name prepended
-            for x in list(copy.copy(value)):
-                try:
-                    v = string.atoi(x)
-                except ValueError:
-                    # must be a string
-                    returnval = returnval[1:]
+            returnval = returnval.replace(snapcliconst.PORT_NAME_PREFIX, "")
             # TODO not working when this is enabled so going have to look into this later
             #returnval = '1/' + returnval
-        return returnval
+        return str(returnval)
 
     def getCommandValues(self, objname, keys):
 
@@ -482,79 +513,245 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 if objs:
                     return [self.convertKeyValueToDisplay(objname, keys[0], obj['Object'][keys[0]]) for obj in objs]
         except Exception as e:
-            sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, key, e,))
+            sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, keys, e,))
 
         return []
 
-    def do_apply(self, argv):
-        if self.configList:
-            #import ipdb; ipdb.set_trace()
-            sys.stdout.write("Applying Config:\n")
-            # HACK need to make sure global objects are called before other objects
-            globalconfigList = []
-            otherconfig = []
+    def getConfigOrder(self, configList):
+        '''
+        It is important that we apply deletes before create in particular order.
+        It is equally important that certain configuration be applied before others
+
+        IMPORTANT to note that configOrder.json is manually created file so if more
+        objects are added/deleted then this file needs to be updated.
+        :param configList:
+        :return:
+        '''
+        cfgorder = []
+        delcfgorder = []
+        with open(MODELS_DIR + 'configOrder.json', 'r') as f:
+            cfgorder = json.load(f,)['Order']
+            delcfgorder = list(reversed(cfgorder))
+
+        # certain objects have a specific order that need to be configured in
+        # but not all objects have a dependency.  Lets configure those objects
+        # which are part of the dependency list then apply everything else
+        attemptedApplyConfigList = []
+        for objname in delcfgorder:
             for config in self.configList:
-                if "global" in config.name.lower():
-                    globalconfigList.append(config)
-                else:
-                    otherconfig.append(config)
-            delconfigList = []
-            for config in globalconfigList + otherconfig:
-                if config.isValid():
+                if config.name == objname and config.delete:
+                    attemptedApplyConfigList.append(config)
+                    yield config
 
-                    # tell the user what attributes are being applied
-                    #config.show()
-                    # get the sdk
-                    sdk = self.getSdk()
-                    funcObjName = config.name
+        for objname in cfgorder:
+            for config in self.configList:
+                if config.name == objname and not config.delete:
+                    attemptedApplyConfigList.append(config)
+                    yield config
 
-                    #lets see if the object exists, by doing a get first
-                    get_func = getattr(sdk, 'get' + funcObjName)
-                    update_func = getattr(sdk, 'update' + funcObjName)
-                    create_func = getattr(sdk, 'create' + funcObjName)
+        for config in self.configList:
+            if config.delete and config not in attemptedApplyConfigList:
+                attemptedApplyConfigList.remove(config)
+                yield config
 
-                    try:
-                        # update all the arguments
-                        data = config.getSdkConfig()
-                        (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
-                        r = get_func(*argumentList)
-                        if r.status_code in sdk.httpSuccessCodes:
-                            # update
-                            data = config.getSdkConfig(readdata=r.json()['Object'])
-                            (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
-                            if len(kwargs) > 0:
-                                r = update_func(*argumentList, **kwargs)
-                                # succes or '500' nothing updated no changes ocurred
-                                if r.status_code not in sdk.httpSuccessCodes + ['500']:
-                                    sys.stdout.write("command update FAILED:\n%s %s\n sent %s %s" %(r.status_code, r.json()['Error'], argumentList, kwargs))
+        for config in self.configList:
+            if not config.delete and config not in attemptedApplyConfigList:
+                yield config
+
+        yield None
+
+    def do_show(self, argv):
+        root = self.getRootObj()
+        if root:
+            if hasattr(root, '_cmd_show'):
+                root._cmd_show(argv)
+
+    def do_apply(self, argv):
+        PROCESS_CONFIG = 1
+        ROLLBACK_CONFIG = 2
+        ROLLBACK_UPDATE = 1
+        ROLLBACK_CREATE = 2
+        ROLLBACK_DELETE = 3
+
+        root = self.getRootObj()
+
+        if self.configList and \
+                root.isSystemReady():
+
+            sys.stdout.write("Applying Config:\n")
+            clearAppliedList = []
+            rollbackData = {}
+            failurecfg = False
+            for stage in (PROCESS_CONFIG, ROLLBACK_CONFIG):
+                # if no failures occured then ignore rolling back config
+                if stage == ROLLBACK_CONFIG:
+                    if not failurecfg:
+                        continue
+                    else:
+                        sys.stdout.write("*************CONFIG FAILED ROLLING BACK ANY SUCCESSFUL CONFIG*************\n")
+
+                # apply delete config before create
+                for config in self.getConfigOrder(self.configList):
+                    # don't process other commands if any of them failed
+                    # during second pass we will rollback the config
+                    if config and config.isValid() and \
+                            ((not failurecfg and stage == PROCESS_CONFIG) or
+                             stage == ROLLBACK_CONFIG):
+
+                        # get the sdk
+                        sdk = self.getSdk()
+                        funcObjName = config.name
+
+                        #lets see if the object exists, by doing a get first
+                        # the only case in which a function should not exist
+                        # is if it is a sub attrbute.
+                        if hasattr(sdk, 'get' + funcObjName):
+                            get_func = getattr(sdk, 'get' + funcObjName)
+                            update_func = getattr(sdk, 'update' + funcObjName)
+                            create_func = getattr(sdk, 'create' + funcObjName)
+                            delete_func = getattr(sdk, 'delete' + funcObjName)
+                            try:
+                                origData = None
+                                if stage != ROLLBACK_CONFIG:
+                                    data = config.getSdkConfig()
+                                    (argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
+                                    # update all the arguments
+                                    r = get_func(*argumentList)
+                                    status_code = r.status_code
+                                    if status_code not in sdk.httpSuccessCodes + [404]:
+                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                        sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
+                                              ",".join(["%s" %(x) for x in argumentList]),
+                                              ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+                                    elif status_code not in [404]: # not found
+                                        origData = r.json()['Object']
+                                    elif status_code in [404] and config.delete:
+                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                        sys.stdout.write("warning: nothing to delete invalidating command\n")
+                                        sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
+                                              ",".join(["%s" %(x) for x in argumentList]),
+                                              ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+                                        clearAppliedList.append(config)
+                                        continue
                                 else:
-                                    sys.stdout.write("update SUCCESS:\n" )
-                                    config.show()
+                                    if config in rollbackData:
+                                        status_code = rollbackData[config]
+                                        origData = rollbackData[config][1]
+                                    else:
+                                        continue
 
-                        elif r.status_code == 404:
-                            # create
-                            data = config.getSdkConfig()
-                            (argumentList, kwargs) = self.get_sdk_func_key_values(data, create_func)
-                            r = create_func(*argumentList)
-                            if r.status_code not in sdk.httpSuccessCodes:
-                                sys.stdout.write("command create FAILED:\n%s %s\n sent %s %s " %(r.status_code, r.json()['Error'], argumentList, kwargs))
-                            else:
-                                sys.stdout.write("create SUCCESS:\n" )
-                                config.show()
+                                if status_code in sdk.httpSuccessCodes + [ROLLBACK_UPDATE] and \
+                                        not config.delete:
+                                    # update
+                                    (failurecfg, delList) = self.applyUpdateNodeConfig(sdk, config, update_func, origData, (stage == ROLLBACK_CONFIG))
+                                    if not failurecfg and stage == PROCESS_CONFIG:
+                                        clearAppliedList += delList
+                                        rollbackData[config] = (ROLLBACK_UPDATE, origData)
 
-                        else:
-                            sys.stdout.write("Command Get FAILED\n%s %s\n sent %s %s" %(r.status_code, r.json()['Error'], argumentList, kwargs))
+                                elif status_code in (404, ROLLBACK_DELETE):
+                                    # create
+                                    (failurecfg, delList) = self.applyCreateNodeConfig(sdk, config, create_func)
+                                    if not failurecfg and stage == PROCESS_CONFIG:
+                                        clearAppliedList += delList
+                                        rollbackData[config] = (ROLLBACK_CREATE, origData)
 
-                        # remove the configuration as it has been applied
-                        config.clear(None, None, all=True)
-                        if config.isEntryEmpty():
-                            delconfigList.append(config)
-                    except Exception as e:
-                        sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+                                elif status_code in (ROLLBACK_CREATE,) or \
+                                    config.delete:
+                                    # delete
+                                    (failurecfg, delList) = self.applyDeleteNodeConfig(sdk, config, delete_func)
+                                    if not failurecfg and stage == PROCESS_CONFIG:
+                                        clearAppliedList += delList
+                                        rollbackData[config] = (ROLLBACK_DELETE, origData)
 
-            if delconfigList:
-                for config in delconfigList:
-                    self.configList.remove(config)
+                            except Exception as e:
+                                sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+
+            if clearAppliedList:
+                for config in clearAppliedList:
+                    if config:
+                        self.configList.remove(config)
+
+    def applyCreateNodeConfig(self, sdk, config, create_func):
+        failurecfg = False
+        delconfigList = []
+        data = config.getSdkConfig()
+        (argumentList, kwargs) = self.get_sdk_func_key_values(data, create_func)
+        if kwargs:
+            r = create_func(*argumentList, **kwargs)
+        else:
+            r = create_func(*argumentList)
+        errorStr = r.json()['Error']
+        if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
+            sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, errorStr))
+            failurecfg = True
+        else:
+            sys.stdout.write("create SUCCESS:   http status code: %s\n" % (r.status_code,))
+            if r.json()['Error']:
+                sys.stdout.write("warning return code: %s\n" % (errorStr))
+
+            # set configuration to applied state
+            config.setPending(False)
+            config.show()
+            delconfigList.append(config)
+        sys.stdout.write("sdk:%s(%s,%s)\n" % (create_func.__name__,
+                                              ",".join(["%s" % (x) for x in argumentList]),
+                                              ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+        return failurecfg, delconfigList
+
+    def applyDeleteNodeConfig(self, sdk, config, delete_func):
+        failurecfg = False
+        delconfigList = []
+        data = config.getSdkConfig()
+        (argumentList, kwargs) = self.get_sdk_func_key_values(data, delete_func)
+        if kwargs:
+            r = delete_func(*argumentList, **kwargs)
+        else:
+            r = delete_func(*argumentList)
+
+        errorStr = r.json()['Error']
+        if r.status_code not in (sdk.httpSuccessCodes + [410]) and ('exists' and 'Nothing to be updated') not in errorStr: # 410 - Done
+            sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, errorStr))
+            failurecfg = True
+        else:
+            sys.stdout.write("delete SUCCESS:   http status code: %s\n" % (r.status_code,))
+            if r.json()['Error']:
+                sys.stdout.write("warning return code: %s\n" % (errorStr))
+
+            # set configuration to applied state
+            config.setPending(False)
+            config.show()
+            delconfigList.append(config)
+        sys.stdout.write("sdk:%s(%s,%s)\n" % (delete_func.__name__,
+                                              ",".join(["%s" % (x) for x in argumentList]),
+                                              ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+        return failurecfg, delconfigList
+
+
+    def applyUpdateNodeConfig(self, sdk, config, update_func, readdata=None, rollback=False):
+        delconfigList = []
+        failurecfg = False
+        data = config.getSdkConfig(readdata=readdata, rollback=rollback)
+        (argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
+        if len(kwargs) > 0:
+            r = update_func(*argumentList, **kwargs)
+            # succes
+            errorStr = r.json()['Error']
+            if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
+                sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, errorStr))
+                failurecfg = True
+            else:
+                sys.stdout.write("update SUCCESS:   http status code: %s\n" % (r.status_code,))
+                if r.json()['Error']:
+                    sys.stdout.write("warning return code: %s\n" % (errorStr))
+
+                # set configuration to applied state
+                config.setPending(False)
+                config.show()
+                delconfigList.append(config)
+            sys.stdout.write("sdk:%s(%s,%s)\n" % (update_func.__name__,
+                                                  ",".join(["%s" % (x) for x in argumentList]),
+                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+        return (failurecfg, delconfigList)
 
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")

@@ -1,4 +1,4 @@
-#!/usr/lib/python
+#!/usr/bin/python
 #
 #Copyright [2016] [SnapRoute Inc]
 #
@@ -29,27 +29,9 @@ import copy
 import string
 from tablePrint import indent, wrap_onspace_strict
 import time
+import snapcliconst
 ATTRIBUTE = 0
 VALUE = 1
-
-
-def isnumeric(v):
-    return v in ('int', 'uint', 'uint8', 'int8', 'uint16', 'int16', 'uint32', 'int32')
-
-def isboolean(v):
-    return v.lower() in ('bool', 'boolean')
-
-def convertStrBoolToBool(v):
-    if v.lower() in ('true', '1'):
-        return True
-    return False
-
-def convertStrNumToNum(v):
-    try:
-        val = string.atoi(v)
-    except Exception:
-        val = 0
-    return val
 
 def getEntryAttribute(entry):
     return entry.attr
@@ -147,9 +129,9 @@ class CmdEntry(object):
         # so this flag will allow config obj to know
         # to send this config to hw
         self.valid = False
-        # if the base key command was added
-        # then the config may be pending waiting for the
-        # second attribute to be set on the object
+        # Used to determine if the configuration is pending
+        # or not. Once applied then should clear everything
+        # that is not a key.
         self.pending = True
         # This is a delete command, meaning we want to
         # update to a default or delete an object
@@ -175,14 +157,27 @@ class CmdEntry(object):
     def isValid(self):
         return self.valid
 
+    def isPending(self):
+        return self.pending
+
     def setValid(self, v):
         self.valid = v
 
     def setPending(self, p):
         self.pending = p
 
+        #TODO should we clear out existing applied config, and leave the key, does not hurt
+        # if attributes are still available cause you can update them if they change
+
     def setDelete(self, d):
         self.delete = d
+
+    def isAttrSet(self, attr):
+
+        for entry in self.attrList:
+            if getEntryAttribute(entry) == attr:
+                return True
+        return False
 
     def updateSpecialValueCases(self, k, v):
         '''
@@ -193,9 +188,11 @@ class CmdEntry(object):
         :param v: CmdSet
         :return:
         '''
-        if k in ('IntfRef', 'IfIndex', 'Port'):
+        if k in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
             if "/" in v.val:
                 v.val = v.attr + v.val.split('/')[1]
+            elif v.attr not in v.val:
+                v.val = v.attr + v.val
 
         return v
 
@@ -210,8 +207,10 @@ class CmdEntry(object):
                 # key is only set when config is initially created, so if attr is updated
                 # then we don't want to overwrite it
                 entry.set(' '.join(fullcmd), delete, k, v)
+                self.setPending(True)
                 return
 
+        self.setPending(True)
         self.attrList.append(CmdSet(' '.join(fullcmd), delete, k, v, isKey, isattrlist))
 
     def setDict(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
@@ -242,40 +241,47 @@ class CmdEntry(object):
     def getallconfig(self, ):
         return self.attrList
 
-    def getSdkConfig(self, readdata=None):
+    def getSdkConfig(self, readdata=None, rollback=False):
+        '''
+        Function gets all the arguements need by the flexsdk call
+        :param readdata:
+        :param defaultonly:
+        :return:
+        '''
         newdict = {}
-        for entry in self.getallconfig():
-            for kk, vv in copy.deepcopy(self.keysDict).iteritems():
-                if kk == getEntryAttribute(entry):
-                    # overwrite the default value
-                    attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
-                    if self.keysDict[kk]['isarray']:
-                        if isnumeric(attrtype):
-                            l = [convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
-                            value = [int(x) for x in l]
-                        elif isboolean(attrtype):
-                            l = [convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in getEntryValue(entry).split(",")]
-                            value = [convertStrBoolToBool(x) for x in l]
-                        elif attrtype in ('str', 'string'):
-                            value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in getEntryValue(entry).split(",")]
-                        else: # struct
-                            value = getDictEntryValue(entry, vv['value'][0])
+        if not rollback:
+            for entry in self.getallconfig():
+                for kk, vv in copy.deepcopy(self.keysDict).iteritems():
+                    if kk == getEntryAttribute(entry):
+                        # overwrite the default value
+                        attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
+                        if self.keysDict[kk]['isarray']:
+                            if snapcliconst.isnumeric(attrtype):
+                                l = [snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in entry.val]
+                                value = [int(x) for x in l]
+                            elif snapcliconst.isboolean(attrtype):
+                                l = [snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in entry.val]
+                                value = [snapcliconst.convertStrBoolToBool(x) for x in l]
+                            elif attrtype in ('str', 'string'):
+                                value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in entry.val]
+                            else: # struct
+                                value = getDictEntryValue(entry, vv['value'][0])
 
-                    else:
-                        if isnumeric(attrtype):
-                            value = convertStrNumToNum(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
-                        elif isboolean(attrtype):
-                            value = convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
-                        elif attrtype in ('str', 'string'):
-                            value = getEntryValue(self.updateSpecialValueCases(vv['key'], entry))
                         else:
-                            value = getDictEntryValue(entry, vv['value'][0])
+                            if snapcliconst.isnumeric(attrtype):
+                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
+                            elif snapcliconst.isboolean(attrtype):
+                                value = snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
+                            elif attrtype in ('str', 'string'):
+                                value = getEntryValue(self.updateSpecialValueCases(vv['key'], entry))
+                            else:
+                                value = getDictEntryValue(entry, vv['value'][0])
 
-                    if readdata:
-                        del readdata[vv['key']]
+                        if readdata:
+                            del readdata[vv['key']]
 
-                    #self.keysDict[kk].update({'value': value})
-                    newdict.update({vv['key']: value})
+                        #self.keysDict[kk].update({'value': value})
+                        newdict.update({vv['key']: value})
 
         # lets add the defaults for the rest of the attributes that are part of this
         # config object
@@ -286,35 +292,31 @@ class CmdEntry(object):
                     attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
 
                     if self.keysDict[kk]['isarray']:
-                        if isnumeric(attrtype):
-                            l = [convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                        if snapcliconst.isnumeric(attrtype):
+                            l = [snapcliconst.convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
                             value = [int(x) for x in l]
-                        elif isboolean(attrtype):
-                            l = [convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
-                            value = [convertStrBoolToBool(x) for x in l]
+                        elif snapcliconst.isboolean(attrtype):
+                            l = [snapcliconst.convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                            value = [snapcliconst.convertStrBoolToBool(x) for x in l]
                         elif attrtype in ('str', 'string'):
                             value = [x.lstrip('').rstrip('') for x in v['value'].split(",")]
                         else:
                             value = {}
                             for v in v['value'][0].values():
                                 value.update({vv['key'] : vv['value']['default']})
-
                             value = [value]
-
                     else:
-                        if isnumeric(attrtype):
-                            value = convertStrNumToNum(v['value']['default'])
-                        elif isboolean(attrtype):
-                            value = convertStrBoolToBool(v['value']['default'])
+                        if snapcliconst.isnumeric(attrtype):
+                            value = snapcliconst.convertStrNumToNum(v['value']['default'])
+                        elif snapcliconst.isboolean(attrtype):
+                            value = snapcliconst.convertStrBoolToBool(v['value']['default'])
                         elif attrtype in ('str', 'string'):
                             value = v['value']['default']
                         else:
                             value = {}
-                            for vv in v['value'][0].values():
-                                value.update({vv['key'] : vv['value']['default']})
-
-
-
+                            if type(v['value']) is list and len(v['value']):
+                                for vv in v['value'][0].values():
+                                    value.update({vv['key'] : vv['value']['default']})
                 elif v['key'] in readdata:
                     value = readdata[v['key']]
 
@@ -330,7 +332,11 @@ class CmdEntry(object):
         Display the output of a commands as entered by a user
         :return:
         '''
-        sys.stdout.write('\tobject: %s\n' %(self.name))
+        pending = 'PENDING CONFIG'
+        if not self.isPending():
+            pending = 'APPLIED CONFIG'
+
+        sys.stdout.write('\tobject: %s   status: %s\n' %(self.name, pending))
 
         labels = ('command', 'attr', 'value', 'time provisioned')
         rows = []

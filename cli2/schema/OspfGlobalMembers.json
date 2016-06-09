@@ -9,228 +9,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "StubRouterAdvertisement": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": " advertise(2)/doNotAdvertise(1)  This object controls the advertisement of stub router LSAs by the router.  The value doNotAdvertise will result in the advertisement of a standard router LSA and is the default value.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "stubrouteradvertisement", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": -2147483648, 
-            "enum": [
-              2, 
-              1
-            ], 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "ExtLsdbLimit": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-2147483647  The maximum number of non-default AS-external LSAs entries that can be stored in the link state database.  If the value is -1", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "extlsdblimit", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "DemandExtensions": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  The router's support for demand routing. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "demandextensions", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "RestartInterval": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-1800  Configured OSPF graceful restart timeout interval.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "restartinterval", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "int32", 
-            "maximum": 1800
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "RFC1583Compatibility": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Indicates metrics used to choose among multiple AS-external LSAs.  When RFC1583Compatibility is set to enabled", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "rfc1583compatibility", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "ReferenceBandwidth": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Reference bandwidth in kilobits/second for  calculating default interface metrics.  The default value is 100", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "referencebandwidth", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
       "RouterId": {
         "type": "object", 
         "properties": {
@@ -243,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
+            "default": "A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
             "type": "string"
           }, 
           "islist": {
@@ -255,160 +33,7 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-            ], 
             "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "RestartStrictLsaChecking": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Indicates if strict LSA checking is enabled for graceful restart.  This object is persistent and when written the entity SHOULD save the change to non-volatile  storage.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "restartstrictlsachecking", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "ExitOverflowInterval": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-2147483647  The number of seconds that", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "exitoverflowinterval", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "AdminStat": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": " disabled(2)/enabled(1)  The administrative status of OSPF in the router.  The value 'enabled' denotes that the OSPF Process is active on at least one interface; 'disabled' disables it on all interfaces.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "adminstat", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": -2147483648, 
-            "enum": [
-              2, 
-              1
-            ], 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "MulticastExtensions": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "A bit mask indicating whether the router is forwarding IP multicast (Class D) datagrams based on the algorithms defined in the multicast extensions to OSPF.  Bit 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "multicastextensions", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": -2147483648, 
-            "type": "int32", 
-            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
@@ -454,6 +79,115 @@
           }
         }
       }, 
+      "TOSSupport": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  *** This element is added for future use. *** The router's support for type-of-service routing. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "tossupport", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "AdminStat": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Indicates if OSPF is enabled globally", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "adminstat", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "RestartInterval": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " {'range'  *** This element is added for future use. *** Configured OSPF graceful restart timeout interval. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "restartinterval", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
       "RestartSupport": {
         "type": "object", 
         "properties": {
@@ -466,7 +200,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " plannedAndUnplanned(3)/none(1)/plannedOnly(2)  The router's support for OSPF graceful restart. Options include", 
+            "default": " plannedAndUnplanned(3)/none(1)/plannedOnly(2)  *** This element is added for future use. *** The router's support for OSPF graceful restart. Options include", 
             "type": "string"
           }, 
           "islist": {
@@ -496,7 +230,7 @@
           }
         }
       }, 
-      "TOSSupport": {
+      "ReferenceBandwidth": {
         "type": "object", 
         "properties": {
           "key": {
@@ -508,7 +242,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  The router's support for type-of-service routing.  This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "default": "Reference bandwidth in kilobits/second for calculating default interface metrics. Unit default: 100", 
             "type": "string"
           }, 
           "islist": {
@@ -516,18 +250,20 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "tossupport", 
+            "default": "referencebandwidth", 
             "type": "string"
           }, 
           "argtype": {
-            "type": "bool"
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "100"
           }
         }
       }

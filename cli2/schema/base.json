@@ -11,6 +11,10 @@
     "prompt-prefix": {
       "format": "ipv4"
     },
+    "cli-version": {
+      "type": "string",
+      "default": "1.0.0"
+    },
     "prompt" : {
       "type" : "string",
       "default" : ">"

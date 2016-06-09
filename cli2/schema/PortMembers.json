@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": false, 
+    "default": true,
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -307,17 +307,17 @@
           }, 
           "argtype": {
             "enum": [
-              "ON", 
-              "OFF"
+              "UP",
+              "DOWN"
             ], 
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "DOWN"
           }
         }
       }, 
@@ -428,11 +428,11 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "OFF"
           }
         }
       }, 

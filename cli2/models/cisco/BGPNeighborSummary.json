@@ -5,6 +5,11 @@
       "subcmd1": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighborStateMembers.json"
       }
+    },
+    "value": {
+      "NeighborAddress": {
+        "cliname": "neighbor"
+      }
     }
   }
 }

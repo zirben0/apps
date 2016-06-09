@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "IfIndex where lldp needs to be configured", 
+                "default": "IfIndex where lldp needs is enabled/disabled", 
                 "type": "string"
               }, 
               "islist": {
