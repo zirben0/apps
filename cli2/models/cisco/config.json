@@ -32,6 +32,9 @@
       },
       "subcmd10": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemLogging.json"
+      },
+      "subcmd11": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpGlobal.json"
       }
     }
   } 
