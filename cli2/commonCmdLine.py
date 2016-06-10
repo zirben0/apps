@@ -117,7 +117,7 @@ class CommonCmdLine(object):
         return data.get(num, None)
 
     def getIntfRefToIfIndex(self, intfRef):
-        data = self.getRootAttr('IfIndexToIntfRef')
+        data = self.getRootAttr('IntfRefToIfIndex')
         return data.get(intfRef, None)
 
     def getShowObj(self,):

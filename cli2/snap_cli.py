@@ -97,7 +97,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.tmp_remove_priveledge = None
         self.sdk = FlexSwitch(switch_ip, 8080)
         self.sdkshow = FlexPrint(switch_ip, 8080)
-        self.IntfRefToIfIndexDict = {}
+        self.IntfRefToIfIndex = {}
         self.IfIndexToIntfRef = {}
 
         # this must be called after sdk setting as the common init is valididating
@@ -223,7 +223,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             ifIndex = p['IfIndex']
             intfRef = p['IntfRef']
             self.IfIndexToIntfRef[ifIndex] = intfRef
-            self.IntfRefToIfIndexDict[intfRef] = ifIndex
+            self.IntfRefToIfIndex[intfRef] = ifIndex
 
     def do_show_cli(self, arv):
 

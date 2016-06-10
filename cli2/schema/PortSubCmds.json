@@ -13,5 +13,8 @@
   },
   "subcmd5": {
     "$ref": "file:/tmp/snaproute/cli/schema/LLDPIntf.json"
+  },
+  "subcmd6": {
+    "$ref": "file:/tmp/snaproute/cli/schema/portchannelmembership.json"
   }
 }

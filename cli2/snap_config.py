@@ -549,23 +549,24 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         removeList = []
         for objname in delcfgorder:
             for config in self.configList:
-                if config.name == objname and config.delete:
+                if config.isValid() and config.name == objname and config.delete:
                     attemptedApplyConfigList.append(config)
                     yield config
 
         for objname in cfgorder:
             for config in self.configList:
-                if config.name == objname and not config.delete:
+                if config.isValid() and config.name == objname and not config.delete:
+                    import ipdb; ipdb.set_trace()
                     attemptedApplyConfigList.append(config)
                     yield config
 
         for config in self.configList:
-            if config.delete and config not in attemptedApplyConfigList:
+            if config.isValid() and config.delete and config not in attemptedApplyConfigList:
                 attemptedApplyConfigList.remove(config)
                 yield config
 
         for config in self.configList:
-            if not config.delete and config not in attemptedApplyConfigList:
+            if config.isValid() and not config.delete and config not in attemptedApplyConfigList:
                 yield config
 
         for config in self.configList:
@@ -583,7 +584,103 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             if hasattr(root, '_cmd_show'):
                 root._cmd_show(argv)
 
+    def fixupConfigList(configObj, configList):
+        """
+        # There may be a config which needs to be merged with a master config
+        # for example lag is created seperately than the member add.  In this
+        # case the lag membership config would need to be merged to the original config
+        for c in configObj.configList
+        :param configList:
+        :return:
+        """
+        def getConfigKeys(config):
+            return sorted([(entry.attr, entry.val, entry.isList()) for entry in config.attrList if entry.isKey()])
+
+        def merge_two_dicts(a, b):
+            c = a.copy()
+            c.update(b)
+            return c
+
+        newConfigList = copy.deepcopy(configList)
+        # get the combination of all config objects which are of the same type
+        for c1,c2 in [(config1, config2) for config1 in configList for config2 in configList if config1 != config2 and config1.name and config2.name]:
+            # lets combine any entries which have the same key values
+            # as the attributes may have been updated by two different config trees
+            if  getConfigKeys(c1) == getConfigKeys(c2):
+                # lets create a new config and delete the old one
+                newConfig = CmdEntry(configObj, c1.name, merge_two_dicts(c1.keysDict, c2.keysDict))
+                for e1 in c1.attrList:
+                    newConfig.set(configObj, e1.cmd, e1.delete, e1.attr, e1.val, isKey=e1.isKey(), isattrlist=type(e1.val) is list)
+                for e1 in c2.attrList:
+                    newConfig.set(configObj, e1.cmd, e1.delete, e1.attr, e1.val, isKey=e1.isKey(), isattrlist=type(e1.val) is list)
+                # remove the old entries from the list
+                newConfigList.remove(c1)
+                newConfigList.remove(c2)
+                # add the new config to list
+                newConfigList.append(newConfig)
+
+        return newConfigList
+
     def do_apply(self, argv):
+
+        def fixupConfigList(configObj, configList):
+            """
+            # There may be a config which needs to be merged with a master config
+            # for example lag is created seperately than the member add.  In this
+            # case the lag membership config would need to be merged to the original config
+            for c in configObj.configList
+            :param configList:
+            :return:
+            """
+            def isAttrEqual(entry1, entry2):
+                return len([(entry1, entry2) for e1 in entry1.attrList for e2 in entry2.attrList
+                            if ((e1.attr == e2.attr and e1.val == e2.val))]) > 0
+
+            def getSameConfigObjects(l1, l2):
+                for c1,c2 in [(config1, config2) for config1 in l1 for config2 in l2
+                              if ((config1 != config2) and (config1.name == config2.name))]:
+                    yield c1, c2
+
+            def merge_two_dicts(a, b):
+                c = a.copy()
+                c.update(b)
+                return c
+
+            newConfigList = configList
+            tmpCmdEntryList = []
+            # get the combination of all config objects which are of the same type
+            for c1,c2 in getSameConfigObjects(configList, configList):
+                newConfig = None
+                # lets combine any entries which have the same key values
+                # as the attributes may have been updated by two different config trees
+                if isAttrEqual(c1, c2):
+                    newConfig = None
+                    for nc in tmpCmdEntryList:
+                        if not newConfig:
+                            if c1 in newConfigList and isAttrEqual(c1, nc):
+                                newConfig = nc
+                            if c2 in newConfigList and isAttrEqual(c2, nc):
+                                newConfig = nc
+                    if not newConfig and (c1 in newConfigList or c2 in newConfigList):
+                        # lets create a new config and store it for updating later
+                        newConfig = CmdEntry(configObj, c1.name, merge_two_dicts(c1.keysDict, c2.keysDict))
+                        newConfig.setValid(True)
+                        tmpCmdEntryList.append(newConfig)
+
+                    if newConfig:
+                        if c1 in newConfigList:
+                            for e1 in c1.attrList:
+                                newConfig.set(e1.cmd.split(' '), e1.delete, e1.attr, e1.val, isattrlist=c2.keysDict[e1.attr]['isarray'])
+                            newConfigList.remove(c1)
+                        if c2 in newConfigList:
+                            for e1 in c2.attrList:
+                                newConfig.set(e1.cmd.split(' '), e1.delete, e1.attr, e1.val, isattrlist=c2.keysDict[e1.attr]['isarray'])
+                            newConfigList.remove(c2)
+
+            newConfigList += tmpCmdEntryList
+            return newConfigList
+
+
         PROCESS_CONFIG = 1
         ROLLBACK_CONFIG = 2
         ROLLBACK_UPDATE = 1
@@ -593,6 +690,10 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         root = self.getRootObj()
         if self.configList and \
                 root.isSystemReady():
+
+            # create new list where come config is combined because they
+            # are acting on the same object
+            self.configList = fixupConfigList(self, self.configList)
 
             sys.stdout.write("Applying Config:\n")
             clearAppliedList = []
