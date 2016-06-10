@@ -2,28 +2,28 @@
   "listattrs": [], 
   "commands": {
     "DNSServerAddr": {
-      "cliname": "dnsserveraddr"
+      "cliname": "dns_server_addr"
     }, 
     "BroadcastAddr": {
-      "cliname": "broadcastaddr"
+      "cliname": "broadcast_addr"
     }, 
     "IPAddrRange": {
-      "cliname": "ipaddrrange"
+      "cliname": "ip_address_range"
     }, 
     "Enable": {
       "cliname": "enable"
     }, 
     "RouterAddr": {
-      "cliname": "routeraddr"
+      "cliname": "router_address"
     }, 
     "IntfRef": {
-      "cliname": "intfref"
+      "cliname": "ethernet"
     }, 
     "DomainName": {
-      "cliname": "domainname"
+      "cliname": "domain_name"
     }, 
     "SubnetMask": {
-      "cliname": "subnetmask"
+      "cliname": "subnet_mask"
     }, 
     "Subnet": {
       "cliname": "subnet"

@@ -227,7 +227,7 @@ class LeafTemplate(object):
                         if '(' in s[0]:
                             s = [int(x.split('(')[1].rstrip(')')) for x in s if len(x.split('(')) > 1]
                         else:
-                            s = [int(x) for x in s]
+                            s = [int(x) for x in s if 'range' not in x]
                     self.getMemberPropertiesPath()['argtype']["enum"] = s
 
             if isnumeric(type):

@@ -368,16 +368,17 @@ class ShowRun(object):
                                 element.setCmd(cmd)
                                 # found an element lets populate the contents of the element from this object
                                 element.setObjName(objname)
-                                for attr, attrobj in mobj['value'].iteritems():
-                                    defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
-                                    attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
-                                    value = cfgObj[attr] if cfgObj else subattrobj[attr]
-                                    element.setObjKeyVal(attr,
-                                                         attrtype,
-                                                         attrobj['cliname'],
-                                                         convertStrValueToValueType(attrtype, value),
-                                                         convertStrValueToValueType(attrtype, defaultVal))
-
+                                if 'value' in mobj:
+                                    for attr, attrobj in mobj['value'].iteritems():
+                                        defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
+                                        attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
+                                        value = cfgObj[attr] if cfgObj else subattrobj[attr]
+                                        element.setObjKeyVal(attr,
+                                                             attrtype,
+                                                             attrobj['cliname'],
+                                                             convertStrValueToValueType(attrtype, value),
+                                                             convertStrValueToValueType(attrtype, defaultVal))
+                                
                                 # lets get key attributes for this model object
                                 # the attributes that we are interested in will come from the model
                                 # lets find the attr obj
@@ -389,12 +390,14 @@ class ShowRun(object):
                                                             mattrobj['cliname'] != matchattr:
                                                 defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
                                                 attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
-                                                value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
-                                                element.setAttributes(mattr,
-                                                                      mattrobj['cliname'],
-                                                                      attrtype,
-                                                                      convertStrValueToValueType(attrtype, value),
-                                                                      convertStrValueToValueType(attrtype, defaultVal))
+                                                if (cfgObj and  mattr in cfgObj) or \
+                                                        (subattrobj and mattr in subattrobj):
+                                                    value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
+                                                    element.setAttributes(mattr,
+                                                                          mattrobj['cliname'],
+                                                                          attrtype,
+                                                                          convertStrValueToValueType(attrtype, value),
+                                                                          convertStrValueToValueType(attrtype, defaultVal))
 
                                 # sub model objects
                                 for (mcmds, mvalues) in mobj['commands'].iteritems():
@@ -567,7 +570,6 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
             ce.dump()
 
         else:
-
             lastcmd = argv[-1] if all else argv[-2] if argv[-1] != 'brief' else argv[-3]
             schemaname = self.getSchemaCommandNameFromCliName(lastcmd, self.model)
             if schemaname:
@@ -584,7 +586,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                             # or a commands containing attributes of an object, which should hold
                             # the object in question associated with this command.
                             if "objname" in kk:
-                                config = CmdEntry(v['objname']['default'], {})
+                                config = CmdEntry(self, v['objname']['default'], {})
                                 config.setValid(True)
                                 self.configList.append(config)
 

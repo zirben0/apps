@@ -1,13 +1,14 @@
 {
   "daemon": {
-    "prompt": "", 
+    "prompt": "daemon",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DaemonSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help" : "Daemon Commands",
+    "cliname": "daemon",
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "daemon"
       }
     }
   }

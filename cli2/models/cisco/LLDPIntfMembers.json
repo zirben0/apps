@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "IfIndex": {
-      "cliname": "ifindex"
+      "cliname": "ethernet"
     }, 
     "Enable": {
       "cliname": "enable"

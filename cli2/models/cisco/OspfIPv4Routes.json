@@ -1,0 +1,20 @@
+{
+  "ospfipv4routes": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIPv4RoutesSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "DestType": {
+        "cliname": "desttype"
+      }, 
+      "DestId": {
+        "cliname": "destid"
+      }, 
+      "AddrMask": {
+        "cliname": "addrmask"
+      }
+    }
+  }
+}

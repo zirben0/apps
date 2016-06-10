@@ -2,23 +2,8 @@
   "listattrs": [], 
   "commands": {
     "RouterId": {
-      "cliname": "routerid"
-    }, 
-    "Version": {
-      "cliname": "version"
-    }, 
-    "Description": {
-      "cliname": "description"
-    }, 
-    "MgmtIp": {
-      "cliname": "mgmtip"
-    }, 
-    "Hostname": {
-      "cliname": "hostname"
-    }, 
-    "SwitchMac": {
-      "cliname": "switchmac"
-    }, 
+      "cliname": "router_id"
+    },
     "Vrf": {
       "cliname": "vrf"
     }

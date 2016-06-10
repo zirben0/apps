@@ -10,14 +10,14 @@
     "PreemptMode": {
       "cliname": "preemptmode"
     }, 
-    "VirtualIPv4Addr": {
-      "cliname": "virtualipv4addr"
-    }, 
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/vrrpip.json"
+    },
     "IfIndex": {
-      "cliname": "ifindex"
+      "cliname": "ethernet"
     }, 
     "VRID": {
-      "cliname": "vrid"
+      "cliname": "vrrp"
     }, 
     "AcceptMode": {
       "cliname": "acceptmode"

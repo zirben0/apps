@@ -98,7 +98,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Protocol type of the route", 
+            "default": "Protocol type of the route default: STATIC", 
             "type": "string"
           }, 
           "islist": {
@@ -117,7 +117,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "STATIC"
           }
         }
       }, 

@@ -1,10 +1,10 @@
 {
   "systemparam": {
-    "prompt": "", 
+    "prompt": "system",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemParamSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "system",
     "value": {
       "Vrf": {
         "cliname": "vrf"

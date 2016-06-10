@@ -9,6 +9,47 @@
     "type": "object", 
     "description": "", 
     "properties": {
+      "AreaNssaTranslatorRole": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " always(1)/candidate(2)  Indicates an NSSA border router's ability to perform NSSA translation of type-7 LSAs into type-5 LSAs.", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "areanssatranslatorrole", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "enum": [
+              1, 
+              2
+            ], 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
       "AuthType": {
         "type": "object", 
         "properties": {
@@ -75,14 +116,12 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               1, 
               2, 
               3
             ], 
             "type": "int32", 
-            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
@@ -93,11 +132,11 @@
           }
         }
       }, 
-      "AreaNssaTranslatorStabilityInterval": {
+      "AreaId": {
         "type": "object", 
         "properties": {
           "key": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -105,7 +144,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-2147483647  The number of seconds after an elected translator determines its services are no longer required", 
+            "default": " {'pattern'  A 32-bit integer uniquely identifying an area. Area ID 0.0.0.0 is used for the OSPF backbone.", 
             "type": "string"
           }, 
           "islist": {
@@ -113,54 +152,11 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "areanssatranslatorstabilityinterval", 
+            "default": "areaid", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "AreaNssaTranslatorRole": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": " always(1)/candidate(2)  Indicates an NSSA border router's ability to perform NSSA translation of type-7 LSAs into type-5 LSAs.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "areanssatranslatorrole", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": -2147483648, 
-            "enum": [
-              1, 
-              2
-            ], 
-            "type": "int32", 
-            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": false, 
@@ -195,51 +191,11 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               2, 
               1
             ], 
             "type": "int32", 
-            "maximum": 2147483647
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "AreaId": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer uniquely identifying an area. Area ID 0.0.0.0 is used for the OSPF backbone.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "areaid", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "enum": [
-              "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-            ], 
-            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
