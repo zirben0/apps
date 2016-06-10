@@ -4,5 +4,14 @@
   },
   "subcmd2": {
     "$ref": "file:/tmp/snaproute/cli/schema/ethip.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/schema/VrrpIntf.json"
+  },
+  "subcmd4": {
+    "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayIntf.json"
+  },
+  "subcmd5": {
+    "$ref": "file:/tmp/snaproute/cli/schema/LLDPIntf.json"
   }
 }

@@ -1,14 +1,10 @@
 {
   "dhcprelayintf": {
-    "prompt": "", 
+    "prompt": "dhcp",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntfSubCmds.json"
-    }, 
-    "cliname": "", 
-    "value": {
-      "IfIndex": {
-        "cliname": "ifindex"
-      }
-    }
+    },
+    "help": "Dhcp Relay Commands",
+    "cliname": "dhcp"
   }
 }
