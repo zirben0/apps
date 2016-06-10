@@ -318,6 +318,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
                     cliname = argv[-1]
 
+
                 self.teardownCommands()
                 c = LeafCmd(objname, cliname, self.cmdtype, self, self.prompt, submodelList, subschemaList)
                 if c.applybaseconfig(cliname):

@@ -128,11 +128,16 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
             if configObj:
                 if len(self.currentcmd) == 0:
-                    basekey = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-                    basevalue = self.parent.lastcmd[-1] if len(self.parent.lastcmd) > 0 else None
+                    #basekey = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+                    #basevalue = self.parent.lastcmd[-1] if len(self.parent.lastcmd) > 0 else None
+                    basekey = self.parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
+                    basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
+
                 else:
-                    basekey = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
-                    basevalue = self.currentcmd[-1] if len(self.currentcmd) > 0 else None
+                    #basekey = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
+                    #basevalue = self.currentcmd[-1] if len(self.currentcmd) > 0 else None
+                    basekey = self.currentcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.currentcmd[-1]
+                    basevalue = self.currentcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
 
                 #basekey = self.parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
                 #basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
@@ -147,10 +152,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         config = CmdEntry(self, k, self.objDict[k])
 
                     if snapcliconst.COMMAND_TYPE_SHOW not in self.cmdtype:
+
                         if len(self.currentcmd) == 0:
-                            lastcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+                            lastcmd = self.parent.lastcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
                         else:
-                            lastcmd = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
+                            lastcmd = self.currentcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.currentcmd[-1]
 
                         #lastcmd = self.parent.lastcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
                         if cliname == lastcmd:
