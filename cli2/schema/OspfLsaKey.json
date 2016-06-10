@@ -1,5 +1,5 @@
 {
-  "lldpintf": {
+  "ospflsakey": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/LLDPIntfSubCmds.json"
+          "$ref": ""
         }
       }, 
       "cliname": {
@@ -31,9 +31,14 @@
         "displayValue": false, 
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
-      },
+      }, 
+      "value": {
+        "type": "object", 
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {}
+      }, 
       "objname": {
-        "default": "LLDPIntf", 
+        "default": "OspfLsaKey", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

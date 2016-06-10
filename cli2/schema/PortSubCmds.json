@@ -10,5 +10,8 @@
   },
   "subcmd4": {
     "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayIntf.json"
+  },
+  "subcmd5": {
+    "$ref": "file:/tmp/snaproute/cli/schema/LLDPIntf.json"
   }
 }

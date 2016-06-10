@@ -97,15 +97,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         :param cliname:
         :return:
         '''
+        def getParentConfigEntry(configObj, objname, parentattr, parentval):
 
-        def getParentConfigEntry(configObj, objname, configData, attr, val):
             for config in configObj.configList:
                 if config.name == objname:
                     # todo need to check keys
                     for entry in config.attrList:
                         if entry.isKey() and \
-                                ((entry.attr == attr and entry.val == val) or
-                                (entry.attr != attr)):
+                                ((entry.attr == parentattr and entry.val == parentval)):
                             return config
             return None
 
@@ -130,16 +129,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             if configObj:
                 basekey = self.parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
                 basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
-
                 # lets go through the valid sub tree commands
                 # and fill in what commands were entered by the user
                 for k, v in self.objDict.iteritems():
                     config = None
                     # get the parent object if this is a sub command
-                    if self.parent and \
-                        hasattr(self.parent, 'objDict') and \
-                            k in self.parent.objDict:
-                        config = getParentConfigEntry(configObj, k, self.parent.objDict[k], basekey, basevalue)
+                    if self.parent:
+                        config = getParentConfigEntry(configObj, k, basekey, basevalue)
                     if not config:
                         config = CmdEntry(self, k, self.objDict[k])
 
@@ -158,7 +154,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     # letting me know that the parent config can
                                     # create a default object, otherwise engine will
                                     # try to create a lot of objects
-                                    config.setValid(v[basekey]['createwithdefaults'])
+                                    config.setValid(v[basekey]['createwithdefaults'] and v[basekey]['subcommand'] == cliname)
 
                                     config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=True)
                     else:
@@ -491,8 +487,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 if schemaname:
                                     submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
                                     subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                                    for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                        value = self.getModelDefaultAttrVal(argv, schemaname, subsubmodel, subsubschema, delcmd=delcmd)
+                                    if submodelList and subschemaList:
+                                        for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                                            value = self.getModelDefaultAttrVal(argv, schemaname, subsubmodel, subsubschema, delcmd=delcmd)
+                                    else:
+                                        value = self.getModelDefaultAttrVal(argv, schemaname, submodel, subschema, delcmd=delcmd)
             else:
                 value = self.getModelDefaultAttrVal(argv, schemaname, model, schema, delcmd=delcmd)
 
@@ -586,7 +585,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         # keys
                         elif (type(v['value']) is list and \
                                       len(v['value']) and subkey in v['value'][0].keys()):
-
+                            
                             def isKeyInSubListAttr(parentKey, parentValue, entryval):
                                 # the values are converted when stored cause I am not storing the subattr types
                                 # so lets convert the value back to a string to compare against
@@ -596,8 +595,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             parentKey = None
                             parentValue = None
                             if self.parent:
-                                parentKey = self.parent.lastcmd[-2]
-                                parentValue = self.parent.lastcmd[-1]
+                                if len(self.currentcmd) == 0:
+                                    parentKey = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+                                    parentValue = self.parent.lastcmd[-1] if len(self.parent.lastcmd) > 0 else None
+                                else:
+                                    parentKey = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
+                                    parentValue = self.currentcmd[-1] if len(self.currentcmd) > 0 else None
                                 foundConfig = False
                                 for entry in config.attrList:
                                     if entry.isKey() and \
@@ -620,7 +623,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         # the values are converted cause I am not storing the subattr types
                                         for kk, vv in v['value'][0].iteritems():
                                             if kk != subkey:
-                                                data.update({parentKey: self.convertStrValueToType(vv['type']['type'], self.parent.lastcmd[-1])})
+                                                data.update({parentKey: self.convertStrValueToType(vv['type']['type'], parentValue)})
                                             else:
                                                 data.update({subkey: self.convertStrValueToType(vv['type']['type'], value)})
                                     else:
@@ -636,6 +639,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     # store the attribute into the config
                                     config.setDict(self.lastcmd, delete, attrkey, data, isKey=self.subcommand, isattrlist=v['isarray'])
         else:
+
             # key + subkey + value supplied
             key = mline[0]
             subkey = mline[1]
@@ -643,7 +647,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             configObj = self.getConfigObj()
             if configObj:
                 for config in configObj.configList:
-                    if len([x for x,v in config.keysDict.iteritems() if (v['subcommand'] == key or not self.subcommand)
+                    if len([x for x,v in config.keysDict.iteritems() if (v['subcommand'] == key and not self.subcommand)
                                                                                 and x == subkey]) == 1:
                         # need to be smarter about when attributes are set so lets check the parent
                         # to see this config is my key if it is not then move on
@@ -723,7 +727,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         # stop the command loop for config as we will be running a new cmd loop
                         cmdln.Cmdln.stop = True
                         self.teardownCommands()
-                        c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
+                        c = LeafCmd(objname, argv[-2], self.cmdtype, self.parent, self.prompt, submodelList, subschemaList)
+                        c.currentcmd = self.lastcmd
                         if c.applybaseconfig(argv[-2]):
                             c.cmdloop()
                         self.setupCommands()
@@ -737,18 +742,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         # lets restart the cmdloop
         if self.stop:
             self.cmdloop()
-
-    def getchildrencmds(self, parentname, model, schema):
-        attrlist = []
-        if model:
-            schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
-            if schemaname in model:
-                for cmdobj in [obj for k, obj in model[schemaname]["commands"].iteritems() if "subcmd" in k]:
-                    if type(cmdobj) in (dict, jsonref.JsonRef):
-                        for v in cmdobj["commands"].values():
-                            if 'cliname' in v and v['cliname'] != self.objname:
-                                attrlist.append(v['cliname'])
-        return attrlist
 
     def complete_redistribute(self, text, line, begidx, endidx):
         return self._cmd_complete_common(text, line, begidx, endidx)
@@ -800,7 +793,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     values = self.getValueSelections(mline[i], submodel, subschema)
                                     if not values:
                                         values = config.getCommandValues(objname, keys)
-                                    #sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
+                                    sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
                                     # expect value but no value supplied
                                     if (i == mlineLength-1):
                                         #sys.stdout.write("\nselections: %s\n" %(values))
@@ -810,10 +803,29 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         subcommands = values
                                         skipValue = True
                             else:
-                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
-                            #sys.stdout.write("subcommands %s" %(subcommands,))
-                    #else:
-                    #    sys.stdout.write("model commands: %s\n" %(model[schemaname]["commands"]))
+                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
+                    else:
+
+                        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
+                                subcommands = []
+                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                                    if 'subcmd' in mcmd:
+                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                                            if i == (mlineLength - 1): # value expected from attrs
+                                                # reached attribute values
+                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
+                                                    if 'cliname' in attrvalue:
+                                                        if attrvalue['cliname'] == mline[i]:
+                                                            subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                                    else:
+                                                        for subkey in attrvalue.keys():
+                                                            subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+                                return subcommands
+
+                        subcommands += checkAttributevalues(argv, mlineLength, schemaname, model, schema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -840,7 +852,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 root._cmd_show(argv)
 
     def display_help(self, argv):
-        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+
+        # sub commands within a config command will have the current cmd set
+        if len(self.currentcmd) == 0:
+            parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        else:
+            parentcmd = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
         mline = [parentcmd] + argv[:-1]
         mlineLength = len(mline)
 
@@ -848,6 +865,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         if mlineLength == 1:
             for model, schema in zip(self.modelList, self.schemaList):
                 subcommands = self.getchildrenhelpcmds(mline[0], model, schema)
+                # exclude parent command
+                if len(self.currentcmd) > 0:
+                    parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+                    subcommands = [x for x in subcommands if x[0] != parentcmd]
+
+
 
         #ignore the help or ? command
         for i in range(1, mlineLength):
@@ -889,22 +912,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                         subcommands += checkAttributevalues(argv, mlineLength, schemaname, model, schema)
 
-                        '''
-                        if 'commands' in model[schemaname]:
-                            for mcmd, mcmdvalues in model[schemaname]['commands'].iteritems():
-                                scmdvalues = schema[schemaname]['properties']['commands']['properties'][mcmd]
-                                if 'subcmd' in mcmd:
-                                    if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                        if i == (mlineLength - 1): # value expected from attrs
-                                            # reached attribute values
-                                            for attr, attrvalue in mcmdvalues['commands'].iteritems():
-                                                sattrvalue = scmdvalues['commands']['properties'][attr]
-                                                if 'cliname' in attrvalue:
-                                                    if attrvalue['cliname'] == mline[i]:
-                                                        subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
-                        '''
-
         self.printCommands(mline, subcommands)
 
     def do_help(self, argv):
@@ -930,7 +937,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 self.commandLen = 0
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                    if schemaname:
+                    if schemaname in subschema and schemaname in submodel:
                         subschemaList, submodelList = self.getSubCommand(mline[i],
                                                                          subschema[schemaname]["properties"]["commands"]["properties"],
                                                                          submodel[schemaname]["commands"]), \
