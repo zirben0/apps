@@ -263,7 +263,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 self.cmdloop()
             else:
                 return
-
+        import ipdb; ipdb.set_trace()
         # reset the command len
         self.commandLen = 0
         endprompt = ''

@@ -104,7 +104,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     # todo need to check keys
                     for entry in config.attrList:
                         if entry.isKey() and \
-                                ((entry.attr == parentattr and entry.val == parentval)):
+                            (entry.attr == parentattr and
+                                  (entry.val == parentval or
+                                   entry.val in (snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES +
+                                                 snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))):
                             return config
             return None
 
@@ -127,17 +130,19 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
 
             if configObj:
+                delete = True if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype else False
+
                 if len(self.currentcmd) == 0:
                     #basekey = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
                     #basevalue = self.parent.lastcmd[-1] if len(self.parent.lastcmd) > 0 else None
                     basekey = self.parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
-                    basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
+                    basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.getCommandDefaultAttrValue([basekey], delcmd=delete)
 
                 else:
                     #basekey = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
                     #basevalue = self.currentcmd[-1] if len(self.currentcmd) > 0 else None
                     basekey = self.currentcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.currentcmd[-1]
-                    basevalue = self.currentcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
+                    basevalue = self.currentcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.getCommandDefaultAttrValue([basekey], delcmd=delete)
 
                 #basekey = self.parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
                 #basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
@@ -162,11 +167,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if cliname == lastcmd:
                             for kk in v.keys():
                                 if kk == cliname:
-                                    delete = True if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype else False
-
-                                    if basevalue is None:
-                                        basevalue = self.getCommandDefaultAttrValue([basekey], delcmd=delete)
-
                                     config.setDelete(delete)
 
                                     # letting me know that the parent config can

@@ -36,8 +36,8 @@ COMMAND_TYPE_CONFIG_NOW = 'now'
 DYNAMIC_MODEL_ATTR_NAME_LIST = ('IntfRef', 'IfIndex', 'Port', 'Members', 'IntfList', 'UntagIntfList', 'PhysicalPort')
 
 # lets keep track of the various two value names that might not need to be represented in the cli
-CLI_COMMAND_POSITIVE_TRUTH_VALUES = ('true', 'on', 'up', '1')
-CLI_COMMAND_NEGATIVE_TRUTH_VALUES = ('false', 'off', 'down', '0')
+CLI_COMMAND_POSITIVE_TRUTH_VALUES = ('true', 'on', 'up', '1', True)
+CLI_COMMAND_NEGATIVE_TRUTH_VALUES = ('false', 'off', 'down', '0', False)
 
 PORT_NAME_PREFIX = 'ethernet'
 
