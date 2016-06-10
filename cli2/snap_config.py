@@ -556,7 +556,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         for objname in cfgorder:
             for config in self.configList:
                 if config.isValid() and config.name == objname and not config.delete:
-                    import ipdb; ipdb.set_trace()
                     attemptedApplyConfigList.append(config)
                     yield config
 
