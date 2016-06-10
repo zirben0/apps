@@ -1,13 +1,14 @@
 {
   "componentlogging": {
-    "prompt": "", 
+    "prompt": "log",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ComponentLoggingSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Module name to set logging level",
+    "cliname": "logging",
     "value": {
       "Module": {
-        "cliname": "module"
+        "cliname": "logging"
       }
     }
   }

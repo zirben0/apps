@@ -1,0 +1,159 @@
+{
+  "ospfipv4routes": {
+    "createwithdefault": {
+      "default": true, 
+      "type": "boolean", 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object", 
+    "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/OspfIPv4RoutesSubCmds.json"
+        }
+      }, 
+      "cliname": {
+        "default": "", 
+        "type": "string", 
+        "description": "name used in cli to describe bfd"
+      }, 
+      "help": {
+        "default": "", 
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "", 
+        "displayValue": false, 
+        "type": "string", 
+        "description": "what to display on the prompt when the user has entered a command"
+      }, 
+      "value": {
+        "type": "object", 
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {
+          "DestType": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": "destination type", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "cliname": {
+                "default": "desttype", 
+                "type": "string"
+              }, 
+              "argtype": {
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }
+            }
+          }, 
+          "DestId": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": " {'pattern'  Dest ip", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "cliname": {
+                "default": "destid", 
+                "type": "string"
+              }, 
+              "argtype": {
+                "enum": [
+                  "{'pattern'"
+                ], 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }
+            }
+          }, 
+          "AddrMask": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": " {'pattern'  netmask", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "cliname": {
+                "default": "addrmask", 
+                "type": "string"
+              }, 
+              "argtype": {
+                "enum": [
+                  "{'pattern'"
+                ], 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }
+            }
+          }
+        }
+      }, 
+      "objname": {
+        "default": "OspfIPv4Routes", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
+      }
+    }
+  }
+}

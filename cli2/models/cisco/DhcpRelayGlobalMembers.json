@@ -5,7 +5,7 @@
       "cliname": "enable"
     }, 
     "DhcpRelay": {
-      "cliname": "dhcprelay"
+      "cliname": "dhcp_relay"
     }
   }
 }

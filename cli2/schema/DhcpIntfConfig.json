@@ -32,47 +32,6 @@
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
       }, 
-      "value": {
-        "type": "object", 
-        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
-        "properties": {
-          "IntfRef": {
-            "type": "object", 
-            "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
-                "type": "string"
-              }, 
-              "help": {
-                "default": "Interface name or ifindex of L3 interface object on which Dhcp Server need to be configured", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "intfref", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "type": "string"
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }
-        }
-      }, 
       "objname": {
         "default": "DhcpIntfConfig", 
         "type": "string", 

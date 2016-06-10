@@ -1,13 +1,13 @@
 {
   "arpdeletebyifname": {
-    "prompt": "", 
+    "prompt": "delete-if",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpDeleteByIfNameSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "cliname": "delete_interface",
     "value": {
       "IfName": {
-        "cliname": "ifname"
+        "cliname": "delete_interface"
       }
     }
   }

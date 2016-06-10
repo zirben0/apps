@@ -1,0 +1,17 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IfIPAddr": {
+      "cliname": "ifipaddr"
+    }, 
+    "AdvRtr": {
+      "cliname": "advrtr"
+    }, 
+    "NextHopIP": {
+      "cliname": "nexthopip"
+    }, 
+    "IfIdx": {
+      "cliname": "ifidx"
+    }
+  }
+}

@@ -115,14 +115,16 @@ class CmdSet(object):
         return (self.cmd, self.attr, self.val)
 
     def isKey(self):
-        return self.isKey
+        return self.iskey
 
 class CmdEntry(object):
     '''
 
     '''
 
-    def __init__(self, name, keyDict):
+    def __init__(self, cfgobj, name, keyDict):
+        # reference to the cfg obj
+        self.cfgobj = cfgobj
         # used to determine if this is a config object
         # which is marked for config
         # some cnfig key attributes are set across configs
@@ -188,13 +190,50 @@ class CmdEntry(object):
         :param v: CmdSet
         :return:
         '''
+        tmpval = v.val if type(v) == CmdSet else v
         if k in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
-            if "/" in v.val:
-                v.val = v.attr + v.val.split('/')[1]
-            elif v.attr not in v.val:
-                v.val = v.attr + v.val
 
-        return v
+            if type(v) == CmdSet:
+                if "/" in v.val:
+                    v.val = v.attr + v.val.split('/')[1]
+                elif v.attr not in v.val:
+                    v.val = v.attr + v.val
+
+                tmpval = v.val
+
+            # cli always expects the string name, but lets
+            # convert the string name to the number
+            if k == 'IfIndex':
+                # Port object is gathered on cli start
+                value = self.cfgobj.getIntfRefToIfIndex(tmpval)
+                if value is not None:
+                    tmpval = value
+                    if type(v) == CmdSet:
+                        v.val = tmpval
+                else:
+                    # if we reached here the other options for IfIndex are
+                    # 1) Vlan
+                    # 2) Lag
+
+                    # lets try a vlan interface
+                    sdk = self.cfgobj.getSdk()
+                    vlans = sdk.getAllVlanStates()
+                    for vlan in vlans:
+                        v = vlan['Object']
+                        if v['VlanName'] == tmpval:
+                            value = v['IfIndex']
+
+                    if value is None:
+                        vlans = sdk.getAllLaPortChannelStates()
+                        for vlan in vlans:
+                            v = vlan['Object']
+                            if v['Name'] == tmpval:
+                                value = v['IfIndex']
+
+                    if value is not None:
+                        tmpval = value
+
+        return v.val if type(v) == CmdSet else tmpval
 
     def set(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
         for entry in self.attrList:
@@ -269,11 +308,11 @@ class CmdEntry(object):
 
                         else:
                             if snapcliconst.isnumeric(attrtype):
-                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
+                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))
                             elif snapcliconst.isboolean(attrtype):
-                                value = snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
+                                value = snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], entry))
                             elif attrtype in ('str', 'string'):
-                                value = getEntryValue(self.updateSpecialValueCases(vv['key'], entry))
+                                value = self.updateSpecialValueCases(vv['key'], entry)
                             else:
                                 value = getDictEntryValue(entry, vv['value'][0])
 

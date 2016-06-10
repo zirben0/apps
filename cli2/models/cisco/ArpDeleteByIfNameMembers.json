@@ -2,7 +2,8 @@
   "listattrs": [], 
   "commands": {
     "IfName": {
-      "cliname": "ifname"
+      "help": "Delete Arp Entry By Interface",
+      "cliname": "delete_interface"
     }
   }
 }

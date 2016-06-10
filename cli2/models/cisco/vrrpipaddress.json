@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "VirtualIPv4Addr": {
+      "cliname": "virt_address"
+    }
+  }
+}
