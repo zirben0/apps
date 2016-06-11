@@ -193,13 +193,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def _cmd_do_delete(self, argv):
 
         self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
-        self._cmd_common(argv[1:])
+        self._cmd_common(argv)
 
     def _cmd_complete_common(self, text, line, begidx, endidx):
 
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
-        mline = [self.objname] + [x for x in line.split(' ') if x != '']
+        argv = [x for x in line.split(' ') if x != '' and x != 'no']
+        mline = [self.objname] + argv
         mlineLength = len(mline)
         #sys.stdout.write("complete cmd: %s\ncommand %s objname %s\n\n" %(self.model, mline[0], self.objname))
 
@@ -220,9 +221,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
                 if schemaname:
                     submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
                     #sys.stdout.write("config complete: submodel[schemaname][commands] = %s\n" %(submodel[schemaname]["commands"]))
-                    if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
+                    if submodelList and subschemaList:
                         for submodel, subschema in zip(submodelList, subschemaList):
                             #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
                             (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
@@ -233,8 +234,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     if not values:
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                     return values
-                            else:
+                            elif i < mlineLength:
                                 subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                    else:
+                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
+            else:
+               subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -258,12 +263,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         # each config command takes a cmd, subcmd and value
         # example: interface ethernet <port#>
         #          vlan <vlan #>
-        if len(argv) != self.commandLen:
+        if len(argv) != self.commandLen or len(argv) == 0:
             if self.stop:
                 self.cmdloop()
             else:
                 return
-        import ipdb; ipdb.set_trace()
+
         # reset the command len
         self.commandLen = 0
         endprompt = ''
@@ -347,25 +352,25 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def precmd(self, argv):
 
-        mlineLength = len(argv) - (1 if 'no' in argv else 0)
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
+        mlineLength = len(mline)
         subschema = self.schema
         submodel = self.model
         subcommands = []
-        if mlineLength > 0:
+        if mlineLength > 1:
 
             cmd = argv[-1]
             if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
-                self.display_help(argv)
+                self.display_help(argv if 'no' not in argv[0] else argv[1:])
                 return ''
             if cmd in ('!',):
-                self.do_exit(argv)
+                self.do_exit(argv if 'no' not in argv[0] else argv[1:])
                 return ''
 
             self.commandLen = 0
             try:
-                for i in range(1, len(mline)):
+                for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])

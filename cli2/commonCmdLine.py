@@ -26,6 +26,7 @@
 import copy
 import jsonref
 import sys
+import os
 from jsonschema import Draft4Validator
 import pprint
 import requests
@@ -595,14 +596,28 @@ class CommonCmdLine(object):
 
     def printCommands(self, argv, subcommands):
 
+        def terminal_size():
+            import fcntl, termios, struct
+            h, w, hp, wp = struct.unpack('HHHH',
+                fcntl.ioctl(0, termios.TIOCGWINSZ,
+                struct.pack('HHHH', 0, 0, 0, 0)))
+            return h, w
+
+        height, width = terminal_size()
+
         labels = ('Command', 'Description',)
         rows = []
         for x in subcommands:
             rows.append((x[0], x[1]))
-        width = 30
-        print indent([labels]+rows, hasHeader=True, separateRows=False,
+
+        width = (int(width) / 2) - 5
+        print indent([labels]+rows, hasHeader=True, separateRows=True,
                      prefix=' ', postfix=' ', headerChar= '-', delim='    ',
                      wrapfunc=lambda x: wrap_onspace_strict(x,width))
+
+        #print indent([labels]+rows, hasHeader=True, separateRows=True,
+        #             prefix='| ', postfix=' |',
+        #             wrapfunc=lambda x: wrap_onspace_strict(x,width))
 
     def default(self,):
         pass

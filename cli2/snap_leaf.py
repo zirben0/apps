@@ -550,6 +550,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         if len(argv) > 0 and argv[0] == 'no':
             mline = argv[1:]
             delete = True
+
+
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
@@ -901,6 +903,25 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def display_help(self, argv):
 
+        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
+            subcommands = []
+            for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                if 'subcmd' in mcmd:
+                    if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                        if i == (mlineLength - 1): # value expected from attrs
+                            # reached attribute values
+                            for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                sattrvalue = scmdvalues['commands']['properties'][attr]
+                                if 'cliname' in attrvalue:
+                                    if attrvalue['cliname'] == mline[i]:
+                                        subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                       snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                else:
+                                    for subkey in attrvalue.keys():
+                                        subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+            return subcommands
+
         # sub commands within a config command will have the current cmd set
         if len(self.currentcmd) == 0:
             parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
@@ -917,8 +938,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 if len(self.currentcmd) > 0:
                     parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
                     subcommands = [x for x in subcommands if x[0] != parentcmd]
-
-
 
         #ignore the help or ? command
         for i in range(1, mlineLength):
@@ -937,27 +956,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     subcommands = [[cmd, help]]
                                 else:
                                     subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                            else:
+                                subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                                subcommands = [x for x in subcommands if x[0] != mline[0]]
+
                     else:
-
-                        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
-                                subcommands = []
-                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
-                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
-                                    if 'subcmd' in mcmd:
-                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                            if i == (mlineLength - 1): # value expected from attrs
-                                                # reached attribute values
-                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
-                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
-                                                    if 'cliname' in attrvalue:
-                                                        if attrvalue['cliname'] == mline[i]:
-                                                            subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
-                                                    else:
-                                                        for subkey in attrvalue.keys():
-                                                            subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
-                                return subcommands
-
                         subcommands += checkAttributevalues(argv, mlineLength, schemaname, model, schema)
 
         self.printCommands(mline, subcommands)
@@ -966,6 +969,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.display_help(argv)
 
     def precmd(self, argv):
+        import ipdb; ipdb.set_trace()
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
         mlineLength = len(mline)
@@ -973,10 +977,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         submodel = self.modelList[0] if self.modelList else None
         cmd = argv[-1] if argv else ''
         if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
-            self.display_help(argv)
+            self.display_help(argv if argv[0] != 'no' else argv[1:])
             return ''
         if cmd in ('!', ):
-            self.do_exit(argv)
+            self.do_exit(argv if argv[0] != 'no' else argv[1:])
             return ''
 
         if subschema and submodel:
