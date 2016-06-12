@@ -37,74 +37,37 @@
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
           "BrgIfIndex": {
-            "type": "object", 
+            "type": "object",
             "properties": {
               "key": {
-                "default": true, 
+                "default": true,
                 "type": "boolean"
-              }, 
+              },
               "prompt": {
-                "default": "", 
+                "default": "",
                 "type": "string"
-              }, 
+              },
               "help": {
-                "default": "0-2147483647  The value of the instance of the ifIndex object", 
+                "default": "0-2147483647  The value of the instance of the ifIndex object",
                 "type": "string"
-              }, 
+              },
               "islist": {
-                "default": false, 
+                "default": false,
                 "type": "boolean"
-              }, 
+              },
               "cliname": {
-                "default": "brgifindex", 
+                "default": "brgifindex",
                 "type": "string"
-              }, 
+              },
               "argtype": {
-                "minimum": 0, 
-                "type": "int32", 
+                "minimum": 0,
+                "type": "int32",
                 "maximum": 2147483647
-              }, 
+              },
               "isdefaultset": {
-                "default": false, 
+                "default": false,
                 "type": "boolean"
-              }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }, 
-          "IfIndex": {
-            "type": "object", 
-            "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
-                "type": "string"
-              }, 
-              "help": {
-                "default": "0-65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "ifindex", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "minimum": 0, 
-                "type": "int32", 
-                "maximum": 65535
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
-              }, 
+              },
               "defaultarg": {
                 "default": ""
               }

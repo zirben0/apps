@@ -1,16 +1,13 @@
 {
   "stpport": {
-    "prompt": "", 
+    "prompt": "vlan",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/StpPortSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "brg_vlan",
     "value": {
       "BrgIfIndex": {
-        "cliname": "brgifindex"
-      }, 
-      "IfIndex": {
-        "cliname": "ifindex"
+        "cliname": "brg_vlan"
       }
     }
   }

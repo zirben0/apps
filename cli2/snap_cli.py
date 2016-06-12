@@ -99,6 +99,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.sdkshow = FlexPrint(switch_ip, 8080)
         self.IntfRefToIfIndex = {}
         self.IfIndexToIntfRef = {}
+        self.testmodel = False
 
         # this must be called after sdk setting as the common init is valididating
         # the model and some info needs to be gathered from system to populate the
@@ -271,7 +272,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                 if cmdline not in cmdList:
                                     cmdList.append(cmdline)
         for x in cmdList:
-            print x
+            sys.stdout.write("%s\n" %(x))
 
 
     def replace_cli_name(self, name, newname):
@@ -377,7 +378,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
                 # lets validate the model against the json schema
                 Draft4Validator(self.schema).validate(self.model)
-
+                # flag to make sure output of walk is not put to stdout
             except Exception as e:
                 print e
                 return False
@@ -424,10 +425,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def _cmd_config(self, args):
         " Global configuration mode "
         if self.privilege is False:
+            sys.stdout.write("Must be in privilege mode to execute config\n")
             return
 
         if len(args) > 1:
-            self.display_help(args)
+            snapcliconst.printErrorValueCmd(1, args)
             return
 
         functionNameAsString = sys._getframe().f_code.co_name
@@ -509,9 +511,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def _cmd_show(self, argv):
         " Show running system information "
         mline = argv
-        if mline[-1] in ('help', '?'):
-            self.display_show_help(mline)
-            return argv
+
         mlineLength = len(mline)
 
         if 'run' in mline:
@@ -566,7 +566,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
     def precmd(self, argv):
         if argv and '?' in argv[-1]:
-            self.display_help(argv)
+            if len(argv) > 1:
+                if argv[0] == snapcliconst.COMMAND_TYPE_SHOW:
+                    self.display_show_help()
+                elif argv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
+                    self.display_help(argv)
             return ''
         if argv and '!' in argv[-1]:
             self.do_exit(argv)

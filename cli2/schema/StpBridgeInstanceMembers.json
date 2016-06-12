@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": false, 
+    "default": true, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-65535  The value of the write-able portion of the Bridge ID (i.e.", 
+            "default": "0-65535  The value of the write-able portion of the Bridge ID (i.e. default: 4096", 
             "type": "string"
           }, 
           "islist": {
@@ -42,7 +42,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "4096"
           }
         }
       }, 
@@ -58,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-1000  The value that all bridges use for HelloTime when this bridge is acting as the root.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted    to a value that is not a whole number of seconds.", 
+            "default": "0-1000  The value that all bridges use for HelloTime when this bridge is acting as the root.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted    to a value that is not a whole number of seconds. default: 200", 
             "type": "string"
           }, 
           "islist": {
@@ -79,7 +79,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "200"
           }
         }
       }, 
@@ -95,7 +95,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "TODO", 
+            "default": "0-20  Configures the number of BPDUs that can be sent before pausing for 1 second. default: 6", 
             "type": "string"
           }, 
           "islist": {
@@ -107,16 +107,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
+            "minimum": 0, 
             "type": "int32", 
-            "maximum": 2147483647
+            "maximum": 20
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "6"
           }
         }
       }, 
@@ -132,7 +132,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " [0-9a-fA-F]{2}(  The bridge identifier of the root of the spanning tree", 
+            "default": " The bridge identifier of the root of the spanning tree default: 00:00:00:00:00:00", 
             "type": "string"
           }, 
           "islist": {
@@ -154,7 +154,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "00:00:00:00:00:00"
           }
         }
       }, 
@@ -170,7 +170,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "TODO", 
+            "default": " stp(1)/rstp-pvst(2)/mstp(3)  Stp Version default: 2", 
             "type": "string"
           }, 
           "islist": {
@@ -182,16 +182,19 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "type": "int32", 
-            "maximum": 2147483647
+            "enum": [
+              1, 
+              2, 
+              3
+            ], 
+            "type": "int32"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "2"
           }
         }
       }, 
@@ -207,7 +210,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is typically 1", 
+            "default": "0-4095  Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is typically 1", 
             "type": "string"
           }, 
           "islist": {
@@ -215,13 +218,13 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "brg_vlan",
+            "default": "vlan", 
             "type": "string"
           }, 
           "argtype": {
             "minimum": 0, 
             "type": "uint16", 
-            "maximum": 65536
+            "maximum": 4095
           }, 
           "isdefaultset": {
             "default": false, 
@@ -244,7 +247,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-3000  The value that all bridges use for ForwardDelay when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of MaxAge.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds.", 
+            "default": "0-3000  The value that all bridges use for ForwardDelay when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of MaxAge.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds. default: 1500", 
             "type": "string"
           }, 
           "islist": {
@@ -265,7 +268,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "1500"
           }
         }
       }, 
@@ -281,7 +284,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-4000  The value that all bridges use for MaxAge when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of HelloTime.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds.", 
+            "default": "0-4000  The value that all bridges use for MaxAge when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of HelloTime.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds. default: 2000", 
             "type": "string"
           }, 
           "islist": {
@@ -302,7 +305,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "2000"
           }
         }
       }

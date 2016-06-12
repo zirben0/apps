@@ -72,8 +72,6 @@ def printErrorValueCmd(i, mline):
     spaces = " " * lenstr
     sys.stdout.write("%s\n" %(spaces + " ^"))
 
-
-
 # model macros
 def GET_MODEL_COMMANDS(schemaname, model):
     return model[schemaname]["commands"] if schemaname in model else model["commands"]

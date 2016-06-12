@@ -411,64 +411,65 @@ class CommonCmdLine(object):
 
         # touching an attribute within this command tree, but we need to find out which subcmd contains
         # the attribute
-        for modelkeys, modelcmds in snapcliconst.GET_MODEL_COMMANDS(schemaname, model).iteritems():
-            schemacmds = snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema)[modelkeys]
-            #leaf attr model
-            if self.isCommandLeafAttrs(modelcmds,schemacmds):
-                for (mattr, mattrval), (sattr, sattrval) in self.commandAttrsLoop(modelcmds["commands"], schemacmds["commands"]["properties"]):
-                    if 'cliname' in mattrval and mattrval['cliname'] == cliname:
-                        isDefaultSet = snapcliconst.getSchemaCommandAttrIsDefaultSet(sattrval)
-                        defaultArg = snapcliconst.getSchemaCommandAttrDefaultArg(sattrval)
-                        # we want opposite of default if boolean delete
-                        # lets do the opposite of default value if enums length is 2
-                        # or if we have a boolean value.
-                        # this helps when setting string based boolean values
-                        argtype = snapcliconst.getValueArgumentType(sattrval)
-                        selections = snapcliconst.getValueArgumentSelections(sattrval)
-                        if selections and \
-                                argtype and \
-                            snapcliconst.isSelectionTypeNotNeeded(selections, argtype):
+        if schemaname in model or "commands" in model:
+            for modelkeys, modelcmds in snapcliconst.GET_MODEL_COMMANDS(schemaname, model).iteritems():
+                schemacmds = snapcliconst.GET_SCHEMA_COMMANDS(schemaname, schema)[modelkeys]
+                #leaf attr model
+                if self.isCommandLeafAttrs(modelcmds,schemacmds):
+                    for (mattr, mattrval), (sattr, sattrval) in self.commandAttrsLoop(modelcmds["commands"], schemacmds["commands"]["properties"]):
+                        if 'cliname' in mattrval and mattrval['cliname'] == cliname:
+                            isDefaultSet = snapcliconst.getSchemaCommandAttrIsDefaultSet(sattrval)
+                            defaultArg = snapcliconst.getSchemaCommandAttrDefaultArg(sattrval)
+                            # we want opposite of default if boolean delete
+                            # lets do the opposite of default value if enums length is 2
+                            # or if we have a boolean value.
+                            # this helps when setting string based boolean values
+                            argtype = snapcliconst.getValueArgumentType(sattrval)
+                            selections = snapcliconst.getValueArgumentSelections(sattrval)
+                            if selections and \
+                                    argtype and \
+                                snapcliconst.isSelectionTypeNotNeeded(selections, argtype):
 
-                            if delcmd:
-                                # lets determine the value based on whether this is a delcmd
-                                # or not
-                                # special case hack!!!
-                                if mattrval['cliname'] in ('shutdown', ):
-                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
-                                    for k in selections:
-                                        if rv and k.lower() == rv[0]:
-                                            return k
+                                if delcmd:
+                                    # lets determine the value based on whether this is a delcmd
+                                    # or not
+                                    # special case hack!!!
+                                    if mattrval['cliname'] in ('shutdown', ):
+                                        rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
+                                        for k in selections:
+                                            if rv and k.lower() == rv[0]:
+                                                return k
 
+                                    else:
+                                        rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
+                                        for k in selections:
+                                            if rv and k.lower() == rv[0]:
+                                                return k
                                 else:
-                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
-                                    for k in selections:
-                                        if rv and k.lower() == rv[0]:
-                                            return k
-                            else:
-                                # lets determine the value based on whether this is a delcmd
-                                # or not
-                                # special case hack!!!
-                                if mattrval['cliname'] in ('shutdown', ):
-                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
-                                    for k in selections:
-                                        if rv and k.lower() == rv[0]:
-                                            return k
+                                    # lets determine the value based on whether this is a delcmd
+                                    # or not
+                                    # special case hack!!!
+                                    if mattrval['cliname'] in ('shutdown', ):
+                                        rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES))
+                                        for k in selections:
+                                            if rv and k.lower() == rv[0]:
+                                                return k
+                                    else:
+                                        rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
+                                        for k in selections:
+                                            if rv and  k.lower() == rv[0]:
+                                                return k
+                                return None
+                            elif snapcliconst.isboolean(argtype):
+
+                                if delcmd:
+                                    rv = False
                                 else:
-                                    rv = list(frozenset([str(x).lower() for x in selections]).intersection(snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))
-                                    for k in selections:
-                                        if rv and  k.lower() == rv[0]:
-                                            return k
-                            return None
-                        elif snapcliconst.isboolean(argtype):
+                                    rv = True
+                                return rv
 
-                            if delcmd:
-                                rv = False
-                            else:
-                                rv = True
-                            return rv
-
-                        # setting default value
-                        return defaultArg if isDefaultSet else None
+                            # setting default value
+                            return defaultArg if isDefaultSet else None
         return None
 
     def isValueExpected(self, cmd, model, schema):

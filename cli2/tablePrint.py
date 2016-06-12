@@ -42,7 +42,7 @@ def indent(rows, hasHeader=False, headerChar='-', delim=' | ', justify='left',
                 + delim.join([justify(str(item),width) for (item,width) in zip(row,maxWidths)]) \
                 + postfix
         # SNAPROUTE change, don't want to seperate rows for help display
-        #if separateRows or hasHeader: print >> output, rowSeparator; hasHeader=False
+        if hasHeader: print >> output, rowSeparator; hasHeader=False
     return output.getvalue()
 
 # written by Mike Brown

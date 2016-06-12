@@ -16,5 +16,8 @@
   },
   "subcmd6": {
     "$ref": "file:/tmp/snaproute/cli/schema/portchannelmembership.json"
+  },
+  "subcmd7": {
+    "$ref": "file:/tmp/snaproute/cli/schema/portspanningtree.json"
   }
 }
