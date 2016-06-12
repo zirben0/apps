@@ -498,9 +498,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             if config.name == c.name:
                 # lets get a list of keys from the existing config object
                 keyvalues = [x.get()[1:] for x in config.attrList if x.isKey() == True]
-                for entry in c.attrList:
-                    if entry.isKey() and entry.get()[1:] in keyvalues:
-                        return config
+                foundKey = 0
+                for entry in [e for e in c.attrList if e.isKey()]:
+                    if entry.get()[1:] in keyvalues:
+                        foundKey += 1
+
+                if foundKey == len(keyvalues):
+                    return config
         return None
 
     def convertKeyValueToDisplay(self, objName, key, value):

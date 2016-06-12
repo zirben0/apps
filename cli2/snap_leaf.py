@@ -191,7 +191,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                             isValidKeyConfig = len(keyvalueDict) == len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
                                                                          and k in keyvalueDict])
-
+                            # we want a full key config
                             if isValidKeyConfig:
                                 for basekey, basevalue in keyvalueDict.iteritems():
                                     config.setDelete(delete)
@@ -202,12 +202,21 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     # ready to be provisioned.
                                     config.setValid(isvalid)
                                     config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
+                            else:
+                                # rare case that an attribute of an object is used as a key
+                                # but found that it does exist as is the case for router bgp ....
+                                isObjNonKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if not v['isattrkey']
+                                                                         and k in keyvalueDict]) > 0
+                                if isObjNonKeyConfig:
+                                    for basekey, basevalue in keyvalueDict.iteritems():
+                                        config.setDelete(delete)
+                                        # values supplied may not be the object key but they were used
+                                        # to create the object as is the case with router bgp
+                                        config.setValid(False)
+                                        config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=True)
                     else:
                         config = CmdEntry(self, objname, self.objDict[objname])
                         config.setValid(True)
-                        cfg = configObj.doesConfigExist(config)
-                        if not cfg:
-                            cfg = config
 
                     # only add this config if it does not already exist
                     cfg = configObj.doesConfigExist(config)
@@ -562,7 +571,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     def _cmd_common(self, argv):
         delete = False
         mline = argv
-
         if len(argv) > 0 and argv[0] == 'no':
             mline = argv[1:]
             delete = True
@@ -712,8 +720,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         foundConfig = False
                         for entry in config.attrList:
                             if entry.isKey() and \
-                                            parentKey == entry.attr and \
-                                            parentValue == entry.val:
+                                parentKey == entry.attr and \
+                                parentValue == entry.val:
                                 foundConfig = True
 
                     # lets update
@@ -757,8 +765,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             foundConfig = False
                             for entry in config.attrList:
                                 if entry.isKey() and \
-                                                parentKey == entry.attr and \
-                                                parentValue == entry.val:
+                                    parentKey == entry.attr and \
+                                    parentValue == entry.val:
                                     foundConfig = True
 
                         if foundConfig:
