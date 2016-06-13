@@ -60,9 +60,9 @@
                 "type": "string"
               },
               "argtype": {
-                "minimum": 0,
+                "minimum": 1,
                 "type": "int32",
-                "maximum": 2147483647
+                "maximum": 4095
               },
               "isdefaultset": {
                 "default": false,

@@ -193,7 +193,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
     def _cmd_do_delete(self, argv):
 
         self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
-        self._cmd_common(argv)
+        self._cmd_common(argv[1:])
 
     def _cmd_complete_common(self, text, line, begidx, endidx):
 
@@ -268,6 +268,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 self.cmdloop()
             else:
                 return
+
         # reset the command len
         self.commandLen = 0
         endprompt = ''
@@ -495,13 +496,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         for config in self.configList:
             if config.name == c.name:
                 # lets get a list of keys from the existing config object
-                keyvalues = [x.get()[1:] for x in config.attrList if x.isKey() == True]
+                currkeyvalues = [x.get()[1:] for x in c.attrList if x.isKey() == True]
                 foundKey = 0
-                for entry in [e for e in c.attrList if e.isKey()]:
-                    if entry.get()[1:] in keyvalues:
+                for entry in [e for e in config.attrList if e.isKey()]:
+                    if entry.get()[1:] in currkeyvalues:
                         foundKey += 1
 
-                if foundKey == len(keyvalues):
+                if foundKey == len(currkeyvalues):
                     return config
         return None
 
@@ -879,8 +880,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def do_showunapplied(self, argv):
         sys.stdout.write("Unapplied Config\n")
+        full = False
+        if argv and argv[-1] == 'full':
+            full = True
+
         for config in self.configList:
-            if config.isValid():
+            if config.isValid() or full:
                 config.show()
 
 

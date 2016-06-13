@@ -311,7 +311,7 @@ class CmdEntry(object):
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
                 if entry.iskey == True:
-                    # not allowed to update keys
+                    # not reason to update keys
                     return
                 # TODO if delete then we may need to remove this command all together
                 # HACK: should fix higher layers to pass in correct values for now
@@ -445,12 +445,12 @@ class CmdEntry(object):
         if not self.isPending():
             pending = 'APPLIED CONFIG'
 
-        sys.stdout.write('\tobject: %s   status: %s\n' %(self.name, pending))
+        sys.stdout.write('\tobject: %s   status: %s  valid: %s\n' %(self.name, pending, self.valid))
 
-        labels = ('command', 'attr', 'value', 'time provisioned')
+        labels = ('command', 'attr', 'value', 'iskey', 'time provisioned')
         rows = []
         for entry in self.attrList:
-            rows.append((getEntryCmd(entry), getEntryAttribute(entry), getEntryValue(entry), getEntrytime(entry)))
+            rows.append((getEntryCmd(entry), getEntryAttribute(entry), getEntryValue(entry), "%s" %(entry.iskey), getEntrytime(entry)))
         width = 30
         print indent([labels]+rows, hasHeader=True, separateRows=False,
                      prefix=' ', postfix=' ', headerChar= '-', delim='    ',

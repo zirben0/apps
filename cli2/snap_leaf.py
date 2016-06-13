@@ -104,14 +104,29 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     # todo need to check keys
                     numKeys = len(keyvalueDict)
                     keysfoundcnt = 0
+
+                    lenprovkeys = len(keyvalueDict)
                     for entry in config.attrList:
-                        # all key values must be set for config to be found
-                        if entry.isKey() and \
-                            (entry.attr in keyvalueDict and
-                                (entry.val == keyvalueDict[entry.attr] or
-                                 entry.val in (snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES +
-                                               snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))):
-                            keysfoundcnt += 1
+
+                        lencurrkeys = len([x for x in config.attrList if entry.isKey()])
+                        # lets update the entry because we now have more keys
+                        if lencurrkeys < numKeys:
+                            if entry.isKey() and \
+                                (entry.attr in keyvalueDict and
+                                    (entry.val == keyvalueDict[entry.attr][0] or
+                                     entry.val in (snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES +
+                                                   snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))):
+                                return config
+                        # found an entry with same amount of keys
+                        elif lencurrkeys == numKeys:
+                            # all key values must be set for config to be found
+                            if entry.isKey() and \
+                                (entry.attr in keyvalueDict and
+                                    (entry.val == keyvalueDict[entry.attr][0] or
+                                     entry.val in (snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES +
+                                                   snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))):
+                                keysfoundcnt += 1
+
                             if keysfoundcnt == numKeys:
                                 return config
             return None
@@ -142,11 +157,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             if len(currentcmd) == 0:
                 basekey = parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else parent.lastcmd[-1]
                 basevalue = parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else defaultValFunc([basekey], delcmd=delete)
-                keyvalueDict.update({basekey: basevalue})
+                keyvalueDict.update({basekey: (basevalue, parent.lastcmd)})
             else:
                 basekey = currentcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else currentcmd[-1]
                 basevalue = currentcmd[-1] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else defaultValFunc([basekey], delcmd=delete)
-                keyvalueDict.update({basekey: basevalue})
+                keyvalueDict.update({basekey: (basevalue, currentcmd)})
                 if hasattr(parent, 'parent') and parent.parent:
                     keyvalueDict.update(getCurrentLeafContainerKeyValues(cmdtype, parent.parent, parent.currentcmd, delete, defaultValFunc))
 
@@ -194,7 +209,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                          and (k in keyvalueDict)])
                             # we want a full key config
                             if isValidKeyConfig:
-                                for basekey, basevalue in keyvalueDict.iteritems():
+                                for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
                                     config.setDelete(delete)
 
                                     # all keys for an object must be set and
@@ -202,7 +217,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     # in order for the object to be considered valid and
                                     # ready to be provisioned.
                                     config.setValid(isvalid)
-                                    config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
+                                    config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
                             else:
                                 isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
                                                                                v['createwithdefaults'] and
@@ -213,12 +228,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 isObjNonKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if not v['isattrkey']
                                                                          and k in keyvalueDict]) > 0
                                 if isObjNonKeyConfig:
-                                    for basekey, basevalue in keyvalueDict.iteritems():
+                                    for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
                                         config.setDelete(delete)
                                         # values supplied may not be the object key but they were used
                                         # to create the object as is the case with router bgp
                                         config.setValid(isvalid)
-                                        config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=True)
+                                        config.set(cmd, delete, basekey, basevalue, isKey=True)
                     else:
                         config = CmdEntry(self, objname, self.objDict[objname])
                         config.setValid(True)
@@ -581,7 +596,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             mline = argv[1:]
             delete = True
 
-
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
@@ -728,11 +742,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         for entry in config.attrList:
                             if entry.isKey() and \
                                 parentKey == entry.attr and \
-                                parentValue == entry.val:
+                                    parentValue == entry.val:
                                 foundConfig = True
 
-                    # lets update
-                    if foundConfig:
+                    # lets update only if this is not a subcommand
+                    # otherwise this will be updated as part of
+                    # subcommand processing
+                    if foundConfig and ((not self.subcommand and not delete) or (delete)):
                         if delete and not config.valid:
                             config.setDelete(True)
 
@@ -773,12 +789,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             for entry in config.attrList:
                                 if entry.isKey() and \
                                     parentKey == entry.attr and \
-                                    parentValue == entry.val:
+                                        parentValue == entry.val:
                                     foundConfig = True
 
-                        if foundConfig:
+                        # lets update only if this is not a subcommand
+                        # otherwise this will be updated as part of
+                        # subcommand processing
+                        if foundConfig and ((not self.subcommand and not delete) or (delete)):
                             if delete and not config.valid:
-                                config.setDelete(True)
+                                    config.setDelete(True)
 
                             if config.isAttrSet(subkey) and delete:
                                 config.clear(subkey, value)
@@ -1070,14 +1089,23 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     min,max = self.getValueMinMax(mline[i], submodel, subschema)
                                     if min is not None and max is not None:
                                         try:
-                                            num = string.atoi(mline[i+1])
-                                            if num < min or num > max:
-                                                snapcliconst.printErrorValueCmd(i, mline)
-                                                sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                            if i < mlineLength - 1:
+                                                num = string.atoi(mline[i+1])
+                                                if num < min or num > max:
+                                                    snapcliconst.printErrorValueCmd(i, mline)
+                                                    sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                    return ''
+                                            else:
+                                                sys.stdout.write("\nERROR: Value Expected, must be beteween %s-%s\n" % (min, max))
                                                 return ''
+
                                         except:
                                             sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                             return ''
+
+                                    if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE and \
+                                        i == mlineLength - 1:
+                                        sys.stdout.write("\nERROR: Value expected")
 
 
                                     # found that if commands are entered after the last command then there can be a problem
