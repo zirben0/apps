@@ -1089,9 +1089,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     values = self.getValueSelections(mline[i], submodel, subschema)
-                                    if i < mlineLength and values and mline[i+1] not in values:
+                                    if values:
+                                        strvalues = ["%s" %(x,) for x in values]
+                                    if i < mlineLength and values and mline[i+1] not in strvalues:
                                         snapcliconst.printErrorValueCmd(i, mline)
-                                        sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                        sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(strvalues)))
                                         return ''
                                     min,max = self.getValueMinMax(mline[i], submodel, subschema)
                                     if min is not None and max is not None:
@@ -1113,7 +1115,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE and \
                                         i == mlineLength - 1:
                                         sys.stdout.write("\nERROR: Value expected")
-
 
                                     # found that if commands are entered after the last command then there can be a problem
                                     self.commandLen = len(mline[:i]) + 1
@@ -1141,9 +1142,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                     if 'cliname' in attrvalue:
                                                         if attrvalue['cliname'] == mline[i]:
                                                             values = snapcliconst.getSchemaAttrSelection(sattrvalue)
-                                                            if values and mline[i+1] not in values:
+                                                            if values:
+                                                                strvalues = ["%s" %(x,) for x in values]
+                                                            if values and mline[i+1] not in strvalues:
                                                                 snapcliconst.printErrorValueCmd(i, mline)
-                                                                sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                                                sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(strvalues)))
                                                                 return ''
                                                             min,max = snapcliconst.getSchemaAttrMinMax(sattrvalue)
                                                             if min is not None and max is not None:
