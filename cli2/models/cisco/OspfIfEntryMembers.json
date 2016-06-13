@@ -7,11 +7,14 @@
     "IfRetransInterval": {
       "cliname": "retransmit_interval"
     }, 
+    "IfType": {
+      "cliname": "iftype"
+    }, 
     "IfIpAddress": {
       "cliname": "ospf"
     }, 
     "IfAdminStat": {
-      "cliname": "adminstate"
+      "cliname": "admin_state"
     }, 
     "IfAuthKey": {
       "cliname": "authkey"
@@ -20,7 +23,7 @@
       "cliname": "priority"
     },
     "IfAreaId": {
-      "cliname": "area_id"    
+      "cliname": "area"
     },
     "IfPollInterval": {
       "cliname": "poll_interval"

@@ -19,5 +19,8 @@
   },
   "subcmd7": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/portspanningtree.json"
+  },
+  "subcmd8": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIfEntry.json"
   }
 }

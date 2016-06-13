@@ -105,7 +105,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     numKeys = len(keyvalueDict)
                     keysfoundcnt = 0
 
-                    lenprovkeys = len(keyvalueDict)
+                    if len(config.attrList) == 0:
+                        return config
+
                     for entry in config.attrList:
 
                         lencurrkeys = len([x for x in config.attrList if entry.isKey()])
@@ -201,23 +203,27 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             config = CmdEntry(self, objname, self.objDict[objname])
 
                         if cliname in keyvalueDict:
-                            # total keys must be provisioned for config to be valid and
-                            isvalid = len(keyvalueDict) == len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
-                                                                               v['createwithdefaults']])
+                            # total keys must be provisioned for config to be valid
+                            # the keyvalueDict may contain more tree keys than is applicable for the
+                            # config tree
+                            objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
+                                                                if v['isattrkey'] and v['createwithdefaults']])
+                            isvalid = len(keyvalueDict) >= objkeyslen and objkeyslen != 0
 
-                            isValidKeyConfig = len(keyvalueDict) == len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
-                                                                         and (k in keyvalueDict)])
+                            isValidKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
+                                                                         and (k in keyvalueDict)]) > 0
                             # we want a full key config
                             if isValidKeyConfig:
                                 for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
-                                    config.setDelete(delete)
+                                    if basekey in objattrs:
+                                        config.setDelete(delete)
 
-                                    # all keys for an object must be set and
-                                    # and all all attributes must have default values
-                                    # in order for the object to be considered valid and
-                                    # ready to be provisioned.
-                                    config.setValid(isvalid)
-                                    config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
+                                        # all keys for an object must be set and
+                                        # and all all attributes must have default values
+                                        # in order for the object to be considered valid and
+                                        # ready to be provisioned.
+                                        config.setValid(isvalid)
+                                        config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
                             else:
                                 isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
                                                                                v['createwithdefaults'] and
@@ -229,11 +235,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                          and k in keyvalueDict]) > 0
                                 if isObjNonKeyConfig:
                                     for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
-                                        config.setDelete(delete)
-                                        # values supplied may not be the object key but they were used
-                                        # to create the object as is the case with router bgp
-                                        config.setValid(isvalid)
-                                        config.set(cmd, delete, basekey, basevalue, isKey=True)
+                                        if basekey in objattrs:
+                                            config.setDelete(delete)
+                                            # values supplied may not be the object key but they were used
+                                            # to create the object as is the case with router bgp
+                                            config.setValid(isvalid)
+                                            config.set(cmd, delete, basekey, basevalue, isKey=True)
                     else:
                         config = CmdEntry(self, objname, self.objDict[objname])
                         config.setValid(True)

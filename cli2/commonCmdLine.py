@@ -223,6 +223,8 @@ class CommonCmdLine(object):
                                             # sub commands part of a leaf
                                             #elif kkk in listattrDict:
                                             #    subList.append(vvv)
+                                        #elif key == kkk:
+                                        #    subList.append(vvv)
 
                                 elif 'commands' in kk and 'cliname' not in vv:
                                     for kkk, vvv in vv.iteritems():
@@ -236,6 +238,8 @@ class CommonCmdLine(object):
                                             # sub commands part of a leaf
                                             #elif kkk in listattrDict:
                                             #    subList.append(vvv)
+                                        #elif key == kkk:
+                                        #    subList.append(vvv)
 
                                 elif kk == key:
                                     subList.append(vv)
@@ -405,7 +409,10 @@ class CommonCmdLine(object):
                     help = "/".join(sattrval['properties']['argtype']['enum']) + '\n'
                     if len(sattrval['properties']['argtype']['enum']) == 2:
                         expected = SUBCOMMAND_VALUE_EXPECTED
-                if 'type' in sattrval['properties']['argtype'] and \
+                elif 'type' in sattrval['properties']['argtype'] and \
+                        snapcliconst.isnumeric(sattrval['properties']['argtype']['type']):
+                    expected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE
+                elif 'type' in sattrval['properties']['argtype'] and \
                         snapcliconst.isboolean(sattrval['properties']['argtype']['type']):
                     expected = SUBCOMMAND_VALUE_EXPECTED
 

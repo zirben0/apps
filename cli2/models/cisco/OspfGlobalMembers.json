@@ -1,47 +1,26 @@
 {
   "listattrs": [], 
   "commands": {
-    "StubRouterAdvertisement": {
-      "cliname": "stub_router_advertisement"
-    }, 
-    "ExtLsdbLimit": {
-      "cliname": "ext_lsdb_limit"
-    }, 
-    "DemandExtensions": {
-      "cliname": "demand_extensions"
-    }, 
-    "RestartInterval": {
-      "cliname": "restart_interval"
-    }, 
-    "RFC1583Compatibility": {
-      "cliname": "rfc1583_compatibility"
-    }, 
-    "ReferenceBandwidth": {
-      "cliname": "referenc_ebandwidth"
-    }, 
     "RouterId": {
-      "cliname": "router_id"
+      "cliname": "ospf"
     }, 
-    "RestartStrictLsaChecking": {
-      "cliname": "restart_strict_lsa_checking"
+    "ASBdrRtrStatus": {
+      "cliname": "asb_dr_rtr_status"
     }, 
-    "ExitOverflowInterval": {
-      "cliname": "exit_overflow_interval"
+    "TOSSupport": {
+      "cliname": "tos_support"
     }, 
     "AdminStat": {
       "cliname": "admin_state"
     }, 
-    "MulticastExtensions": {
-      "cliname": "multicast_extensions"
-    }, 
-    "ASBdrRtrStatus": {
-      "cliname": "as_bdr_rtr_status"
+    "RestartInterval": {
+      "cliname": "restart_interval"
     }, 
     "RestartSupport": {
       "cliname": "restart_support"
     }, 
-    "TOSSupport": {
-      "cliname": "tos_support"
+    "ReferenceBandwidth": {
+      "cliname": "reference_bandwidth"
     }
   }
 }

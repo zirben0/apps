@@ -1,8 +1,8 @@
 {
   "listattrs": [], 
   "commands": {
-    "AreaNssaTranslatorRole": {
-      "cliname": "area_nssa_translator_role"
+    "StubDefaultCost": {
+      "cliname": "stub_default_cost"
     }, 
     "AuthType": {
       "cliname": "auth_type"
@@ -10,11 +10,14 @@
     "ImportAsExtern": {
       "cliname": "import_as_extern"
     }, 
+    "AreaSummary": {
+      "cliname": "area_summary"
+    }, 
+    "AreaNssaTranslatorRole": {
+      "cliname": "area_nssa_translator_role"
+    }, 
     "AreaId": {
       "cliname": "area"
-    }, 
-    "AreaSummary": {
-      "cliname": "summary"
     }
   }
 }

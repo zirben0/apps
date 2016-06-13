@@ -1,8 +1,5 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIfEntryMembers.json"
-  },
-  "subcmd2": {
-    "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfAreaEntry.json"
   }
 }
