@@ -513,7 +513,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         mline = argv
 
         mlineLength = len(mline)
-
         if 'run' in mline:
             self.currentcmd = self.lastcmd
             c = ShowCmd(self, self.model['commands']['subcmd1'], self.schema['properties']['commands']['properties']['subcmd1'])

@@ -603,7 +603,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                 # leaf will gather all the config info for the object
                 #l = LeafCmd(schemaname, lastcmd, "show", self, None, [self.model], [self.schema])
                 #l.applybaseshow(lastcmd)
-
+                config = None
                 # only display the what is available from this object
                 for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
                     # looping through the subcmds to find one that has an object associated with it.
@@ -616,6 +616,12 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                                 config = CmdEntry(self, v['objname']['default'], {})
                                 config.setValid(True)
                                 self.configList.append(config)
+
+                if not config:
+                    if 'objname' in self.schema[schemaname]['properties']:
+                        config = CmdEntry(self, self.schema[schemaname]['properties']['objname']['default'], {})
+                        config.setValid(True)
+                        self.configList.append(config)
 
                 # todo need to call the keys
                 # l.do_lastcmd

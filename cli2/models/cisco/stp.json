@@ -1,6 +1,7 @@
 {
   "stp": {
     "prompt" : "stp",
+    "help": "Spanning Tree Instance Commands",
     "cliname" : "spanning_tree",
     "commands" : {
       "subcmd1": {

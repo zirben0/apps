@@ -188,8 +188,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if cliname in keyvalueDict:
                             # total keys must be provisioned for config to be valid and
                             isvalid = len(keyvalueDict) == len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
-                                                                               v['createwithdefaults'] and
-                                                                             (k in keyvalueDict)])
+                                                                               v['createwithdefaults']])
 
                             isValidKeyConfig = len(keyvalueDict) == len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
                                                                          and (k in keyvalueDict)])

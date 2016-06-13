@@ -1,0 +1,23 @@
+{
+  "showinterface": {
+    "cliname" : "interface",
+    "help" : "Show All interfaces",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/Port.json"
+      },
+      "subcmd2": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/svi.json"
+      },
+      "subcmd3": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannel.json"
+      }
+    },
+    "value": {
+      "IntfRefAll": {
+        "cliname": "interface"
+      }
+    }
+  }
+}
+

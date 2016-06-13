@@ -2,7 +2,8 @@
   "dhcprelayglobal": {
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayGlobalSubCmds.json"
-    }, 
+    },
+    "help": "Dhcp Relay Global Commands",
     "cliname": "dhcp_relay"
   }
 }

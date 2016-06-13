@@ -16,7 +16,7 @@
         "description": "holds all related commands related to ethernet port",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/tmp/snaproute/cli/schema/interface.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/showinterface.json"
           },
           "subcmd2": {
             "$ref": "file:/tmp/snaproute/cli/schema/Vlan.json"
