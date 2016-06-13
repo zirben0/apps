@@ -5,7 +5,11 @@
     "commands" : {
       "subcmd1": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobal.json"
+      },
+      "subcmd2": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfGlobal.json"
       }
+
     }
   }
 }

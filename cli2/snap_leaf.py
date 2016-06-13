@@ -120,11 +120,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             objDict = {}
             # lets fill out the object to attributes mapping valid for this level in the tree
             for cmds in objcmds:
-                for k, v in cmds.iteritems():
-                    if v['objname'] not in objDict:
-                        objDict[v['objname']] = {}
+                if type(cmds) in (dict, jsonref.JsonRef):
+                    for k, v in cmds.iteritems():
+                        if v['objname'] not in objDict:
+                            objDict[v['objname']] = {}
 
-                    objDict[v['objname']].update({k:v})
+                        objDict[v['objname']].update({k:v})
             return objDict
 
         def getCurrentLeafContainerKeyValues(cmdtype, parent, currentcmd, delete, defaultValFunc):
@@ -187,10 +188,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         if cliname in keyvalueDict:
                             # total keys must be provisioned for config to be valid and
                             isvalid = len(keyvalueDict) == len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
-                                                                               v['createwithdefaults'] and k in keyvalueDict])
+                                                                               v['createwithdefaults'] and
+                                                                             (k in keyvalueDict)])
 
                             isValidKeyConfig = len(keyvalueDict) == len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
-                                                                         and k in keyvalueDict])
+                                                                         and (k in keyvalueDict)])
                             # we want a full key config
                             if isValidKeyConfig:
                                 for basekey, basevalue in keyvalueDict.iteritems():
@@ -203,6 +205,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     config.setValid(isvalid)
                                     config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
                             else:
+                                isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
+                                                                               v['createwithdefaults'] and
+                                                                              (v['value']['default'])]) > 0
+
                                 # rare case that an attribute of an object is used as a key
                                 # but found that it does exist as is the case for router bgp ....
                                 isObjNonKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if not v['isattrkey']
@@ -212,7 +218,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         config.setDelete(delete)
                                         # values supplied may not be the object key but they were used
                                         # to create the object as is the case with router bgp
-                                        config.setValid(False)
+                                        config.setValid(isvalid)
                                         config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=True)
                     else:
                         config = CmdEntry(self, objname, self.objDict[objname])
@@ -407,6 +413,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         :param schema:
         :return: list of commands available from this leaf class
         '''
+
         def getObjNameAndCreateWithDefaultFromSchema(schema, model, objname, createwithdefault):
             objname = objname
             createwithdefault = createwithdefault
@@ -626,13 +633,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                     schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
                     if schemaname:
-                        configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                        if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
-                            self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
-
                         value = None
-                        if configprompt and len(argv) == 2:
-                            value = argv[-1]
+                        if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
+                            self.prompt = self.baseprompt[:-2] + '-'
+
+                            configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
+                            if configprompt:
+                                self.prompt += configprompt + '-'
+                                value = argv[-1]
 
                         objname = schemaname
                         for i in range(1, len(argv)-1):
@@ -962,7 +970,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 root._cmd_show(argv)
 
     def display_help(self, argv):
-
         def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
             subcommands = []
             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():

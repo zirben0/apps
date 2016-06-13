@@ -1,6 +1,5 @@
 {
   "dhcprelayglobal": {
-    "prompt": "dhcp",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayGlobalSubCmds.json"
     }, 

@@ -1,13 +1,13 @@
 {
   "ospfglobal": {
-    "prompt": "", 
+    "prompt": "osfp",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfGlobalSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "router_id",
     "value": {
       "RouterId": {
-        "cliname": "routerid"
+        "cliname": "router_id"
       }
     }
   }

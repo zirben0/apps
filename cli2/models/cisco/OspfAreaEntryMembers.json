@@ -2,19 +2,19 @@
   "listattrs": [], 
   "commands": {
     "AreaNssaTranslatorRole": {
-      "cliname": "areanssatranslatorrole"
+      "cliname": "area_nssa_translator_role"
     }, 
     "AuthType": {
-      "cliname": "authtype"
+      "cliname": "auth_type"
     }, 
     "ImportAsExtern": {
-      "cliname": "importasextern"
+      "cliname": "import_as_extern"
     }, 
     "AreaId": {
-      "cliname": "areaid"
+      "cliname": "area"
     }, 
     "AreaSummary": {
-      "cliname": "areasummary"
+      "cliname": "summary"
     }
   }
 }

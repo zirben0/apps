@@ -24,6 +24,9 @@
           },
           "subcmd2" : {
             "$ref" : "file:/tmp/snaproute/cli/schema/IPv4Route.json"
+          },
+          "subcmd3": {
+            "$ref" : "file:/tmp/snaproute/cli/schema/IpTableAcl.json"
           }
         }
       }

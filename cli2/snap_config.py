@@ -268,7 +268,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 self.cmdloop()
             else:
                 return
-
         # reset the command len
         self.commandLen = 0
         endprompt = ''
@@ -351,7 +350,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             self.cmdloop()
 
     def precmd(self, argv):
-
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         mline = [parentcmd] + [x for x in argv if x != 'no']
         mlineLength = len(mline)
@@ -419,15 +417,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     else:
                                         self.commandLen = len(mline[:i])
                                     self.valueexpected = valueexpected
-                                elif i == mlineLength - 1 and mline[i+1] in subcommands:
+                                elif i < mlineLength - 1 and mline[i+1] in subcommands:
                                     schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
                                     if schemaname:
-                                        for (submodelkey, submodel), (subschemakey, subschema) in zip(submodel[schemaname]["commands"].iteritems(),
+                                        for (submodelkey, submodel2), (subschemakey, subschema2) in zip(submodel[schemaname]["commands"].iteritems(),
                                                                                                       subschema[schemaname]['properties']["commands"]["properties"].iteritems()):
                                             if 'subcmd' in submodelkey:
-                                                if self.isCommandLeafAttrs(submodel, subschema):
+                                                if self.isCommandLeafAttrs(submodel2, subschema2):
                                                     #leaf attr model
-                                                    (valueexpected, objname, keys, help) = self.isLeafValueExpected(mline[i+1], submodel, subschema)
+                                                    (valueexpected, objname, keys, help) = self.isLeafValueExpected(mline[i+1], submodel2, subschema2)
                                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                                         if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                                             self.commandLen = len(mline[:i]) + 2

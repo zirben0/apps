@@ -339,6 +339,17 @@ class ShowRun(object):
                                         mattrobj['cliname'] == matchattr:
                             return mattr
                 else:
+                    # lets check for global attributes
+                    '''
+                    if not matchattr:
+                        import ipdb; ipdb.set_trace()
+                        if 'commands' in sobj and 'properties' in sobj['commands']:
+                            for key, cmds in sobj['commands']['properties'].iteritems():
+                                if 'properties' in cmds:
+                                    if cmds['properties']['key']['default']:
+                                        return key
+                    '''
+
                     # commands are already the attributes
                     if 'cliname' in mvalues and \
                                     mvalues['cliname'] == matchattr:
@@ -489,6 +500,22 @@ class ShowRun(object):
                                                      attrobj['cliname'],
                                                      convertStrValueToValueType(attrtype, value),
                                                      convertStrValueToValueType(attrtype, defaultVal))
+                        else:
+                            # lets deal with objects who have a default key
+                            if 'commands' in schema and 'properties' in schema['commands']:
+                                for attr, attrobj in schema['commands']['properties'].iteritems():
+                                    if 'properties' in attrobj and 'key' in attrobj['properties'] and \
+                                        attrobj['properties']['key']['default'] and \
+                                            attrobj['properties']['defaultarg']['default']:
+                                        defaultVal = attrobj['properties']['defaultarg']['default']
+                                        attrtype = attrobj['properties']['argtype']['type']
+                                        value = cfgObj[attr] if cfgObj else subattrobj[attr]
+                                        element.setObjKeyVal(attr,
+                                                     attrtype,
+                                                     "",
+                                                     convertStrValueToValueType(attrtype, value),
+                                                     convertStrValueToValueType(attrtype, defaultVal))
+
 
 
                         # lets get key attributes for this model object

@@ -268,8 +268,9 @@ class CommonCmdLine(object):
                         else:
                             if type(v) in (dict, jsonref.JsonRef):
                                 for kk, vv in v.iteritems():
-                                    if 'cliname' in vv and cliname == vv['cliname']:
-                                        return kk
+                                    if type(vv) in (dict, jsonref.JsonRef):
+                                        if 'cliname' in vv and cliname == vv['cliname']:
+                                            return kk
 
         return None
 
@@ -287,6 +288,11 @@ class CommonCmdLine(object):
         return False
 
     def getchildrenhelpcmds(self, parentname, model, schema):
+        """
+        This function gets the help commands
+        :param parentname:
+        :return: list of tuples in the format of (model attribute name, cliname, help description)
+        """
         cliHelpList = [["<cr>", ""]]
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
@@ -304,6 +310,7 @@ class CommonCmdLine(object):
                                 # leaf node
                                 if kk == "commands":
                                     for kkk, vvv in vv.iteritems():
+                                        # this is a struct or list of structs to follow
                                         if kkk in listattrDict:
                                             if type(vvv) in (dict, jsonref.JsonRef):
                                                 for kkkk, vvvv in vvv.iteritems():

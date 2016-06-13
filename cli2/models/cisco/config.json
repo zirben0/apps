@@ -44,6 +44,9 @@
       },
       "subcmd14": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPGlobal.json"
+      },
+      "subcmd16": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayGlobal.json"
       }
     }
   } 

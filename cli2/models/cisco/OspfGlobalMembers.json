@@ -2,46 +2,46 @@
   "listattrs": [], 
   "commands": {
     "StubRouterAdvertisement": {
-      "cliname": "stubrouteradvertisement"
+      "cliname": "stub_router_advertisement"
     }, 
     "ExtLsdbLimit": {
-      "cliname": "extlsdblimit"
+      "cliname": "ext_lsdb_limit"
     }, 
     "DemandExtensions": {
-      "cliname": "demandextensions"
+      "cliname": "demand_extensions"
     }, 
     "RestartInterval": {
-      "cliname": "restartinterval"
+      "cliname": "restart_interval"
     }, 
     "RFC1583Compatibility": {
-      "cliname": "rfc1583compatibility"
+      "cliname": "rfc1583_compatibility"
     }, 
     "ReferenceBandwidth": {
-      "cliname": "referencebandwidth"
+      "cliname": "referenc_ebandwidth"
     }, 
     "RouterId": {
-      "cliname": "routerid"
+      "cliname": "router_id"
     }, 
     "RestartStrictLsaChecking": {
-      "cliname": "restartstrictlsachecking"
+      "cliname": "restart_strict_lsa_checking"
     }, 
     "ExitOverflowInterval": {
-      "cliname": "exitoverflowinterval"
+      "cliname": "exit_overflow_interval"
     }, 
     "AdminStat": {
-      "cliname": "adminstat"
+      "cliname": "admin_state"
     }, 
     "MulticastExtensions": {
-      "cliname": "multicastextensions"
+      "cliname": "multicast_extensions"
     }, 
     "ASBdrRtrStatus": {
-      "cliname": "asbdrrtrstatus"
+      "cliname": "as_bdr_rtr_status"
     }, 
     "RestartSupport": {
-      "cliname": "restartsupport"
+      "cliname": "restart_support"
     }, 
     "TOSSupport": {
-      "cliname": "tossupport"
+      "cliname": "tos_support"
     }
   }
 }
