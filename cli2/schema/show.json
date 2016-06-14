@@ -35,6 +35,9 @@
           },
           "subcmd7": {
             "$ref": "file:/tmp/snaproute/cli/schema/ipshow.json"
+          },
+          "subcmd8": {
+            "$ref": "file:/tmp/snaproute/cli/schema/StpBridgeInstance.json"
           }
         }
       }

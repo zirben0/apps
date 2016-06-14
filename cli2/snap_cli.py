@@ -479,13 +479,15 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 for submodel, subschema in zip(submodelList, subschemaList):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    if submodelList:
-                        subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                    if submodelList and subschemaList:
                         for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                            #valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                            # we want to keep looping untill there are no more value commands
-                            #if valueexpected and mlineLength-1 == i:
-                            subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
+                            valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                            # this is useful so that we can reuse config templates
+                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
+                    #else:
+                    #    subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
 
         # lets remove any duplicates
         returncommands = list(Set(subcommands).difference(mline))
@@ -533,13 +535,21 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                 subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                                 for subsubmodel, subsubschema in zip(submodelList, subschemaList):
                                     (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                                    # we want to keep looping untill there are no more value commands
-                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED and mlineLength-1 == i:
-                                        self.currentcmd = self.lastcmd
-                                        c = ShowCmd(self, subsubmodel, subsubschema)
-                                        c.show(mline, all=(i == mlineLength-1))
-                                        self.currentcmd = []
 
+                                    # we want to keep looping untill there are no more value commands
+                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                        if i == mlineLength -1:
+                                            self.currentcmd = self.lastcmd
+                                            c = ShowCmd(self, subsubmodel, subsubschema)
+                                            c.show(mline, all=True)
+                                            self.currentcmd = []
+                                        else:
+                                            subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
+                                            if mline[i+1] not in subcommands:
+                                                self.currentcmd = self.lastcmd
+                                                c = ShowCmd(self, subsubmodel, subsubschema)
+                                                c.show(mline, all=False)
+                                                self.currentcmd = []
 
                 except Exception:
                     pass
@@ -567,7 +577,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         if argv and '?' in argv[-1]:
             if len(argv) > 1:
                 if argv[0] == snapcliconst.COMMAND_TYPE_SHOW:
-                    self.display_show_help()
+                    self.display_show_help(argv)
                 elif argv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
                     self.display_help(argv)
             return ''

@@ -235,7 +235,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                     return values
                             elif i < mlineLength:
-                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                     else:
                         subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
             else:
@@ -380,7 +380,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         if submodelList and subschemaList:
                             for submodel, subschema in zip(submodelList, subschemaList):
-                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
@@ -436,7 +436,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                                     self.valueexpected = valueexpected
                                                     return argv
                         else:
-                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                            subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                             if mline[i] not in subcommands:
                                 snapcliconst.printErrorValueCmd(i, mline)
                                 sys.stdout.write("\nERROR Invalid command entered, should be one of the following:\n%s\n" %(",".join(subcommands)))
