@@ -655,7 +655,18 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             :return:
             """
             def isAttrEqual(entry1, entry2):
-                return len([(entry1, entry2) for e1 in entry1.attrList for e2 in entry2.attrList
+
+                # lets sort the attrbiutes
+                entry1AttrList = []
+                entry2AttrList = []
+                for e1 in entry1.attrList:
+                    if e1.isKey():
+                        entry1AttrList.append((e1.attr, e1))
+                for e2 in entry2.attrList:
+                    if e2.isKey():
+                        entry1AttrList.append((e2.attr, e2))
+                # compare the keys to make sure they are equal
+                return len([(e1, e2) for (attr1, e1) in sorted(entry1AttrList) for (attr2, e2) in sorted(entry2AttrList)
                             if ((e1.attr == e2.attr and e1.val == e2.val))]) > 0
 
             def getSameConfigObjects(l1, l2):
@@ -672,6 +683,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             tmpCmdEntryList = []
             # get the combination of all config objects which are of the same type
             for c1,c2 in getSameConfigObjects(configList, configList):
+
                 newConfig = None
                 # lets combine any entries which have the same key values
                 # as the attributes may have been updated by two different config trees
