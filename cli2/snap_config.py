@@ -660,14 +660,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 entry1AttrList = []
                 entry2AttrList = []
                 for e1 in entry1.attrList:
-                    if e1.isKey():
-                        entry1AttrList.append((e1.attr, e1))
+                    entry1AttrList.append((e1.attr, e1))
                 for e2 in entry2.attrList:
-                    if e2.isKey():
-                        entry1AttrList.append((e2.attr, e2))
+                    entry2AttrList.append((e2.attr, e2))
                 # compare the keys to make sure they are equal
                 return len([(e1, e2) for (attr1, e1) in sorted(entry1AttrList) for (attr2, e2) in sorted(entry2AttrList)
-                            if ((e1.attr == e2.attr and e1.val == e2.val))]) > 0
+                            if ((e1.isKey() or e2.isKey() and e1.attr == e2.attr and e1.val == e2.val))]) > 0
 
             def getSameConfigObjects(l1, l2):
                 for c1,c2 in [(config1, config2) for config1 in l1 for config2 in l2
@@ -704,7 +702,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     if newConfig:
                         if c1 in newConfigList:
                             for e1 in c1.attrList:
-                                newConfig.set(e1.cmd.split(' '), e1.delete, e1.attr, e1.val, isattrlist=c2.keysDict[e1.attr]['isarray'])
+                                newConfig.set(e1.cmd.split(' '), e1.delete, e1.attr, e1.val, isattrlist=c1.keysDict[e1.attr]['isarray'])
                             newConfigList.remove(c1)
                         if c2 in newConfigList:
                             for e1 in c2.attrList:

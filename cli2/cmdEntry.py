@@ -247,8 +247,6 @@ class CmdEntry(object):
                             ifindexList.append(value)
 
                     tmpval = ifindexList
-                    if type(v) == CmdSet:
-                        v.val = tmpval
                     '''
                     Not handling this case as don't see a need
                     else:
@@ -279,9 +277,6 @@ class CmdEntry(object):
                     value = self.cfgobj.getIntfRefToIfIndex(tmpval)
                     if value is not None:
                         tmpval = value
-                        if type(v) == CmdSet:
-                            v.val = tmpval
-
                     else:
                         # if we reached here the other options for IfIndex are
                         # 1) Vlan
@@ -305,7 +300,7 @@ class CmdEntry(object):
                         if value is not None:
                             tmpval = value
 
-        return v.val if type(v) == CmdSet else tmpval
+        return tmpval
 
     def set(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
         for entry in self.attrList:
