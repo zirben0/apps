@@ -465,11 +465,11 @@
             "maximum": 100000
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "1000"
           }
         }
       }

@@ -259,6 +259,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         return returncommands
 
+    # TODO CLEAN THIS UGLY CODE UP!!!!
     def _cmd_common(self, argv):
         # each config command takes a cmd, subcmd and value
         # example: interface ethernet <port#>
@@ -415,6 +416,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     else:
                                         self.commandLen = len(mline[:i])
                                     self.valueexpected = valueexpected
+                                    return argv
                                 elif i < mlineLength - 1 and mline[i+1] in subcommands:
                                     schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
                                     if schemaname:
@@ -432,6 +434,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                                     else:
                                                         self.commandLen = len(mline[i:])
                                                     self.valueexpected = valueexpected
+                                                    return argv
+                        else:
+                            subcommands += self.getchildrencmds(mline[i], submodel, subschema)
+                            if mline[i] not in subcommands:
+                                snapcliconst.printErrorValueCmd(i, mline)
+                                sys.stdout.write("\nERROR Invalid command entered, should be one of the following:\n%s\n" %(",".join(subcommands)))
+                                return ''
 
             except Exception as e:
                 sys.stdout.write("precmd: error %s" %(e,))
@@ -636,7 +645,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         return newConfigList
 
     def do_apply(self, argv):
-
         def fixupConfigList(configObj, configList):
             """
             # There may be a config which needs to be merged with a master config
@@ -759,7 +767,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     elif status_code in [404] and config.delete:
                                         sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
                                         sys.stdout.write("warning: nothing to delete invalidating command\n")
-                                        sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
+                                        sys.stdout.write("sdk:%s(%s,%s)\n\n" %(get_func.__name__,
                                               ",".join(["%s" %(x) for x in argumentList]),
                                               ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
                                         clearAppliedList.append(config)
@@ -825,7 +833,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 config.setPending(False)
                 config.show()
                 delconfigList.append(config)
-            sys.stdout.write("sdk:%s(%s,%s)\n" % (create_func.__name__,
+            sys.stdout.write("sdk:%s(%s,%s)\n\n" % (create_func.__name__,
                                                   ",".join(["%s" % (x) for x in argumentList]),
                                                   ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
         else:
@@ -857,7 +865,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 config.setPending(False)
                 config.show()
                 delconfigList.append(config)
-            sys.stdout.write("sdk:%s(%s,%s)\n" % (delete_func.__name__,
+            sys.stdout.write("sdk:%s(%s,%s)\n\n" % (delete_func.__name__,
                                                   ",".join(["%s" % (x) for x in argumentList]),
                                                   ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
         else:
@@ -889,7 +897,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     config.setPending(False)
                     config.show()
                     delconfigList.append(config)
-                sys.stdout.write("sdk:%s(%s,%s)\n" % (update_func.__name__,
+                sys.stdout.write("sdk:%s(%s,%s)\n\n" % (update_func.__name__,
                                                       ",".join(["%s" % (x) for x in argumentList]),
                                                       ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
         else:
