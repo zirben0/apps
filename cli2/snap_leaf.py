@@ -606,7 +606,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             verifyargv = argv[1:]
             mline = argv[1:]
             delete = True
-
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
@@ -1150,6 +1149,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                     sattrvalue = scmdvalues['commands']['properties'][attr]
                                                     if 'cliname' in attrvalue:
                                                         if attrvalue['cliname'] == mline[i]:
+                                                            self.subcommand = False
                                                             values = snapcliconst.getSchemaAttrSelection(sattrvalue)
                                                             if values:
                                                                 strvalues = ["%s" %(x,) for x in values]
