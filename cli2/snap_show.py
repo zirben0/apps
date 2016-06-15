@@ -557,6 +557,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
         self.model = model
         self.schema = schema
         self.configList = []
+        self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
 
     def doesConfigExist(self, c):
         '''
@@ -674,10 +675,11 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                 # get the sdk
                 sdk = self.getSdkShow()
 
-                funcObjName = config.name + 's' if 'State' in config.name else config.name + 'States'
+                #funcObjName = config.name + 's' if 'State' in config.name else config.name + 'States'
+                funcObjName = config.name
                 try:
                     if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName)
+                        printall_func = getattr(sdk, 'print' + funcObjName + 's')
                         printall_func()
                     else:
                         # update all the arguments so that the values get set in the get_sdk_...

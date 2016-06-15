@@ -354,9 +354,10 @@ class CommonCmdLine(object):
                                 cliHelpList.append((val[1], val[2]))
 
         # get all the internal do_<xxx> commands for this class
-        for f in dir(self):
-            if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
-                cliHelpList.append((f.replace('do_', ''), ""))
+        if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW:
+            for f in dir(self):
+                if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
+                    cliHelpList.append((f.replace('do_', ''), ""))
         return sorted(cliHelpList)
 
     def getValueMinMax(self, cmd, model, schema):

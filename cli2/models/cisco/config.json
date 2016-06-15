@@ -33,9 +33,6 @@
       "subcmd10": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpGlobal.json"
       },
-      "subcmd11": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/Daemon.json"
-      },
       "subcmd12": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpGlobalConfig.json"
       },

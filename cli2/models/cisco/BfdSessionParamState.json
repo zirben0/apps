@@ -4,7 +4,7 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionParamStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "param",
     "value": {
       "Name": {
         "cliname": "profile"

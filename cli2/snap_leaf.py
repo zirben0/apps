@@ -954,8 +954,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             else:
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                     else:
+                        import ipdb; ipdb.set_trace()
+                        def checkAttributevalues(mline, i, mlineLength, schemaname, submodel, subschema):
 
-                        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
                                 subcommands = []
                                 for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
                                     scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
@@ -971,10 +972,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                            snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
                                                     else:
                                                         for subkey in attrvalue.keys():
-                                                            subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+                                                            subcommands += checkAttributevalues(mline, i, mlineLength, subkey, attrvalue, sattrvalue)
                                 return subcommands
 
-                        subcommands += checkAttributevalues(argv, mlineLength, schemaname, model, schema)
+                        subcommands += checkAttributevalues(mline, i, mlineLength, schemaname, model, schema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found

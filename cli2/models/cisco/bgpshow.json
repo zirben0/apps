@@ -1,6 +1,7 @@
 {
   "bgp": {
     "cliname" : "bgp",
+    "help": "Show BGP IPv4 Routes",
     "commands": {
       "subcmd1" : {
         "$ref" : "file:/tmp/snaproute/cli/model/cisco/BGPNeighborSummary.json"

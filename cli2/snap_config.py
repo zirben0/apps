@@ -665,7 +665,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     entry2AttrList.append((e2.attr, e2))
                 # compare the keys to make sure they are equal
                 return len([(e1, e2) for (attr1, e1) in sorted(entry1AttrList) for (attr2, e2) in sorted(entry2AttrList)
-                            if ((e1.isKey() or e2.isKey() and e1.attr == e2.attr and e1.val == e2.val))]) > 0
+                            if (((e1.isKey() or e2.isKey()) and e1.attr == e2.attr and e1.val == e2.val))]) > 0
 
             def getSameConfigObjects(l1, l2):
                 for c1,c2 in [(config1, config2) for config1 in l1 for config2 in l2

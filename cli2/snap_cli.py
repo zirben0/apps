@@ -100,6 +100,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.IntfRefToIfIndex = {}
         self.IfIndexToIntfRef = {}
         self.testmodel = False
+        # defaulting to show as it will be overwritten by the first config command
+        self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
 
         # this must be called after sdk setting as the common init is valididating
         # the model and some info needs to be gathered from system to populate the
@@ -493,11 +495,11 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         returncommands = list(Set(subcommands).difference(mline))
 
         if len(text) == 0 and len(returncommands) == len(subcommands):
-            #sys.stdout.write("just before return %s" %(returncommands))
             return returncommands
 
         # lets only get commands which are a partial of what was entered
         returncommands = [k for k in returncommands if k.startswith(text)]
+
 
         return returncommands
 
@@ -531,11 +533,10 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         for submodel, subschema in zip(submodelList, subschemaList):
                             schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                             submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                            if submodelList:
-                                subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            if submodelList and subschemaList:
                                 for subsubmodel, subsubschema in zip(submodelList, subschemaList):
                                     (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-
                                     # we want to keep looping untill there are no more value commands
                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                         if i == mlineLength -1:
@@ -550,6 +551,18 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                                                 c = ShowCmd(self, subsubmodel, subsubschema)
                                                 c.show(mline, all=False)
                                                 self.currentcmd = []
+                                    elif i == mlineLength - 1:
+                                        if "commands" not in subsubmodel:
+                                            for key, value in subsubmodel.iteritems():
+                                                if 'cliname' in value and value['cliname'] == mline[i]:
+                                                    self.currentcmd = self.lastcmd
+                                                    c = ShowCmd(self, subsubmodel, subsubschema)
+                                                    c.show(mline, all=True)
+                                                    self.currentcmd = []
+
+
+
+
 
                 except Exception:
                     pass

@@ -4,7 +4,7 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DaemonStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "daemon",
     "value": {
       "Name": {
         "cliname": "name"
