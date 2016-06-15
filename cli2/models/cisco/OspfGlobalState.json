@@ -4,10 +4,10 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfGlobalStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "ospf",
     "value": {
       "RouterId": {
-        "cliname": "routerid"
+        "cliname": "ospf"
       }
     }
   }

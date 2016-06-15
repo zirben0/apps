@@ -99,15 +99,37 @@ class CmdSet(object):
         if type(val) == dict:
             self.setDict(cmd, delete, attr, val)
             return
-        self.cmd = cmd
         self.delete = delete
         self.attr = attr
         if self.islist:
             if type(val) is list:
-                self.val += val
+                if self.delete:
+                    cmdList = self.cmd.split(',')
+                    for cmd, v in zip(copy.deepcopy(cmdList), val):
+                        try:
+                            self.val.remove(v)
+                            cmdList.remove(cmd)
+                        except ValueError:
+                            pass
+                    self.cmd = ",".join(cmdList)
+                else:
+                    self.cmd += "," + cmd
+                    self.val += val
             else:
-                self.val.append(val)
+                if self.delete:
+                    cmdList = self.cmd.split(',')
+                    try:
+                        self.val.remove(val)
+                        cmdList .remove(cmd)
+                    except ValueError:
+                        pass
+                    self.cmd = ",".join(cmdList)
+                else:
+                    self.cmd += "," + cmd
+                    self.val.append(val)
+
         else:
+            self.cmd = cmd
             self.val = val
         self.date = time.ctime()
 
@@ -115,14 +137,19 @@ class CmdSet(object):
         return (self.cmd, self.attr, self.val)
 
     def isKey(self):
-        return self.isKey
+        return self.iskey
+
+    def isList(self):
+        return self.islist
 
 class CmdEntry(object):
     '''
 
     '''
 
-    def __init__(self, name, keyDict):
+    def __init__(self, cfgobj, name, keyDict):
+        # reference to the cfg obj
+        self.cfgobj = cfgobj
         # used to determine if this is a config object
         # which is marked for config
         # some cnfig key attributes are set across configs
@@ -188,19 +215,98 @@ class CmdEntry(object):
         :param v: CmdSet
         :return:
         '''
+        tmpval = v.val if type(v) == CmdSet else v
         if k in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
-            if "/" in v.val:
-                v.val = v.attr + v.val.split('/')[1]
-            elif v.attr not in v.val:
-                v.val = v.attr + v.val
 
-        return v
+            if type(v) == CmdSet:
+                if type(v.val) is list:
+                    tmpvallist = []
+                    for value in v.val:
+                        if "/" in str(value):
+                            value = v.attr + str(value).split('/')[1]
+                        elif v.attr not in str(value):
+                            value = v.attr + str(value)
+                        tmpvallist.append(str(value))
+                    tmpval = tmpvallist
+                else:
+                    if "/" in str(v.val):
+                        v.val = v.attr + v.val.split('/')[1]
+                    elif v.attr not in str(v.val):
+                        v.val = v.attr + str(v.val)
+                    tmpval = str(v.val)
+
+            # cli always expects the string name, but lets
+            # convert the string name to the number
+            if k in ('IfIndex', 'Members'):
+                # Port object is gathered on cli start
+                if type(tmpval) is list:
+                    ifindexList = []
+                    for tmpv in tmpval:
+                        value = self.cfgobj.getIntfRefToIfIndex(tmpv)
+                        if value is not None:
+                            ifindexList.append(value)
+
+                    tmpval = ifindexList
+                    '''
+                    Not handling this case as don't see a need
+                    else:
+                        # if we reached here the other options for IfIndex are
+                        # 1) Vlan
+                        # 2) Lag
+
+                        # lets try a vlan interface
+                        sdk = self.cfgobj.getSdk()
+                        vlans = sdk.getAllVlanStates()
+                        for vlan in vlans:
+                            v = vlan['Object']
+                            if v['VlanName'] == tmpval:
+                                value = v['IfIndex']
+
+                        if value is None:
+                            vlans = sdk.getAllLaPortChannelStates()
+                            for vlan in vlans:
+                                v = vlan['Object']
+                                if v['Name'] == tmpval:
+                                    value = v['IfIndex']
+
+                        if value is not None:
+                            tmpval = value
+                    '''
+
+                else:
+                    value = self.cfgobj.getIntfRefToIfIndex(tmpval)
+                    if value is not None:
+                        tmpval = value
+                    else:
+                        # if we reached here the other options for IfIndex are
+                        # 1) Vlan
+                        # 2) Lag
+
+                        # lets try a vlan interface
+                        sdk = self.cfgobj.getSdk()
+                        vlans = sdk.getAllVlanStates()
+                        for vlan in vlans:
+                            v = vlan['Object']
+                            if v['VlanName'] == tmpval:
+                                value = v['IfIndex']
+
+                        if value is None:
+                            vlans = sdk.getAllLaPortChannelStates()
+                            for vlan in vlans:
+                                v = vlan['Object']
+                                if v['Name'] == tmpval:
+                                    value = v['IfIndex']
+
+                        if value is not None:
+                            tmpval = value
+
+        return tmpval
 
     def set(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
                 if entry.iskey == True:
-                    # not allowed to update keys
+                    # not reason to update keys
                     return
                 # TODO if delete then we may need to remove this command all together
                 # HACK: should fix higher layers to pass in correct values for now
@@ -257,23 +363,21 @@ class CmdEntry(object):
                         attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
                         if self.keysDict[kk]['isarray']:
                             if snapcliconst.isnumeric(attrtype):
-                                l = [snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in entry.val]
-                                value = [int(x) for x in l]
+                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))
                             elif snapcliconst.isboolean(attrtype):
-                                l = [snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip(''))) for x in entry.val]
-                                value = [snapcliconst.convertStrBoolToBool(x) for x in l]
+                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))
                             elif attrtype in ('str', 'string'):
-                                value = [self.updateSpecialValueCases(vv['key'], x.lstrip('').rstrip('')) for x in entry.val]
+                                value = self.updateSpecialValueCases(vv['key'], entry)
                             else: # struct
                                 value = getDictEntryValue(entry, vv['value'][0])
 
                         else:
                             if snapcliconst.isnumeric(attrtype):
-                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
+                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))
                             elif snapcliconst.isboolean(attrtype):
-                                value = snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], getEntryValue(entry)))
+                                value = snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], entry))
                             elif attrtype in ('str', 'string'):
-                                value = getEntryValue(self.updateSpecialValueCases(vv['key'], entry))
+                                value = self.updateSpecialValueCases(vv['key'], entry)
                             else:
                                 value = getDictEntryValue(entry, vv['value'][0])
 
@@ -293,13 +397,13 @@ class CmdEntry(object):
 
                     if self.keysDict[kk]['isarray']:
                         if snapcliconst.isnumeric(attrtype):
-                            l = [snapcliconst.convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                            l = [snapcliconst.convertStrNumToNum(x.lstrip('').rstrip('')) for x in v['value']['default'].split(",")]
                             value = [int(x) for x in l]
                         elif snapcliconst.isboolean(attrtype):
-                            l = [snapcliconst.convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value'].split(",")]
+                            l = [snapcliconst.convertStrBoolToBool(x.lstrip('').rstrip('')) for x in v['value']['default'].split(",")]
                             value = [snapcliconst.convertStrBoolToBool(x) for x in l]
                         elif attrtype in ('str', 'string'):
-                            value = [x.lstrip('').rstrip('') for x in v['value'].split(",")]
+                            value = [x.lstrip('').rstrip('') for x in v['value']['default'].split(",")]
                         else:
                             value = {}
                             for v in v['value'][0].values():
@@ -336,12 +440,12 @@ class CmdEntry(object):
         if not self.isPending():
             pending = 'APPLIED CONFIG'
 
-        sys.stdout.write('\tobject: %s   status: %s\n' %(self.name, pending))
+        sys.stdout.write('\tobject: %s   status: %s  valid: %s\n' %(self.name, pending, self.valid))
 
-        labels = ('command', 'attr', 'value', 'time provisioned')
+        labels = ('command', 'attr', 'value', 'iskey', 'time provisioned')
         rows = []
         for entry in self.attrList:
-            rows.append((getEntryCmd(entry), getEntryAttribute(entry), getEntryValue(entry), getEntrytime(entry)))
+            rows.append((getEntryCmd(entry), getEntryAttribute(entry), getEntryValue(entry), "%s" %(entry.iskey), getEntrytime(entry)))
         width = 30
         print indent([labels]+rows, hasHeader=True, separateRows=False,
                      prefix=' ', postfix=' ', headerChar= '-', delim='    ',

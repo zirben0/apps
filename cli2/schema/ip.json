@@ -20,10 +20,13 @@
         "description": "Base commands",
         "properties": {
           "subcmd1" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4IntfMembers.json"
+            "$ref" : "file:/tmp/snaproute/cli/schema/DhcpRelayGlobal.json"
           },
           "subcmd2" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/DhcpRelayIntfMembers.json"
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4Route.json"
+          },
+          "subcmd3": {
+            "$ref" : "file:/tmp/snaproute/cli/schema/IpTableAcl.json"
           }
         }
       }

@@ -2,16 +2,13 @@
   "listattrs": [], 
   "commands": {
     "DefaultLeaseTime": {
-      "cliname": "defaultleasetime"
-    }, 
-    "DhcpConfigKey": {
-      "cliname": "dhcpconfigkey"
+      "cliname": "lease_time"
     }, 
     "Enable": {
       "cliname": "enable"
     }, 
     "MaxLeaseTime": {
-      "cliname": "maxleasetime"
+      "cliname": "max_lease_time"
     }
   }
 }

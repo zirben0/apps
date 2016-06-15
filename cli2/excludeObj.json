@@ -1,0 +1,6 @@
+{
+    "Exclude": [
+        "SourcePolicyList",
+        "PolicyDefinitionStmtPriority"
+    ]
+}

@@ -4,7 +4,8 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIPv4RoutesSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "ospf",
+    "help": "Show OSPF IPv4 Routes",
     "value": {
       "DestType": {
         "cliname": "desttype"

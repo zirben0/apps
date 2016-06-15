@@ -4,7 +4,8 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "route",
+    "help": "Show RIB IPv4 Routes",
     "value": {
       "DestinationNw": {
         "cliname": "destinationnw"

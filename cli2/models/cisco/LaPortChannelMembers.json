@@ -2,34 +2,22 @@
   "listattrs": [], 
   "commands": {
     "LagId": {
-      "cliname": "lagid"
+      "cliname": "port_channel"
     }, 
     "LagType": {
       "cliname": "lagtype"
     }, 
-    "Members": {
-      "cliname": "members"
-    }, 
-    "SystemIdMac": {
-      "cliname": "systemidmac"
-    }, 
-    "MinLinks": {
-      "cliname": "minlinks"
-    }, 
     "SystemPriority": {
-      "cliname": "systempriority"
+      "cliname": "system_priority"
     }, 
     "Interval": {
       "cliname": "interval"
     }, 
     "LacpMode": {
-      "cliname": "lacpmode"
-    }, 
-    "AdminState": {
-      "cliname": "adminstate"
+      "cliname": "lacp_mode"
     }, 
     "LagHash": {
-      "cliname": "laghash"
+      "cliname": "lag_hash"
     }
   }
 }

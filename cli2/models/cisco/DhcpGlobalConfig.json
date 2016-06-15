@@ -1,14 +1,9 @@
 {
   "dhcpglobalconfig": {
-    "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpGlobalConfigSubCmds.json"
-    }, 
-    "cliname": "", 
-    "value": {
-      "DhcpConfigKey": {
-        "cliname": "dhcpconfigkey"
-      }
-    }
+    },
+    "help": "DHCP Global Commands",
+    "cliname": "dhcp"
   }
 }

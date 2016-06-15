@@ -70,41 +70,6 @@
                 "default": ""
               }
             }
-          }, 
-          "NetworkMask": {
-            "type": "object", 
-            "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
-                "type": "string"
-              }, 
-              "help": {
-                "default": "mask of the route", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "networkmask", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "type": "string"
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
           }
         }
       }, 

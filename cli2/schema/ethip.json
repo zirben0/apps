@@ -23,7 +23,7 @@
             "$ref": "file:/tmp/snaproute/cli/schema/ipv4ethintfmembers.json"
           },
           "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayIntf.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/OspfIfEntry.json"
           }
         }
       }

@@ -21,6 +21,9 @@
         "properties": {
           "subcmd1": {
             "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobal.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/OspfGlobal.json"
           }
         }
       }

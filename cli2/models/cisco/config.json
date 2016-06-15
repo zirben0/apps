@@ -31,7 +31,19 @@
         "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyCondition.json"
       },
       "subcmd10": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemLogging.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpGlobal.json"
+      },
+      "subcmd12": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpGlobalConfig.json"
+      },
+      "subcmd13": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ip.json"
+      },
+      "subcmd14": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPGlobal.json"
+      },
+      "subcmd16": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayGlobal.json"
       }
     }
   } 

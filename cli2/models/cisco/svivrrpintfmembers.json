@@ -1,0 +1,26 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Priority": {
+      "cliname": "priority"
+    }, 
+    "AdvertisementInterval": {
+      "cliname": "advertisementinterval"
+    }, 
+    "PreemptMode": {
+      "cliname": "preemptmode"
+    }, 
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/vrrpip.json"
+    },
+    "IfIndex": {
+      "cliname": "vlan"
+    }, 
+    "VRID": {
+      "cliname": "vrrp"
+    }, 
+    "AcceptMode": {
+      "cliname": "acceptmode"
+    }
+  }
+}

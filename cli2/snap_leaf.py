@@ -82,8 +82,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.cmdtype = cmdtype
         self.currentcmd = []
         self.parentcliname = cliname
+        # variable used to determine that when set the attribute being set is a key for an object
         self.subcommand = False
 
+        self.objDict = {}
 
         self.setupCommands()
 
@@ -95,50 +97,154 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         :param cliname:
         :return:
         '''
+        def getParentConfigEntry(configObj, objname, keyvalueDict): #parentattr, parentval):
+
+            for config in configObj.configList:
+                if config.name == objname:
+                    # todo need to check keys
+                    numKeys = len(keyvalueDict)
+                    keysfoundcnt = 0
+
+                    if len(config.attrList) == 0:
+                        return config
+
+                    for entry in config.attrList:
+
+                        lencurrkeys = len([x for x in config.attrList if entry.isKey()])
+                        # lets update the entry because we now have more keys
+                        if lencurrkeys < numKeys:
+                            if entry.isKey() and \
+                                (entry.attr in keyvalueDict and
+                                    (entry.val == keyvalueDict[entry.attr][0] or
+                                     entry.val in (snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES +
+                                                   snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))):
+                                return config
+                        # found an entry with same amount of keys
+                        elif lencurrkeys == numKeys:
+                            # all key values must be set for config to be found
+                            if entry.isKey() and \
+                                (entry.attr in keyvalueDict and
+                                    (entry.val == keyvalueDict[entry.attr][0] or
+                                     entry.val in (snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES +
+                                                   snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES))):
+                                keysfoundcnt += 1
+
+                            if keysfoundcnt == numKeys:
+                                return config
+            return None
+
+        def createChildTreeObjectsDict(objcmds):
+            objDict = {}
+            # lets fill out the object to attributes mapping valid for this level in the tree
+            for cmds in objcmds:
+                if type(cmds) in (dict, jsonref.JsonRef):
+                    for k, v in cmds.iteritems():
+                        if v['objname'] not in objDict:
+                            objDict[v['objname']] = {}
+
+                        objDict[v['objname']].update({k:v})
+            return objDict
+
+        def getCurrentLeafContainerKeyValues(cmdtype, parent, currentcmd, delete, defaultValFunc):
+            """
+            Two cases for a command in a leaf
+            1) leaf container - example interface eth 0
+            2) sub leaf container example interface eth 0
+                                            - spanning_tree brg_vlan
+            :param parent:
+            :param currentcmd:
+            :return:
+            """
+            keyvalueDict = {}
+            if len(currentcmd) == 0:
+                basekey = parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else parent.lastcmd[-1]
+                basevalue = parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else defaultValFunc([basekey], delcmd=delete)
+                keyvalueDict.update({basekey: (basevalue, parent.lastcmd)})
+            else:
+                basekey = currentcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else currentcmd[-1]
+                basevalue = currentcmd[-1] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else defaultValFunc([basekey], delcmd=delete)
+                keyvalueDict.update({basekey: (basevalue, currentcmd)})
+                if hasattr(parent, 'parent') and parent.parent:
+                    keyvalueDict.update(getCurrentLeafContainerKeyValues(cmdtype, parent.parent, parent.currentcmd, delete, defaultValFunc))
+
+            return keyvalueDict
+
+        self.objDict = {}
         configObj = self.getConfigObj()
         for model, schema in zip(self.modelList, self.schemaList):
 
             listAttrs =  model[self.objname]['listattrs'] if 'listattrs' in model[self.objname] else []
-            # lets get all commands and subcommands for a given config operation
+            # lets get all command objects for the given command
             allCmdsList = self.prepareConfigTreeObjects(None, self.objname, False, model[self.objname]['cliname'], model[self.objname]["commands"], schema[self.objname]["properties"]["commands"]["properties"], listAttrs)
-            objDict = {}
 
             # lets fill out the object to attributes mapping valid for this level in the tree
-            for cmds in allCmdsList:
-                for k, v in cmds.iteritems():
-                    if v['objname'] not in objDict:
-                        objDict[v['objname']] = {}
-
-                    objDict[v['objname']].update({k:v})
-
+            self.objDict = createChildTreeObjectsDict(allCmdsList)
 
             if configObj:
-                # lets go through the valid sub tree commands
-                # and fill in what commands were entered by the user
-                for k, v in objDict.iteritems():
-                    config = CmdEntry(k, objDict[k])
+                delete = True if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype else False
+
+                # get the current leaf container key value
+                keyvalueDict = getCurrentLeafContainerKeyValues(self.cmdtype, self.parent, self.currentcmd, delete, self.getCommandDefaultAttrValue)
+
+                # lets go through the valid sub tree command objects
+                # and fill in what command was entered by the user
+                for objname, objattrs in self.objDict.iteritems():
+
+                    config = None
+                    # show commands don't require keys because we
+                    # may be doing a get all so lets treat show as a
+                    # special case.
                     if snapcliconst.COMMAND_TYPE_SHOW not in self.cmdtype:
-                        lastcmd = self.parent.lastcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
-                        if cliname == lastcmd:
-                            for kk in v.keys():
-                                if kk == cliname:
-                                    basekey = self.parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else self.parent.lastcmd[-1]
-                                    basevalue = self.parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else None
+                        # get the parent object if this is a sub command
+                        # as this may be a secondary key for the object
+                        if self.parent:
+                            config = getParentConfigEntry(configObj, objname, keyvalueDict)
+                        if not config:
+                            config = CmdEntry(self, objname, self.objDict[objname])
 
-                                    delete = True if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype else False
+                        if cliname in keyvalueDict:
+                            # total keys must be provisioned for config to be valid
+                            # the keyvalueDict may contain more tree keys than is applicable for the
+                            # config tree
+                            objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
+                                                                if v['isattrkey'] and v['createwithdefaults']])
+                            isvalid = len(keyvalueDict) >= objkeyslen and objkeyslen != 0
 
-                                    if basevalue is None:
-                                        basevalue = self.getCommandDefaultAttrValue([basekey], delcmd=delete)
+                            isValidKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
+                                                                         and (k in keyvalueDict)]) > 0
+                            # we want a full key config
+                            if isValidKeyConfig:
+                                for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
+                                    if basekey in objattrs:
+                                        if objattrs[basekey]['isattrkey']:
+                                            config.setDelete(delete)
 
-                                    config.setDelete(delete)
+                                        # all keys for an object must be set and
+                                        # and all all attributes must have default values
+                                        # in order for the object to be considered valid and
+                                        # ready to be provisioned.
+                                        config.setValid(isvalid)
+                                        config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
+                            else:
+                                isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
+                                                                               v['createwithdefaults'] and
+                                                                              (v['value']['default'])]) > 0
 
-                                    # letting me know that the parent config can
-                                    # create a default object, otherwise engine will
-                                    # try to create a lot of objects
-                                    config.setValid(v[basekey]['createwithdefaults'])
-
-                                    config.set(self.parent.lastcmd, delete, basekey, basevalue, isKey=True)
+                                # rare case that an attribute of an object is used as a key
+                                # but found that it does exist as is the case for router bgp ....
+                                isObjNonKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if not v['isattrkey']
+                                                                         and k in keyvalueDict]) > 0
+                                if isObjNonKeyConfig:
+                                    for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
+                                        if basekey in objattrs:
+                                            if objattrs[basekey]['isattrkey']:
+                                                config.setDelete(delete)
+                                            # values supplied may not be the object key but they were used
+                                            # to create the object as is the case with router bgp
+                                            config.setValid(isvalid)
+                                            config.set(cmd, delete, basekey, basevalue, isKey=True)
                     else:
+                        config = CmdEntry(self, objname, self.objDict[objname])
                         config.setValid(True)
 
                     # only add this config if it does not already exist
@@ -148,9 +254,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     elif cfg and snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                         # let remove the previous command if it was set
                         # or lets delete the config
-                        if len(config.attrList) > 1:
-                            config.clear(basekey, basevalue)
-                        else:
+                        if len(config.attrList) == len(keyvalueDict):
                             try:
                                 # lets remove this command
                                 # because basically the user cleared
@@ -345,7 +449,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
             return objname, createwithdefault
 
-
         cmdList = []
         cmdDict = {}
         tmpobjname = objname
@@ -354,6 +457,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             if k == key:
                 return v
 
+            # TODO need to update function to ignore sub commands which are not terminating commands
             if k in model:
                 tmpmodel = model[k]
                 tmpobjname, tmpcreatewithdefault = getObjNameAndCreateWithDefaultFromSchema(v, tmpmodel, tmpobjname, tmpcreatewithdefault)
@@ -372,6 +476,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             if 'objname' in subtmpschema:
                                 tmpobjname = subtmpschema['objname']['default']
 
+                            # a sub cmd is one which has a 'value' attribute defined
                             tmpsubcmd = None
                             if 'cliname' in vv:
                                 tmpsubcmd = vv['cliname']
@@ -395,13 +500,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 cmdList += cmds
 
                                 # lets add the attribute to the subcmd
-                                cmdDict.update({tmpsubcmd : {'key': key,
-                                                        'createwithdefaults' : tmpcreatewithdefault,
-                                                        'subcommand' : subcmd,
-                                                        'objname' :  objname,
-                                                        'value': cmds,
-                                                        'isarray': isList,
-                                                        'type': tmpobjname}})
+                                if key:
+                                    cmdDict.update({tmpsubcmd : {'key': key,
+                                                            'createwithdefaults' : tmpcreatewithdefault,
+                                                            'subcommand' : subcmd,
+                                                            'objname' :  objname,
+                                                            'isattrkey': False,
+                                                            'value': cmds,
+                                                            'isarray': isList,
+                                                            'type': tmpobjname}})
 
                 else:
                     key = k
@@ -412,17 +519,21 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                     'createwithdefaults' : tmpcreatewithdefault,
                                                     'subcommand' : subcmd,
                                                     'objname' : objname,
+                                                    'isattrkey': v['properties']['key']['default'],
                                                     'value': v['properties']['defaultarg'],
                                                     'isarray': v['properties']['islist']['default'],
                                                     'type': v['properties']['argtype']}})
+
             elif 'properties' in v:
                 cmdDict.update({v['properties']['cliname']['default'] : {'key': k,
                                                     'createwithdefaults' : tmpcreatewithdefault,
                                                     'subcommand' : subcmd,
                                                     'objname' : objname,
+                                                    'isattrkey': v['properties']['key']['default'],
                                                     'value': v['properties']['defaultarg'],
                                                     'isarray': v['properties']['islist']['default'],
                                                     'type': v['properties']['argtype']}})
+
         if cmdDict:
             cmdList.append(cmdDict)
 
@@ -465,10 +576,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 if schemaname:
                                     submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
                                     subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                                    for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                        value = self.getModelDefaultAttrVal(argv, schemaname, subsubmodel, subsubschema, delcmd=delcmd)
+                                    if submodelList and subschemaList:
+                                        for subsubmodel, subsubschema in zip(submodelList, subschemaList):
+                                            schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
+                                            value = self.getModelDefaultAttrVal(argv[i], schemaname, subsubmodel, subsubschema, delcmd=delcmd)
+                                    else:
+                                        value = self.getModelDefaultAttrVal(argv[i], schemaname, submodel, subschema, delcmd=delcmd)
             else:
-                value = self.getModelDefaultAttrVal(argv, schemaname, model, schema, delcmd=delcmd)
+                value = self.getModelDefaultAttrVal(argv[0], schemaname, model, schema, delcmd=delcmd)
 
 
         return value
@@ -482,13 +597,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         return value
 
 
+
     def _cmd_common(self, argv):
         delete = False
         mline = argv
+        verifyargv = argv
         if len(argv) > 0 and argv[0] == 'no':
+            verifyargv = argv[1:]
             mline = argv[1:]
             delete = True
-
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
@@ -511,83 +628,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         # enum types
         value = self.getCommandDefaultAttrValue(mline, delcmd=delete)
         if value is not None:
-            mline += [value]
-
-        if isInvalidCommand(mline, delete):
+            mline += [str(value)]
+        if isInvalidCommand(verifyargv, delete):
             return
-        elif isKeyValueCommand(mline, delete):
+        elif isKeyValueCommand(verifyargv, delete):
             # key value supplied
-            key = self.parentcliname if not self.subcommand else None
-            subkey = mline[0]
-            value = mline[1] if len(mline) == 2 else None
-
-            configObj = self.getConfigObj()
-            if configObj:
-                # TODO need to handle if config has been applied then another attribute set
-                for config in configObj.configList:
-                    for k, v in config.keysDict.iteritems():
-                        # is key part of the subcommand
-                        # is subkey == attr k
-                        # or is subkey in the sub-attributes (struct)
-                        if ((key in (v['subcommand'], None)) and
-                            k == subkey and
-                                (type(v['value']) is not list)):
-
-                            if delete and not config.valid:
-                                config.setDelete(True)
-
-                            config.setValid(True)
-
-                            if config.isAttrSet(subkey) and delete:
-                                config.clear(subkey, value)
-                            else:
-                                # store the attribute into the config
-                                config.set(self.lastcmd, delete, subkey, value, isattrlist=v['isarray'])
-                        elif (type(v['value']) is list and len(v['value']) and subkey in v['value'][0].keys()):
-                            # lets set the
-                            if config.isAttrSet(subkey) and delete:
-                                config.clear(subkey, value)
-                            else:
-                                # TODO this will need to be updated once we allow for multiple attributes
-                                # to be set at the same time.
-                                if self.parent.lastcmd[-2] in [vv['subcommand'] for vv in v['value'][0].values()]:
-                                    # change the subkey to be the list key so that we don't create a new attr update
-                                    attrkey = self.parent.lastcmd[-2]
-                                    data = {}
-                                    for kk, vv in v['value'][0].iteritems():
-                                        if kk != subkey:
-                                            data.update({self.parent.lastcmd[-2]: self.convertStrValueToType(vv['type']['type'], self.parent.lastcmd[-1])})
-                                        else:
-                                            data.update({subkey: self.convertStrValueToType(vv['type']['type'], value)})
-                                else:
-                                    attrkey = subkey
-                                    data = {}
-                                    for kk, vv in v['value'][0].iteritems():
-                                        if kk == subkey:
-                                            data.update({subkey: self.convertStrValueToType(vv['type']['type'], value)})
-                                        else:
-                                            data.update({kk: self.convertStrValueToType(vv['type']['type'], vv['value']['default'])})
-
-                                # store the attribute into the config
-                                config.setDict(self.lastcmd, delete, attrkey, data, isattrlist=v['isarray'])
+            self.processKeyValueCommand(mline, delete)
         else:
-            # key + subkey + value supplied
-            key = mline[0]
-            subkey = mline[1]
-            value = mline[2] if not delete else None
-            configObj = self.getConfigObj()
-            if configObj:
-                for config in configObj.configList:
-                    if len([x for x,v in config.keysDict.iteritems() if v['subcommand'] == key and x == subkey]) == 1:
-                        if delete and not config.valid:
-                            config.setDelete(True)
-
-                        config.setValid(True)
-
-                        if len(config.attrList) > 1 and delete:
-                            config.clear(subkey, value)
-                        else:
-                            config.set(self.lastcmd, delete, subkey, value)
+            self.processSubKeyKeyValueCommand(mline, delete)
 
         if self.subcommand:
             # reset the command len
@@ -608,13 +656,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                     schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
                     if schemaname:
-                        configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
-                        if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
-                            self.prompt = self.baseprompt[:-2] + '-' + configprompt + '-'
-
                         value = None
-                        if configprompt and len(argv) == 2:
-                            value = argv[-1]
+                        if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
+                            self.prompt = self.baseprompt[:-2] + '-'
+
+                            configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
+                            if configprompt:
+                                self.prompt += configprompt + '-'
+                                value = argv[-1]
 
                         objname = schemaname
                         for i in range(1, len(argv)-1):
@@ -642,7 +691,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         # stop the command loop for config as we will be running a new cmd loop
                         cmdln.Cmdln.stop = True
                         self.teardownCommands()
-                        c = LeafCmd(objname, argv[-2], self.cmdtype, self, self.prompt, submodelList, subschemaList)
+                        c = LeafCmd(objname, argv[-2], self.cmdtype, self.parent, self.prompt, submodelList, subschemaList)
+                        c.currentcmd = self.lastcmd
                         if c.applybaseconfig(argv[-2]):
                             c.cmdloop()
                         self.setupCommands()
@@ -657,17 +707,190 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         if self.stop:
             self.cmdloop()
 
-    def getchildrencmds(self, parentname, model, schema):
-        attrlist = []
-        if model:
-            schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
-            if schemaname in model:
-                for cmdobj in [obj for k, obj in model[schemaname]["commands"].iteritems() if "subcmd" in k]:
-                    if type(cmdobj) in (dict, jsonref.JsonRef):
-                        for v in cmdobj["commands"].values():
-                            if 'cliname' in v and v['cliname'] != self.objname:
-                                attrlist.append(v['cliname'])
-        return attrlist
+    def processSubKeyKeyValueCommand(self, mline, delete):
+        """
+        This is mean to handle commands which contain a
+        subcommand + attr + value
+        :param mline:
+        :param delete:
+        :return:
+        """
+        def isSubCommandAttrOrSubLeaf(config, key, subkey, issubcommand):
+            """
+            v['subcommand'] is a the containing leaf
+
+            :param config: configuration object
+            :param key:
+            :param subkey: typically an attribute of a leaf container or a key of a
+                           of a leaf container
+
+            :param issubcommand: this is a terminating command meaning the subkey
+                                 is a key of a leaf container
+            :return:
+            """
+            return len([k for k, v in config.keysDict.iteritems() if ((v['subcommand'] == key
+                                                                       and not issubcommand
+                                                                       and k == subkey) or
+                                                                          (issubcommand and
+                                                                                   k == subkey))]) == 1
+
+        # key + subkey + value supplied
+        key = mline[0]
+        subkey = mline[1]
+        value = mline[2] if not delete else None
+        configObj = self.getConfigObj()
+        if configObj:
+            for config in configObj.configList:
+                if isSubCommandAttrOrSubLeaf(config, key, subkey, self.subcommand):
+                    # need to be smarter about when attributes are set so lets check the parent
+                    # to see this config is my key if it is not then move on
+                    foundConfig = True
+                    if self.parent:
+                        parentKey = self.parent.lastcmd[-2]
+                        parentValue = self.parent.lastcmd[-1]
+                        foundConfig = False
+                        for entry in config.attrList:
+                            if entry.isKey() and \
+                                parentKey == entry.attr and \
+                                    parentValue == entry.val:
+                                foundConfig = True
+
+                    # lets update only if this is not a subcommand
+                    # otherwise this will be updated as part of
+                    # subcommand processing
+                    if foundConfig and ((not self.subcommand and not delete) or (delete)):
+                        # delete shoudl only be set if a key is being deleted
+                        if delete and value is None:
+                            config.setDelete(True)
+
+                        if len(config.attrList) > 1 and delete:
+                            config.clear(subkey, value)
+                            config.setValid(False)
+                        else:
+                            config.set(self.lastcmd, delete, subkey, value)
+                            config.setValid(True)
+
+    def processKeyValueCommand(self, mline, delete):
+        key = self.parentcliname if not self.subcommand else None
+        subkey = mline[0]
+        value = mline[1] if len(mline) == 2 else None
+        configObj = self.getConfigObj()
+        if configObj:
+            # TODO need to handle if config has been applied then another attribute set
+            for config in configObj.configList:
+                for k, v in config.keysDict.iteritems():
+                    # is key part of the subcommand
+                    # is subkey == attr k
+                    # or is subkey in the sub-attributes (struct)
+                    # or attr is a key for another attribute
+                    if ((key in (v['subcommand'], None)) and
+                                k == subkey and
+                            (type(v['value']) is not list)):
+
+                        foundConfig = True
+                        if self.parent:
+                            if len(self.currentcmd) == 0:
+                                parentKey = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else \
+                                self.parent.lastcmd[-1]
+                                parentValue = self.parent.lastcmd[-1] if len(self.parent.lastcmd) > 0 else None
+                            else:
+                                parentKey = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
+                                parentValue = self.currentcmd[-1] if len(self.currentcmd) > 0 else None
+                            foundConfig = False
+                            for entry in config.attrList:
+                                if entry.isKey() and \
+                                    parentKey == entry.attr and \
+                                        parentValue == entry.val:
+                                    foundConfig = True
+
+                        # lets update only if this is not a subcommand
+                        # otherwise this will be updated as part of
+                        # subcommand processing
+                        if foundConfig and ((not self.subcommand and not delete) or (delete)):
+                            # delete should only be set is a key is being deleted
+                            # or if there is not a default to revert to
+                            if delete and value is None:
+                                config.setDelete(True)
+
+                            if config.isAttrSet(subkey) and delete:
+                                config.clear(subkey, value)
+                                isvalid = v['createwithdefaults']
+                                config.setValid(isvalid)
+                            else:
+                                # store the attribute into the config
+                                config.set(self.lastcmd, delete, subkey, value, isKey=self.subcommand,
+                                           isattrlist=v['isarray'])
+                                config.setValid(True)
+
+
+                    # when we fill in the config we set a value to be a placeholder for the sub list attributes
+                    # thus we want to check to see if the subkey from the command exists within the list attribute
+                    # keys
+                    elif (type(v['value']) is list and \
+                                  len(v['value']) and subkey in v['value'][0].keys()):
+
+                        def isKeyInSubListAttr(parentKey, parentValue, entryval):
+                            # the values are converted when stored cause I am not storing the subattr types
+                            # so lets convert the value back to a string to compare against
+                            return len(
+                                [x for x in entryval if parentKey in x and str(x[parentKey]) == parentValue]) == 1
+
+                        foundConfig = True
+                        parentKey = None
+                        parentValue = None
+                        if self.parent:
+                            if len(self.currentcmd) == 0:
+                                parentKey = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else \
+                                self.parent.lastcmd[-1]
+                                parentValue = self.parent.lastcmd[-1] if len(self.parent.lastcmd) > 0 else None
+                            else:
+                                parentKey = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
+                                parentValue = self.currentcmd[-1] if len(self.currentcmd) > 0 else None
+                            foundConfig = False
+                            for entry in config.attrList:
+                                if entry.isKey() and \
+                                                parentKey == entry.attr and \
+                                        (parentValue == entry.val or
+                                                     type(entry.val) is list and isKeyInSubListAttr(parentKey,
+                                                                                                    parentValue,
+                                                                                                    entry.val)):
+                                    foundConfig = True
+
+                        if foundConfig:
+                            # lets set the
+                            if config.isAttrSet(subkey) and delete:
+                                config.clear(subkey, value)
+                                # cleared an attribute and defaults not set
+                                isvalid = v['createwithdefaults']
+                                config.clear(isvalid)
+                            else:
+                                # TODO this will need to be updated once we allow for multiple attributes
+                                # to be set at the same time.
+                                if parentKey in [vv['subcommand'] for vv in v['value'][0].values()]:
+                                    # change the subkey to be the list key so that we don't create a new attr update
+                                    attrkey = parentKey
+                                    data = {}
+                                    # the values are converted cause I am not storing the subattr types
+                                    for kk, vv in v['value'][0].iteritems():
+                                        if kk != subkey:
+                                            data.update({parentKey: self.convertStrValueToType(vv['type']['type'],
+                                                                                               parentValue)})
+                                        else:
+                                            data.update({subkey: self.convertStrValueToType(vv['type']['type'], value)})
+                                else:
+                                    attrkey = subkey
+                                    data = {}
+                                    # the values are converted cause I am not storing the subattr types
+                                    for kk, vv in v['value'][0].iteritems():
+                                        if kk == subkey:
+                                            data.update({subkey: self.convertStrValueToType(vv['type']['type'], value)})
+                                        else:
+                                            data.update({kk: self.convertStrValueToType(vv['type']['type'],
+                                                                                        vv['value']['default'])})
+
+                                # store the attribute into the config
+                                config.setDict(self.lastcmd, delete, attrkey, data, isKey=self.subcommand,
+                                               isattrlist=v['isarray'])
 
     def complete_redistribute(self, text, line, begidx, endidx):
         return self._cmd_complete_common(text, line, begidx, endidx)
@@ -719,7 +942,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     values = self.getValueSelections(mline[i], submodel, subschema)
                                     if not values:
                                         values = config.getCommandValues(objname, keys)
-                                    #sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
+                                    sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
                                     # expect value but no value supplied
                                     if (i == mlineLength-1):
                                         #sys.stdout.write("\nselections: %s\n" %(values))
@@ -729,10 +952,30 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         subcommands = values
                                         skipValue = True
                             else:
-                                subcommands += self.getchildrencmds(mline[i], submodel, subschema)
-                            #sys.stdout.write("subcommands %s" %(subcommands,))
-                    #else:
-                    #    sys.stdout.write("model commands: %s\n" %(model[schemaname]["commands"]))
+                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
+                    else:
+                        import ipdb; ipdb.set_trace()
+                        def checkAttributevalues(mline, i, mlineLength, schemaname, submodel, subschema):
+
+                                subcommands = []
+                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                                    if 'subcmd' in mcmd:
+                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                                            if i == (mlineLength - 1): # value expected from attrs
+                                                # reached attribute values
+                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
+                                                    if 'cliname' in attrvalue:
+                                                        if attrvalue['cliname'] == mline[i]:
+                                                            subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                                    else:
+                                                        for subkey in attrvalue.keys():
+                                                            subcommands += checkAttributevalues(mline, i, mlineLength, subkey, attrvalue, sattrvalue)
+                                return subcommands
+
+                        subcommands += checkAttributevalues(mline, i, mlineLength, schemaname, model, schema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -759,7 +1002,30 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 root._cmd_show(argv)
 
     def display_help(self, argv):
-        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
+            subcommands = []
+            for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                if 'subcmd' in mcmd:
+                    if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                        if i == (mlineLength - 1): # value expected from attrs
+                            # reached attribute values
+                            for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                sattrvalue = scmdvalues['commands']['properties'][attr]
+                                if 'cliname' in attrvalue:
+                                    if attrvalue['cliname'] == mline[i]:
+                                        subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                       snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                else:
+                                    for subkey in attrvalue.keys():
+                                        subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+            return subcommands
+
+        # sub commands within a config command will have the current cmd set
+        if len(self.currentcmd) == 0:
+            parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        else:
+            parentcmd = self.currentcmd[-2] if len(self.currentcmd) > 1 else self.currentcmd[-1]
         mline = [parentcmd] + argv[:-1]
         mlineLength = len(mline)
 
@@ -767,6 +1033,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         if mlineLength == 1:
             for model, schema in zip(self.modelList, self.schemaList):
                 subcommands = self.getchildrenhelpcmds(mline[0], model, schema)
+                # exclude parent command
+                if len(self.currentcmd) > 0:
+                    parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+                    subcommands = [x for x in subcommands if x[0] != parentcmd]
 
         #ignore the help or ? command
         for i in range(1, mlineLength):
@@ -785,44 +1055,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     subcommands = [[cmd, help]]
                                 else:
                                     subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                            else:
+                                subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                                subcommands = [x for x in subcommands if x[0] != mline[0]]
+
                     else:
-
-                        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
-                                subcommands = []
-                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
-                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
-                                    if 'subcmd' in mcmd:
-                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                            if i == (mlineLength - 1): # value expected from attrs
-                                                # reached attribute values
-                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
-                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
-                                                    if 'cliname' in attrvalue:
-                                                        if attrvalue['cliname'] == mline[i]:
-                                                            subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
-                                                    else:
-                                                        for subkey in attrvalue.keys():
-                                                            subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
-                                return subcommands
-
                         subcommands += checkAttributevalues(argv, mlineLength, schemaname, model, schema)
-
-                        '''
-                        if 'commands' in model[schemaname]:
-                            for mcmd, mcmdvalues in model[schemaname]['commands'].iteritems():
-                                scmdvalues = schema[schemaname]['properties']['commands']['properties'][mcmd]
-                                if 'subcmd' in mcmd:
-                                    if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                        if i == (mlineLength - 1): # value expected from attrs
-                                            # reached attribute values
-                                            for attr, attrvalue in mcmdvalues['commands'].iteritems():
-                                                sattrvalue = scmdvalues['commands']['properties'][attr]
-                                                if 'cliname' in attrvalue:
-                                                    if attrvalue['cliname'] == mline[i]:
-                                                        subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
-                        '''
 
         self.printCommands(mline, subcommands)
 
@@ -831,17 +1069,17 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def precmd(self, argv):
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        delete = argv[0] == 'no' if argv else False
         mline = [parentcmd] + [x for x in argv if x != 'no']
         mlineLength = len(mline)
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
-
         cmd = argv[-1] if argv else ''
         if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
-            self.display_help(argv)
+            self.display_help(argv if argv[0] != 'no' else argv[1:])
             return ''
         if cmd in ('!', ):
-            self.do_exit(argv)
+            self.do_exit(argv if argv[0] != 'no' else argv[1:])
             return ''
 
         if subschema and submodel:
@@ -849,7 +1087,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 self.commandLen = 0
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                    if schemaname:
+                    if schemaname in subschema and schemaname in submodel:
                         subschemaList, submodelList = self.getSubCommand(mline[i],
                                                                          subschema[schemaname]["properties"]["commands"]["properties"],
                                                                          submodel[schemaname]["commands"]), \
@@ -858,24 +1096,40 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                    values = self.getValueSelections(mline[i], submodel, subschema)
-                                    if i < mlineLength and values and mline[i+1] not in values:
-                                        snapcliconst.printErrorValueCmd(i, mline)
-                                        sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
-                                        return ''
-                                    min,max = self.getValueMinMax(mline[i], submodel, subschema)
-                                    if min is not None and max is not None:
-                                        try:
-                                            num = string.atoi(mline[i+1])
-                                            if num < min or num > max:
-                                                snapcliconst.printErrorValueCmd(i, mline)
+                                    if not delete:
+                                        values = self.getValueSelections(mline[i], submodel, subschema)
+                                        strvalues = []
+                                        if values:
+                                            strvalues = ["%s" %(x,) for x in values]
+                                        if i < mlineLength and values and mline[i+1] not in strvalues:
+                                            snapcliconst.printErrorValueCmd(i, mline)
+                                            sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(strvalues)))
+                                            return ''
+                                        min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                        if min is not None and max is not None:
+                                            try:
+                                                if i < mlineLength - 1:
+                                                    num = string.atoi(mline[i+1])
+                                                    if num < min or num > max:
+                                                        snapcliconst.printErrorValueCmd(i, mline)
+                                                        sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                        return ''
+                                                else:
+                                                    sys.stdout.write("\nERROR: Value Expected, must be beteween %s-%s\n" % (min, max))
+                                                    return ''
+
+                                            except:
                                                 sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                                 return ''
-                                        except:
-                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
-                                            return ''
 
-
+                                        if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE and \
+                                            i == mlineLength - 1:
+                                            sys.stdout.write("\nERROR: Value expected")
+                                    elif i == mlineLength - 2:
+                                        erroridx = i+1 if not delete else i+2
+                                        errcmd = mline if not delete else ['no'] + mline
+                                        snapcliconst.printErrorValueCmd(erroridx, errcmd)
+                                        sys.stdout.write("\nERROR Delete commands do not expect value, will revert to default if exists\n")
                                     # found that if commands are entered after the last command then there can be a problem
                                     self.commandLen = len(mline[:i]) + 1
                                     self.subcommand = True
@@ -883,29 +1137,26 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     self.commandLen = len(mline[:i])
 
                         else:
-                            #self.commandLen = len(mline[:i]) + 1
-                            #if i == (mlineLength - 1):
-                            #    (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            #    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                            #        self.subcommand = True
 
-                            def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
+                            def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema, delete):
 
                                 for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
                                     scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
                                     if 'subcmd' in mcmd:
                                         if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                            if i == (mlineLength - 2):  # value expected from attrs
-
+                                            if not delete and i == (mlineLength - 2):  # value expected from attrs
                                                 # reached attribute values
                                                 for attr, attrvalue in mcmdvalues['commands'].iteritems():
                                                     sattrvalue = scmdvalues['commands']['properties'][attr]
                                                     if 'cliname' in attrvalue:
                                                         if attrvalue['cliname'] == mline[i]:
+                                                            self.subcommand = False
                                                             values = snapcliconst.getSchemaAttrSelection(sattrvalue)
-                                                            if values and mline[i+1] not in values:
+                                                            if values:
+                                                                strvalues = ["%s" %(x,) for x in values]
+                                                            if values and mline[i+1] not in strvalues:
                                                                 snapcliconst.printErrorValueCmd(i, mline)
-                                                                sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(values)))
+                                                                sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(strvalues)))
                                                                 return ''
                                                             min,max = snapcliconst.getSchemaAttrMinMax(sattrvalue)
                                                             if min is not None and max is not None:
@@ -921,9 +1172,17 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                     else:
                                                         self.subcommand = True
                                                         for subkey in attrvalue.keys():
-                                                            checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+                                                            checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue, delete)
+                                            elif delete and i == (mlineLength - 2):
+                                                erroridx = i+1 if not delete else i+2
+                                                errcmd = mline if not delete else ['no'] + mline
+                                                snapcliconst.printErrorValueCmd(erroridx, errcmd)
+                                                sys.stdout.write("\nERROR Delete commands do not expect value, will revert to default if exists\n")
+                                                return ''
+
+
                                 return argv
 
-                            return checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema)
+                            return checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema, delete)
 
         return argv

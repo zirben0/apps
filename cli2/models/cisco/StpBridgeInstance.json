@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeInstanceSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "1-4095  Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is typically 1",
+    "cliname": "brg_vlan",
     "value": {
       "Vlan": {
         "cliname": "brg_vlan"

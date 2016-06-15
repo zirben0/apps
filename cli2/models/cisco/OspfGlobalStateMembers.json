@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "RouterId": {
-      "cliname": "routerid"
+      "cliname": "ospf"
     }
   }
 }

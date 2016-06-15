@@ -33,11 +33,11 @@ COMMAND_TYPE_CONFIG_NOW = 'now'
 
 # these model attribute names will possibly have the cliname changed within the cli
 # model to a name picked by asicd.conf to represent a port
-DYNAMIC_MODEL_ATTR_NAME_LIST = ('IntfRef', 'IfIndex', 'Port')
+DYNAMIC_MODEL_ATTR_NAME_LIST = ('IntfRef', 'IfIndex', 'Port', 'Members', 'IntfList', 'UntagIntfList', 'PhysicalPort', 'AddressLessIf')
 
 # lets keep track of the various two value names that might not need to be represented in the cli
-CLI_COMMAND_POSITIVE_TRUTH_VALUES = ('true', 'on', 'up', '1')
-CLI_COMMAND_NEGATIVE_TRUTH_VALUES = ('false', 'off', 'down', '0')
+CLI_COMMAND_POSITIVE_TRUTH_VALUES = ('true', 'on', 'up', True)
+CLI_COMMAND_NEGATIVE_TRUTH_VALUES = ('false', 'off', 'down', False)
 
 PORT_NAME_PREFIX = 'ethernet'
 
@@ -71,8 +71,6 @@ def printErrorValueCmd(i, mline):
     sys.stdout.write("%s\n" %(" ".join(mline)))
     spaces = " " * lenstr
     sys.stdout.write("%s\n" %(spaces + " ^"))
-
-
 
 # model macros
 def GET_MODEL_COMMANDS(schemaname, model):

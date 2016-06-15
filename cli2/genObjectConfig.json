@@ -363,7 +363,7 @@
   "parent": ""
  },
  "Daemon": {
-  "access": "x",
+  "access": "w",
   "owner": "sysd",
   "srcfile": "sysObjects.go",
   "multiplicity": "*",

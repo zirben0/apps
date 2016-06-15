@@ -20,13 +20,22 @@
         "description": "Base commands",
         "properties": {
           "subcmd1" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4Route.json"
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4RouteState.json"
           },
           "subcmd2" : {
             "$ref" : "file:/tmp/snaproute/cli/schema/bgpshow.json"
           },
           "subcmd3" : {
             "$ref" : "file:/tmp/snaproute/cli/schema/ipintfshow.json"
+          },
+          "subcmd4" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4RouteHwState.json"
+          },
+          "subcmd5" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/OspfIPv4Routes.json"
+          },
+          "subcmd6": {
+            "$ref": "file:/tmp/snaproute/cli/schema/RouteDistanceState.json"
           }
         }
       }

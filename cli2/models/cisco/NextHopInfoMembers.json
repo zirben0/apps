@@ -5,7 +5,7 @@
       "cliname": "nexthopintref"
     }, 
     "NextHopIp": {
-      "cliname": "nexthopip"
+      "cliname": "nexthop_ip"
     }, 
     "Weight": {
       "cliname": "weight"

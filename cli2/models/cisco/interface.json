@@ -8,6 +8,9 @@
       },
       "subcmd2": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/svi.json"
+      },
+      "subcmd3": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannel.json"
       }
     }
   } 
