@@ -30,6 +30,7 @@ COMMAND_TYPE_DELETE = 'delete'
 COMMAND_TYPE_CONFIG = 'config'
 COMMAND_TYPE_SHOW = 'show'
 COMMAND_TYPE_CONFIG_NOW = 'now'
+COMMAND_TYPE_INIT = 'init'
 
 # these model attribute names will possibly have the cliname changed within the cli
 # model to a name picked by asicd.conf to represent a port

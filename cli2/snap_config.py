@@ -196,8 +196,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self._cmd_common(argv[1:])
 
     def _cmd_complete_common(self, text, line, begidx, endidx):
-
-        #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
+        sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
         argv = [x for x in line.split(' ') if x != '' and x != 'no']
         mline = [self.objname] + argv
@@ -251,10 +250,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if len(text) == 0 and len(returncommands) == len(subcommands):
             #sys.stdout.write("just before return %s" %(returncommands))
             return returncommands
-        #elif len(text) == 0:
-        #    # todo get all values ?
-        #    pass
-        # lets only get commands which are a partial of what was entered
+
         returncommands = [k for k in returncommands if k.startswith(text)]
 
         return returncommands

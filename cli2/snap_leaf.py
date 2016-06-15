@@ -954,7 +954,6 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             else:
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                     else:
-                        import ipdb; ipdb.set_trace()
                         def checkAttributevalues(mline, i, mlineLength, schemaname, submodel, subschema):
 
                                 subcommands = []

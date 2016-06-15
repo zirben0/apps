@@ -291,7 +291,7 @@ class CommonCmdLine(object):
 
         return False
 
-    def getchildrenhelpcmds(self, parentname, model, schema):
+    def getchildrenhelpcmds(self, parentname, model, schema, issubcmd=False):
         """
         This function gets the help commands
         :param parentname:
@@ -354,7 +354,7 @@ class CommonCmdLine(object):
                                 cliHelpList.append((val[1], val[2]))
 
         # get all the internal do_<xxx> commands for this class
-        if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW:
+        if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd:
             for f in dir(self):
                 if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
                     cliHelpList.append((f.replace('do_', ''), ""))
@@ -598,7 +598,7 @@ class CommonCmdLine(object):
                                     cmd = " ".join(argv[:-1])
                                     helpcommands = [[cmd, help]]
                                 else:
-                                    helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                                    helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                     else:
                         if 'commands' in submodel[schemaname]:
                             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():

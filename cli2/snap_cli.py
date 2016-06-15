@@ -101,7 +101,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.IfIndexToIntfRef = {}
         self.testmodel = False
         # defaulting to show as it will be overwritten by the first config command
-        self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
+        self.cmdtype = snapcliconst.COMMAND_TYPE_INIT
 
         # this must be called after sdk setting as the common init is valididating
         # the model and some info needs to be gathered from system to populate the
@@ -425,6 +425,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     @cmdln.alias("conf t", "configure t", "configure term", "conf term", "configure terminal", "config t")
     # match for schema cmd object
     def _cmd_config(self, args):
+        self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
+
         " Global configuration mode "
         if self.privilege is False:
             sys.stdout.write("Must be in privilege mode to execute config\n")
@@ -515,7 +517,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def _cmd_show(self, argv):
         " Show running system information "
         mline = argv
-
+        self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
         mlineLength = len(mline)
         if 'run' in mline:
             self.currentcmd = self.lastcmd
@@ -587,17 +589,20 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
 
     def precmd(self, argv):
-        if argv and '?' in argv[-1]:
-            if len(argv) > 1:
-                if argv[0] == snapcliconst.COMMAND_TYPE_SHOW:
-                    self.display_show_help(argv)
-                elif argv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
-                    self.display_help(argv)
-            return ''
+        if len(argv) > 1 and '?' in argv:
+            if argv[0] == snapcliconst.COMMAND_TYPE_SHOW:
+                self.display_show_help(argv)
+            elif argv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
+                self.display_help(argv)
         if argv and '!' in argv[-1]:
             self.do_exit(argv)
             return ''
         return argv
+
+    def do_help(self, argv):
+        self.display_help(argv)
+
+    do_help.aliases = ["?"]
 
 
 class PrepareModel(object):
