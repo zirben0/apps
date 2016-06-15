@@ -406,7 +406,7 @@ class CmdEntry(object):
                             value = [x.lstrip('').rstrip('') for x in v['value']['default'].split(",")]
                         else:
                             value = {}
-                            for v in v['value'][0].values():
+                            for vv in v['value'][0].values():
                                 value.update({vv['key'] : vv['value']['default']})
                             value = [value]
                     else:

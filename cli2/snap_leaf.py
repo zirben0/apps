@@ -173,9 +173,15 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         configObj = self.getConfigObj()
         for model, schema in zip(self.modelList, self.schemaList):
 
-            listAttrs =  model[self.objname]['listattrs'] if 'listattrs' in model[self.objname] else []
+            listAttrs = model[self.objname]['listattrs'] if 'listattrs' in model[self.objname] else []
             # lets get all command objects for the given command
-            allCmdsList = self.prepareConfigTreeObjects(None, self.objname, False, model[self.objname]['cliname'], model[self.objname]["commands"], schema[self.objname]["properties"]["commands"]["properties"], listAttrs)
+            allCmdsList = self.prepareConfigTreeObjects(None,
+                                                        self.objname,
+                                                        False,
+                                                        model[self.objname]['cliname'],
+                                                        model[self.objname]["commands"],
+                                                        schema[self.objname]["properties"]["commands"]["properties"],
+                                                        listAttrs)
 
             # lets fill out the object to attributes mapping valid for this level in the tree
             self.objDict = createChildTreeObjectsDict(allCmdsList)
@@ -184,7 +190,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 delete = True if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype else False
 
                 # get the current leaf container key value
-                keyvalueDict = getCurrentLeafContainerKeyValues(self.cmdtype, self.parent, self.currentcmd, delete, self.getCommandDefaultAttrValue)
+                keyvalueDict = getCurrentLeafContainerKeyValues(self.cmdtype,
+                                                                self.parent,
+                                                                self.currentcmd,
+                                                                delete,
+                                                                self.getCommandDefaultAttrValue)
 
                 # lets go through the valid sub tree command objects
                 # and fill in what command was entered by the user

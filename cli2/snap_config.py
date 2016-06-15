@@ -487,6 +487,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             else:
                 if lengthkwargs != len(data):
                     validconfig = False
+
+            # special case where the attribute is in fact a list
+            # don't support default values for lists so lets
+            # force the list to be empty
+            tmpdata = copy.deepcopy(data)
+            for k,v in tmpdata.iteritems():
+                if type(v) is list:
+                    data[k] = []
+
         elif 'update' in func.__name__:
             for k in getKeys:
                 if k in data:
@@ -496,6 +505,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 elif k != 'self':
                     validconfig = False
 
+            # special case where the attribute is in fact a list
+            # don't support default values for lists so lets
+            # force the list to be empty
+            tmpdata = copy.deepcopy(data)
+            for k,v in tmpdata.iteritems():
+                if type(v) is list:
+                    data[k] = []
 
         return (validconfig, argumentList, data)
 
