@@ -354,6 +354,40 @@ class CmdEntry(object):
         :param defaultonly:
         :return:
         '''
+        def handleListUpdate(attrtype, olddata, newdata):
+            updatelist = copy.deepcopy(olddata)
+            for nd in newdata:
+                if snapcliconst.isnumeric(attrtype):
+                    # if attribute is supplied and it already exists assume delete
+                    if nd in olddata:
+                        updatelist.remove(nd)
+                    else:
+                        updatelist.append(nd)
+
+                elif snapcliconst.isnumeric(attrtype):
+                    pass
+                elif attrtype in ('str', 'string'):
+                    # if attribute is supplied and it already exists assume delete
+                    if nd in olddata:
+                        updatelist.remove(nd)
+                    else:
+                        updatelist.append(nd)
+
+                else: # struct
+                    for od in olddata:
+                        deleteupdate = False
+                        for key,value in nd:
+                            # find a key that matches and that the nd value is not zero, empty string as these are usually
+                            # defaults
+                            if key in od and od[key] and od[key] == value:
+                                deleteupdate = True
+
+                        if deleteupdate:
+                            updatelist.remove(nd)
+                        else:
+                            updatelist.append(nd)
+            return updatelist
+
         newdict = {}
         if not rollback:
             for entry in self.getallconfig():
@@ -371,6 +405,8 @@ class CmdEntry(object):
                             else: # struct
                                 value = getDictEntryValue(entry, vv['value'][0])
 
+                            if readdata:
+                                value = handleListUpdate(attrtype, readdata[vv['key']], value)
                         else:
                             if snapcliconst.isnumeric(attrtype):
                                 value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))

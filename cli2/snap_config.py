@@ -458,7 +458,19 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self.prompt = self.baseprompt
         self.stop = True
 
-    def get_sdk_func_key_values(self, data, func):
+    def get_sdk_func_key_values(self, data, func, rollback=False):
+        """
+        Convert the data to the flexSdk argv/kwarg values.
+        In the case of update and create if a value is not provided
+        it will be filled in by data.
+        :param data:
+        :param func:
+        :param rollback: Used to tell the function that the data is in fact
+                         real data, and not just the default data from
+                         a model.  This is important because lists will
+                         need to be updated appropriately
+        :return:
+        """
         validconfig = True
         argspec = inspect.getargspec(func)
         getKeys = argspec.args[1:]
@@ -491,10 +503,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # special case where the attribute is in fact a list
             # don't support default values for lists so lets
             # force the list to be empty
-            tmpdata = copy.deepcopy(data)
-            for k,v in tmpdata.iteritems():
-                if type(v) is list:
-                    data[k] = []
+            if not rollback:
+                tmpdata = copy.deepcopy(data)
+                for k,v in tmpdata.iteritems():
+                    if type(v) is list:
+                        data[k] = []
 
         elif 'update' in func.__name__:
             for k in getKeys:
@@ -508,10 +521,11 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # special case where the attribute is in fact a list
             # don't support default values for lists so lets
             # force the list to be empty
-            tmpdata = copy.deepcopy(data)
-            for k,v in tmpdata.iteritems():
-                if type(v) is list:
-                    data[k] = []
+            if not rollback:
+                tmpdata = copy.deepcopy(data)
+                for k,v in tmpdata.iteritems():
+                    if type(v) is list:
+                        data[k] = []
 
         return (validconfig, argumentList, data)
 
@@ -901,7 +915,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         delconfigList = []
         failurecfg = False
         data = config.getSdkConfig(readdata=readdata, rollback=rollback)
-        (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
+        (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func, rollback=True)
         if validconfig:
             if len(kwargs) > 0:
                 r = update_func(*argumentList, **kwargs)
