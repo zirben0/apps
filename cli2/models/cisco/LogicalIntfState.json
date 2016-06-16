@@ -3,11 +3,12 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LogicalIntfStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show Logical Interface",
+    "cliname": "logical",
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "logical"
       }
     }
   }

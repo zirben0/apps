@@ -701,7 +701,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         root = self.getRootObj()
         if self.configList and \
                 root.isSystemReady():
-            import ipdb; ipdb.set_trace()
             # create new list where come config is combined because they
             # are acting on the same object
             self.configList = fixupConfigList(self, self.configList)

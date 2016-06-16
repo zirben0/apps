@@ -27,6 +27,9 @@
           },
           "subcmd3": {
             "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannel.json"
+          },
+          "subcmd4": {
+            "$ref": "file:/tmp/snaproute/cli/schema/LogicalIntf.json"
           }
         }
       }

@@ -5,7 +5,7 @@
       "cliname": "type"
     }, 
     "Name": {
-      "cliname": "name"
+      "cliname": "logical"
     }
   }
 }
