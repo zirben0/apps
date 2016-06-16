@@ -1,6 +1,7 @@
 {
   "config": {
     "prompt" : "(config)",
+    "help": "Configuration Commands",
     "cliname" : "config",
     "commands" : {
       "subcmd1" : {

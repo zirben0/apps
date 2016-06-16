@@ -110,17 +110,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         while not self.waitForSystemToBeReady():
             time.sleep(1)
 
-        # lets make sure the model is correct
-        valid = self.validateSchemaAndModel()
-
-        if not valid:
-            sys.stdout.write("schema and model mismatch")
-            sys.exit(0)
-
-        self.discoverPortInfo()
-        self.setupcommands()
+        self.do_reload_cli_model([])
         self.setBanner(switch_ip)
-
 
     def setupcommands(self, teardown=False):
 
@@ -229,7 +220,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             self.IntfRefToIfIndex[intfRef] = ifIndex
 
     def do_show_cli(self, arv):
-
+        """Show all commands available within the CLI"""
         def submcmd_walk(subcmd):
             if type(subcmd) in (dict, jsonref.JsonRef):
                 for k, v in subcmd.iteritems():
@@ -410,6 +401,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     @cmdln.alias("en", "ena")
     # match for schema cmd object
     def _cmd_privilege(self, arg):
+        """Enabled Privilege Mode"""
         self.privilege = True
         submodelList = self.getSubCommand("privilege", self.model["commands"])
         subschemaList = self.getSubCommand("privilege", self.schema["properties"]["commands"]["properties"])
@@ -425,9 +417,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     @cmdln.alias("conf t", "configure t", "configure term", "conf term", "configure terminal", "config t")
     # match for schema cmd object
     def _cmd_config(self, args):
+        """Global configuration mode"""
         self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
-        " Global configuration mode "
         if self.privilege is False:
             sys.stdout.write("Must be in privilege mode to execute config\n")
             return
@@ -574,7 +566,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             self.cmdloop()
 
     def do_exit(self, args):
-        " Quiting FlexSwitch CLI"
+        """Exit current CLI tree position, if at base then will exit CLI"""
         #subcmd = self.getSubCommand("privilege", self.model["commands"])
         if self.privilege:
             self.privilege = False
@@ -603,9 +595,25 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         return argv
 
     def do_help(self, argv):
+        """Display help for current commands"""
         self.display_help(argv)
 
     do_help.aliases = ["?"]
+
+    def do_reload_cli_model(self, argv):
+        """Command to dynamically reload model.  Useful when wanting to change the cli while it is running, can only be run from base cli"""
+        self.setSchema()
+        self.setModel()
+
+        # lets make sure the model is correct
+        valid = self.validateSchemaAndModel()
+
+        if not valid:
+            sys.stdout.write("schema and model mismatch")
+            sys.exit(0)
+
+        self.discoverPortInfo()
+        self.setupcommands()
 
 
 class PrepareModel(object):

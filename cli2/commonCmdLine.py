@@ -74,8 +74,6 @@ class CommonCmdLine(object):
         self.schema = None
         self.schemapath = schema_path + layer
         self.baseprompt = "DEFAULT"
-        self.setSchema()
-        self.setModel()
         self.currentcmd = []
 
     def getRootAttr(self, attr):
@@ -359,7 +357,7 @@ class CommonCmdLine(object):
         if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd:
             for f in dir(self):
                 if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
-                    cliHelpList.append((f.replace('do_', ''), ""))
+                    cliHelpList.append((f.replace('do_', ''), str(getattr(self, f).__doc__)))
         return sorted(cliHelpList)
 
     def getValueMinMax(self, cmd, model, schema):
@@ -646,23 +644,22 @@ class CommonCmdLine(object):
         #             prefix='| ', postfix=' |',
         #             wrapfunc=lambda x: wrap_onspace_strict(x,width))
 
-    def default(self,):
-        pass
-
     def do_quit(self, args):
-        " Quiting FlexSwitch CLI"
+        " Quiting FlexSwitch CLI.  This will stop the CLI session"
         sys.stdout.write('Quiting Shell\n')
         sys.exit(0)
 
     def do_end(self, args):
-        " Return to enable  mode"
+        "Return to enable mode"
         return
 
     def do_exit(self, args):
+        """Exit current CLI tree position, if at base then will exit CLI"""
         self.prompt = self.baseprompt
         self.stop = True
 
     def do_where(self, args):
+        """Display the current command path"""
         def getparent(child):
             return child.parent
 
@@ -684,6 +681,7 @@ class CommonCmdLine(object):
         sys.stdout.write("\ncmd: %s\n\n" %(" ".join(completecmd,)))
 
     def do_apply(self, argv):
+        """Apply current user unapplied config.  This will send provisioning commands to Flexswitch"""
         configObj = self.getConfigObj()
         if configObj:
             configObj.do_apply(argv)
@@ -693,12 +691,14 @@ class CommonCmdLine(object):
                 self.do_exit(argv)
 
     def do_showunapplied(self, argv):
+        """Display the currently unapplied configuration.  An optional 'full' argument can be supplied to show all objects which are pending not just valid provisioning objects"""
         configObj = self.getConfigObj()
         if configObj:
             configObj.do_showunapplied(argv)
 
 
     def do_clearunapplied(self, argv):
+        """Clear the current pending config."""
         configObj = self.getConfigObj()
         if configObj:
             configObj.do_clearunapplied(argv)
@@ -716,16 +716,6 @@ class CommonCmdLine(object):
                     self.do_exit([])
                     child = parent
                     parent = child.parent
-
-    def do_version(self, argv):
-        '''
-        Show cli version and flexswitch version
-        :param argv:
-        :return:
-        '''
-        rootObj = self.getRootObj()
-        if rootObj:
-            rootObj.sdkshow.printSystemSwVersionStates()
 
     def precmd(self, argv):
         if len(argv) > 0:

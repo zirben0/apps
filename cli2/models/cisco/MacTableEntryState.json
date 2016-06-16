@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/MacTableEntryStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show mac address table entries",
+    "cliname": "address_table",
     "value": {
       "MacAddr": {
         "cliname": "macaddr"

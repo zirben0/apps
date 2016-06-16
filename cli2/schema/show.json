@@ -62,6 +62,12 @@
           },
           "subcmd17": {
             "$ref": "file:/tmp/snaproute/cli/schema/OspfGlobalState.json"
+          },
+          "subcmd18": {
+            "$ref": "file:/tmp/snaproute/cli/schema/mac.json"
+          },
+          "subcmd19": {
+            "$ref": "file:/tmp/snaproute/cli/schema/SystemSwVersionState.json"
           }
         }
       }

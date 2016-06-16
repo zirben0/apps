@@ -442,16 +442,12 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         return argv
 
-    def do_router(self):
-        pass
-
-    def do_ip(self):
-        pass
-
     def do_help(self, argv):
+        """Display help for current commands"""
         self.display_help(argv)
 
     def do_exit(self, args):
+        """Exit current CLI tree position, if at base then will exit CLI"""
         self.teardownCommands()
         self.prompt = self.baseprompt
         self.stop = True
@@ -625,13 +621,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         yield None
 
-    def do_show(self, argv):
-        root = self.getRootObj()
-        if root:
-            if hasattr(root, '_cmd_show'):
-                root._cmd_show(argv)
-
     def do_apply(self, argv):
+        """Apply current user unapplied config.  This will send provisioning commands to Flexswitch"""
+
         def fixupConfigList(configObj, configList):
             """
             # There may be a config which needs to be merged with a master config
@@ -904,6 +896,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         return (failurecfg, delconfigList)
 
     def do_showunapplied(self, argv):
+        """Display the currently unapplied configuration.  An optional 'full' argument can be supplied to show all objects which are pending not just valid provisioning objects"""
         sys.stdout.write("Unapplied Config\n")
         full = False
         if argv and argv[-1] == 'full':
@@ -915,6 +908,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def do_clearunapplied(self, argv):
+        """Clear the current pending config."""
         sys.stdout.write("Clearing Unapplied Config\n")
         for config in self.configList:
             config.clear(all)
