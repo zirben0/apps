@@ -17,7 +17,7 @@
       "cliname": "max_prefixes_disconnect"
     },
     "LocalAS": {
-      "cliname": "bgp"
+      "cliname": "local_as"
     },
     "KeepaliveTime": {
       "cliname": "timers_keep_alive"

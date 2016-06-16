@@ -70,8 +70,10 @@ class CommonCmdLine(object):
         self.switch_ip = switch_ip
         self.switch_name = None
         self.model = None
+        self.basemodelpath = model_path
         self.modelpath = model_path + layer
         self.schema = None
+        self.baseschemapath = schema_path
         self.schemapath = schema_path + layer
         self.baseprompt = "DEFAULT"
         self.currentcmd = []
@@ -357,7 +359,8 @@ class CommonCmdLine(object):
         if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd:
             for f in dir(self):
                 if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
-                    cliHelpList.append((f.replace('do_', ''), str(getattr(self, f).__doc__)))
+                    docstr = getattr(self, f).__doc__
+                    cliHelpList.append((f.replace('do_', ''), docstr if docstr else ""))
         return sorted(cliHelpList)
 
     def getValueMinMax(self, cmd, model, schema):
@@ -553,7 +556,8 @@ class CommonCmdLine(object):
     def setSchema(self):
 
         with open(self.schemapath, 'r') as schema_data:
-
+            sys.stdout.write("loading schema...\n")
+            self.schema = None
             self.schema = jsonref.load(schema_data)
             # ENABLE THIS if you see problems with decode
             #pp.pprint(self.schema)
@@ -562,6 +566,8 @@ class CommonCmdLine(object):
     def setModel(self):
 
         with open(self.modelpath, "rw+") as json_model_data:
+            sys.stdout.write("loading model...\n")
+            self.model = None
             self.model = jsonref.load(json_model_data)
             # ENABLE THIS if you see problems with decode
             #pp.pprint(self.model)

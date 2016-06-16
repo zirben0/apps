@@ -602,6 +602,17 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
     def do_reload_cli_model(self, argv):
         """Command to dynamically reload model.  Useful when wanting to change the cli while it is running, can only be run from base cli"""
+
+        # lets make /tmp/snaproute/cli/ directory if it does not exist
+        # if it does exist lets clean the directory
+        # lets move all the json schema and model to a temporary
+        # directory structure so that the jsonref can properly
+        # parse the references
+        # /tmp/snaproute/cli/models
+        # /tmp/snaproute/cli/schema
+        x = PrepareModel(self.basemodelpath, self.baseschemapath)
+        x.Prepare()
+
         self.setSchema()
         self.setModel()
 
@@ -677,17 +688,6 @@ if __name__ == '__main__':
     switch_ip = options.switch_ip
     cli_model_path = options.cli_model_path
     cli_schema_path = options.cli_schema_path
-
-    # lets make /tmp/snaproute/cli/ directory if it does not exist
-    # if it does exist lets clean the directory
-    # lets move all the json schema and model to a temporary
-    # directory structure so that the jsonref can properly
-    # parse the references
-    # /tmp/snaproute/cli/models
-    # /tmp/snaproute/cli/schema
-    x = PrepareModel(cli_model_path, cli_schema_path)
-    x.Prepare()
-
 
     cmdLine = CmdLine(switch_ip, cli_model_path, cli_schema_path, )
     #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
