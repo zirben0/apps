@@ -630,7 +630,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if root:
             if hasattr(root, '_cmd_show'):
                 root._cmd_show(argv)
-                
+
     def do_apply(self, argv):
         def fixupConfigList(configObj, configList):
             """
@@ -709,7 +709,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         root = self.getRootObj()
         if self.configList and \
                 root.isSystemReady():
-
+            import ipdb; ipdb.set_trace()
             # create new list where come config is combined because they
             # are acting on the same object
             self.configList = fixupConfigList(self, self.configList)
@@ -771,7 +771,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                         continue
                                 else:
                                     if config in rollbackData:
-                                        status_code = rollbackData[config]
+                                        status_code = rollbackData[config][0]
                                         origData = rollbackData[config][1]
                                     else:
                                         continue
