@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfAreaEntryStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "OSPF Area Info",
+    "cliname": "area",
     "value": {
       "AreaId": {
         "cliname": "areaid"

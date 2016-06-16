@@ -29,13 +29,7 @@
             "$ref" : "file:/tmp/snaproute/cli/schema/ipintfshow.json"
           },
           "subcmd4" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4RouteHwState.json"
-          },
-          "subcmd5" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/OspfIPv4Routes.json"
-          },
-          "subcmd6": {
-            "$ref": "file:/tmp/snaproute/cli/schema/RouteDistanceState.json"
+            "$ref" : "file:/tmp/snaproute/cli/schema/OspfGlobalState.json"
           }
         }
       }

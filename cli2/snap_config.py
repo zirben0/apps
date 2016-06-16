@@ -215,17 +215,17 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         # advance to next submodel and subschema
         for i in range(1, mlineLength):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
-            if mline[i-1] in submodel:
-                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
-                if schemaname:
-                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
-                    #sys.stdout.write("config complete: submodel[schemaname][commands] = %s\n" %(submodel[schemaname]["commands"]))
-                    if submodelList and subschemaList:
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+            #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
+            if schemaname:
+                submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
+                #sys.stdout.write("config complete: submodel[schemaname][commands] = %s\n" %(submodel[schemaname]["commands"]))
+                if submodelList and subschemaList:
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
+                        (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                        if i == mlineLength -1:
                             #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
@@ -233,12 +233,10 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     if not values:
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                     return values
-                            elif i < mlineLength:
-                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                    else:
-                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
-            else:
-               subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
+                            else:
+                                subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
+                elif i == mlineLength - 1:
+                    subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -632,44 +630,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if root:
             if hasattr(root, '_cmd_show'):
                 root._cmd_show(argv)
-
-    def fixupConfigList(configObj, configList):
-        """
-        # There may be a config which needs to be merged with a master config
-        # for example lag is created seperately than the member add.  In this
-        # case the lag membership config would need to be merged to the original config
-        for c in configObj.configList
-        :param configList:
-        :return:
-        """
-        def getConfigKeys(config):
-            return sorted([(entry.attr, entry.val, entry.isList()) for entry in config.attrList if entry.isKey()])
-
-        def merge_two_dicts(a, b):
-            c = a.copy()
-            c.update(b)
-            return c
-
-        newConfigList = copy.deepcopy(configList)
-        # get the combination of all config objects which are of the same type
-        for c1,c2 in [(config1, config2) for config1 in configList for config2 in configList if config1 != config2 and config1.name and config2.name]:
-            # lets combine any entries which have the same key values
-            # as the attributes may have been updated by two different config trees
-            if  getConfigKeys(c1) == getConfigKeys(c2):
-                # lets create a new config and delete the old one
-                newConfig = CmdEntry(configObj, c1.name, merge_two_dicts(c1.keysDict, c2.keysDict))
-                for e1 in c1.attrList:
-                    newConfig.set(configObj, e1.cmd, e1.delete, e1.attr, e1.val, isKey=e1.isKey(), isattrlist=type(e1.val) is list)
-                for e1 in c2.attrList:
-                    newConfig.set(configObj, e1.cmd, e1.delete, e1.attr, e1.val, isKey=e1.isKey(), isattrlist=type(e1.val) is list)
-                # remove the old entries from the list
-                newConfigList.remove(c1)
-                newConfigList.remove(c2)
-                # add the new config to list
-                newConfigList.append(newConfig)
-
-        return newConfigList
-
+                
     def do_apply(self, argv):
         def fixupConfigList(configObj, configList):
             """

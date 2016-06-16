@@ -246,9 +246,9 @@ class CommonCmdLine(object):
 
         return subList
 
-    def getchildrencmds(self, parentname, model, schema):
+    def getchildrencmds(self, parentname, model, schema, issubcmd=False):
 
-        cliHelpList = self.getchildrenhelpcmds(parentname, model, schema)
+        cliHelpList = self.getchildrenhelpcmds(parentname, model, schema, issubcmd)
 
         return [ x[0] for x in cliHelpList if x[0] != '<cr>']
 
@@ -297,7 +297,7 @@ class CommonCmdLine(object):
         :param parentname:
         :return: list of tuples in the format of (model attribute name, cliname, help description)
         """
-        cliHelpList = [["<cr>", ""]]
+        cliHelpList = [["<cr>", ""]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             if schemaname:
@@ -313,15 +313,16 @@ class CommonCmdLine(object):
                             for kk, vv in modelobj.iteritems():
                                 # leaf node
                                 if kk == "commands":
-                                    for kkk, vvv in vv.iteritems():
-                                        # this is a struct or list of structs to follow
-                                        if kkk in listattrDict:
-                                            if type(vvv) in (dict, jsonref.JsonRef):
-                                                for kkkk, vvvv in vvv.iteritems():
-                                                    if 'cliname' in vvvv.keys():
-                                                        x.append([listattrDict[kkk], vvvv['cliname'], None])
-                                        else:
-                                            x.append([kkk, self.getCliName(vvv), self.getCliHelp(vvv)])
+                                    if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW:
+                                        for kkk, vvv in vv.iteritems():
+                                            # this is a struct or list of structs to follow
+                                            if kkk in listattrDict:
+                                                if type(vvv) in (dict, jsonref.JsonRef):
+                                                    for kkkk, vvvv in vvv.iteritems():
+                                                        if 'cliname' in vvvv.keys():
+                                                            x.append([listattrDict[kkk], vvvv['cliname'], None])
+                                            else:
+                                                x.append([kkk, self.getCliName(vvv), self.getCliHelp(vvv)])
                                 elif type(vv) == dict:
                                     x.append([kk, self.getCliName(vv), self.getCliHelp(vv)])
                         # did not find the name in the model lets get from schema
@@ -330,17 +331,18 @@ class CommonCmdLine(object):
                                 for kk, vv in schemaobj.iteritems():
                                     # leaf node
                                     if kk == "commands":
-                                        for kkk, vvv in vv["properties"].iteritems():
-                                            if kkk == val[0]:
-                                                if "properties" in vvv:
-                                                    cliname, clihelp = self.getCliName(vvv["properties"]), self.getCliHelp(vvv["properties"])
-                                                    if val[1] is None:
-                                                        val[1] = cliname["default"]
-                                                    else:
-                                                        val[2] = clihelp["default"]
+                                        if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW:
+                                            for kkk, vvv in vv["properties"].iteritems():
+                                                if kkk == val[0]:
+                                                    if "properties" in vvv:
+                                                        cliname, clihelp = self.getCliName(vvv["properties"]), self.getCliHelp(vvv["properties"])
+                                                        if val[1] is None:
+                                                            val[1] = cliname["default"]
+                                                        else:
+                                                            val[2] = clihelp["default"]
 
-                                                    if val[1] != parentname:
-                                                        cliHelpList.append((val[1], val[2]))
+                                                        if val[1] != parentname:
+                                                            cliHelpList.append((val[1], val[2]))
                                     elif "properties" in vv and "commands" in vv["properties"]:
                                         # todo need to get proper parsing to find the help
                                         cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
@@ -595,8 +597,12 @@ class CommonCmdLine(object):
                             (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
                             if i == mlineLength - 1:
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                    cmd = " ".join(argv[:-1])
+                                    if self.cmdtype == snapcliconst.COMMAND_TYPE_SHOW:
+                                        cmd = "<cr>"
+                                    else:
+                                        cmd = " ".join(argv[:-1])
                                     helpcommands = [[cmd, help]]
+                                    helpcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                     else:

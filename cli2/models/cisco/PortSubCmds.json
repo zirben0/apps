@@ -8,9 +8,6 @@
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/VrrpIntf.json"
   },
-  "subcmd4": {
-    "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntf.json"
-  },
   "subcmd5": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPIntf.json"
   },

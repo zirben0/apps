@@ -923,68 +923,64 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 if f.startswith('do_') and not f.endswith('no'):
                     subcommands.append(f.lstrip('do_'))
 
+        submodel = self.modelList[0]
+        subschema = self.schemaList[0]
         skipValue = False
         for i in range(1, mlineLength):
             if skipValue:
-                #sys.stdout.write("\nvalue expected: i %s mlinelength %s\n" %(i, mlineLength))
                 skipValue = False
                 continue
 
-            #sys.stdout.write("complete: mline[%s]=%s\n" %(i, mline[i]))
-            for model, schema in zip(self.modelList, self.schemaList):
-                #sys.stdout.write("model %s\n schema %s\n mline[%s] %s\n" %(model, schema, i, mline[i]))
-                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
-                #sys.stdout.write("schemaname: %s\n" %(schemaname))
-                if schemaname:
-                    #sys.stdout.write("\nschemaname %s\n\n" %(schemaname))
-                    submodelList, subschemaList = self.getSubCommand(mline[i], model[schemaname]["commands"]), \
-                                                    self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
-                    #sys.stdout.write("submoduleList %s\nsubschemaList %s\n" %(submodelList, subschemaList))
-                    if submodelList and subschemaList:
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            #sys.stdout.write("submodel %s\n subschema %s\n mline %s" %(submodel, subschema, mline[i]))
-                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            #sys.stdout.write("\ncomplete:  10 value expected %s command %s\n" %(valueexpected, mline[i]))
-                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+            if schemaname:
+                submodelList, subschemaList = self.getSubCommand(mline[i], submodel[schemaname]["commands"]), \
+                                                self.getSubCommand(mline[i],
+                                                                   subschema[schemaname]["properties"]["commands"]["properties"],
+                                                                   submodel[schemaname]["commands"])
+                if submodelList and subschemaList:
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
 
-                                if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                    config = self.getConfigObj()
-                                    values = self.getValueSelections(mline[i], submodel, subschema)
-                                    if not values:
-                                        values = config.getCommandValues(objname, keys)
-                                    sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
-                                    # expect value but no value supplied
-                                    if (i == mlineLength-1):
-                                        #sys.stdout.write("\nselections: %s\n" %(values))
-                                        subcommands = values
-                                    # expect value and something supplied
-                                    elif (i == mlineLength-2 and mline[i+1] not in values):
-                                        subcommands = values
-                                        skipValue = True
-                            else:
-                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                    else:
-                        def checkAttributevalues(mline, i, mlineLength, schemaname, submodel, subschema):
+                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                config = self.getConfigObj()
+                                values = self.getValueSelections(mline[i], submodel, subschema)
+                                if not values:
+                                    values = config.getCommandValues(objname, keys)
+                                sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
+                                # expect value but no value supplied
+                                if (i == mlineLength-1):
+                                    #sys.stdout.write("\nselections: %s\n" %(values))
+                                    subcommands = values
+                                # expect value and something supplied
+                                elif (i == mlineLength-2 and mline[i+1] not in values):
+                                    subcommands = values
+                                    skipValue = True
+                        else:
+                            subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
+                            subcommands = [x for x in subcommands if x[0] != mline[0]]
+                else:
+                    def checkAttributevalues(mline, i, mlineLength, schemaname, submodel, subschema):
 
-                                subcommands = []
-                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
-                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
-                                    if 'subcmd' in mcmd:
-                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                            if i == (mlineLength - 1): # value expected from attrs
-                                                # reached attribute values
-                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
-                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
-                                                    if 'cliname' in attrvalue:
-                                                        if attrvalue['cliname'] == mline[i]:
-                                                            subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                                           snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
-                                                    else:
-                                                        for subkey in attrvalue.keys():
-                                                            subcommands += checkAttributevalues(mline, i, mlineLength, subkey, attrvalue, sattrvalue)
-                                return subcommands
+                        subcommands = []
+                        for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+                            scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+                            if 'subcmd' in mcmd:
+                                if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                                    if i == (mlineLength - 1): # value expected from attrs
+                                        # reached attribute values
+                                        for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                            sattrvalue = scmdvalues['commands']['properties'][attr]
+                                            if 'cliname' in attrvalue:
+                                                if attrvalue['cliname'] == mline[i]:
+                                                    subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
+                                                                   snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                            else:
+                                                for subkey in attrvalue.keys():
+                                                    subcommands += checkAttributevalues(mline, i, mlineLength, subkey, attrvalue, sattrvalue)
+                        return subcommands
 
-                        subcommands += checkAttributevalues(mline, i, mlineLength, schemaname, model, schema)
+                    subcommands += checkAttributevalues(mline, i, mlineLength, schemaname, submodel, subschema)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -1011,6 +1007,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                 root._cmd_show(argv)
 
     def display_help(self, argv):
+
         def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
             subcommands = []
             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
@@ -1048,28 +1045,30 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     subcommands = [x for x in subcommands if x[0] != parentcmd]
 
         #ignore the help or ? command
+        submodel = self.modelList[0]
+        subschema = self.schemaList[0]
         for i in range(1, mlineLength):
-            for model, schema in zip(self.modelList, self.schemaList):
-                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], model)
-                if schemaname:
-                    submodelList, subschemaList = self.getSubCommand(mline[i], model[schemaname]["commands"]), \
-                                                  self.getSubCommand(mline[i], schema[schemaname]["properties"]["commands"]["properties"],
-                                                                     model[schemaname]["commands"])
-                    if submodelList and subschemaList:
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            if i == mlineLength - 1:
-                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                    cmd = " ".join(argv[:-1])
-                                    subcommands = [[cmd, help]]
-                                else:
-                                    subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+            if schemaname:
+                submodelList, subschemaList = self.getSubCommand(mline[i], submodel[schemaname]["commands"]), \
+                                              self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"],
+                                                                 submodel[schemaname]["commands"])
+                if submodelList and subschemaList:
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                        if i == mlineLength - 1:
+                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                cmd = " ".join(argv[:-1])
+                                subcommands = [[cmd, help]]
                             else:
-                                subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                                subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 subcommands = [x for x in subcommands if x[0] != mline[0]]
+                        #else:
+                        #    subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                        #    subcommands = [x for x in subcommands if x[0] != mline[0]]
 
-                    else:
-                        subcommands += checkAttributevalues(argv, mlineLength, schemaname, model, schema)
+                else:
+                    subcommands = checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema)
 
         self.printCommands(mline, subcommands)
 

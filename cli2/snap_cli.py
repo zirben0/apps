@@ -468,6 +468,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def _cmd_complete_show(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
+        self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
         mline = [x for x in line.split(' ') if x != '']
         mlineLength = len(mline)
         #sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
@@ -490,8 +491,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                             # this is useful so that we can reuse config templates
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
-                    #else:
-                    #    subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
+                    else:
+                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
 
         # lets remove any duplicates
         returncommands = list(Set(subcommands).difference(mline))
@@ -592,8 +593,10 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         if len(argv) > 1 and '?' in argv:
             if argv[0] == snapcliconst.COMMAND_TYPE_SHOW:
                 self.display_show_help(argv)
+                return ''
             elif argv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
                 self.display_help(argv)
+                return ''
         if argv and '!' in argv[-1]:
             self.do_exit(argv)
             return ''

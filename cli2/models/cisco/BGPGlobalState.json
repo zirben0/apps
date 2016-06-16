@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "BGP Global Info",
+    "cliname": "global",
     "value": {
       "RouterId": {
         "cliname": "routerid"
