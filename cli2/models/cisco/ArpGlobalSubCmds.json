@@ -1,17 +1,5 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpGlobalMembers.json"
-  },
-  "subcmd2": {
-  "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpDeleteByIPv4AddrMembers.json"
-  },
-  "subcmd3": {
-  "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpDeleteByIfNameMembers.json"
-  },
-  "subcmd4": {
-  "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpRefreshByIPv4AddrMembers.json"
-  },
-  "subcmd5": {
-  "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpRefreshByIfNameMembers.json"
   }
 }

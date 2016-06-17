@@ -1,0 +1,11 @@
+{
+  "portspanningtree": {
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/StpPort.json"
+      }
+    },
+    "cliname": "spanning_tree",
+    "prompt": "stp"
+  }
+}

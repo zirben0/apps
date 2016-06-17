@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighborStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "BGP Neighbor Detailed Info",
+    "cliname": "summary",
     "value": {
       "IfIndex": {
         "cliname": "ifindex"

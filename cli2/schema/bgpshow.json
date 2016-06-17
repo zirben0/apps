@@ -66,11 +66,14 @@
         "type": "object",
         "description": "Base commands",
         "properties": {
-          "subcmd1" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/BGPNeighborSummary.json"
-          },
           "subcmd2" : {
             "$ref": "file:/tmp/snaproute/cli/schema/BGPRouteStateMembers.json"
+          },
+          "subcmd3": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalState.json"
+          },
+          "subcmd4": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BGPNeighborState.json"
           }
         }
       }

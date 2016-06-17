@@ -1,16 +1,14 @@
 {
   "ospfifentry": {
-    "prompt": "", 
+    "prompt": "ospf",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIfEntrySubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "The IP address of this OSPF interface.",
+    "cliname": "ospf",
     "value": {
       "IfIpAddress": {
-        "cliname": "ifipaddress"
-      }, 
-      "AddressLessIf": {
-        "cliname": "addresslessif"
+        "cliname": "ospf"
       }
     }
   }

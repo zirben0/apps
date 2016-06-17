@@ -33,6 +33,9 @@
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "Loopback"
+            ],
             "type": "string"
           }, 
           "isdefaultset": {

@@ -1,0 +1,39 @@
+{
+  "portspanningtree": {
+    "createwithdefault": {
+      "default": false,
+      "type": "boolean", 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object", 
+    "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/StpPort.json"
+          }
+        }
+      }, 
+      "cliname": {
+        "default": "", 
+        "type": "string", 
+        "description": "name used in cli to describe bfd"
+      }, 
+      "help": {
+        "default": "Spanning Tree Port Commands",
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "", 
+        "displayValue": false, 
+        "type": "string", 
+        "description": "what to display on the prompt when the user has entered a command"
+      }
+    }
+  }
+}
