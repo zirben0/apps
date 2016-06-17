@@ -22,7 +22,7 @@
 # |__|     |_______||_______/__/ \__\ |_______/        \__/  \__/     |__|     |__|      \______||__|  |__|
 #
 # This is class handles the action of the show command
-import sys, os
+import sys
 from sets import Set
 import cmdln
 import json
@@ -38,8 +38,13 @@ from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
 from snap_leaf import LeafCmd
 from cmdEntry import CmdEntry
 
-from flexswitchV2 import FlexSwitch
-MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
+try:
+    from flexswitchV2 import FlexSwitch
+    MODELS_DIR = './'
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    MODELS_DIR='/opt/flexswitch/models/'
+    from flexswitchV2 import FlexSwitch
 
 gObjectsInfo =  {}
 
