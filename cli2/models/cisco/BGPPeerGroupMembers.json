@@ -17,7 +17,7 @@
       "cliname": "max_prefixes_disconnect"
     }, 
     "LocalAS": {
-      "cliname": "local_as"
+      "cliname": "bgp"
     }, 
     "ConnectRetryTime": {
       "cliname": "connect_retry_time"

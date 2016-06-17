@@ -4,7 +4,7 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntfSubCmds.json"
     },
-    "help": "Dhcp Relay Commands",
-    "cliname": "dhcp"
+    "help": "Dhcp Relay Interface Commands",
+    "cliname": "dhcp_relay"
   }
 }

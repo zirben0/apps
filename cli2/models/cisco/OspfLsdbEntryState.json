@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfLsdbEntryStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "OSPF Data Regarding Link State",
+    "cliname": "database",
     "value": {
       "LsdbType": {
         "cliname": "lsdbtype"

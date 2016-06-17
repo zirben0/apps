@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemSwVersionStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show System Software Information.  Including Git Repo",
+    "cliname": "version",
     "value": {
       "FlexswitchVersion": {
         "cliname": "flexswitchversion"

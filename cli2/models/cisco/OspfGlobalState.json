@@ -3,11 +3,12 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfGlobalStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "OSPF Global Info",
+    "cliname": "ospf",
     "value": {
       "RouterId": {
-        "cliname": "routerid"
+        "cliname": "ospf"
       }
     }
   }

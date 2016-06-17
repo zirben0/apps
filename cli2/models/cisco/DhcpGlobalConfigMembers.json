@@ -4,9 +4,6 @@
     "DefaultLeaseTime": {
       "cliname": "lease_time"
     }, 
-    "DhcpConfigKey": {
-      "cliname": "dhcp"
-    }, 
     "Enable": {
       "cliname": "enable"
     }, 

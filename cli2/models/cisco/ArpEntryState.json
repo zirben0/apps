@@ -4,7 +4,7 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpEntryStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "arp_entry",
     "value": {
       "IpAddr": {
         "cliname": "ipaddr"

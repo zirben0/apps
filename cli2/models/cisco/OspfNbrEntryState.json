@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfNbrEntryStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "OSPF Neighbor Info",
+    "cliname": "neighbor",
     "value": {
       "NbrIpAddr": {
         "cliname": "nbripaddr"

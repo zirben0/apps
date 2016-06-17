@@ -4,10 +4,10 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "spanning_tree",
     "value": {
       "Vlan": {
-        "cliname": "vlan"
+        "cliname": "brg_vlan"
       }
     }
   }

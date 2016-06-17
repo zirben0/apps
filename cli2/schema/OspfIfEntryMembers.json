@@ -1,5 +1,5 @@
 {
-  "listattrs": [], 
+  "listattrs": [],
   "createwithdefault": {
     "default": false, 
     "type": "boolean", 
@@ -33,10 +33,8 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
+            "type": "int32"
+          },
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
@@ -173,7 +171,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The IP address of this OSPF interface.", 
+            "default": "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The IP address of this OSPF interface.",
             "type": "string"
           }, 
           "islist": {
@@ -185,9 +183,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -223,14 +218,12 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               2, 
               1
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
+            "type": "int32"
+          },
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
@@ -318,45 +311,45 @@
             "default": ""
           }
         }
-      }, 
+      },
       "IfAreaId": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "key": {
-            "default": false, 
+            "default": false,
             "type": "boolean"
-          }, 
+          },
           "prompt": {
-            "default": "", 
+            "default": "",
             "type": "string"
-          }, 
+          },
           "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  A 32-bit integer uniquely identifying the area to which the interface connects.  Area ID 0.0.0.0 is used for the OSPF backbone.", 
+            "default": "A 32-bit integer uniquely identifying the area to which the interface connects.  Area ID 0.0.0.0 is used for the OSPF backbone.",
             "type": "string"
-          }, 
+          },
           "islist": {
-            "default": false, 
+            "default": false,
             "type": "boolean"
-          }, 
+          },
           "cliname": {
-            "default": "ifareaid", 
+            "default": "ifareaid",
             "type": "string"
-          }, 
+          },
           "argtype": {
             "enum": [
               "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-            ], 
+            ],
             "type": "string"
-          }, 
+          },
           "isdefaultset": {
-            "default": false, 
+            "default": false,
             "type": "boolean"
-          }, 
+          },
           "defaultarg": {
             "default": ""
           }
         }
-      }, 
+      },
       "IfPollInterval": {
         "type": "object", 
         "properties": {
@@ -418,15 +411,13 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               0, 
               1, 
               2
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
+            "type": "int32"
+          },
           "isdefaultset": {
             "default": false, 
             "type": "boolean"

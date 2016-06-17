@@ -1,5 +1,14 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteStateMembers.json"
+  },
+  "subcmd2" : {
+    "$ref" : "file:/tmp/snaproute/cli/model/cisco/OspfIPv4Routes.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/RouteDistanceState.json"
+  },
+  "subcmd4" : {
+    "$ref" : "file:/tmp/snaproute/cli/model/cisco/IPv4RouteHwState.json"
   }
 }

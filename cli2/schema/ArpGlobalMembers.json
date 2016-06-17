@@ -36,7 +36,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -68,12 +68,12 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
+            "minimum": 300,
             "type": "int32", 
-            "maximum": 2147483647
+            "maximum": 1500
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
