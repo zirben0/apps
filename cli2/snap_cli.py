@@ -479,7 +479,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                     if submodelList and subschemaList:
                         for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                            valueexpected = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                            (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
                             # this is useful so that we can reuse config templates
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
@@ -531,7 +531,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                             subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                             if submodelList and subschemaList:
                                 for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                    (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                    (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
                                     # we want to keep looping untill there are no more value commands
                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                         if i == mlineLength -1:

@@ -224,7 +224,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 if submodelList and subschemaList:
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                        (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                         if i == mlineLength -1:
                             #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
@@ -375,7 +375,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         if submodelList and subschemaList:
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                                (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                                (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         if i+1 > mlineLength:
@@ -419,7 +419,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                             if 'subcmd' in submodelkey:
                                                 if self.isCommandLeafAttrs(submodel2, subschema2):
                                                     #leaf attr model
-                                                    (valueexpected, objname, keys, help) = self.isLeafValueExpected(mline[i+1], submodel2, subschema2)
+                                                    (valueexpected, objname, keys, help, islist) = self.isLeafValueExpected(mline[i+1], submodel2, subschema2)
                                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                                         if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                                             self.commandLen = len(mline[i:])
@@ -497,12 +497,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # special case where the attribute is in fact a list
             # don't support default values for lists so lets
             # force the list to be empty
+            # This code breaks lists that are valid, so removing
+            '''
             if not rollback:
                 tmpdata = copy.deepcopy(data)
                 for k,v in tmpdata.iteritems():
                     if type(v) is list:
                         data[k] = []
-
+            '''
         elif 'update' in func.__name__:
             for k in getKeys:
                 if k in data:
@@ -515,6 +517,14 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # special case where the attribute is in fact a list
             # don't support default values for lists so lets
             # force the list to be empty
+            # This code breaks lists that are valid, so removing
+            '''
+            if not rollback:
+                tmpdata = copy.deepcopy(data)
+                for k,v in tmpdata.iteritems():
+                    if type(v) is list:
+                        data[k] = []
+            '''
             if not rollback:
                 tmpdata = copy.deepcopy(data)
                 for k,v in tmpdata.iteritems():
@@ -623,7 +633,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def do_apply(self, argv):
         """Apply current user unapplied config.  This will send provisioning commands to Flexswitch"""
-
         def fixupConfigList(configObj, configList):
             """
             # There may be a config which needs to be merged with a master config

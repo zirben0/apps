@@ -153,6 +153,47 @@ class CommonCmdLine(object):
             parent = getparent(child)
         return config
 
+    def isSubCommandList(self, commandkey, commands, model=None):
+        iscommandalist = False
+        key = commandkey
+        if model and type(model) in (dict, jsonref.JsonRef):
+            key = self.getSchemaCommandNameFromCliName(commandkey, model)
+            if not key:
+                if 'commands' in model:
+                    for cmd, submodel in model["commands"].iteritems():
+                        if 'subcmd' in cmd and key is None:
+                            key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
+                if [x for x in model.keys() if 'subcmd' in x]:
+                    for cmd, submodel in model.iteritems():
+                        if type(submodel) in (dict, jsonref.JsonRef):
+                            for y in submodel.values():
+                                if 'cliname' in y and y['cliname'] == commandkey:
+                                    key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
+
+            if not key:
+                key = commandkey
+
+        if type(commands) in (dict, jsonref.JsonRef):
+            for k, v in commands.iteritems():
+                #print "subCommand: key %s k %s v %s\n\n" %(key, k, v)
+
+                if k != key:
+                     # looking for subcommand
+                    if type(v) in (dict, jsonref.JsonRef):
+                        if 'subcmd' in k:
+                            listattrDict = dict(v['listattrs']) if 'listattrs' in v else {}
+                            for kk, vv in v.iteritems():
+                                if 'commands' in kk and 'properties' in vv and 'cliname' not in vv['properties']:
+                                    for kkk, vvv in vv['properties'].iteritems():
+                                        if 'subcmd' in kkk and kkk in listattrDict:
+                                            iscommandalist = True
+
+                                elif 'commands' in kk and 'cliname' not in vv:
+                                    for kkk, vvv in vv.iteritems():
+                                        if 'subcmd' in kkk and kkk in listattrDict:
+                                            iscommandalist = True
+
+        return iscommandalist
     # TODO write more readable logic to get a model commands sub command obj
     # This is a critical function as all complete_, and do_ functions use
     # this
@@ -427,7 +468,8 @@ class CommonCmdLine(object):
 
                 objname = schemacmds['objname']['default']
                 help += sattrval['properties']['help']['default']
-        return (expected, objname, keys, help)
+                islist = sattrval['properties']['islist']['default']
+        return (expected, objname, keys, help, islist)
 
 
     def getModelDefaultAttrVal(self, cliname, schemaname, model, schema, delcmd=False):
@@ -515,8 +557,10 @@ class CommonCmdLine(object):
                 keys = [k for k, v in schemaValues.iteritems() if type(v) in (dict, jsonref.JsonRef)]
                 help = ''
                 expected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE
+                # NOTE!!!! only one key supported!!!!!!
                 for k, v in schemaValues.iteritems():
                     argtype = snapcliconst.getValueArgumentType(v)
+                    islist = snapcliconst.isValueArgumentList(v)
                     enums = snapcliconst.getValueArgumentSelections(v)
                     if enums:
                         help = "/".join(enums) + '\n'
@@ -527,13 +571,13 @@ class CommonCmdLine(object):
                         if snapcliconst.isboolean(argtype):
                             expected = SUBCOMMAND_VALUE_EXPECTED
 
-                objname = snapcliconst.getSchemaObjName(schemaname, schema)
-                help += snapcliconst.getHelp(schemaname, model, schema)
+                    objname = snapcliconst.getSchemaObjName(schemaname, schema)
+                    help += snapcliconst.getHelp(schemaname, model, schema)
 
-                return (expected, objname, keys, help)
+                    return (expected, objname, keys, help, islist)
 
                 # lets check to see if this schema is a command attribute schema
-        return (SUBCOMMAND_VALUE_NOT_EXPECTED, None, [], "")
+        return (SUBCOMMAND_VALUE_NOT_EXPECTED, None, [], "", False)
 
     def getValue(self, attribute):
 
@@ -598,7 +642,7 @@ class CommonCmdLine(object):
                                                                                       snapcliconst.GET_SCHEMA_COMMANDS(schemaname, subschema))
                     if submodelList and subschemaList:
                         for submodel, subschema in zip(submodelList, subschemaList):
-                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                            (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                             if i == mlineLength - 1:
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if self.cmdtype == snapcliconst.COMMAND_TYPE_SHOW:

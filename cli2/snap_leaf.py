@@ -84,6 +84,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.parentcliname = cliname
         # variable used to determine that when set the attribute being set is a key for an object
         self.subcommand = False
+        self.issubcommandlist = False
 
         self.objDict = {}
 
@@ -619,10 +620,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
-        def isKeyValueCommand(mline, delete):
+        def isKeyValueCommand(mline, delete, islist):
 
             # command is key value
-            if len(mline) == 2 and not delete:
+            if len(mline) == 2 and (not delete or islist):
                 return True
             elif len(mline) == 2 and len(frozenset([str(mline[-1]).lower()]).intersection(
                 snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES + snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES)) == 1:
@@ -641,7 +642,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             mline += [str(value)]
         if isInvalidCommand(verifyargv, delete):
             return
-        elif isKeyValueCommand(verifyargv, delete):
+        elif isKeyValueCommand(verifyargv, delete, self.issubcommandlist):
             # key value supplied
             self.processKeyValueCommand(mline, delete)
         else:
@@ -939,7 +940,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                    submodel[schemaname]["commands"])
                 if submodelList and subschemaList:
                     for submodel, subschema in zip(submodelList, subschemaList):
-                        (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                         if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
 
                             if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
@@ -1055,7 +1056,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                  submodel[schemaname]["commands"])
                 if submodelList and subschemaList:
                     for submodel, subschema in zip(submodelList, subschemaList):
-                        (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                         if i == mlineLength - 1:
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 cmd = " ".join(argv[:-1])
@@ -1076,6 +1077,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.display_help(argv)
 
     def precmd(self, argv):
+        self.issubcommandlist = False
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         delete = argv[0] == 'no' if argv else False
         mline = [parentcmd] + [x for x in argv if x != 'no']
@@ -1100,9 +1102,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                          subschema[schemaname]["properties"]["commands"]["properties"],
                                                                          submodel[schemaname]["commands"]), \
                                                         self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                        issubcommandalist = self.isSubCommandList(mline[i],
+                                                                 subschema[schemaname]["properties"]["commands"]["properties"],
+                                                                 submodel[schemaname]["commands"])
+
                         if subschemaList and submodelList:
                             for submodel, subschema in zip(submodelList, subschemaList):
-                                (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                                (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if not delete:
                                         values = self.getValueSelections(mline[i], submodel, subschema)
@@ -1133,7 +1139,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE and \
                                             i == mlineLength - 1:
                                             sys.stdout.write("\nERROR: Value expected")
-                                    elif i == mlineLength - 2:
+                                    elif i == mlineLength - 2 and not islist and not issubcommandalist:
                                         erroridx = i+1 if not delete else i+2
                                         errcmd = mline if not delete else ['no'] + mline
                                         snapcliconst.printErrorValueCmd(erroridx, errcmd)
@@ -1141,6 +1147,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     # found that if commands are entered after the last command then there can be a problem
                                     self.commandLen = len(mline[:i]) + 1
                                     self.subcommand = True
+                                    self.issubcommandlist = issubcommandalist
                                 else:
                                     self.commandLen = len(mline[:i])
 
@@ -1179,6 +1186,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                     return ''
                                                     else:
                                                         self.subcommand = True
+                                                        self.issubcommandlist = False
                                                         for subkey in attrvalue.keys():
                                                             checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue, delete)
                                             elif delete and i == (mlineLength - 2):
