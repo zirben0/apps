@@ -446,6 +446,7 @@ class CommonCmdLine(object):
 
     def isLeafValueExpected(self, cliname, modelcmds, schemacmds):
         keys = []
+        islist = False
         objname = None
         expected = SUBCOMMAND_VALUE_NOT_EXPECTED
         help = ''
