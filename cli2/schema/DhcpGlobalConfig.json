@@ -32,47 +32,6 @@
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
       }, 
-      "value": {
-        "type": "object", 
-        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
-        "properties": {
-          "DhcpConfigKey": {
-            "type": "object", 
-            "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
-                "type": "string"
-              }, 
-              "help": {
-                "default": "DHCP global config", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "dhcpconfigkey", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "type": "string"
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }
-        }
-      }, 
       "objname": {
         "default": "DhcpGlobalConfig", 
         "type": "string", 

@@ -1,27 +1,58 @@
 {
   "show": {
+    "help": "Show Commands",
     "cliname" : "show",
     "commands" : {
       "subcmd1" : {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/interface.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/showinterface.json"
       },
       "subcmd2" : {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/Vlan.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/VlanState.json"
       },
       "subcmd3" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/router.json"
       },
       "subcmd4" : {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/bfd.json"
-      },
-      "subcmd5" : {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/stp.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/bfdshow.json"
       },
       "subcmd6" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/feature.json"
       },
       "subcmd7" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipshow.json"
+      },
+      "subcmd8": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeState.json"
+      },
+      "subcmd9": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinitionState.json"
+      },
+      "subcmd10": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyStmtState.json"
+      },
+      "subcmd11": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyConditionState.json"
+      },
+      "subcmd13": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DaemonState.json"
+      },
+      "subcmd14": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpEntryState.json"
+      },
+      "subcmd15": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpEntryHwState.json"
+      },
+      "subcmd16": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayHostDhcpState.json"
+      },
+      "subcmd17": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfGlobalState.json"
+      },
+      "subcmd18": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/mac.json"
+      },
+      "subcmd19": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemSwVersionState.json"
       }
     }
   } 

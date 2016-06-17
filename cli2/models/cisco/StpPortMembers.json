@@ -2,43 +2,34 @@
   "listattrs": [], 
   "commands": {
     "BrgIfIndex": {
-      "cliname": "brgifindex"
-    }, 
-    "PathCost": {
-      "cliname": "pathcost"
+      "cliname": "brg_vlan"
     }, 
     "Enable": {
       "cliname": "enable"
-    }, 
-    "ProtocolMigration": {
-      "cliname": "protocolmigration"
     }, 
     "AdminEdgePort": {
       "cliname": "adminedgeport"
     }, 
     "BridgeAssurance": {
-      "cliname": "bridgeassurance"
+      "cliname": "bridge_assurance"
     }, 
     "Priority": {
       "cliname": "priority"
     }, 
     "BpduGuardInterval": {
-      "cliname": "bpduguardinterval"
+      "cliname": "bpdu_guard_interval"
     }, 
     "BpduGuard": {
-      "cliname": "bpduguard"
+      "cliname": "bpdu_guard"
     }, 
     "AdminPointToPoint": {
-      "cliname": "adminpointtopoint"
+      "cliname": "admin_pointtopoint"
     }, 
     "IfIndex": {
-      "cliname": "ifindex"
+      "cliname": "ethernet"
     }, 
     "AdminPathCost": {
-      "cliname": "adminpathcost"
-    }, 
-    "PathCost32": {
-      "cliname": "pathcost32"
+      "cliname": "admin_path_cost"
     }
   }
 }

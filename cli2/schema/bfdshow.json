@@ -1,0 +1,35 @@
+{
+  "bfd": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : "bfd"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe bfd",
+        "default" : "bfd"
+      },
+       "help" : {
+        "type" : "string",
+        "default": "Bidirectional Forwarding Detection (BFD)"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to ethernet port",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BfdSessionParamState.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BfdSessionState.json"
+          },
+          "subcmd3": {
+            "$ref": "file:/tmp/snaproute/cli/schema/BfdGlobalState.json"
+          }
+        }
+      }
+    }
+  }
+}

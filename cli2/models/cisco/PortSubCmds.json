@@ -8,10 +8,16 @@
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/VrrpIntf.json"
   },
-  "subcmd4": {
-    "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntf.json"
-  },
   "subcmd5": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPIntf.json"
+  },
+  "subcmd6": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/portchannelmembership.json"
+  },
+  "subcmd7": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/portspanningtree.json"
+  },
+  "subcmd8": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIfEntry.json"
   }
 }

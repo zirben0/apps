@@ -8,6 +8,12 @@
       },
       "subcmd2": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/svi.json"
+      },
+      "subcmd3": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannel.json"
+      },
+      "subcmd4": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LogicalIntf.json"
       }
     }
   } 

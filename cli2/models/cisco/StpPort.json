@@ -1,16 +1,14 @@
 {
   "stpport": {
-    "prompt": "", 
+    "prompt": "vlan",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/StpPortSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Reference to a Spanning Tree Bridge Instance.\n1-4095  Each bridge is associated with a domain.  This domain is represented as the vlan; The default domain is represented with internal vlan 1",
+    "cliname": "brg_vlan",
     "value": {
       "BrgIfIndex": {
-        "cliname": "brgifindex"
-      }, 
-      "IfIndex": {
-        "cliname": "ifindex"
+        "cliname": "brg_vlan"
       }
     }
   }

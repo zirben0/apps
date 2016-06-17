@@ -5,25 +5,19 @@
       "cliname": "priority"
     }, 
     "HelloTime": {
-      "cliname": "hellotime"
+      "cliname": "hello_time"
     }, 
     "TxHoldCount": {
-      "cliname": "txholdcount"
-    }, 
-    "Address": {
-      "cliname": "address"
-    }, 
-    "ForceVersion": {
-      "cliname": "forceversion"
+      "cliname": "tx_hold_count"
     }, 
     "Vlan": {
       "cliname": "brg_vlan"
     }, 
     "ForwardDelay": {
-      "cliname": "forwarddelay"
+      "cliname": "forward_delay"
     }, 
     "MaxAge": {
-      "cliname": "maxage"
+      "cliname": "max_age"
     }
   }
 }

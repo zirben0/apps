@@ -1,0 +1,11 @@
+{
+  "mac": {
+    "prompt": "",
+    "cliname" : "mac",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/MacTableEntryState.json"
+      }
+    }
+  }
+}

@@ -1,13 +1,14 @@
 {
   "laportchannel": {
-    "prompt": "", 
+    "prompt": "port-channel",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannelSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Port Channel Interface",
+    "cliname": "port_channel",
     "value": {
       "LagId": {
-        "cliname": "lagid"
+        "cliname": "port_channel"
       }
     }
   }

@@ -1,0 +1,11 @@
+{
+  "listattrs": [],
+  "commands": {
+    "LagId": {
+      "cliname": "port_channel"
+    },
+    "Members": {
+    "cliname": "ethernet"
+    }
+  }
+}
