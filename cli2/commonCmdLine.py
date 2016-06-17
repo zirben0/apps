@@ -566,7 +566,7 @@ class CommonCmdLine(object):
                     if enums:
                         help = "/".join(enums) + '\n'
                         # special case don't need a value (default will be taken when applied)
-                        if not snapcliconst.isSelectionTypeNotNeeded(enums, argtype):
+                        if snapcliconst.isSelectionTypeNotNeeded(enums, argtype):
                             expected  = SUBCOMMAND_VALUE_EXPECTED
                     elif argtype:
                         if snapcliconst.isboolean(argtype):

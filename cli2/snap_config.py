@@ -349,7 +349,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         mlineLength = len(mline)
         subschema = self.schema
         submodel = self.model
-        subcommands = []
         if mlineLength > 1:
 
             cmd = argv[-1]
