@@ -24,7 +24,7 @@
 #
 # Class handles initial config command
 #
-import sys
+import sys, os
 from sets import Set
 import cmdln
 import json
@@ -39,13 +39,8 @@ from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
-try:
-    from flexswitchV2 import FlexSwitch
-    MODELS_DIR = './'
-except:
-    sys.path.append('/opt/flexswitch/sdk/py/')
-    MODELS_DIR='/opt/flexswitch/models/'
-    from flexswitchV2 import FlexSwitch
+from flexswitchV2 import FlexSwitch
+MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 pp = pprint.PrettyPrinter(indent=2)
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
@@ -525,12 +520,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     if type(v) is list:
                         data[k] = []
             '''
-            if not rollback:
-                tmpdata = copy.deepcopy(data)
-                for k,v in tmpdata.iteritems():
-                    if type(v) is list:
-                        data[k] = []
-
+            
         return (validconfig, argumentList, data)
 
     def doesConfigExist(self, c):
