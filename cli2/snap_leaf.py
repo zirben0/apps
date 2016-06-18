@@ -85,7 +85,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         # variable used to determine that when set the attribute being set is a key for an object
         self.subcommand = False
         self.issubcommandlist = False
-
+        self.applyexit = False
         self.objDict = {}
 
         self.setupCommands()
@@ -433,6 +433,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.teardownCommands()
         self.prompt = self.baseprompt
         self.stop = True
+        if 'apply' in args:
+            self.applyexit = True
 
     def getObjName(self, schema):
         cmd = 'objname'
@@ -707,6 +709,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         c.currentcmd = self.lastcmd
                         if c.applybaseconfig(argv[-2]):
                             c.cmdloop()
+                            if c.applyexit:
+                                self.applyexit = True
+
                         self.setupCommands()
                         if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                             self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
@@ -716,8 +721,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         self.currentcmd = prevcmd
 
         # lets restart the cmdloop
-        if self.stop:
+        if self.stop and not self.applyexit:
             self.cmdloop()
+        elif self.applyexit:
+            self.do_exit(['apply'])
 
     def processSubKeyKeyValueCommand(self, mline, delete):
         """

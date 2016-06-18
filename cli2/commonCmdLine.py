@@ -738,7 +738,7 @@ class CommonCmdLine(object):
             configObj.do_apply(argv)
             # lets move user back to config base
             # once the apply command has been entered
-            if not self.__class__.__name__ ==  "ConfigCmd":
+            if not self.__class__.__name__ == "ConfigCmd":
                 self.do_exit(argv)
 
     def do_showunapplied(self, argv):
