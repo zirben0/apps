@@ -211,7 +211,7 @@ class CommonCmdLine(object):
                     for cmd, submodel in model.iteritems():
                         if type(submodel) in (dict, jsonref.JsonRef):
                             for y in submodel.values():
-                                if 'cliname' in y and y['cliname'] == commandkey:
+                                if 'cliname' in y and y['cliname'] == commandkey and key is None:
                                     key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
 
             if not key:

@@ -527,37 +527,36 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     for i in range(1, mlineLength):
                         for submodel, subschema in zip(submodelList, subschemaList):
                             schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                            submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                            subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                            submodelList = self.getSubCommand(mline[i],
+                                                              submodel[schemaname]["commands"])
+                            subschemaList = self.getSubCommand(mline[i],
+                                                               subschema[schemaname]["properties"]["commands"]["properties"],
+                                                               submodel[schemaname]["commands"])
                             if submodelList and subschemaList:
-                                for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                                    (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
+                                for submodel, subschema in zip(submodelList, subschemaList):
+                                    (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                                     # we want to keep looping untill there are no more value commands
                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                        if i == mlineLength -1:
+                                        if i == mlineLength - 1:
                                             self.currentcmd = self.lastcmd
-                                            c = ShowCmd(self, subsubmodel, subsubschema)
+                                            c = ShowCmd(self, submodel, subschema)
                                             c.show(mline, all=True)
                                             self.currentcmd = []
                                         else:
-                                            subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
+                                            subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                                             if mline[i+1] not in subcommands:
                                                 self.currentcmd = self.lastcmd
-                                                c = ShowCmd(self, subsubmodel, subsubschema)
+                                                c = ShowCmd(self, submodel, subschema)
                                                 c.show(mline, all=False)
                                                 self.currentcmd = []
                                     elif i == mlineLength - 1:
-                                        if "commands" not in subsubmodel:
-                                            for key, value in subsubmodel.iteritems():
+                                        if "commands" not in submodel:
+                                            for key, value in submodel.iteritems():
                                                 if 'cliname' in value and value['cliname'] == mline[i]:
                                                     self.currentcmd = self.lastcmd
-                                                    c = ShowCmd(self, subsubmodel, subsubschema)
+                                                    c = ShowCmd(self, submodel, subschema)
                                                     c.show(mline, all=True)
                                                     self.currentcmd = []
-
-
-
-
 
                 except Exception:
                     pass
