@@ -411,9 +411,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.baseprompt = self.prompt
                 self.currentcmd = self.lastcmd
 
-        if self.stop:
-            self.cmdloop()
-
     @cmdln.alias("conf t", "configure t", "configure term", "conf term", "configure terminal", "config t")
     # match for schema cmd object
     def _cmd_config(self, args):
@@ -447,6 +444,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.currentcmd = self.lastcmd
 
                 self.teardowncommands()
+                self.stop = True
                 c = ConfigCmd("config", self, name, self.prompt, submodel, subschema)
                 c.cmdloop()
                 self.setupcommands()
@@ -561,9 +559,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 except Exception:
                     pass
 
-        if self.stop:
-            self.cmdloop()
-
     def do_exit(self, args):
         """Exit current CLI tree position, if at base then will exit CLI"""
         #subcmd = self.getSubCommand("privilege", self.model["commands"])
@@ -573,7 +568,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             #setattr(self.__class__, docmd, self.tmp_remove_priveledge)
             sys.stdout.write('Exiting Privilege mode\n')
             self.setPrompt()
-            self.cmdloop()
+            if self.stop:
+                self.cmdloop()
 
         else:
             sys.stdout.write('Quiting Shell\n')
