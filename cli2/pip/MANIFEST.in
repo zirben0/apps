@@ -1,0 +1,3 @@
+recursive-include snap_cli/schema *.json
+recursive-include snap_cli/models/cisco *.json
+recursive-include snap_cli *.json

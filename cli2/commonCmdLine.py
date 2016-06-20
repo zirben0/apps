@@ -211,7 +211,7 @@ class CommonCmdLine(object):
                     for cmd, submodel in model.iteritems():
                         if type(submodel) in (dict, jsonref.JsonRef):
                             for y in submodel.values():
-                                if 'cliname' in y and y['cliname'] == commandkey:
+                                if 'cliname' in y and y['cliname'] == commandkey and key is None:
                                     key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
 
             if not key:
@@ -446,6 +446,7 @@ class CommonCmdLine(object):
 
     def isLeafValueExpected(self, cliname, modelcmds, schemacmds):
         keys = []
+        islist = False
         objname = None
         expected = SUBCOMMAND_VALUE_NOT_EXPECTED
         help = ''
@@ -565,7 +566,7 @@ class CommonCmdLine(object):
                     if enums:
                         help = "/".join(enums) + '\n'
                         # special case don't need a value (default will be taken when applied)
-                        if not snapcliconst.isSelectionTypeNotNeeded(enums, argtype):
+                        if snapcliconst.isSelectionTypeNotNeeded(enums, argtype):
                             expected  = SUBCOMMAND_VALUE_EXPECTED
                     elif argtype:
                         if snapcliconst.isboolean(argtype):
@@ -737,7 +738,7 @@ class CommonCmdLine(object):
             configObj.do_apply(argv)
             # lets move user back to config base
             # once the apply command has been entered
-            if not self.__class__.__name__ ==  "ConfigCmd":
+            if not self.__class__.__name__ == "ConfigCmd":
                 self.do_exit(argv)
 
     def do_showunapplied(self, argv):
