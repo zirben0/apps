@@ -85,7 +85,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         # variable used to determine that when set the attribute being set is a key for an object
         self.subcommand = False
         self.issubcommandlist = False
-
+        self.applyexit = False
         self.objDict = {}
 
         self.setupCommands()
@@ -429,9 +429,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         self.setupCommands(teardown=True)
 
     def do_exit(self, args):
+        """Exit current CLI tree position, if at base then will exit CLI"""
         self.teardownCommands()
         self.prompt = self.baseprompt
         self.stop = True
+        if 'apply' in args:
+            self.applyexit = True
 
     def getObjName(self, schema):
         cmd = 'objname'
@@ -562,7 +565,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         mline = [x for x in line.split(' ') if x != '']
         mline = mline[1:] if len(mline) > 1 else []
 
-        return self._cmd_complete_common(text, ' '.join(mline), begidx, endidx)
+        return ['no'] + self._cmd_complete_common(text, ' '.join(mline), begidx, endidx)
 
     def _cmd_do_delete(self, argv):
         self._cmd_common(argv)
@@ -706,6 +709,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         c.currentcmd = self.lastcmd
                         if c.applybaseconfig(argv[-2]):
                             c.cmdloop()
+                            if c.applyexit:
+                                self.applyexit = True
+
                         self.setupCommands()
                         if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                             self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
@@ -715,8 +721,10 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         self.currentcmd = prevcmd
 
         # lets restart the cmdloop
-        if self.stop:
+        if self.stop and not self.applyexit:
             self.cmdloop()
+        elif self.applyexit:
+            self.do_exit(['apply'])
 
     def processSubKeyKeyValueCommand(self, mline, delete):
         """
@@ -948,7 +956,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 values = self.getValueSelections(mline[i], submodel, subschema)
                                 if not values:
                                     values = config.getCommandValues(objname, keys)
-                                sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
+                                #sys.stdout.write("\nvalue expected: mline %s i %s mlinelength %s values %s\n" %(mline, i, mlineLength, values))
                                 # expect value but no value supplied
                                 if (i == mlineLength-1):
                                     #sys.stdout.write("\nselections: %s\n" %(values))
@@ -1001,7 +1009,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         return returncommands
 
-    def do_show(self, argv):
+    def xdo_show(self, argv):
         root = self.getRootObj()
         if root:
             if hasattr(root, '_cmd_show'):
@@ -1026,6 +1034,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 else:
                                     for subkey in attrvalue.keys():
                                         subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+            subcommands = [x for x in subcommands if x[0] not in argv or ('?' in argv or 'help' in argv)]
             return subcommands
 
         # sub commands within a config command will have the current cmd set
