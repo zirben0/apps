@@ -55,7 +55,9 @@ configTree = []
 
 def convertPortToSpecialFmt(modelname, value):
     if modelname in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
-        tmp = "1/" + value.replace(snapcliconst.PORT_NAME_PREFIX, "")
+        tmp = value
+        if type(value) is str:
+            tmp = value.replace(snapcliconst.PORT_NAME_PREFIX, "")
         return tmp
     return value
 
@@ -261,13 +263,14 @@ class ShowRun(object):
     # Note: some objects may be used in multiple places
     USED_CONFIG = 1
     UNUSED_CONFIG =2
-    def __init__(self, swtch):
+    def __init__(self, parent, swtch):
         """
         :param swtch: Flexswitch SDK
         :param model: config tree json model
         :param schema: schema tree json model
         :return:
         """
+        self.parent = parent
         self.swtch = swtch
         self.objects = {}
         self.currRawCfg = {}
@@ -308,8 +311,17 @@ class ShowRun(object):
                     yield cfgObj
                 else:
                     for attr, value in cfgObj.iteritems():
-                        if matchattr == attr and matchvalue == value:
-                            yield cfgObj
+                        if matchattr == attr:
+                            convertedvalue = snapcliconst.updateSpecialValueCases(self.parent, matchattr, matchvalue)
+                            if type(value) is list:
+                                if type(convertedvalue) is list:
+                                    if len(frozenset(value).intersection(convertedvalue)) > 0:
+                                        yield cfgObj
+                                else:
+                                    if convertedvalue in value:
+                                        yield cfgObj
+                            elif convertedvalue == value:
+                                yield cfgObj
 
 
         yield None
@@ -444,6 +456,16 @@ class ShowRun(object):
                                                                                   submvalues,
                                                                                   subsvalues,
                                                                                   subattrobj=cfgObj[subattr])
+                                            elif 'objname' in svalues and \
+                                                        objname != svalues['objname']['default']:
+                                                if 'type' in element.objKeyVal:
+                                                    self.buildTreeObj('',
+                                                                      element,
+                                                                      element.objKeyVal['type'],
+                                                                      element.objKeyVal['cliname'],
+                                                                      element.objKeyVal['value'],
+                                                                      mvalues,
+                                                                      svalues)
 
                     else:
                         # since we are not a model object we are either a leaf or a branch
@@ -518,17 +540,18 @@ class ShowRun(object):
                         # lets find the attr obj
                         for (mcmds, mvalues) in model['commands'].iteritems():
                             svalues = schema['commands']['properties'][mcmds]
-                            if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
-                                for mattr, mattrobj in mvalues['commands'].iteritems():
-                                    if mcmds != modelMatchAttrName:
-                                        defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
-                                        attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
-                                        value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
-                                        element.setAttributes(mattr,
-                                                              mattrobj['cliname'],
-                                                              attrtype,
-                                                              convertStrValueToValueType(attrtype, value),
-                                                              convertStrValueToValueType(attrtype, defaultVal))
+                            if 'subcmd' in mcmds:
+                                if isLeafAttrObj(mvalues, svalues):
+                                    for mattr, mattrobj in mvalues['commands'].iteritems():
+                                        if mcmds != modelMatchAttrName:
+                                            defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
+                                            attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
+                                            value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
+                                            element.setAttributes(mattr,
+                                                                  mattrobj['cliname'],
+                                                                  attrtype,
+                                                                  convertStrValueToValueType(attrtype, value),
+                                                                  convertStrValueToValueType(attrtype, defaultVal))
                             else:
                                 if mcmds != modelMatchAttrName:
                                     element.setCmd(cmd)
@@ -572,7 +595,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
 
         if 'run' in argv:
             sdk = self.getSdk()
-            run = ShowRun(sdk)
+            run = ShowRun(self, sdk)
             run.getRawConfigFromNode()
             ce = ConfigElement()
 
