@@ -1,0 +1,8 @@
+{
+  "subcmd1": {
+    "$ref": "file:/tmp/snaproute/cli/schema/sviipshow.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/schema/VrrpIntfState.json"
+  }
+}

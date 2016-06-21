@@ -65,7 +65,7 @@
         }
       },
       "objname": {
-      "default": "IPv4IntfState",
+      "default": "EthIPv4IntfState",
       "type": "string",
       "description": "object name to which references these attributes"
       }

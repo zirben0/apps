@@ -587,6 +587,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         if argv and '!' in argv[-1]:
             self.do_exit(argv)
             return ''
+
         return argv
 
     def do_help(self, argv):
