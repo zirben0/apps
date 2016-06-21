@@ -91,11 +91,12 @@ def updateSpecialValueCases(cfgobj, k, v):
                     tmpvallist.append(str(value))
                 tmpval = tmpvallist
             else:
+                value = v.val
                 if "/" in str(v.val):
-                    v.val = v.attr + v.val.split('/')[1]
+                    value = v.attr + v.val.split('/')[1]
                 elif v.attr not in str(v.val):
-                    v.val = v.attr + str(v.val)
-                tmpval = str(v.val)
+                    value = v.attr + str(v.val)
+                tmpval = str(value)
 
         # cli always expects the string name, but lets
         # convert the string name to the number

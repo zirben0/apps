@@ -65,12 +65,12 @@ class ExitWithUnappliedConfig(cmdln.Cmdln):
         self.prompt = self.prevprompt
 
     def cmdloop(self):
-        self.prompt = 'Are you sure you want to exit? You have pending config [yes]no:'
+        self.prompt = 'Are you sure you want to exit? You have pending config [no]yes:'
         cmdln.Cmdln.cmdloop(self)
 
     def precmd(self, argv):
         if not argv:
-            self.do_yes(["yes"])
+            self.do_no(["no"])
 
         return argv
 
@@ -184,8 +184,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                             self.do_exit([])
                             cmdname = cmdname.replace('-', '_')
 
-                        delattr(self.__class__, "do_" + cmdname)
-                        delattr(self.__class__, "complete_" + cmdname)
+                        if hasattr(self.__class__, "do_" + cmdname):
+                            delattr(self.__class__, "do_" + cmdname)
+                            delattr(self.__class__, "complete_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
             else:
@@ -197,7 +198,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         self.do_exit([])
                         cmdname = cmdname.replace('-', '_')
 
-                    delattr(self.__class__, "do_" + cmdname)
+                    if hasattr(self.__class__, "do_" + cmdname):
+                        delattr(self.__class__, "do_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 
@@ -931,6 +933,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             config.show()
 
         return (failurecfg, delconfigList)
+
+    def do_show(self, argv):
+        """Show running configuration"""
+        root = self.getRootObj()
+        if root:
+            if hasattr(root, '_cmd_show'):
+                root._cmd_show(argv)
 
     def do_showunapplied(self, argv):
         """Display the currently unapplied configuration.  An optional 'full' argument can be supplied to show all objects which are pending not just valid provisioning objects"""

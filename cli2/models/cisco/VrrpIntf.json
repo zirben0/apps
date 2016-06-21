@@ -8,7 +8,7 @@
     "help" : "Virtual Router Redundancy Protocol (VRRP) commands. Virtual Router's Unique Identifier",
     "value": {
       "IfIndex": {
-        "cliname": "ifindex"
+        "cliname": "vlan"
       }, 
       "VRID": {
         "cliname": "vrrp"

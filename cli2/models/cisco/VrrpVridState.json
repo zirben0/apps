@@ -3,14 +3,15 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/VrrpVridStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show VRRP",
+    "cliname": "vrrp",
     "value": {
       "IfIndex": {
         "cliname": "ifindex"
       }, 
       "VRID": {
-        "cliname": "vrid"
+        "cliname": "vrrp"
       }
     }
   }
