@@ -623,24 +623,27 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                 #l = LeafCmd(schemaname, lastcmd, "show", self, None, [self.model], [self.schema])
                 #l.applybaseshow(lastcmd)
                 config = None
-                # only display the what is available from this object
-                for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
-                    # looping through the subcmds to find one that has an object associated with it.
-                    if type(v) in (dict, JsonRef):
-                        for kk, vv in v.iteritems():
-                            # each subcmd will either be a link to another subcommand
-                            # or a commands containing attributes of an object, which should hold
-                            # the object in question associated with this command.
-                            if "objname" in kk:
-                                config = CmdEntry(self, v['objname']['default'], {})
-                                config.setValid(True)
-                                self.configList.append(config)
+
+                if 'objname' in self.schema[schemaname]['properties']:
+                    config = CmdEntry(self, self.schema[schemaname]['properties']['objname']['default'], {})
+                    config.setValid(True)
+                    self.configList.append(config)
+
 
                 if not config:
-                    if 'objname' in self.schema[schemaname]['properties']:
-                        config = CmdEntry(self, self.schema[schemaname]['properties']['objname']['default'], {})
-                        config.setValid(True)
-                        self.configList.append(config)
+                    # only display the what is available from this object
+                    for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
+                        # looping through the subcmds to find one that has an object associated with it.
+                        if type(v) in (dict, JsonRef):
+                            for kk, vv in v.iteritems():
+                                # each subcmd will either be a link to another subcommand
+                                # or a commands containing attributes of an object, which should hold
+                                # the object in question associated with this command.
+                                if "objname" in kk:
+                                    config = CmdEntry(self, v['objname']['default'], {})
+                                    config.setValid(True)
+                                    self.configList.append(config)
+
 
                 # todo need to call the keys
                 # l.do_lastcmd
