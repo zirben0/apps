@@ -211,7 +211,7 @@ class CommonCmdLine(object):
                     for cmd, submodel in model.iteritems():
                         if type(submodel) in (dict, jsonref.JsonRef):
                             for y in submodel.values():
-                                if 'cliname' in y and y['cliname'] == commandkey:
+                                if 'cliname' in y and y['cliname'] == commandkey and key is None:
                                     key = self.getSchemaCommandNameFromCliName(commandkey, submodel)
 
             if not key:
@@ -738,7 +738,7 @@ class CommonCmdLine(object):
             configObj.do_apply(argv)
             # lets move user back to config base
             # once the apply command has been entered
-            if not self.__class__.__name__ ==  "ConfigCmd":
+            if not self.__class__.__name__ == "ConfigCmd":
                 self.do_exit(argv)
 
     def do_showunapplied(self, argv):

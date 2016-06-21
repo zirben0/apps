@@ -30,7 +30,7 @@ setup(
 
     # long_description=open("README.txt").read(),
 
-    install_requires=['jsonref', 'jsonschema', 'requests'],
+    install_requires=['cmdln', 'jsonref', 'jsonschema', 'requests'],
 
     entry_points={"console_scripts": ["snap_cli = snap_cli:main"]}
 )

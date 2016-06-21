@@ -42,7 +42,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "4096"
+            "default": "32768"
           }
         }
       }, 
@@ -58,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-1000  The value that all bridges use for HelloTime when this bridge is acting as the root.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted    to a value that is not a whole number of seconds. default: 200", 
+            "default": "0-2  The value that all bridges use for HelloTime when this bridge is acting as the root.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted    to a value that is not a whole number of seconds. default: 2", 
             "type": "string"
           }, 
           "islist": {
@@ -72,14 +72,14 @@
           "argtype": {
             "minimum": 0, 
             "type": "int32", 
-            "maximum": 1000
+            "maximum": 2
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "200"
+            "default": "2"
           }
         }
       }, 
@@ -95,7 +95,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-20  Configures the number of BPDUs that can be sent before pausing for 1 second. default: 6", 
+            "default": "0-10  Configures the number of BPDUs that can be sent before pausing for 1 second. default: 6", 
             "type": "string"
           }, 
           "islist": {
@@ -109,7 +109,7 @@
           "argtype": {
             "minimum": 0, 
             "type": "int32", 
-            "maximum": 20
+            "maximum": 10
           }, 
           "isdefaultset": {
             "default": false, 
@@ -247,7 +247,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-3000  The value that all bridges use for ForwardDelay when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of MaxAge.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds. default: 1500", 
+            "default": "0-30  The value that all bridges use for ForwardDelay when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of MaxAge.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds. default: 15", 
             "type": "string"
           }, 
           "islist": {
@@ -261,14 +261,14 @@
           "argtype": {
             "minimum": 0, 
             "type": "int32", 
-            "maximum": 3000
+            "maximum": 30
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "1500"
+            "default": "15"
           }
         }
       }, 
@@ -284,7 +284,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-4000  The value that all bridges use for MaxAge when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of HelloTime.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds. default: 2000", 
+            "default": "0-40  The value that all bridges use for MaxAge when this bridge is acting as the root.  Note that 802.1D-1998 specifies that the range for this parameter is related to the value of HelloTime.  The granularity of this timer is specified by 802.1D-1998 to be 1 second.  An agent may return a badValue error if a set is attempted to a value that is not a whole number of seconds. default: 20", 
             "type": "string"
           }, 
           "islist": {
@@ -298,14 +298,14 @@
           "argtype": {
             "minimum": 0, 
             "type": "int32", 
-            "maximum": 4000
+            "maximum": 40
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "2000"
+            "default": "20"
           }
         }
       }

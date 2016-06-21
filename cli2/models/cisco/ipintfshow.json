@@ -4,6 +4,12 @@
     "commands": {
       "subcmd1": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipethernetshow.json"
+      },
+      "subcmd2": {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/ipsvishow.json"
+      },
+      "subcmd3": {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/iplagshow.json"
       }
     }
   }
