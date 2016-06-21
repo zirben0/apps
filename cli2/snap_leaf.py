@@ -664,11 +664,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             # should be at config x
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             if schemaname:
-                submodelList = self.getSubCommand(argv[0], model[schemaname]["commands"])
-                subschemaList = self.getSubCommand(argv[0], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
+                submodelList = self.getSubCommand(mline[0], model[schemaname]["commands"])
+                subschemaList = self.getSubCommand(mline[0], schema[schemaname]["properties"]["commands"]["properties"], model[schemaname]["commands"])
                 if submodelList and subschemaList:
 
-                    schemaname = self.getSchemaCommandNameFromCliName(argv[0], submodelList[0])
+                    schemaname = self.getSchemaCommandNameFromCliName(mline[0], submodelList[0])
                     if schemaname:
                         value = None
                         if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
@@ -677,23 +677,23 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             configprompt = self.getPrompt(submodelList[0][schemaname], subschemaList[0][schemaname])
                             if configprompt:
                                 self.prompt += configprompt + '-'
-                                value = argv[-1]
+                                value = mline[-1]
 
                         objname = schemaname
-                        for i in range(1, len(argv)-1):
+                        for i in range(1, len(mline)-1):
                             for submodel, subschema in zip(submodelList, subschemaList):
-                                schemaname = self.getSchemaCommandNameFromCliName(argv[i-1], submodel)
+                                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                                 if schemaname:
-                                    submodelList = self.getSubCommand(argv[i], submodel[schemaname]["commands"])
-                                    subschemaList = self.getSubCommand(argv[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
+                                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                                     for submodel, subschema in zip(submodelList, subschemaList):
-                                        schemaname = self.getSchemaCommandNameFromCliName(argv[i], submodel)
+                                        schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
                                         if schemaname:
                                             configprompt = self.getPrompt(submodel[schemaname], subschema[schemaname])
                                             objname = schemaname
                                             if configprompt and snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
                                                 self.prompt += configprompt + '-'
-                                                value = argv[-1]
+                                                value = mline[-1]
 
                         if value != None:
                             self.prompt += value + endprompt
@@ -705,9 +705,14 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         # stop the command loop for config as we will be running a new cmd loop
                         cmdln.Cmdln.stop = True
                         self.teardownCommands()
-                        c = LeafCmd(objname, argv[-2], self.cmdtype, self.parent, self.prompt, submodelList, subschemaList)
+
+                        cmdtype = self.cmdtype
+                        if delete:
+                            cmdtype = snapcliconst.COMMAND_TYPE_DELETE
+
+                        c = LeafCmd(objname, mline[-2], cmdtype, self.parent, self.prompt, submodelList, subschemaList)
                         c.currentcmd = self.lastcmd
-                        if c.applybaseconfig(argv[-2]):
+                        if c.applybaseconfig(mline[-2]):
                             c.cmdloop()
                             if c.applyexit:
                                 self.applyexit = True
