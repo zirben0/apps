@@ -21,8 +21,19 @@
         "properties": {
           "subcmd1" : {
             "$ref" : "file:/tmp/snaproute/cli/schema/ipethernetshow.json"
+          },
+          "subcmd2": {
+            "$ref" : "file:/tmp/snaproute/cli/schema/ipsvishow.json"
+          },
+          "subcmd3": {
+            "$ref" : "file:/tmp/snaproute/cli/schema/iplagshow.json"
           }
         }
+      },
+      "objname": {
+        "default": "IPv4IntfState",
+        "type": "string",
+        "description": "object name to which references these attributes"
       }
     }
   }

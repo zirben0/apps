@@ -1,6 +1,7 @@
 {
   "laportchannelstate": {
-    "prompt": "", 
+    "prompt": "",
+    "help": "Show Link Aggregation Info",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannelStateSubCmds.json"
     }, 
