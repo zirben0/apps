@@ -43,6 +43,37 @@ from flexswitchV2 import FlexSwitch
 MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 pp = pprint.PrettyPrinter(indent=2)
+
+
+class ExitWithUnappliedConfig(cmdln.Cmdln):
+
+    def __init__(self, prompt):
+        cmdln.Cmdln.__init__(self)
+        self.prevprompt = prompt
+
+        self.exitconfig = False
+
+    @cmdln.alias("y", "Y", "YES")
+    def do_yes(self, argv):
+        self.stop = True
+        self.exitconfig = True
+        self.prompt = self.prevprompt
+
+    @cmdln.alias("n", "NO", "No")
+    def do_no(self, argv):
+        self.stop = True
+        self.prompt = self.prevprompt
+
+    def cmdloop(self):
+        self.prompt = 'Are you sure you want to exit? You have pending config [no]yes:'
+        cmdln.Cmdln.cmdloop(self)
+
+    def precmd(self, argv):
+        if not argv:
+            self.do_no(["no"])
+
+        return argv
+
 class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def __init__(self, cmdtype, parent, objname, prompt, model, schema):
@@ -153,8 +184,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                             self.do_exit([])
                             cmdname = cmdname.replace('-', '_')
 
-                        delattr(self.__class__, "do_" + cmdname)
-                        delattr(self.__class__, "complete_" + cmdname)
+                        if hasattr(self.__class__, "do_" + cmdname):
+                            delattr(self.__class__, "do_" + cmdname)
+                            delattr(self.__class__, "complete_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
             else:
@@ -166,7 +198,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         self.do_exit([])
                         cmdname = cmdname.replace('-', '_')
 
-                    delattr(self.__class__, "do_" + cmdname)
+                    if hasattr(self.__class__, "do_" + cmdname):
+                        delattr(self.__class__, "do_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 
@@ -442,9 +475,18 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
     def do_exit(self, args):
         """Exit current CLI tree position, if at base then will exit CLI"""
-        self.teardownCommands()
-        self.prompt = self.baseprompt
-        self.stop = True
+
+        if len([c for c in self.configList if c.isValid()]) > 0:
+            c = ExitWithUnappliedConfig(self.prompt)
+            c.cmdloop()
+            if c.exitconfig:
+                self.teardownCommands()
+                self.prompt = self.baseprompt
+                self.stop = True
+        else:
+            self.teardownCommands()
+            self.prompt = self.baseprompt
+            self.stop = True
 
     def get_sdk_func_key_values(self, data, func, rollback=False):
         """
@@ -891,6 +933,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             config.show()
 
         return (failurecfg, delconfigList)
+
+    def do_show(self, argv):
+        """Show running configuration"""
+        root = self.getRootObj()
+        if root:
+            if hasattr(root, '_cmd_show'):
+                root._cmd_show(argv)
 
     def do_showunapplied(self, argv):
         """Display the currently unapplied configuration.  An optional 'full' argument can be supplied to show all objects which are pending not just valid provisioning objects"""

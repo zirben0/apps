@@ -1,6 +1,6 @@
 CLI_CODE_BASE = $(SR_CODE_BASE)/snaproute/src/apps/cli2/
 SDK_CODE_BASE = $(SR_CODE_BASE)/snaproute/src/flexSdk/py/
-all: pip 
+all: pip clean 
 
 pip:
 	@echo 'Creating snap_cli pip install'

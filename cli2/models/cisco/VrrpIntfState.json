@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/VrrpIntfStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show VRRP Interface",
+    "cliname": "interface",
     "value": {
       "IfIndex": {
         "cliname": "ifindex"

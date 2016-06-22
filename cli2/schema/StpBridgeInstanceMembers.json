@@ -42,7 +42,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "4096"
+            "default": "32768"
           }
         }
       }, 
