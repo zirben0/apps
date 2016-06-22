@@ -68,6 +68,12 @@
           },
           "subcmd19": {
             "$ref": "file:/tmp/snaproute/cli/schema/SystemSwVersionState.json"
+          },
+          "subcmd20": {
+            "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelState.json"
+          },
+          "subcmd21": {
+            "$ref": "file:/tmp/snaproute/cli/schema/VrrpVridState.json"
           }
         }
       }

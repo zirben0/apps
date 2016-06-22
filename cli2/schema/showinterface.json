@@ -25,9 +25,6 @@
           "subcmd2": {
             "$ref": "file:/tmp/snaproute/cli/schema/svi.json"
           },
-          "subcmd3": {
-            "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelState.json"
-          },
           "subcmd4": {
             "$ref": "file:/tmp/snaproute/cli/schema/LogicalIntfState.json"
           }
