@@ -667,7 +667,6 @@ class CommonCmdLine(object):
                                                     sattrvalue = scmdvalues['commands']['properties'][attr]
                                                     helpcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
                                                                          snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
-
         self.printCommands(mline, helpcommands)
 
     def printCommands(self, argv, subcommands):

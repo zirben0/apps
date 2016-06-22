@@ -74,6 +74,12 @@
           },
           "subcmd21": {
             "$ref": "file:/tmp/snaproute/cli/schema/VrrpVridState.json"
+          },
+          "subcmd22": {
+            "$ref": "file:/tmp/snaproute/cli/schema/SystemStatusState.json"
+          },
+          "subcmd23": {
+            "$ref": "file:/tmp/snaproute/cli/schema/lldpshow.json"
           }
         }
       }
