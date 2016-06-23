@@ -824,7 +824,6 @@ class CommonCmdLine(cmdln.Cmdln):
         submodel = self.model
         subschema = self.schema
         helpcommands = []
-        print mline
         if (mlineLength == 1 and not returnhelp) or returnhelp:
             helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
 
