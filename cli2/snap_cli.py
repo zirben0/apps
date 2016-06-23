@@ -193,8 +193,19 @@ class CmdLine(CommonCmdLine):
                      "                              |   |     |  |     |  |\n" \
                      "                              |   `----.|  `----.|  |\n" \
                      "                               \_______||_______||__|\n"
+        
+        cliversion = "unknown"
+        switchversion = "unknown"
+        if 'properties' in self.schema and \
+            'cli-version' in self.schema['properties']:
+            cliversion = self.schema['properties']['cli-version']['default']
+            r = self.sdk.getSystemSwVersionState("")
+            if r.status_code in self.sdk.httpSuccessCodes:
+                obj = r.json()
+                o = obj['Object']
+                switchversion = o['FlexswitchVersion']
 
-        self.intro += "\nFlexSwitch Console Version 1.0, Connected to: " + self.switch_name
+        self.intro += "\nFlexSwitch Console Version %s, Connected to: %s Version %s" %(cliversion, self.switch_name, switchversion)
         self.intro += "\nUsing %s style cli\n" %(self.model["style"],)
 
     def discoverPortInfo(self):
@@ -461,28 +472,7 @@ class CmdLine(CommonCmdLine):
         mlineLength = len(mline)
         #sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
 
-        functionNameAsString = sys._getframe().f_code.co_name
-        name = functionNameAsString.split("_")[-1]
-
-        submodelList = self.getSubCommand(name, self.model["commands"])
-        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
-        subcommands = self.getchildrencmds(mline[0], submodelList[0], subschemaList[0])
-
-        if mlineLength > 0:
-            for i in range(1, mlineLength):
-                for submodel, subschema in zip(submodelList, subschemaList):
-                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                    if submodelList and subschemaList:
-                        for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                            (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                            # this is useful so that we can reuse config templates
-                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
-                    else:
-                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
-
+        subcommands = self.get_show_complete_commands(mline)
         # lets remove any duplicates
         returncommands = list(frozenset(subcommands).difference(mline))
         #print text, returncommands, subcommands, "\n"
@@ -494,13 +484,25 @@ class CmdLine(CommonCmdLine):
 
         return returncommands
 
-    def display_show_help(self, mline):
-        mlineLength = len(mline)
+    def get_show_complete_commands(self, mline):
+        # calling
         submodelList = self.getSubCommand("show", self.model["commands"])
         subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
-        for submodel, subschema in zip(submodelList, subschemaList):
-            c = ShowCmd(self, submodel, subschema)
-            c.display_help(mline[1:])
+        if submodelList and subschemaList:
+            for submodel, subschema in zip(submodelList, subschemaList):
+                c = ShowCmd(self, submodel, subschema)
+                return [cmd for (cmd,help) in c.display_help(mline[1:], returnhelp=True)]
+        return []
+
+
+
+    def display_show_help(self, mline):
+        submodelList = self.getSubCommand("show", self.model["commands"])
+        subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
+        if submodelList and subschemaList:
+            for submodel, subschema in zip(submodelList, subschemaList):
+                c = ShowCmd(self, submodel, subschema)
+                c.display_help(mline[1:])
 
 
     def _cmd_show(self, argv):

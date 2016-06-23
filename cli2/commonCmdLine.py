@@ -253,7 +253,7 @@ class CommonCmdLine(cmdln.Cmdln):
             matches = compfunc(text, line, begidx, endidx)
             # lets add a space after the command when we know it is the last one
             if len(matches) == 1:
-                self.completion_matches = [x + " " for x in matches]
+                self.completion_matches = [x + " " for x in matches if x != snapcliconst.COMMAND_DISPLAY_ENTER]
             else:
                 self.completion_matches = matches
         try:
@@ -474,7 +474,7 @@ class CommonCmdLine(cmdln.Cmdln):
 
         cliHelpList = self.getchildrenhelpcmds(parentname, model, schema, issubcmd)
 
-        return [ x[0] for x in cliHelpList if x[0] != '<cr>']
+        return [ x[0] for x in cliHelpList if x[0] != snapcliconst.COMMAND_DISPLAY_ENTER]
 
     def getSchemaCommandNameFromCliName(self, cliname, model):
         for key, value in model.iteritems():
@@ -521,7 +521,7 @@ class CommonCmdLine(cmdln.Cmdln):
         :param parentname:
         :return: list of tuples in the format of (model attribute name, cliname, help description)
         """
-        cliHelpList = [["<cr>", ""]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
+        cliHelpList = [[snapcliconst.COMMAND_DISPLAY_ENTER, ""]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             if schemaname:
@@ -807,14 +807,23 @@ class CommonCmdLine(cmdln.Cmdln):
             return submodelList, subschemaList
         return [], []
 
-    def display_help(self, argv):
-        mline = [self.objname] + argv[:-1]
+    def display_help(self, argv, returnhelp=False):
+        """
+        This function is being used for two purposes:
+        1) Display the current command help
+        2) Retrieve the subcommands for a given level within a tree
+        :param argv:
+        :param returnhelp:
+        :return:
+        """
+        if not returnhelp:
+            mline = [self.objname] + argv[:-1]
+        else:
+            mline = [self.objname] + argv
         mlineLength = len(mline)
         submodel = self.model
         subschema = self.schema
-        helpcommands = []
-        if mlineLength == 1:
-            helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
+        helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
 
         # advance to next submodel and subschema
         for i in range(1, mlineLength):
@@ -830,13 +839,15 @@ class CommonCmdLine(cmdln.Cmdln):
                             if i == mlineLength - 1:
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if self.cmdtype == snapcliconst.COMMAND_TYPE_SHOW:
-                                        cmd = "<cr>"
+                                        cmd = snapcliconst.COMMAND_DISPLAY_ENTER
                                     else:
                                         cmd = " ".join(argv[:-1])
                                     helpcommands = [[cmd, help]]
                                     helpcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
+                            elif returnhelp:
+                                helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
                     else:
                         if 'commands' in submodel[schemaname]:
                             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
@@ -850,7 +861,10 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     sattrvalue = scmdvalues['commands']['properties'][attr]
                                                     helpcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
                                                                          snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
-        self.printCommands(mline, helpcommands)
+        if not returnhelp:
+            self.printCommands(mline, helpcommands)
+
+        return helpcommands
 
     def printCommands(self, argv, subcommands):
 

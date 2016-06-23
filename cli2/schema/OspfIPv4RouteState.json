@@ -1,5 +1,5 @@
 {
-  "ospfipv4routes": {
+  "ospfipv4routestate": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/OspfIPv4RoutesSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/OspfIPv4RouteStateSubCmds.json"
         }
       }, 
       "cliname": {
@@ -63,7 +63,7 @@
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -101,7 +101,7 @@
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -139,7 +139,7 @@
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -150,7 +150,7 @@
         }
       }, 
       "objname": {
-        "default": "OspfIPv4Routes", 
+        "default": "OspfIPv4RouteState", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }
