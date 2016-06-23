@@ -238,7 +238,7 @@ if __name__ == '__main__':
                         dest='applyConfig',
                         action='store',
                         nargs='?',
-                        default=True,
+                        default=False,
                         help='Apply Configuration')
 
     parser.add_argument('--saveConfig',
@@ -246,17 +246,20 @@ if __name__ == '__main__':
                         dest='saveConfig',
                         action='store',
                         nargs='?',
-                        default=True,
+                        default=False,
                         help='Save Configuration')
     args = parser.parse_args()
-    print args
+    if args.saveConfig == False and args.applyConfig == False and args.poll == None:
+        parser.print_usage()
+        sys.exit(1)
+
     monitor = ConfigMonitor (args.ip, args.port, args.cfgDir, args.poll)
-    if args.saveConfig:
+    if args.saveConfig != False:
         monitor.saveConfig()
         print 'Configuration is saved to %s'  %(monitor.runningCfg)
-    if args.applyConfig:
+    if args.applyConfig != False:
         monitor.applyDesiredConfig(args.cfgDir+'/desiredConfig.json')
-    else :
+    elif args.poll:
         if not args.saveConfig:
             monitor.pollForConfigChange()
             while True:
