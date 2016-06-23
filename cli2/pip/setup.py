@@ -5,7 +5,7 @@ setup(
     name="snap_cli",
 
     # Version number (initial):
-    version="0.1.112",
+    version="0.1.113",
 
     # Application author details:
     author="Corry Cordes",

@@ -1088,7 +1088,7 @@ class LeafCmd(CommonCmdLine):
         mline = [parentcmd] + argv[:-1]
         mlineLength = len(mline)
 
-        subcommands = [["<cr>", ""]]
+        subcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, ""]]
         if mlineLength == 1:
             for model, schema in zip(self.modelList, self.schemaList):
                 subcommands = self.getchildrenhelpcmds(mline[0], model, schema)

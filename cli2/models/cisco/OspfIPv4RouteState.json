@@ -1,11 +1,11 @@
 {
-  "ospfipv4routes": {
+  "ospfipv4routestate": {
     "prompt": "", 
     "commands": {
-      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIPv4RoutesSubCmds.json"
-    }, 
-    "cliname": "ospf",
-    "help": "Show OSPF IPv4 Routes",
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIPv4RouteStateSubCmds.json"
+    },
+    "help": "Show OSPF Routes", 
+    "cliname": "ospf", 
     "value": {
       "DestType": {
         "cliname": "desttype"
