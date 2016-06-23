@@ -26,7 +26,6 @@
 #
 import sys, os
 from sets import Set
-import cmdln
 import json
 import pprint
 import inspect
@@ -39,34 +38,37 @@ from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
-from flexswitchV2 import FlexSwitch
 MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 pp = pprint.PrettyPrinter(indent=2)
 
 
-class ExitWithUnappliedConfig(cmdln.Cmdln):
+class ExitWithUnappliedConfig(CommonCmdLine):
 
     def __init__(self, prompt):
-        cmdln.Cmdln.__init__(self)
+        super(CommonCmdLine, self).__init__(self)
         self.prevprompt = prompt
 
         self.exitconfig = False
 
-    @cmdln.alias("y", "Y", "YES")
     def do_yes(self, argv):
         self.stop = True
         self.exitconfig = True
         self.prompt = self.prevprompt
+    do_yes.aliases = ["y", "Y", "YES"]
 
-    @cmdln.alias("n", "NO", "No")
     def do_no(self, argv):
         self.stop = True
         self.prompt = self.prevprompt
+    do_no.aliases = ["n", "NO", "No"]
 
     def cmdloop(self):
         self.prompt = 'Are you sure you want to exit? You have pending config [no]yes:'
-        cmdln.Cmdln.cmdloop(self)
+        try:
+            super(ExitWithUnappliedConfig, self).cmdloop(self)
+        except KeyboardInterrupt:
+            self.intro = '\n'
+            self.cmdloop()
 
     def precmd(self, argv):
         if not argv:
@@ -74,7 +76,7 @@ class ExitWithUnappliedConfig(cmdln.Cmdln):
 
         return argv
 
-class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
+class ConfigCmd(CommonCmdLine):
 
     def __init__(self, cmdtype, parent, objname, prompt, model, schema):
         '''
@@ -88,7 +90,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         :return:
         '''
 
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, parent, parent.switch_ip, parent.schemapath, parent.modelpath, objname)
         self.objname = objname
         self.name = objname + ".json"
         self.parent = parent
@@ -208,7 +210,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def cmdloop(self, intro=None):
-        cmdln.Cmdln.cmdloop(self)
+        CommonCmdLine.cmdloop(self)
 
     def _cmd_complete_delete(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %('no ' + self.objname, line, text, not text))
@@ -346,7 +348,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 else:
                     self.currentcmd = self.lastcmd[1:]
                 # stop the command loop for config as we will be running a new cmd loop
-                cmdln.Cmdln.stop = True
+                self.stop = True
 
                 # this code was added to handle admin state changes for global objects
                 # like bfd enable
@@ -716,8 +718,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # get the combination of all config objects which are of the same type
             for c1,c2 in getSameConfigObjects(configList, configList):
 
-                if c1.name == 'BGPNeighbor':
-                    import ipdb; ipdb.set_trace()
                 newConfig = None
                 # lets combine any entries which have the same key values
                 # as the attributes may have been updated by two different config trees
