@@ -192,7 +192,7 @@
         "type": "object", 
         "properties": {
           "key": {
-            "default": true,
+            "default": false,
             "type": "boolean"
           }, 
           "prompt": {

@@ -3,11 +3,12 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPIntfStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show summary of detailed LLDP information",
+    "cliname": "neighbors",
     "value": {
       "IfIndex": {
-        "cliname": "ifindex"
+        "cliname": "neighbors"
       }
     }
   }
