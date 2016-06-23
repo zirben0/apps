@@ -193,8 +193,19 @@ class CmdLine(CommonCmdLine):
                      "                              |   |     |  |     |  |\n" \
                      "                              |   `----.|  `----.|  |\n" \
                      "                               \_______||_______||__|\n"
+        
+        cliversion = "unknown"
+        switchversion = "unknown"
+        if 'properties' in self.schema and \
+            'cli-version' in self.schema['properties']:
+            cliversion = self.schema['properties']['cli-version']['default']
+            r = self.sdk.getSystemSwVersionState("")
+            if r.status_code in self.sdk.httpSuccessCodes:
+                obj = r.json()
+                o = obj['Object']
+                switchversion = o['FlexswitchVersion']
 
-        self.intro += "\nFlexSwitch Console Version 1.0, Connected to: " + self.switch_name
+        self.intro += "\nFlexSwitch Console Version %s, Connected to: %s Version %s" %(cliversion, self.switch_name, switchversion)
         self.intro += "\nUsing %s style cli\n" %(self.model["style"],)
 
     def discoverPortInfo(self):
