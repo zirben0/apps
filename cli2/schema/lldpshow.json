@@ -1,0 +1,29 @@
+{
+  "lldpshow": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : "lldp"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe bfd",
+        "default" : "lldp"
+      },
+       "help" : {
+        "type" : "string",
+        "default": "Show LLDP Commands"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to ethernet port",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/LLDPIntfState.json"
+          }
+        }
+      }
+    }
+  }
+}

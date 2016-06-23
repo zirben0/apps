@@ -65,12 +65,12 @@ class ExitWithUnappliedConfig(cmdln.Cmdln):
         self.prompt = self.prevprompt
 
     def cmdloop(self):
-        self.prompt = 'Are you sure you want to exit? You have pending config [yes]no:'
+        self.prompt = 'Are you sure you want to exit? You have pending config [no]yes:'
         cmdln.Cmdln.cmdloop(self)
 
     def precmd(self, argv):
         if not argv:
-            self.do_yes(["yes"])
+            self.do_no(["no"])
 
         return argv
 
@@ -184,8 +184,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                             self.do_exit([])
                             cmdname = cmdname.replace('-', '_')
 
-                        delattr(self.__class__, "do_" + cmdname)
-                        delattr(self.__class__, "complete_" + cmdname)
+                        if hasattr(self.__class__, "do_" + cmdname):
+                            delattr(self.__class__, "do_" + cmdname)
+                            delattr(self.__class__, "complete_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
             else:
@@ -197,7 +198,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         self.do_exit([])
                         cmdname = cmdname.replace('-', '_')
 
-                    delattr(self.__class__, "do_" + cmdname)
+                    if hasattr(self.__class__, "do_" + cmdname):
+                        delattr(self.__class__, "do_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 
@@ -337,29 +339,44 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     self.prompt = self.prompt[:-1] + endprompt
                 self.stop = True
                 prevcmd = self.currentcmd
-                self.currentcmd = self.lastcmd
+                # lets change the command such that the delete is not part of the currentcmd
+                # the cmdtype will be the determining factor for a delete
+                if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
+                    self.currentcmd = self.lastcmd
+                else:
+                    self.currentcmd = self.lastcmd[1:]
                 # stop the command loop for config as we will be running a new cmd loop
                 cmdln.Cmdln.stop = True
 
                 # this code was added to handle admin state changes for global objects
-                # bfd enable
+                # like bfd enable
                 cliname = argv[-2]
-                if self.valueexpected in (SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_VALUE_EXPECTED):
-                    self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
-                    cliname = argv[-1]
+                if self.valueexpected in (SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE):
+                    if self.valueexpected == SUBCOMMAND_VALUE_EXPECTED:
+                        self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
+                        cliname = argv[-1]
+                    else:
+                        if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+                            self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
 
+                # lets clear the current context commands as we will be going to a new loop
                 self.teardownCommands()
                 c = LeafCmd(objname, cliname, self.cmdtype, self, self.prompt, finalModelList, finalSchemaList)
                 if c.applybaseconfig(cliname):
                     c.cmdloop()
+
+                # lets restore the current context commands
                 self.setupCommands()
 
+                # lets reset the cmdtype
                 self.cmdtype = self.cmdtype.rstrip(snapcliconst.COMMAND_TYPE_CONFIG_NOW)
                 if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                     self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
+                # reset the prompt seen by the user
                 self.prompt = self.baseprompt
                 self.currentcmd = prevcmd
+
                 # lets clear the config
                 delconfigList = []
                 for config in self.configList:
@@ -699,6 +716,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # get the combination of all config objects which are of the same type
             for c1,c2 in getSameConfigObjects(configList, configList):
 
+                if c1.name == 'BGPNeighbor':
+                    import ipdb; ipdb.set_trace()
                 newConfig = None
                 # lets combine any entries which have the same key values
                 # as the attributes may have been updated by two different config trees
@@ -739,6 +758,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         root = self.getRootObj()
         if self.configList and \
                 root.isSystemReady():
+
+
             # create new list where come config is combined because they
             # are acting on the same object
             self.configList = fixupConfigList(self, self.configList)
@@ -931,6 +952,13 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             config.show()
 
         return (failurecfg, delconfigList)
+
+    def do_show(self, argv):
+        """Show running configuration"""
+        root = self.getRootObj()
+        if root:
+            if hasattr(root, '_cmd_show'):
+                root._cmd_show(argv)
 
     def do_showunapplied(self, argv):
         """Display the currently unapplied configuration.  An optional 'full' argument can be supplied to show all objects which are pending not just valid provisioning objects"""

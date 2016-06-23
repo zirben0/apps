@@ -158,12 +158,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
             """
             keyvalueDict = {}
             if len(currentcmd) == 0:
-                basekey = parent.lastcmd[-2]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else parent.lastcmd[-1]
-                basevalue = parent.lastcmd[-1]  if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else defaultValFunc([basekey], delcmd=delete)
+                basekey = parent.lastcmd[-2] if parent.valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE else parent.lastcmd[-1]
+                basevalue = parent.lastcmd[-1] if parent.valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE else defaultValFunc([basekey], delcmd=delete)
                 keyvalueDict.update({basekey: (basevalue, parent.lastcmd)})
             else:
-                basekey = currentcmd[-2] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else currentcmd[-1]
-                basevalue = currentcmd[-1] if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in cmdtype else defaultValFunc([basekey], delcmd=delete)
+                basekey = currentcmd[-2] if len(currentcmd) > 1 else currentcmd[-1]
+                basevalue = currentcmd[-1] if len(currentcmd) > 1 else defaultValFunc([basekey], delcmd=delete)
                 keyvalueDict.update({basekey: (basevalue, currentcmd)})
                 if hasattr(parent, 'parent') and parent.parent:
                     keyvalueDict.update(getCurrentLeafContainerKeyValues(cmdtype, parent.parent, parent.currentcmd, delete, defaultValFunc))
@@ -218,7 +218,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             # the keyvalueDict may contain more tree keys than is applicable for the
                             # config tree
                             objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
-                                                                if v['isattrkey'] and v['createwithdefaults']])
+                                                                if v['isattrkey'] and (v['createwithdefaults'] or delete)])
                             isvalid = len(keyvalueDict) >= objkeyslen and objkeyslen != 0
 
                             isValidKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
@@ -235,11 +235,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         # in order for the object to be considered valid and
                                         # ready to be provisioned.
                                         config.setValid(isvalid)
-                                        config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'])
+                                        # no was stripped before
+                                        if delete and 'no' != cmd[0]:
+                                            cmd = ['no'] + cmd
+                                        config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'], isattrlist=objattrs[basekey]['isarray'])
                             else:
                                 isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
-                                                                               v['createwithdefaults'] and
-                                                                              (v['value']['default'])]) > 0
+                                               ((v['createwithdefaults'] and v['value']['default']) or delete)]) > 0
 
                                 # rare case that an attribute of an object is used as a key
                                 # but found that it does exist as is the case for router bgp ....
@@ -253,7 +255,26 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                             # values supplied may not be the object key but they were used
                                             # to create the object as is the case with router bgp
                                             config.setValid(isvalid)
-                                            config.set(cmd, delete, basekey, basevalue, isKey=True)
+                                            config.set(cmd, delete, basekey, basevalue, isKey=True, isattrlist=objattrs[basekey]['isarray'] )
+                        else:
+                            # may be jsut setting an attribute against a global object?
+                            isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
+                                           ((v['createwithdefaults'] and v['value']['default']) or delete)]) > 0
+
+                            # rare case that an attribute of an object is used as a key
+                            # but found that it does exist as is the case for router bgp ....
+                            #isObjNonKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if not v['isattrkey']
+                            #                                         and k in keyvalueDict]) > 0
+                            #if isObjNonKeyConfig:
+                            if isvalid:
+                                for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
+                                    if basekey in objattrs:
+                                        if objattrs[basekey]['isattrkey']:
+                                            config.setDelete(delete)
+                                        # values supplied may not be the object key but they were used
+                                        # to create the object as is the case with router bgp
+                                        config.setValid(isvalid)
+                                        config.set(cmd, delete, basekey, basevalue, isKey=True, isattrlist=objattrs[basekey]['isarray'] )
                     else:
                         config = CmdEntry(self, objname, self.objDict[objname])
                         config.setValid(True)
@@ -357,8 +378,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
                                     setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
                                 else:
-                                    delattr(self.__class__, "do_" + cmdname)
-                                    delattr(self.__class__, "complete_" + cmdname)
+                                    if hasattr(self.__class__, "do_" + cmdname):
+                                        delattr(self.__class__, "do_" + cmdname)
+                                        delattr(self.__class__, "complete_" + cmdname)
 
                     # subcmd is a ref, typically this means that this is a container leaf
                     elif isbranch(cmd):
@@ -379,8 +401,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
                                         setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
                                     else:
-                                        delattr(self.__class__, "do_" + cmdname)
-                                        delattr(self.__class__, "complete_" + cmdname)
+                                        if hasattr(self.__class__, "do_" + cmdname):
+                                            delattr(self.__class__, "do_" + cmdname)
+                                            delattr(self.__class__, "complete_" + cmdname)
 
                 # an attribute
                 elif isAttribute(subcmds, model[self.objname]):
@@ -498,6 +521,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             if "commands" in vv and len(vv) > 0:
                                 attrDict = dict(listAttrs)
                                 key = key
+
                                 isList = False
                                 if k in attrDict:
                                     key = attrDict[k]
@@ -573,7 +597,11 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     def getCommandDefaultAttrValue(self, argv, delcmd=False):
         model = self.modelList[0]
         schema = self.schemaList[0]
-        parentname = self.parent.lastcmd[-2]
+        if len(self.currentcmd) == 0:
+            parentname = self.parent.lastcmd[-2]
+        else:
+            parentname = self.currentcmd[-2]
+
         # should be at config x
         schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
         value = None
@@ -643,6 +671,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         value = self.getCommandDefaultAttrValue(mline, delcmd=delete)
         if value is not None:
             mline += [str(value)]
+
+        # lets set the attribute value
         if isInvalidCommand(verifyargv, delete):
             return
         elif isKeyValueCommand(verifyargv, delete, self.issubcommandlist):
@@ -651,7 +681,12 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         else:
             self.processSubKeyKeyValueCommand(mline, delete)
 
+        # There are casees where a attribute member is a struct, this would be considered
+        # a subcommand.  Thus it should of been added to the base struct above and now
+        # added to the actual struct (this is typically a placeholder in this case).
+        # More common cases are a a new object is being referenced by the key value pairing.
         if self.subcommand:
+
             # reset the command len
             self.commandLen = 0
 
@@ -708,10 +743,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
                         cmdtype = self.cmdtype
                         if delete:
-                            cmdtype = snapcliconst.COMMAND_TYPE_DELETE
+                            cmdtype = snapcliconst.COMMAND_TYPE_DELETE + snapcliconst.COMMAND_TYPE_CONFIG_NOW
 
                         c = LeafCmd(objname, mline[-2], cmdtype, self.parent, self.prompt, submodelList, subschemaList)
-                        c.currentcmd = self.lastcmd
+                        if delete:
+                            c.currentcmd = self.lastcmd[1:]
+                        else:
+                            c.currentcmd = self.lastcmd
                         if c.applybaseconfig(mline[-2]):
                             c.cmdloop()
                             if c.applyexit:
@@ -776,7 +814,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         for entry in config.attrList:
                             if entry.isKey() and \
                                 parentKey == entry.attr and \
-                                    parentValue == entry.val:
+                                    ((parentValue == entry.val) or (type(entry.val) is list and parentValue in entry.val)):
                                 foundConfig = True
 
                     # lets update only if this is not a subcommand
@@ -824,7 +862,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             for entry in config.attrList:
                                 if entry.isKey() and \
                                     parentKey == entry.attr and \
-                                        parentValue == entry.val:
+                                        ((parentValue == entry.val) or (type(entry.val) is list and parentValue in entry.val)):
                                     foundConfig = True
 
                         # lets update only if this is not a subcommand
@@ -842,7 +880,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 config.setValid(isvalid)
                             else:
                                 # store the attribute into the config
-                                config.set(self.lastcmd, delete, subkey, value, isKey=self.subcommand,
+                                config.set(self.lastcmd, delete, subkey, value, isKey=v['isattrkey'] or self.subcommand,
                                            isattrlist=v['isarray'])
                                 config.setValid(True)
 
@@ -913,7 +951,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                                                                         vv['value']['default'])})
 
                                 # store the attribute into the config
-                                config.setDict(self.lastcmd, delete, attrkey, data, isKey=self.subcommand,
+                                config.setDict(self.lastcmd, delete, attrkey, data, isKey=v['isattrkey'] or self.subcommand,
                                                isattrlist=v['isarray'])
 
     def complete_redistribute(self, text, line, begidx, endidx):
@@ -1014,7 +1052,8 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
         return returncommands
 
-    def xdo_show(self, argv):
+    def do_show(self, argv):
+        """Show running configuration"""
         root = self.getRootObj()
         if root:
             if hasattr(root, '_cmd_show'):

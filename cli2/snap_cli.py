@@ -107,11 +107,27 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         # the model and some info needs to be gathered from system to populate the
         # cli accordingly
         CommonCmdLine.__init__(self, None, switch_ip, schema_path, model_path, self.name)
-        while not self.waitForSystemToBeReady():
-            time.sleep(1)
 
-        self.do_reload_cli_model([])
-        self.setBanner(switch_ip)
+        if self.check_switch_connectivity(switch_ip, 8080):
+            while not self.waitForSystemToBeReady():
+                time.sleep(1)
+
+            self.do_reload_cli_model([])
+            self.setBanner(switch_ip)
+        else:
+            self.do_exit([])
+
+    def check_switch_connectivity(self, switch_ip, port):
+        try:
+            response=requests.get("http://%s:%s" %(switch_ip, str(port)), timeout=1)
+            if response.status_code < 400 or response.status_code == 404:
+                return True
+            else:
+                sys.stdout.write("ERROR: Unable to connect to system status %s\n" %(response.status_code))
+                return False
+        except Exception as e:
+            sys.stdout.write("ERROR: Unable to connect to system: \n%s\n" %(e.message,))
+            return False
 
     def setupcommands(self, teardown=False):
 
@@ -156,11 +172,10 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                         sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
 
     def teardowncommands(self):
-
         self.setupcommands(teardown=True)
 
     def isSystemReady(self):
-        return self.waitForSystemToBeReady()
+        return self.check_switch_connectivity(self.switch_ip, 8080) and self.waitForSystemToBeReady()
 
     def waitForSystemToBeReady (self) :
 
@@ -168,7 +183,6 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         # we know sysd is ready by the successful retrieval of SystemStatus
         # so we just need to check that confd is up
         requiredDaemons = ['confd',]
-
         try:
             r = self.sdk.getSystemStatusState("")
         except requests.exceptions.ConnectionError:
@@ -350,6 +364,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 # update to add the prompt prefix
                 self.model["prompt-prefix"] = self.switch_name
                 try:
+                    # lets validate the model against the json schema
+                    Draft4Validator(self.schema).validate(self.model)
+
                     # lets replace the key word ethernet with the discovered prefix from
                     # the snapos ports
                     sdk = self.getSdk()
@@ -362,15 +379,16 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                     else:
                         sys.stdout.write("Failed to find ports in system, was DB deleted?\n")
                         self.do_exit([])
-
+                except jsonref.JsonRefError as e:
+                    sys.stdout.write("ERROR Failed Model/Schema out of sync: %s\n" %(e.message))
                 except Exception as e:
-                    sys.stdout.write("Failed to find port prefix exiting CLI, is switch %s accessable?\n" %(self.switch_name))
-                    self.do_exit([])
+                    print e
+                    sys.stdout.write("Failed to find port prefix exiting CLI, is switch %s accessable? %s\n" %(self.switch_name, e))
+                    # not going to exit as we want to keep things running
+                    #self.do_exit([])
 
                 self.setPrompt()
 
-                # lets validate the model against the json schema
-                Draft4Validator(self.schema).validate(self.model)
                 # flag to make sure output of walk is not put to stdout
             except Exception as e:
                 print e

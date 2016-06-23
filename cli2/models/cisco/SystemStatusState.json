@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemStatusStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show System Status",
+    "cliname": "system_status",
     "value": {
       "Name": {
         "cliname": "name"
