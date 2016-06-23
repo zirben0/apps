@@ -27,11 +27,15 @@ import copy
 import jsonref
 import sys
 import os
+import cmdln
 from jsonschema import Draft4Validator
 import pprint
 import requests
 import snapcliconst
 from tablePrint import indent, wrap_onspace_strict
+from flexswitchV2 import FlexSwitch
+from flexprint import FlexPrint
+
 
 USING_READLINE = True
 try:
@@ -47,6 +51,129 @@ except:   se
 
 pp = pprint.PrettyPrinter(indent=2)
 
+
+def line2argv(line):
+    r"""Parse the given line into an argument vector.
+
+        "line" is the line of input to parse.
+
+    This may get niggly when dealing with quoting and escaping. The
+    current state of this parsing may not be completely thorough/correct
+    in this respect.
+
+    >>> from cmdln import line2argv
+    >>> line2argv("foo")
+    ['foo']
+    >>> line2argv("foo bar")
+    ['foo', 'bar']
+    >>> line2argv("foo bar ")
+    ['foo', 'bar']
+    >>> line2argv(" foo bar")
+    ['foo', 'bar']
+
+    Quote handling:
+
+    >>> line2argv("'foo bar'")
+    ['foo bar']
+    >>> line2argv('"foo bar"')
+    ['foo bar']
+    >>> line2argv(r'"foo\"bar"')
+    ['foo"bar']
+    >>> line2argv("'foo bar' spam")
+    ['foo bar', 'spam']
+    >>> line2argv("'foo 'bar spam")
+    ['foo bar', 'spam']
+
+    >>> line2argv('some\tsimple\ttests')
+    ['some', 'simple', 'tests']
+    >>> line2argv('a "more complex" test')
+    ['a', 'more complex', 'test']
+    >>> line2argv('a more="complex test of " quotes')
+    ['a', 'more=complex test of ', 'quotes']
+    >>> line2argv('a more" complex test of " quotes')
+    ['a', 'more complex test of ', 'quotes']
+    >>> line2argv('an "embedded \\"quote\\""')
+    ['an', 'embedded "quote"']
+
+    # Komodo bug 48027
+    >>> line2argv('foo bar C:\\')
+    ['foo', 'bar', 'C:\\']
+
+    # Komodo change 127581
+    >>> line2argv(r'"\test\slash" "foo bar" "foo\"bar"')
+    ['\\test\\slash', 'foo bar', 'foo"bar']
+
+    # Komodo change 127629
+    >>> if sys.platform == "win32":
+    ...     line2argv(r'\foo\bar') == ['\\foo\\bar']
+    ...     line2argv(r'\\foo\\bar') == ['\\\\foo\\\\bar']
+    ...     line2argv('"foo') == ['foo']
+    ... else:
+    ...     line2argv(r'\foo\bar') == ['foobar']
+    ...     line2argv(r'\\foo\\bar') == ['\\foo\\bar']
+    ...     try:
+    ...         line2argv('"foo')
+    ...     except ValueError as ex:
+    ...         "not terminated" in str(ex)
+    True
+    True
+    True
+    """
+    line = line.strip()
+    argv = []
+    state = "default"
+    arg = None  # the current argument being parsed
+    i = -1
+    WHITESPACE = '\t\n\x0b\x0c\r '  # don't use string.whitespace (bug 81316)
+    while 1:
+        print line
+        i += 1
+        if i >= len(line): break
+        ch = line[i]
+
+        if ch == "\\" and i+1 < len(line):
+            # escaped char always added to arg, regardless of state
+            if arg is None: arg = ""
+            if (sys.platform == "win32"
+                or state in ("double-quoted", "single-quoted")
+               ) and line[i+1] not in tuple('"\''):
+                arg += ch
+            i += 1
+            arg += line[i]
+            continue
+
+        if state == "single-quoted":
+            if ch == "'":
+                state = "default"
+            else:
+                arg += ch
+        elif state == "double-quoted":
+            if ch == '"':
+                state = "default"
+            else:
+                arg += ch
+        elif state == "default":
+            if ch == '"':
+                if arg is None: arg = ""
+                state = "double-quoted"
+            elif ch == "'":
+                if arg is None: arg = ""
+                state = "single-quoted"
+            elif ch in WHITESPACE:
+                if arg is not None:
+                    argv.append(arg)
+                arg = None
+            else:
+                if arg is None: arg = ""
+                arg += ch
+    if arg is not None:
+        argv.append(arg)
+    if not sys.platform == "win32" and state != "default":
+        raise ValueError("command line is not terminated: unfinished %s "
+                         "segment" % state)
+    return argv
+
+
 # this is not a terminating command
 SUBCOMMAND_VALUE_NOT_EXPECTED = 1
 # this is a terminating command which expects a value from user
@@ -55,16 +182,37 @@ SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE = 2
 SUBCOMMAND_VALUE_EXPECTED = 3
 
 
-class CommonCmdLine(object):
+class CmdFunc(object):
+    def __init__(self, objowner, origfuncname, func):
+        self.name = origfuncname
+        self.func = func
+        self.objowner = objowner
+
+        # lets save off the function attributes to the class
+        # in case someone like cmdln access it (which it does)
+        x = dir(func)
+        y = dir(self.__class__)
+        z = frozenset(x).difference(y)
+        for attr in z:
+            setattr(self, attr, getattr(func, attr))
+
+    # allow class to be called as a method
+    def __call__(self, *args, **kwargs):
+        getattr(self.objowner, self.func.__name__)(*args, **kwargs)
+
+
+class CommonCmdLine(cmdln.Cmdln):
 
     configDict = {}
     def __init__(self, parent, switch_ip, schema_path, model_path, layer):
+
+        cmdln.Cmdln.__init__(self)
         if not USING_READLINE:
             self.completekey = None
         self.objname = None
         # dependency on CmdLine that these are set after the init
-        #self.sdk = None
-        #self.sdkshow = None
+        self.sdk = FlexSwitch(switch_ip, 8080)
+        self.sdkshow = FlexPrint(switch_ip, 8080)
         self.config = None
         self.parent = parent
         self.switch_ip = switch_ip
@@ -77,6 +225,41 @@ class CommonCmdLine(object):
         self.schemapath = schema_path + layer
         self.baseprompt = "DEFAULT"
         self.currentcmd = []
+
+    def complete(self, text, state):
+        """Return the next possible completion for 'text'.
+
+        If a command has not been entered, then complete against command list.
+        Otherwise try to call complete_<command> to get list of completions.
+        """
+        if state == 0:
+            import readline
+            origline = readline.get_line_buffer()
+            line = origline.lstrip()
+            stripped = len(origline) - len(line)
+            begidx = readline.get_begidx() - stripped
+            endidx = readline.get_endidx() - stripped
+            if begidx>0:
+                cmd, args, foo = self.parseline(line)
+                if cmd == '':
+                    compfunc = self.completedefault
+                else:
+                    try:
+                        compfunc = getattr(self, 'complete_' + cmd)
+                    except AttributeError:
+                        compfunc = self.completedefault
+            else:
+                compfunc = self.completenames
+            matches = compfunc(text, line, begidx, endidx)
+            # lets add a space after the command when we know it is the last one
+            if len(matches) == 1:
+                self.completion_matches = [x + " " for x in matches]
+            else:
+                self.completion_matches = matches
+        try:
+            return self.completion_matches[state]
+        except IndexError:
+            return None
 
     def getRootAttr(self, attr):
         parent = self.parent
