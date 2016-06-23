@@ -823,7 +823,10 @@ class CommonCmdLine(cmdln.Cmdln):
         mlineLength = len(mline)
         submodel = self.model
         subschema = self.schema
-        helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
+        helpcommands = []
+        print mline
+        if (mlineLength == 1 and not returnhelp) or returnhelp:
+            helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
 
         # advance to next submodel and subschema
         for i in range(1, mlineLength):

@@ -46,7 +46,7 @@ pp = pprint.PrettyPrinter(indent=2)
 class ExitWithUnappliedConfig(CommonCmdLine):
 
     def __init__(self, prompt):
-        super(CommonCmdLine, self).__init__(self)
+        CommonCmdLine.__init__(self, "", "", "", "", "")
         self.prevprompt = prompt
 
         self.exitconfig = False
@@ -65,7 +65,7 @@ class ExitWithUnappliedConfig(CommonCmdLine):
     def cmdloop(self):
         self.prompt = 'Are you sure you want to exit? You have pending config [no]yes:'
         try:
-            super(ExitWithUnappliedConfig, self).cmdloop(self)
+            CommonCmdLine.cmdloop(self)
         except KeyboardInterrupt:
             self.intro = '\n'
             self.cmdloop()
@@ -255,16 +255,21 @@ class ConfigCmd(CommonCmdLine):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
                         (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
-                        if i == mlineLength -1:
-                            #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
-                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                    values = self.getCommandValues(objname, keys)
-                                    if not values:
-                                        values = self.getValueSelections(mline[i], submodel, subschema)
-                                    return values
-                            else:
-                                subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
+                        #if i == mlineLength -1:
+                        #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
+                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                values = self.getCommandValues(objname, keys)
+                                if not values:
+                                    values = self.getValueSelections(mline[i], submodel, subschema)
+
+                                # if we have the values we don't want to display any further information
+                                if i+1 < mlineLength and mline[i+1] in values:
+                                    return [snapcliconst.COMMAND_DISPLAY_ENTER]
+
+                                return values
+                        else:
+                            subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
                 elif i == mlineLength - 1:
                     subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
 
