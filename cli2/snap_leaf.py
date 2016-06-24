@@ -24,7 +24,6 @@
 # This is a leaf node which should handle command attributes related to a leaf model
 #
 import sys
-import cmdln
 import json
 import jsonref
 import string
@@ -54,7 +53,7 @@ class SetAttrFunc(object):
         self.func(*args, **kwargs)
 
 # leaf means we are at a point of configuration
-class LeafCmd(cmdln.Cmdln, CommonCmdLine):
+class LeafCmd(CommonCmdLine):
     '''
     this class is the command attribute container for a given schema objects children
     The caller of this class is a config key.
@@ -70,7 +69,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     # schema and model name
     def __init__(self, objname, cliname, cmdtype, parent, prompt, modelList, schemaList):
 
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, parent, parent.switch_ip, parent.schemapath, parent.modelpath, objname)
 
         self.objname = objname
         self.name = objname + ".json"
@@ -579,7 +578,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def cmdloop(self, intro=None):
         try:
-            cmdln.Cmdln.cmdloop(self)
+            CommonCmdLine.cmdloop(self)
         except KeyboardInterrupt:
             self.intro = '\n'
             self.cmdloop()
@@ -738,7 +737,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         prevcmd = self.currentcmd
                         self.currentcmd = self.lastcmd
                         # stop the command loop for config as we will be running a new cmd loop
-                        cmdln.Cmdln.stop = True
+                        self.stop = True
                         self.teardownCommands()
 
                         cmdtype = self.cmdtype
@@ -1089,7 +1088,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         mline = [parentcmd] + argv[:-1]
         mlineLength = len(mline)
 
-        subcommands = [["<cr>", ""]]
+        subcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, ""]]
         if mlineLength == 1:
             for model, schema in zip(self.modelList, self.schemaList):
                 subcommands = self.getchildrenhelpcmds(mline[0], model, schema)

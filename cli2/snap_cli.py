@@ -29,7 +29,6 @@
 
 import sys, getopt, socket, os
 import jsonref
-import cmdln
 import readline
 import rlcompleter
 import glob
@@ -45,31 +44,10 @@ from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
 from snap_config import ConfigCmd
 from snap_show import ShowCmd
-from commonCmdLine import CommonCmdLine, USING_READLINE, \
+from commonCmdLine import CommonCmdLine, CmdFunc, USING_READLINE, \
     SUBCOMMAND_VALUE_NOT_EXPECTED, SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
-from flexswitchV2 import FlexSwitch
-from flexprint import FlexPrint
-from sets import Set
 
-class CmdFunc(object):
-    def __init__(self, origfuncname, func):
-        self.name = origfuncname
-        self.func = func
-
-        # lets save off the function attributes to the class
-        # in case someone like cmdln access it (which it does)
-        x = dir(func)
-        y = dir(self.__class__)
-        z = Set(x).difference(y)
-        for attr in z:
-            setattr(self, attr, func.__getattribute__(attr))
-
-    # allow class to be called as a method
-    def __call__(self, *args, **kwargs):
-        self.func(*args, **kwargs)
-
-
-class CmdLine(cmdln.Cmdln, CommonCmdLine):
+class CmdLine(CommonCmdLine):
 
     httpSuccessCodes = [200, 201, 202, 204]
 
@@ -92,22 +70,15 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
     def __init__(self, switch_ip, model_path, schema_path):
         self.start = True
 
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, None, switch_ip, schema_path, model_path, self.name)
         self.privilege = False
         self.tmp_remove_priveledge = None
-        self.sdk = FlexSwitch(switch_ip, 8080)
-        self.sdkshow = FlexPrint(switch_ip, 8080)
         self.IntfRefToIfIndex = {}
         self.IfIndexToIntfRef = {}
-        self.testmodel = False
         # defaulting to show as it will be overwritten by the first config command
         self.cmdtype = snapcliconst.COMMAND_TYPE_INIT
 
-        # this must be called after sdk setting as the common init is valididating
-        # the model and some info needs to be gathered from system to populate the
-        # cli accordingly
-        CommonCmdLine.__init__(self, None, switch_ip, schema_path, model_path, self.name)
-
+        # check if we can reach the switch_ip will timeout if we can't
         if self.check_switch_connectivity(switch_ip, 8080):
             while not self.waitForSystemToBeReady():
                 time.sleep(1)
@@ -118,6 +89,12 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
             self.do_exit([])
 
     def check_switch_connectivity(self, switch_ip, port):
+        """
+        Function to check if we can reach the switch we are trying to connect to
+        :param switch_ip:
+        :param port:
+        :return:
+        """
         try:
             response=requests.get("http://%s:%s" %(switch_ip, str(port)), timeout=1)
             if response.status_code < 400 or response.status_code == 404:
@@ -145,9 +122,9 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
                         funcname = "do_" + cmdname
                         if not teardown:
-                            setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(k,))))
+                            setattr(self.__class__, funcname, CmdFunc(self, funcname, getattr(self, "_cmd_%s" %(k,))))
                             if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
-                                setattr(self.__class__, "complete_" + cmdname, self.__getattribute__("_cmd_complete_%s" %(k,)))
+                                setattr(self.__class__, "complete_" + cmdname, getattr(self, "_cmd_complete_%s" %(k,)))
                         else:
                             delattr(self.__class__, funcname)
                             if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
@@ -165,7 +142,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
 
                     funcname = "do_" + cmdname
                     if not teardown:
-                        setattr(self.__class__, funcname, CmdFunc(funcname, self.__getattribute__("_cmd_%s" %(subcmds,))))
+                        setattr(self.__class__, funcname, CmdFunc(self, funcname, getattr(self, "_cmd_%s" %(subcmds,))))
                     else:
                         delattr(self.__class__, funcname)
                 except Exception as e:
@@ -216,8 +193,19 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                      "                              |   |     |  |     |  |\n" \
                      "                              |   `----.|  `----.|  |\n" \
                      "                               \_______||_______||__|\n"
+        
+        cliversion = "unknown"
+        switchversion = "unknown"
+        if 'properties' in self.schema and \
+            'cli-version' in self.schema['properties']:
+            cliversion = self.schema['properties']['cli-version']['default']
+            r = self.sdk.getSystemSwVersionState("")
+            if r.status_code in self.sdk.httpSuccessCodes:
+                obj = r.json()
+                o = obj['Object']
+                switchversion = o['FlexswitchVersion']
 
-        self.intro += "\nFlexSwitch Console Version 1.0, Connected to: " + self.switch_name
+        self.intro += "\nFlexSwitch Console Version %s, Connected to: %s Version %s" %(cliversion, self.switch_name, switchversion)
         self.intro += "\nUsing %s style cli\n" %(self.model["style"],)
 
     def discoverPortInfo(self):
@@ -402,21 +390,23 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         self.prompt = self.model["prompt-prefix"] + self.model["prompt"]
 
     def cmdloop(self, intro=None):
+        """
+        Cmd Loop which will call cmdln loop listening for commands.  But there
+        is some logic needed based on whether this is the first time we are
+        entering this loop or not.
+        :param intro: display the banner
+        :return:
+        """
         try:
             if self.start:
                 self.start = False
-                cmdln.Cmdln.cmdloop(self, intro=self.intro)
+                CommonCmdLine.cmdloop(self, intro=self.intro)
             else:
-                cmdln.Cmdln.cmdloop(self, intro="")
+                CommonCmdLine.cmdloop(self, intro="")
         except KeyboardInterrupt:
             self.intro = '\n'
             self.cmdloop()
 
-
-    def emptyline(self):
-        pass
-
-    @cmdln.alias("en", "ena")
     # match for schema cmd object
     def _cmd_privilege(self, arg):
         """Enabled Privilege Mode"""
@@ -428,8 +418,8 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.prompt = self.prompt[:-1] + self.getPrompt(submodel, subschema)
                 self.baseprompt = self.prompt
                 self.currentcmd = self.lastcmd
+    _cmd_privilege.aliases = ["en", "ena"]
 
-    @cmdln.alias("conf t", "configure t", "configure term", "conf term", "configure terminal", "config t")
     # match for schema cmd object
     def _cmd_config(self, args):
         """Global configuration mode"""
@@ -456,7 +446,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 # setup the prompt accordingly
                 self.prompt = self.prompt[:-1] + configprompt + self.prompt[-1]
                 # stop the command loop for config as we will be running a new cmd loop
-                cmdln.Cmdln.stop = True
+                self.stop = True
                 # save off the current command
                 prevcmd = self.currentcmd
                 self.currentcmd = self.lastcmd
@@ -472,6 +462,7 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
                 self.prompt = self.baseprompt
                 if self.stop:
                     self.cmdloop()
+    _cmd_config.aliases = ["conf t", "configure t", "configure term", "conf term", "configure terminal", "config t"]
 
     def _cmd_complete_show(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
@@ -481,46 +472,37 @@ class CmdLine(cmdln.Cmdln, CommonCmdLine):
         mlineLength = len(mline)
         #sys.stdout.write("complete \ncommand %s objname %s\n\n" %(mline, self.objname))
 
-        functionNameAsString = sys._getframe().f_code.co_name
-        name = functionNameAsString.split("_")[-1]
-
-        submodelList = self.getSubCommand(name, self.model["commands"])
-        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
-        subcommands = self.getchildrencmds(mline[0], submodelList[0], subschemaList[0])
-        if mlineLength > 0:
-            for i in range(1, mlineLength):
-                for submodel, subschema in zip(submodelList, subschemaList):
-                    schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
-                    if submodelList and subschemaList:
-                        for subsubmodel, subsubschema in zip(submodelList, subschemaList):
-                            (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], subsubmodel, subsubschema)
-                            # this is useful so that we can reuse config templates
-                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                subcommands = self.getchildrencmds(mline[i], subsubmodel, subsubschema)
-                    else:
-                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
-
+        subcommands = self.get_show_complete_commands(mline)
         # lets remove any duplicates
-        returncommands = list(Set(subcommands).difference(mline))
-
+        returncommands = list(frozenset(subcommands).difference(mline))
+        #print text, returncommands, subcommands, "\n"
         if len(text) == 0 and len(returncommands) == len(subcommands):
             return returncommands
 
         # lets only get commands which are a partial of what was entered
         returncommands = [k for k in returncommands if k.startswith(text)]
 
-
         return returncommands
 
-    def display_show_help(self, mline):
-        mlineLength = len(mline)
+    def get_show_complete_commands(self, mline):
+        # calling
         submodelList = self.getSubCommand("show", self.model["commands"])
         subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
-        for submodel, subschema in zip(submodelList, subschemaList):
-            c = ShowCmd(self, submodel, subschema)
-            c.display_help(mline[1:])
+        if submodelList and subschemaList:
+            for submodel, subschema in zip(submodelList, subschemaList):
+                c = ShowCmd(self, submodel, subschema)
+                return [cmd for (cmd,help) in c.display_help(mline[1:], returnhelp=True)]
+        return []
+
+
+
+    def display_show_help(self, mline):
+        submodelList = self.getSubCommand("show", self.model["commands"])
+        subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
+        if submodelList and subschemaList:
+            for submodel, subschema in zip(submodelList, subschemaList):
+                c = ShowCmd(self, submodel, subschema)
+                c.display_help(mline[1:])
 
 
     def _cmd_show(self, argv):
