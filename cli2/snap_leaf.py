@@ -24,37 +24,18 @@
 # This is a leaf node which should handle command attributes related to a leaf model
 #
 import sys
-import cmdln
 import json
 import jsonref
 import string
 import snapcliconst
 from sets import Set
 from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
+from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from cmdEntry import CmdEntry
 
-# used to
-class SetAttrFunc(object):
-    def __init__(self, func):
-        self.name = func.__name__
-        self.func = func
-
-        # lets save off the function attributes to the class
-        # in case someone like cmdln access it (which it does)
-        x = dir(func)
-        y = dir(self.__class__)
-        z = Set(x).difference(y)
-        for attr in z:
-            setattr(self, attr, func.__getattribute__(attr))
-
-    # allow class to be called as a method
-    def __call__(self, *args, **kwargs):
-        self.func(*args, **kwargs)
-
 # leaf means we are at a point of configuration
-class LeafCmd(cmdln.Cmdln, CommonCmdLine):
+class LeafCmd(CommonCmdLine):
     '''
     this class is the command attribute container for a given schema objects children
     The caller of this class is a config key.
@@ -70,7 +51,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
     # schema and model name
     def __init__(self, objname, cliname, cmdtype, parent, prompt, modelList, schemaList):
 
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, parent, parent.switch_ip, parent.schemapath, parent.modelpath, objname)
 
         self.objname = objname
         self.name = objname + ".json"
@@ -349,7 +330,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                     if cmdname:
                         yield cmdname
 
-
+        # keep track of each of the commands being added as we will use
+        # this list to add the aliases
+        cmdNameList = []
         # this loop will setup each of the cliname commands for this model level
         # cmdln/cmd expects that all commands have a function associated with it
         # in the format of 'do_<command>'
@@ -374,11 +357,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                     cmdname = cmdname.replace('-', '_')
                                 #sys.stdout.write("createing do_%s\n" %(cmdname))
 
+                                cmdNameList.append(cmdname)
+                                funcname = "do_" + cmdname
                                 if not teardown:
-                                    setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                                    setattr(self.__class__, funcname, CmdFunc(self, funcname, self._cmd_common))
                                     setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
                                 else:
-                                    if hasattr(self.__class__, "do_" + cmdname):
+                                    if hasattr(self.__class__, funcname):
                                         delattr(self.__class__, "do_" + cmdname)
                                         delattr(self.__class__, "complete_" + cmdname)
 
@@ -395,14 +380,16 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                         self.do_exit([])
                                         cmdname = cmdname.replace('-', '_')
 
+                                    cmdNameList.append(cmdname)
+                                    funcname = "do_" + cmdname
                                     # Note needed for show
                                     #if cmdname != self.objname:
                                     if not teardown:
-                                        setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                                        setattr(self.__class__, funcname, CmdFunc(self, funcname, self._cmd_common))
                                         setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
                                     else:
-                                        if hasattr(self.__class__, "do_" + cmdname):
-                                            delattr(self.__class__, "do_" + cmdname)
+                                        if hasattr(self.__class__, funcname):
+                                            delattr(self.__class__, funcname)
                                             delattr(self.__class__, "complete_" + cmdname)
 
                 # an attribute
@@ -417,10 +404,13 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                                 sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
                                 self.do_exit([])
                                 cmdname = cmdname.replace('-', '_')
+                                cmdNameList.append(cmdname)
+
+                            funcname = "do_" + cmdname
                             if not teardown:
-                                setattr(self.__class__, "do_" + cmdname, SetAttrFunc(self._cmd_common))
+                                setattr(self.__class__, funcname, SetAttrFunc(self._cmd_common))
                             else:
-                                delattr(self.__class__, "do_" + cmdname)
+                                delattr(self.__class__, funcname)
                     except Exception as e:
                             sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 
@@ -430,6 +420,9 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         else:
             delattr(self.__class__, "do_no")
             delattr(self.__class__, "complete_no")
+
+        if not teardown:
+            self.setupalias(cmdNameList)
 
     def modelCmdsLoop(self, model):
         if 'commands' in model:
@@ -579,7 +572,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def cmdloop(self, intro=None):
         try:
-            cmdln.Cmdln.cmdloop(self)
+            CommonCmdLine.cmdloop(self)
         except KeyboardInterrupt:
             self.intro = '\n'
             self.cmdloop()
@@ -738,7 +731,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                         prevcmd = self.currentcmd
                         self.currentcmd = self.lastcmd
                         # stop the command loop for config as we will be running a new cmd loop
-                        cmdln.Cmdln.stop = True
+                        self.stop = True
                         self.teardownCommands()
 
                         cmdtype = self.cmdtype
@@ -1061,7 +1054,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
 
     def display_help(self, argv):
 
-        def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema):
+        def checkAttributevalues(obj, argv, mlineLength, schemaname, submodel, subschema):
             subcommands = []
             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
                 scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
@@ -1071,13 +1064,35 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             # reached attribute values
                             for attr, attrvalue in mcmdvalues['commands'].iteritems():
                                 sattrvalue = scmdvalues['commands']['properties'][attr]
+                                objname = scmdvalues['objname']['default'] if 'objname' in scmdvalues else None
                                 if 'cliname' in attrvalue:
                                     if attrvalue['cliname'] == mline[i]:
-                                        subcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                       snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                        cmd = snapcliconst.getAttrCliName(attrvalue, sattrvalue)
+                                        help = snapcliconst.getAttrHelp(attrvalue, sattrvalue)
+
+                                        if objname:
+                                            '''
+                                            TODO need more logic to get the correct keys for the values above
+                                            values = obj.getCommandValues(objname, [attrvalue['cliname']])
+
+                                            if values:
+                                                subcommands.append([cmd, ",".join(values) + "\n" + help])
+                                            else:
+                                                values = self.getValueSelections(mline[i], submodel, subschema)
+                                                if values:
+                                                    strvalues = ["%s" %(x,) for x in values]
+                                                    subcommands.append([cmd, ",".join(strvalues) + "\n" + help])
+                                                else:
+                                                    min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                                    if min is not None and max is not None:
+                                                        subcommands.append([cmd, ",".join([min, max]) + "\n" + help])
+                                            '''
+                                            subcommands.append([cmd, help])
+                                        else:
+                                            subcommands.append([cmd, help])
                                 else:
                                     for subkey in attrvalue.keys():
-                                        subcommands += checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue)
+                                        subcommands += checkAttributevalues(obj, argv, mlineLength, subkey, attrvalue, sattrvalue)
             subcommands = [x for x in subcommands if x[0] not in argv or ('?' in argv or 'help' in argv)]
             return subcommands
 
@@ -1089,7 +1104,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         mline = [parentcmd] + argv[:-1]
         mlineLength = len(mline)
 
-        subcommands = [["<cr>", ""]]
+        subcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, ""]]
         if mlineLength == 1:
             for model, schema in zip(self.modelList, self.schemaList):
                 subcommands = self.getchildrenhelpcmds(mline[0], model, schema)
@@ -1114,15 +1129,26 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 cmd = " ".join(argv[:-1])
                                 subcommands = [[cmd, help]]
+                                values = self.getCommandValues(objname, keys)
+                                if values:
+                                    subcommands = [[cmd, ",".join(values) + "\n" + help]]
+                                else:
+                                    values = self.getValueSelections(mline[i], submodel, subschema)
+                                    if values:
+                                        strvalues = ["%s" %(x,) for x in values]
+                                        subcommands = [[cmd, ",".join(strvalues) + "\n" + help]]
+                                    else:
+                                        min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                        if min is not None and max is not None:
+                                            subcommands = [[cmd, ",".join([min, max]) + "\n" + help]]
                             else:
                                 subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 subcommands = [x for x in subcommands if x[0] != mline[0]]
                         #else:
                         #    subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
                         #    subcommands = [x for x in subcommands if x[0] != mline[0]]
-
                 else:
-                    subcommands = checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema)
+                    subcommands = checkAttributevalues(self, argv, mlineLength, schemaname, submodel, subschema)
 
         self.printCommands(mline, subcommands)
 
@@ -1138,7 +1164,7 @@ class LeafCmd(cmdln.Cmdln, CommonCmdLine):
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
         cmd = argv[-1] if argv else ''
-        if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
+        if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
             self.display_help(argv if argv[0] != 'no' else argv[1:])
             return ''
         if cmd in ('!', ):
