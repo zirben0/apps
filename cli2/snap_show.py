@@ -588,6 +588,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
         return None
 
     def show(self, argv, all=False):
+        # TOOD
         # show command will work on various types of show
         # show all
         # show individual object
@@ -644,17 +645,16 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                                     config.setValid(True)
                                     self.configList.append(config)
 
-
-                # todo need to call the keys
-                # l.do_lastcmd
-                #if not all:
-                #    func = getattr(l, "do_%s" %(lastcmd,))
-                #    func(argv[-2:])
-
                 self.show_state(all=all)
                 self.configList.remove(config)
 
     def get_sdk_func_key_values(self, data, func):
+        """
+        Get the arguments for the REST api calls
+        :param data:
+        :param func:
+        :return:
+        """
         argspec = inspect.getargspec(func)
         getKeys = argspec.args[1:]
         lengthkwargs = len(argspec.defaults) if argspec.defaults is not None else 0
@@ -685,6 +685,11 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def show_state(self, all=False):
+        """
+        Make the REST api call
+        :param all:
+        :return:
+        """
         showObj = self.getShowObj()
         if showObj and showObj.configList:
             sys.stdout.write("Applying Show:\n")
