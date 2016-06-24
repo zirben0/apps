@@ -62,6 +62,24 @@
           },
           "subcmd17": {
             "$ref": "file:/tmp/snaproute/cli/schema/OspfGlobalState.json"
+          },
+          "subcmd18": {
+            "$ref": "file:/tmp/snaproute/cli/schema/mac.json"
+          },
+          "subcmd19": {
+            "$ref": "file:/tmp/snaproute/cli/schema/SystemSwVersionState.json"
+          },
+          "subcmd20": {
+            "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelState.json"
+          },
+          "subcmd21": {
+            "$ref": "file:/tmp/snaproute/cli/schema/VrrpVridState.json"
+          },
+          "subcmd22": {
+            "$ref": "file:/tmp/snaproute/cli/schema/SystemStatusState.json"
+          },
+          "subcmd23": {
+            "$ref": "file:/tmp/snaproute/cli/schema/lldpshow.json"
           }
         }
       }

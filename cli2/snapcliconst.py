@@ -25,11 +25,15 @@
 
 import string
 import sys
+from cmdEntry import CmdSet
 
 COMMAND_TYPE_DELETE = 'delete'
 COMMAND_TYPE_CONFIG = 'config'
 COMMAND_TYPE_SHOW = 'show'
 COMMAND_TYPE_CONFIG_NOW = 'now'
+COMMAND_TYPE_INIT = 'init'
+
+COMMAND_DISPLAY_ENTER = '<cr>'
 
 # these model attribute names will possibly have the cliname changed within the cli
 # model to a name picked by asicd.conf to represent a port
@@ -61,10 +65,108 @@ def convertStrNumToNum(v):
         if isinstance(v, unicode):
             val = string.atoi(v.decode('ascii'))
         elif isinstance(v, str):
-            val = string.atoi(v)
+            val =string.atoi(v)
     except Exception:
         val = 0
     return val
+
+def updateSpecialValueCases(cfgobj, k, v):
+    '''
+    This function is meant to handle special cases where we need to convert the value to some special
+    value.  Not sure if this is the correct place to handle this but since it is only once case
+    going to perform the operation here.
+    :param k: Model name of attribute
+    :param v: CmdSet
+    :return:
+    '''
+    tmpval = v.val if type(v) == CmdSet else v
+    if k in DYNAMIC_MODEL_ATTR_NAME_LIST:
+
+        if type(v) == CmdSet:
+            if type(v.val) is list:
+                tmpvallist = []
+                for value in v.val:
+                    if "/" in str(value):
+                        value = v.attr + str(value).split('/')[1]
+                    elif v.attr not in str(value):
+                        value = v.attr + str(value)
+                    tmpvallist.append(str(value))
+                tmpval = tmpvallist
+            else:
+                value = v.val
+                if "/" in str(v.val):
+                    value = v.attr + v.val.split('/')[1]
+                elif v.attr not in str(v.val):
+                    value = v.attr + str(v.val)
+                tmpval = str(value)
+
+        # cli always expects the string name, but lets
+        # convert the string name to the number
+        if k in ('IfIndex', 'Members'):
+            # Port object is gathered on cli start
+            if type(tmpval) is list:
+                ifindexList = []
+                for tmpv in tmpval:
+                    value = cfgobj.getIntfRefToIfIndex(tmpv)
+                    if value is not None:
+                        ifindexList.append(value)
+
+                tmpval = ifindexList
+                '''
+                Not handling this case as don't see a need
+                else:
+                    # if we reached here the other options for IfIndex are
+                    # 1) Vlan
+                    # 2) Lag
+
+                    # lets try a vlan interface
+                    sdk = self.cfgobj.getSdk()
+                    vlans = sdk.getAllVlanStates()
+                    for vlan in vlans:
+                        v = vlan['Object']
+                        if v['VlanName'] == tmpval:
+                            value = v['IfIndex']
+
+                    if value is None:
+                        vlans = sdk.getAllLaPortChannelStates()
+                        for vlan in vlans:
+                            v = vlan['Object']
+                            if v['Name'] == tmpval:
+                                value = v['IfIndex']
+
+                    if value is not None:
+                        tmpval = value
+                '''
+
+            else:
+                value = cfgobj.getIntfRefToIfIndex(tmpval)
+                if value is not None:
+                    tmpval = value
+                else:
+                    # if we reached here the other options for IfIndex are
+                    # 1) Vlan
+                    # 2) Lag
+
+                    # lets try a vlan interface
+                    sdk = cfgobj.getSdk()
+                    vlans = sdk.getAllVlanStates()
+                    for vlan in vlans:
+                        v = vlan['Object']
+                        if v['VlanName'] == tmpval:
+                            value = v['IfIndex']
+
+                    if value is None:
+                        vlans = sdk.getAllLaPortChannelStates()
+                        for vlan in vlans:
+                            v = vlan['Object']
+                            if v['Name'] == tmpval:
+                                value = v['IfIndex']
+
+                    if value is not None:
+                        tmpval = value
+
+    return tmpval
+
 
 def printErrorValueCmd(i, mline):
     lenstr = len(" ".join(mline[:-1]))
@@ -95,6 +197,12 @@ def getValueArgumentType(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'type' in attrdata['properties']['argtype']:
         return attrdata['properties']['argtype']['type']
     return None
+
+def isValueArgumentList(attrdata):
+    if 'properties' in attrdata and 'islist' in attrdata['properties'] and 'default' in attrdata['properties']['islist']:
+        return attrdata['properties']['islist']['default']
+    return False
+
 
 def getValueArgumentSelections(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'enum' in attrdata['properties']['argtype']:

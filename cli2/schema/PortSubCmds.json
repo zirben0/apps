@@ -8,9 +8,6 @@
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/schema/VrrpIntf.json"
   },
-  "subcmd4": {
-    "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayIntf.json"
-  },
   "subcmd5": {
     "$ref": "file:/tmp/snaproute/cli/schema/LLDPIntf.json"
   },
@@ -22,5 +19,8 @@
   },
   "subcmd8": {
     "$ref": "file:/tmp/snaproute/cli/schema/OspfIfEntry.json"
+  },
+  "subcmd9": {
+    "$ref": "file:/tmp/snaproute/cli/schema/portvlanmembership.json"
   }
 }

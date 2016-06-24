@@ -1,0 +1,29 @@
+{
+  "mac": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : "router"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe ethernet",
+        "default" : "router"
+      },
+      "help" : {
+        "type" : "string",
+        "default": "Mac Address Table Commands"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to ethernet port",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/MacTableEntryState.json"
+          }
+        }
+      }
+    }
+  }
+}

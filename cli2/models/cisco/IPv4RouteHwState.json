@@ -4,7 +4,7 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteHwStateSubCmds.json"
     }, 
-    "cliname": "route_hw",
+    "cliname": "hw",
     "help": "Show HW IPv4 Routes",
     "value": {
       "DestinationNw": {

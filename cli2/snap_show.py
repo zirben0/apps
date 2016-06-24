@@ -22,7 +22,7 @@
 # |__|     |_______||_______/__/ \__\ |_______/        \__/  \__/     |__|     |__|      \______||__|  |__|
 #
 # This is class handles the action of the show command
-import sys
+import sys, os
 from sets import Set
 import cmdln
 import json
@@ -38,13 +38,8 @@ from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
 from snap_leaf import LeafCmd
 from cmdEntry import CmdEntry
 
-try:
-    from flexswitchV2 import FlexSwitch
-    MODELS_DIR = './'
-except:
-    sys.path.append('/opt/flexswitch/sdk/py/')
-    MODELS_DIR='/opt/flexswitch/models/'
-    from flexswitchV2 import FlexSwitch
+from flexswitchV2 import FlexSwitch
+MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 gObjectsInfo =  {}
 
@@ -60,7 +55,9 @@ configTree = []
 
 def convertPortToSpecialFmt(modelname, value):
     if modelname in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
-        tmp = "1/" + value.replace(snapcliconst.PORT_NAME_PREFIX, "")
+        tmp = value
+        if type(value) is str:
+            tmp = value.replace(snapcliconst.PORT_NAME_PREFIX, "")
         return tmp
     return value
 
@@ -266,13 +263,14 @@ class ShowRun(object):
     # Note: some objects may be used in multiple places
     USED_CONFIG = 1
     UNUSED_CONFIG =2
-    def __init__(self, swtch):
+    def __init__(self, parent, swtch):
         """
         :param swtch: Flexswitch SDK
         :param model: config tree json model
         :param schema: schema tree json model
         :return:
         """
+        self.parent = parent
         self.swtch = swtch
         self.objects = {}
         self.currRawCfg = {}
@@ -313,8 +311,17 @@ class ShowRun(object):
                     yield cfgObj
                 else:
                     for attr, value in cfgObj.iteritems():
-                        if matchattr == attr and matchvalue == value:
-                            yield cfgObj
+                        if matchattr == attr:
+                            convertedvalue = snapcliconst.updateSpecialValueCases(self.parent, matchattr, matchvalue)
+                            if type(value) is list:
+                                if type(convertedvalue) is list:
+                                    if len(frozenset(value).intersection(convertedvalue)) > 0:
+                                        yield cfgObj
+                                else:
+                                    if convertedvalue in value:
+                                        yield cfgObj
+                            elif convertedvalue == value:
+                                yield cfgObj
 
 
         yield None
@@ -449,6 +456,16 @@ class ShowRun(object):
                                                                                   submvalues,
                                                                                   subsvalues,
                                                                                   subattrobj=cfgObj[subattr])
+                                            elif 'objname' in svalues and \
+                                                        objname != svalues['objname']['default']:
+                                                if 'type' in element.objKeyVal:
+                                                    self.buildTreeObj('',
+                                                                      element,
+                                                                      element.objKeyVal['type'],
+                                                                      element.objKeyVal['cliname'],
+                                                                      element.objKeyVal['value'],
+                                                                      mvalues,
+                                                                      svalues)
 
                     else:
                         # since we are not a model object we are either a leaf or a branch
@@ -523,17 +540,18 @@ class ShowRun(object):
                         # lets find the attr obj
                         for (mcmds, mvalues) in model['commands'].iteritems():
                             svalues = schema['commands']['properties'][mcmds]
-                            if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
-                                for mattr, mattrobj in mvalues['commands'].iteritems():
-                                    if mcmds != modelMatchAttrName:
-                                        defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
-                                        attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
-                                        value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
-                                        element.setAttributes(mattr,
-                                                              mattrobj['cliname'],
-                                                              attrtype,
-                                                              convertStrValueToValueType(attrtype, value),
-                                                              convertStrValueToValueType(attrtype, defaultVal))
+                            if 'subcmd' in mcmds:
+                                if isLeafAttrObj(mvalues, svalues):
+                                    for mattr, mattrobj in mvalues['commands'].iteritems():
+                                        if mcmds != modelMatchAttrName:
+                                            defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
+                                            attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
+                                            value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
+                                            element.setAttributes(mattr,
+                                                                  mattrobj['cliname'],
+                                                                  attrtype,
+                                                                  convertStrValueToValueType(attrtype, value),
+                                                                  convertStrValueToValueType(attrtype, defaultVal))
                             else:
                                 if mcmds != modelMatchAttrName:
                                     element.setCmd(cmd)
@@ -577,7 +595,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
 
         if 'run' in argv:
             sdk = self.getSdk()
-            run = ShowRun(sdk)
+            run = ShowRun(self, sdk)
             run.getRawConfigFromNode()
             ce = ConfigElement()
 
@@ -605,24 +623,27 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                 #l = LeafCmd(schemaname, lastcmd, "show", self, None, [self.model], [self.schema])
                 #l.applybaseshow(lastcmd)
                 config = None
-                # only display the what is available from this object
-                for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
-                    # looping through the subcmds to find one that has an object associated with it.
-                    if type(v) in (dict, JsonRef):
-                        for kk, vv in v.iteritems():
-                            # each subcmd will either be a link to another subcommand
-                            # or a commands containing attributes of an object, which should hold
-                            # the object in question associated with this command.
-                            if "objname" in kk:
-                                config = CmdEntry(self, v['objname']['default'], {})
-                                config.setValid(True)
-                                self.configList.append(config)
+
+                if 'objname' in self.schema[schemaname]['properties']:
+                    config = CmdEntry(self, self.schema[schemaname]['properties']['objname']['default'], {})
+                    config.setValid(True)
+                    self.configList.append(config)
+
 
                 if not config:
-                    if 'objname' in self.schema[schemaname]['properties']:
-                        config = CmdEntry(self, self.schema[schemaname]['properties']['objname']['default'], {})
-                        config.setValid(True)
-                        self.configList.append(config)
+                    # only display the what is available from this object
+                    for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
+                        # looping through the subcmds to find one that has an object associated with it.
+                        if type(v) in (dict, JsonRef):
+                            for kk, vv in v.iteritems():
+                                # each subcmd will either be a link to another subcommand
+                                # or a commands containing attributes of an object, which should hold
+                                # the object in question associated with this command.
+                                if "objname" in kk:
+                                    config = CmdEntry(self, v['objname']['default'], {})
+                                    config.setValid(True)
+                                    self.configList.append(config)
+
 
                 # todo need to call the keys
                 # l.do_lastcmd

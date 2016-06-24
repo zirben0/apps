@@ -1,5 +1,17 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/schema/OspfGlobalStateMembers.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/schema/OspfAreaEntryState.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/schema/OspfNbrEntryState.json"
+  },
+  "subcmd4": {
+    "$ref": "file:/tmp/snaproute/cli/schema/OspfIfEntryState.json"
+  },
+  "subcmd5": {
+    "$ref": "file:/tmp/snaproute/cli/schema/OspfLsdbEntryState.json"
   }
 }

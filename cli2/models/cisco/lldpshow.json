@@ -1,0 +1,11 @@
+{
+  "lldpshow": {
+    "cliname" : "lldp",
+    "help" : "Show LLDP Commands",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPIntfState.json"
+      }
+    }
+  }
+}

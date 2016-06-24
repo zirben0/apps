@@ -1,5 +1,6 @@
 {
   "show": {
+    "help": "Show Commands",
     "cliname" : "show",
     "commands" : {
       "subcmd1" : {
@@ -46,6 +47,24 @@
       },
       "subcmd17": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfGlobalState.json"
+      },
+      "subcmd18": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/mac.json"
+      },
+      "subcmd19": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemSwVersionState.json"
+      },
+      "subcmd20": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannelState.json"
+      },
+      "subcmd21": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/VrrpVridState.json"
+      },
+      "subcmd22": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemStatusState.json"
+      },
+      "subcmd23": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/lldpshow.json"
       }
     }
   } 

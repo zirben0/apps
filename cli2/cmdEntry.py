@@ -206,102 +206,6 @@ class CmdEntry(object):
                 return True
         return False
 
-    def updateSpecialValueCases(self, k, v):
-        '''
-        This function is meant to handle special cases where we need to convert the value to some special
-        value.  Not sure if this is the correct place to handle this but since it is only once case
-        going to perform the operation here.
-        :param k: Model name of attribute
-        :param v: CmdSet
-        :return:
-        '''
-        tmpval = v.val if type(v) == CmdSet else v
-        if k in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
-
-            if type(v) == CmdSet:
-                if type(v.val) is list:
-                    tmpvallist = []
-                    for value in v.val:
-                        if "/" in str(value):
-                            value = v.attr + str(value).split('/')[1]
-                        elif v.attr not in str(value):
-                            value = v.attr + str(value)
-                        tmpvallist.append(str(value))
-                    tmpval = tmpvallist
-                else:
-                    if "/" in str(v.val):
-                        v.val = v.attr + v.val.split('/')[1]
-                    elif v.attr not in str(v.val):
-                        v.val = v.attr + str(v.val)
-                    tmpval = str(v.val)
-
-            # cli always expects the string name, but lets
-            # convert the string name to the number
-            if k in ('IfIndex', 'Members'):
-                # Port object is gathered on cli start
-                if type(tmpval) is list:
-                    ifindexList = []
-                    for tmpv in tmpval:
-                        value = self.cfgobj.getIntfRefToIfIndex(tmpv)
-                        if value is not None:
-                            ifindexList.append(value)
-
-                    tmpval = ifindexList
-                    '''
-                    Not handling this case as don't see a need
-                    else:
-                        # if we reached here the other options for IfIndex are
-                        # 1) Vlan
-                        # 2) Lag
-
-                        # lets try a vlan interface
-                        sdk = self.cfgobj.getSdk()
-                        vlans = sdk.getAllVlanStates()
-                        for vlan in vlans:
-                            v = vlan['Object']
-                            if v['VlanName'] == tmpval:
-                                value = v['IfIndex']
-
-                        if value is None:
-                            vlans = sdk.getAllLaPortChannelStates()
-                            for vlan in vlans:
-                                v = vlan['Object']
-                                if v['Name'] == tmpval:
-                                    value = v['IfIndex']
-
-                        if value is not None:
-                            tmpval = value
-                    '''
-
-                else:
-                    value = self.cfgobj.getIntfRefToIfIndex(tmpval)
-                    if value is not None:
-                        tmpval = value
-                    else:
-                        # if we reached here the other options for IfIndex are
-                        # 1) Vlan
-                        # 2) Lag
-
-                        # lets try a vlan interface
-                        sdk = self.cfgobj.getSdk()
-                        vlans = sdk.getAllVlanStates()
-                        for vlan in vlans:
-                            v = vlan['Object']
-                            if v['VlanName'] == tmpval:
-                                value = v['IfIndex']
-
-                        if value is None:
-                            vlans = sdk.getAllLaPortChannelStates()
-                            for vlan in vlans:
-                                v = vlan['Object']
-                                if v['Name'] == tmpval:
-                                    value = v['IfIndex']
-
-                        if value is not None:
-                            tmpval = value
-
-        return tmpval
-
     def set(self, fullcmd, delete, k, v, isKey=False, isattrlist=False):
         for entry in self.attrList:
             if getEntryAttribute(entry) == k:
@@ -354,6 +258,40 @@ class CmdEntry(object):
         :param defaultonly:
         :return:
         '''
+        def handleListUpdate(attrtype, olddata, newdata):
+            updatelist = copy.deepcopy(olddata)
+            for nd in newdata:
+                if snapcliconst.isnumeric(attrtype):
+                    # if attribute is supplied and it already exists assume delete
+                    if nd in olddata:
+                        updatelist.remove(nd)
+                    else:
+                        updatelist.append(nd)
+
+                elif snapcliconst.isnumeric(attrtype):
+                    pass
+                elif attrtype in ('str', 'string'):
+                    # if attribute is supplied and it already exists assume delete
+                    if nd in olddata:
+                        updatelist.remove(nd)
+                    else:
+                        updatelist.append(nd)
+
+                else: # struct
+                    for od in olddata:
+                        deleteupdate = False
+                        for key,value in nd:
+                            # find a key that matches and that the nd value is not zero, empty string as these are usually
+                            # defaults
+                            if key in od and od[key] and od[key] == value:
+                                deleteupdate = True
+
+                        if deleteupdate:
+                            updatelist.remove(nd)
+                        else:
+                            updatelist.append(nd)
+            return updatelist
+
         newdict = {}
         if not rollback:
             for entry in self.getallconfig():
@@ -363,21 +301,23 @@ class CmdEntry(object):
                         attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
                         if self.keysDict[kk]['isarray']:
                             if snapcliconst.isnumeric(attrtype):
-                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))
+                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
                             elif snapcliconst.isboolean(attrtype):
-                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))
+                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
                             elif attrtype in ('str', 'string'):
-                                value = self.updateSpecialValueCases(vv['key'], entry)
+                                value = snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry)
                             else: # struct
                                 value = getDictEntryValue(entry, vv['value'][0])
 
+                            if readdata:
+                                value = handleListUpdate(attrtype, readdata[vv['key']], value)
                         else:
                             if snapcliconst.isnumeric(attrtype):
-                                value = snapcliconst.convertStrNumToNum(self.updateSpecialValueCases(vv['key'], entry))
+                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
                             elif snapcliconst.isboolean(attrtype):
-                                value = snapcliconst.convertStrBoolToBool(self.updateSpecialValueCases(vv['key'], entry))
+                                value = snapcliconst.convertStrBoolToBool(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
                             elif attrtype in ('str', 'string'):
-                                value = self.updateSpecialValueCases(vv['key'], entry)
+                                value = snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry)
                             else:
                                 value = getDictEntryValue(entry, vv['value'][0])
 
@@ -406,7 +346,7 @@ class CmdEntry(object):
                             value = [x.lstrip('').rstrip('') for x in v['value']['default'].split(",")]
                         else:
                             value = {}
-                            for v in v['value'][0].values():
+                            for vv in v['value'][0].values():
                                 value.update({vv['key'] : vv['value']['default']})
                             value = [value]
                     else:

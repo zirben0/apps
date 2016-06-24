@@ -7,6 +7,9 @@
       },
       "subcmd2" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIfEntry.json"
+      },
+      "subcmd3": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntf.json"
       }
     }
   }

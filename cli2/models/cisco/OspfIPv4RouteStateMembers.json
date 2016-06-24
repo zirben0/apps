@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "DestType": {
+      "cliname": "desttype"
+    }, 
+    "DestId": {
+      "cliname": "destid"
+    }, 
+    "AddrMask": {
+      "cliname": "addrmask"
+    }
+  }
+}

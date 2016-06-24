@@ -24,9 +24,8 @@
 #
 # Class handles initial config command
 #
-import sys
+import sys, os
 from sets import Set
-import cmdln
 import json
 import pprint
 import inspect
@@ -39,16 +38,45 @@ from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
-try:
-    from flexswitchV2 import FlexSwitch
-    MODELS_DIR = './'
-except:
-    sys.path.append('/opt/flexswitch/sdk/py/')
-    MODELS_DIR='/opt/flexswitch/models/'
-    from flexswitchV2 import FlexSwitch
+MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 pp = pprint.PrettyPrinter(indent=2)
-class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
+
+
+class ExitWithUnappliedConfig(CommonCmdLine):
+
+    def __init__(self, prompt):
+        CommonCmdLine.__init__(self, "", "", "", "", "")
+        self.prevprompt = prompt
+
+        self.exitconfig = False
+
+    def do_yes(self, argv):
+        self.stop = True
+        self.exitconfig = True
+        self.prompt = self.prevprompt
+    do_yes.aliases = ["y", "Y", "YES"]
+
+    def do_no(self, argv):
+        self.stop = True
+        self.prompt = self.prevprompt
+    do_no.aliases = ["n", "NO", "No"]
+
+    def cmdloop(self):
+        self.prompt = 'Are you sure you want to exit? You have pending config [no]yes:'
+        try:
+            CommonCmdLine.cmdloop(self)
+        except KeyboardInterrupt:
+            self.intro = '\n'
+            self.cmdloop()
+
+    def precmd(self, argv):
+        if not argv:
+            self.do_no(["no"])
+
+        return argv
+
+class ConfigCmd(CommonCmdLine):
 
     def __init__(self, cmdtype, parent, objname, prompt, model, schema):
         '''
@@ -62,7 +90,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         :return:
         '''
 
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, parent, parent.switch_ip, parent.schemapath, parent.modelpath, objname)
         self.objname = objname
         self.name = objname + ".json"
         self.parent = parent
@@ -158,8 +186,9 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                             self.do_exit([])
                             cmdname = cmdname.replace('-', '_')
 
-                        delattr(self.__class__, "do_" + cmdname)
-                        delattr(self.__class__, "complete_" + cmdname)
+                        if hasattr(self.__class__, "do_" + cmdname):
+                            delattr(self.__class__, "do_" + cmdname)
+                            delattr(self.__class__, "complete_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
             else:
@@ -171,7 +200,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         self.do_exit([])
                         cmdname = cmdname.replace('-', '_')
 
-                    delattr(self.__class__, "do_" + cmdname)
+                    if hasattr(self.__class__, "do_" + cmdname):
+                        delattr(self.__class__, "do_" + cmdname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 
@@ -180,7 +210,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def cmdloop(self, intro=None):
-        cmdln.Cmdln.cmdloop(self)
+        CommonCmdLine.cmdloop(self)
 
     def _cmd_complete_delete(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %('no ' + self.objname, line, text, not text))
@@ -196,7 +226,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         self._cmd_common(argv[1:])
 
     def _cmd_complete_common(self, text, line, begidx, endidx):
-
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
         # remove spacing/tab
         argv = [x for x in line.split(' ') if x != '' and x != 'no']
@@ -216,30 +245,33 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         # advance to next submodel and subschema
         for i in range(1, mlineLength):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
-            if mline[i-1] in submodel:
-                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
-                if schemaname:
-                    submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
-                    subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
-                    #sys.stdout.write("config complete: submodel[schemaname][commands] = %s\n" %(submodel[schemaname]["commands"]))
-                    if submodelList and subschemaList:
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                            (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
-                            #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
-                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                    values = self.getCommandValues(objname, keys)
-                                    if not values:
-                                        values = self.getValueSelections(mline[i], submodel, subschema)
-                                    return values
-                            elif i < mlineLength:
-                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                    else:
-                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
-            else:
-               subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
+            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+            #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
+            if schemaname:
+                submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
+                subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], model=submodel[schemaname]["commands"])
+                #sys.stdout.write("config complete: submodel[schemaname][commands] = %s\n" %(submodel[schemaname]["commands"]))
+                if submodelList and subschemaList:
+                    for submodel, subschema in zip(submodelList, subschemaList):
+                        #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
+                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                        #if i == mlineLength -1:
+                        #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
+                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                values = self.getCommandValues(objname, keys)
+                                if not values:
+                                    values = self.getValueSelections(mline[i], submodel, subschema)
+
+                                # if we have the values we don't want to display any further information
+                                if i+1 < mlineLength and mline[i+1] in values:
+                                    return [snapcliconst.COMMAND_DISPLAY_ENTER]
+
+                                return values
+                        else:
+                            subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
+                elif i == mlineLength - 1:
+                    subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -251,10 +283,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if len(text) == 0 and len(returncommands) == len(subcommands):
             #sys.stdout.write("just before return %s" %(returncommands))
             return returncommands
-        #elif len(text) == 0:
-        #    # todo get all values ?
-        #    pass
-        # lets only get commands which are a partial of what was entered
+
         returncommands = [k for k in returncommands if k.startswith(text)]
 
         return returncommands
@@ -317,29 +346,44 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     self.prompt = self.prompt[:-1] + endprompt
                 self.stop = True
                 prevcmd = self.currentcmd
-                self.currentcmd = self.lastcmd
+                # lets change the command such that the delete is not part of the currentcmd
+                # the cmdtype will be the determining factor for a delete
+                if snapcliconst.COMMAND_TYPE_DELETE not in self.cmdtype:
+                    self.currentcmd = self.lastcmd
+                else:
+                    self.currentcmd = self.lastcmd[1:]
                 # stop the command loop for config as we will be running a new cmd loop
-                cmdln.Cmdln.stop = True
+                self.stop = True
 
                 # this code was added to handle admin state changes for global objects
-                # bfd enable
+                # like bfd enable
                 cliname = argv[-2]
-                if self.valueexpected in (SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_VALUE_EXPECTED):
-                    self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
-                    cliname = argv[-1]
+                if self.valueexpected in (SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE):
+                    if self.valueexpected == SUBCOMMAND_VALUE_EXPECTED:
+                        self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
+                        cliname = argv[-1]
+                    else:
+                        if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+                            self.cmdtype += snapcliconst.COMMAND_TYPE_CONFIG_NOW
 
+                # lets clear the current context commands as we will be going to a new loop
                 self.teardownCommands()
                 c = LeafCmd(objname, cliname, self.cmdtype, self, self.prompt, finalModelList, finalSchemaList)
                 if c.applybaseconfig(cliname):
                     c.cmdloop()
+
+                # lets restore the current context commands
                 self.setupCommands()
 
+                # lets reset the cmdtype
                 self.cmdtype = self.cmdtype.rstrip(snapcliconst.COMMAND_TYPE_CONFIG_NOW)
                 if snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                     self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
+                # reset the prompt seen by the user
                 self.prompt = self.baseprompt
                 self.currentcmd = prevcmd
+
                 # lets clear the config
                 delconfigList = []
                 for config in self.configList:
@@ -360,7 +404,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         mlineLength = len(mline)
         subschema = self.schema
         submodel = self.model
-        subcommands = []
         if mlineLength > 1:
 
             cmd = argv[-1]
@@ -381,7 +424,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         if submodelList and subschemaList:
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                                (valueexpected, objname, keys, help) = self.isValueExpected(mline[i], submodel, subschema)
+                                (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         if i+1 > mlineLength:
@@ -425,7 +468,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                             if 'subcmd' in submodelkey:
                                                 if self.isCommandLeafAttrs(submodel2, subschema2):
                                                     #leaf attr model
-                                                    (valueexpected, objname, keys, help) = self.isLeafValueExpected(mline[i+1], submodel2, subschema2)
+                                                    (valueexpected, objname, keys, help, islist) = self.isLeafValueExpected(mline[i+1], submodel2, subschema2)
                                                     if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                                         if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                                             self.commandLen = len(mline[i:])
@@ -448,21 +491,38 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         return argv
 
-    def do_router(self):
-        pass
-
-    def do_ip(self):
-        pass
-
     def do_help(self, argv):
+        """Display help for current commands"""
         self.display_help(argv)
 
     def do_exit(self, args):
-        self.teardownCommands()
-        self.prompt = self.baseprompt
-        self.stop = True
+        """Exit current CLI tree position, if at base then will exit CLI"""
 
-    def get_sdk_func_key_values(self, data, func):
+        if len([c for c in self.configList if c.isValid()]) > 0:
+            c = ExitWithUnappliedConfig(self.prompt)
+            c.cmdloop()
+            if c.exitconfig:
+                self.teardownCommands()
+                self.prompt = self.baseprompt
+                self.stop = True
+        else:
+            self.teardownCommands()
+            self.prompt = self.baseprompt
+            self.stop = True
+
+    def get_sdk_func_key_values(self, data, func, rollback=False):
+        """
+        Convert the data to the flexSdk argv/kwarg values.
+        In the case of update and create if a value is not provided
+        it will be filled in by data.
+        :param data:
+        :param func:
+        :param rollback: Used to tell the function that the data is in fact
+                         real data, and not just the default data from
+                         a model.  This is important because lists will
+                         need to be updated appropriately
+        :return:
+        """
         validconfig = True
         argspec = inspect.getargspec(func)
         getKeys = argspec.args[1:]
@@ -491,6 +551,18 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             else:
                 if lengthkwargs != len(data):
                     validconfig = False
+
+            # special case where the attribute is in fact a list
+            # don't support default values for lists so lets
+            # force the list to be empty
+            # This code breaks lists that are valid, so removing
+            '''
+            if not rollback:
+                tmpdata = copy.deepcopy(data)
+                for k,v in tmpdata.iteritems():
+                    if type(v) is list:
+                        data[k] = []
+            '''
         elif 'update' in func.__name__:
             for k in getKeys:
                 if k in data:
@@ -500,7 +572,18 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 elif k != 'self':
                     validconfig = False
 
-
+            # special case where the attribute is in fact a list
+            # don't support default values for lists so lets
+            # force the list to be empty
+            # This code breaks lists that are valid, so removing
+            '''
+            if not rollback:
+                tmpdata = copy.deepcopy(data)
+                for k,v in tmpdata.iteritems():
+                    if type(v) is list:
+                        data[k] = []
+            '''
+            
         return (validconfig, argumentList, data)
 
     def doesConfigExist(self, c):
@@ -601,50 +684,8 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         yield None
 
-    def do_show(self, argv):
-        root = self.getRootObj()
-        if root:
-            if hasattr(root, '_cmd_show'):
-                root._cmd_show(argv)
-
-    def fixupConfigList(configObj, configList):
-        """
-        # There may be a config which needs to be merged with a master config
-        # for example lag is created seperately than the member add.  In this
-        # case the lag membership config would need to be merged to the original config
-        for c in configObj.configList
-        :param configList:
-        :return:
-        """
-        def getConfigKeys(config):
-            return sorted([(entry.attr, entry.val, entry.isList()) for entry in config.attrList if entry.isKey()])
-
-        def merge_two_dicts(a, b):
-            c = a.copy()
-            c.update(b)
-            return c
-
-        newConfigList = copy.deepcopy(configList)
-        # get the combination of all config objects which are of the same type
-        for c1,c2 in [(config1, config2) for config1 in configList for config2 in configList if config1 != config2 and config1.name and config2.name]:
-            # lets combine any entries which have the same key values
-            # as the attributes may have been updated by two different config trees
-            if  getConfigKeys(c1) == getConfigKeys(c2):
-                # lets create a new config and delete the old one
-                newConfig = CmdEntry(configObj, c1.name, merge_two_dicts(c1.keysDict, c2.keysDict))
-                for e1 in c1.attrList:
-                    newConfig.set(configObj, e1.cmd, e1.delete, e1.attr, e1.val, isKey=e1.isKey(), isattrlist=type(e1.val) is list)
-                for e1 in c2.attrList:
-                    newConfig.set(configObj, e1.cmd, e1.delete, e1.attr, e1.val, isKey=e1.isKey(), isattrlist=type(e1.val) is list)
-                # remove the old entries from the list
-                newConfigList.remove(c1)
-                newConfigList.remove(c2)
-                # add the new config to list
-                newConfigList.append(newConfig)
-
-        return newConfigList
-
     def do_apply(self, argv):
+        """Apply current user unapplied config.  This will send provisioning commands to Flexswitch"""
         def fixupConfigList(configObj, configList):
             """
             # There may be a config which needs to be merged with a master config
@@ -723,6 +764,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         if self.configList and \
                 root.isSystemReady():
 
+
             # create new list where come config is combined because they
             # are acting on the same object
             self.configList = fixupConfigList(self, self.configList)
@@ -784,7 +826,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                         continue
                                 else:
                                     if config in rollbackData:
-                                        status_code = rollbackData[config]
+                                        status_code = rollbackData[config][0]
                                         origData = rollbackData[config][1]
                                     else:
                                         continue
@@ -889,7 +931,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         delconfigList = []
         failurecfg = False
         data = config.getSdkConfig(readdata=readdata, rollback=rollback)
-        (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func)
+        (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func, rollback=True)
         if validconfig:
             if len(kwargs) > 0:
                 r = update_func(*argumentList, **kwargs)
@@ -916,7 +958,15 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         return (failurecfg, delconfigList)
 
+    def do_show(self, argv):
+        """Show running configuration"""
+        root = self.getRootObj()
+        if root:
+            if hasattr(root, '_cmd_show'):
+                root._cmd_show(argv)
+
     def do_showunapplied(self, argv):
+        """Display the currently unapplied configuration.  An optional 'full' argument can be supplied to show all objects which are pending not just valid provisioning objects"""
         sys.stdout.write("Unapplied Config\n")
         full = False
         if argv and argv[-1] == 'full':
@@ -928,6 +978,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
 
     def do_clearunapplied(self, argv):
+        """Clear the current pending config."""
         sys.stdout.write("Clearing Unapplied Config\n")
         for config in self.configList:
             config.clear(all)

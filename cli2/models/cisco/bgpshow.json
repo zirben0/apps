@@ -3,11 +3,14 @@
     "cliname" : "bgp",
     "help": "Show BGP IPv4 Routes",
     "commands": {
-      "subcmd1" : {
-        "$ref" : "file:/tmp/snaproute/cli/model/cisco/BGPNeighborSummary.json"
-      },
       "subcmd2" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPRouteStateMembers.json"
+      },
+      "subcmd3": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalState.json"
+      },
+      "subcmd4": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighborState.json"
       }
     }
   }

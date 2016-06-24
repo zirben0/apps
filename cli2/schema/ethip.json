@@ -24,6 +24,9 @@
           },
           "subcmd2": {
             "$ref": "file:/tmp/snaproute/cli/schema/OspfIfEntry.json"
+          },
+          "subcmd3": {
+            "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayIntf.json"
           }
         }
       }

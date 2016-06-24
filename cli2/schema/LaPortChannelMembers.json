@@ -58,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " LACP(0)/STATIC(1)  Sets the type of LAG", 
+            "default": " LACP(0)/STATIC(1)  Sets the type of LAG default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -134,7 +134,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " [0-9a-fA-F]{2}(  The MAC address portion of the node's System ID. This is combined with the system priority to construct the 8-octet system-id", 
+            "default": "The MAC address portion of the node's System ID. This is combined with the system priority to construct the 8-octet system-id", 
             "type": "string"
           }, 
           "islist": {
@@ -149,7 +149,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false,
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
