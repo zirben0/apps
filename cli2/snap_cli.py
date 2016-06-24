@@ -49,8 +49,6 @@ from commonCmdLine import CommonCmdLine, CmdFunc, USING_READLINE, \
 
 class CmdLine(CommonCmdLine):
 
-    httpSuccessCodes = [200, 201, 202, 204]
-
     """
     Help may be requested at any point in a command by entering
     a question mark '?'.  If nothing matches, the help list will
@@ -108,6 +106,9 @@ class CmdLine(CommonCmdLine):
 
     def setupcommands(self, teardown=False):
 
+        # keep track of each of the commands being added as we will use
+        # this list to add the aliases
+        cmdNameList = []
         # this loop will setup each of the cliname commands for this model level
         for subcmds, cmd in self.model["commands"].iteritems():
             # handle the links
@@ -120,6 +121,7 @@ class CmdLine(CommonCmdLine):
                             self.do_exit([])
                             cmdname = cmdname.replace('-', '_')
 
+                        cmdNameList.append(cmdname)
                         funcname = "do_" + cmdname
                         if not teardown:
                             setattr(self.__class__, funcname, CmdFunc(self, funcname, getattr(self, "_cmd_%s" %(k,))))
@@ -127,7 +129,7 @@ class CmdLine(CommonCmdLine):
                                 setattr(self.__class__, "complete_" + cmdname, getattr(self, "_cmd_complete_%s" %(k,)))
                         else:
                             delattr(self.__class__, funcname)
-                            if hasattr(self.__class__, "_cmd_complete_%s" %(k,)):
+                            if hasattr(self.__class__, funcname):
                                 delattr(self.__class__, "complete_" + cmdname)
                 except Exception as e:
                     sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
@@ -140,6 +142,7 @@ class CmdLine(CommonCmdLine):
                         self.do_exit([])
                         cmdname = cmdname.replace('-', '_')
 
+                    cmdNameList.append(cmdname)
                     funcname = "do_" + cmdname
                     if not teardown:
                         setattr(self.__class__, funcname, CmdFunc(self, funcname, getattr(self, "_cmd_%s" %(subcmds,))))
@@ -147,6 +150,9 @@ class CmdLine(CommonCmdLine):
                         delattr(self.__class__, funcname)
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED on setting do_: %s\n" %(e,))
+
+        if not teardown:
+            self.setupalias(cmdNameList)
 
     def teardowncommands(self):
         self.setupcommands(teardown=True)
@@ -166,7 +172,7 @@ class CmdLine(CommonCmdLine):
             sys.stdout.write("Unable to connect to system, flexswitch confd may not be up yet.\n")
             return False
 
-        if r.status_code in self.httpSuccessCodes:
+        if r.status_code in self.sdk.httpSuccessCodes:
             resp = r.json()
             #for x in resp['Object']['FlexDaemons']:
             #    print x['Name'], x['State']
@@ -423,26 +429,26 @@ class CmdLine(CommonCmdLine):
     # match for schema cmd object
     def _cmd_config(self, args):
         """Global configuration mode"""
+
+        newargs = [self.find_func_cmd_alias(arg) for arg in args]
         self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
         if self.privilege is False:
             sys.stdout.write("Must be in privilege mode to execute config\n")
             return
 
-        if len(args) > 1:
-            snapcliconst.printErrorValueCmd(1, args)
+        if len(newargs) > 1:
+            snapcliconst.printErrorValueCmd(1, newargs)
             return
 
-        functionNameAsString = sys._getframe().f_code.co_name
-        name = functionNameAsString.split("_")[-1]
         # get the submodule to be passed into config
         #schemaname = self.getSchemaCommandNameFromCliName(name, self.model)
-        submodelList = self.getSubCommand(name, self.model["commands"])
-        subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"])
+        submodelList = self.getSubCommand(newargs[0], self.model["commands"])
+        subschemaList = self.getSubCommand(newargs[0], self.schema["properties"]["commands"]["properties"])
         # there should only be one config entry
         if submodelList and subschemaList and len(submodelList) == 1:
             for submodel, subschema in zip(submodelList, subschemaList):
-                configprompt = self.getPrompt(submodel[name], subschema[name])
+                configprompt = self.getPrompt(submodel[newargs[0]], subschema[newargs[0]])
                 # setup the prompt accordingly
                 self.prompt = self.prompt[:-1] + configprompt + self.prompt[-1]
                 # stop the command loop for config as we will be running a new cmd loop
@@ -453,7 +459,7 @@ class CmdLine(CommonCmdLine):
 
                 self.teardowncommands()
                 self.stop = True
-                c = ConfigCmd("config", self, name, self.prompt, submodel, subschema)
+                c = ConfigCmd("config", self, newargs[0], self.prompt, submodel, subschema)
                 c.cmdloop()
                 self.setupcommands()
                 # clear the command if we return
@@ -462,7 +468,6 @@ class CmdLine(CommonCmdLine):
                 self.prompt = self.baseprompt
                 if self.stop:
                     self.cmdloop()
-    _cmd_config.aliases = ["conf t", "configure t", "configure term", "conf term", "configure terminal", "config t"]
 
     def _cmd_complete_show(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
@@ -506,58 +511,62 @@ class CmdLine(CommonCmdLine):
 
 
     def _cmd_show(self, argv):
-        " Show running system information "
-        mline = argv
+        """ Show running system information """
+        RUNNING_CONFIG = "running_config"
+        newargs = [self.find_func_cmd_alias(arg) for arg in argv]
+        mline = newargs
         self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
         mlineLength = len(mline)
-        if 'run' in mline:
-            self.currentcmd = self.lastcmd
-            c = ShowCmd(self, self.model['commands']['subcmd1'], self.schema['properties']['commands']['properties']['subcmd1'])
-            c.show(mline, all=True)
-            return
-        else:
-            functionNameAsString = sys._getframe().f_code.co_name
-            name = functionNameAsString.split("_")[-1]
-            submodelList = self.getSubCommand(name, self.model["commands"])
-            subschemaList = self.getSubCommand(name, self.schema["properties"]["commands"]["properties"], self.model["commands"])
-            if mlineLength > 0:
-                try:
-                    for i in range(1, mlineLength):
-                        for submodel, subschema in zip(submodelList, subschemaList):
-                            schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                            submodelList = self.getSubCommand(mline[i],
-                                                              submodel[schemaname]["commands"])
-                            subschemaList = self.getSubCommand(mline[i],
-                                                               subschema[schemaname]["properties"]["commands"]["properties"],
-                                                               submodel[schemaname]["commands"])
-                            if submodelList and subschemaList:
-                                for submodel, subschema in zip(submodelList, subschemaList):
-                                    (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
-                                    # we want to keep looping untill there are no more value commands
-                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                        if i == mlineLength - 1:
-                                            self.currentcmd = self.lastcmd
-                                            c = ShowCmd(self, submodel, subschema)
-                                            c.show(mline, all=True)
-                                            self.currentcmd = []
-                                        else:
-                                            subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                                            if mline[i+1] not in subcommands:
+        if mlineLength > 1:
+            cmd = RUNNING_CONFIG
+            if len(frozenset(
+                    [cmd[:i+1] for i, ch in enumerate(cmd) if i+1 >= 2 and cmd[:i+1] != cmd]).intersection([mline[1]])):
+                self.currentcmd = self.lastcmd
+                # TODO subcmd1 hard coded below is BAD!!!! cause what if schema/model changes then this will not work
+                c = ShowCmd(self, self.model['commands']['subcmd1'], self.schema['properties']['commands']['properties']['subcmd1'])
+                c.show(mline, all=True)
+                return
+            else:
+                submodelList = self.getSubCommand(mline[0], self.model["commands"])
+                subschemaList = self.getSubCommand(mline[0], self.schema["properties"]["commands"]["properties"], self.model["commands"])
+                if mlineLength > 0:
+                    try:
+                        for i in range(1, mlineLength):
+                            for submodel, subschema in zip(submodelList, subschemaList):
+                                schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
+                                submodelList = self.getSubCommand(mline[i],
+                                                                  submodel[schemaname]["commands"])
+                                subschemaList = self.getSubCommand(mline[i],
+                                                                   subschema[schemaname]["properties"]["commands"]["properties"],
+                                                                   submodel[schemaname]["commands"])
+                                if submodelList and subschemaList:
+                                    for submodel, subschema in zip(submodelList, subschemaList):
+                                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                                        # we want to keep looping untill there are no more value commands
+                                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                            if i == mlineLength - 1:
                                                 self.currentcmd = self.lastcmd
                                                 c = ShowCmd(self, submodel, subschema)
-                                                c.show(mline, all=False)
+                                                c.show(mline, all=True)
                                                 self.currentcmd = []
-                                    elif i == mlineLength - 1:
-                                        if "commands" not in submodel:
-                                            for key, value in submodel.iteritems():
-                                                if 'cliname' in value and value['cliname'] == mline[i]:
+                                            else:
+                                                subcommands = self.getchildrencmds(mline[i], submodel, subschema)
+                                                if mline[i+1] not in subcommands:
                                                     self.currentcmd = self.lastcmd
                                                     c = ShowCmd(self, submodel, subschema)
-                                                    c.show(mline, all=True)
+                                                    c.show(mline, all=False)
                                                     self.currentcmd = []
+                                        elif i == mlineLength - 1:
+                                            if "commands" not in submodel:
+                                                for key, value in submodel.iteritems():
+                                                    if 'cliname' in value and value['cliname'] == mline[i]:
+                                                        self.currentcmd = self.lastcmd
+                                                        c = ShowCmd(self, submodel, subschema)
+                                                        c.show(mline, all=True)
+                                                        self.currentcmd = []
 
-                except Exception:
-                    pass
+                    except Exception:
+                        pass
 
     def do_exit(self, args):
         """Exit current CLI tree position, if at base then will exit CLI"""
@@ -577,18 +586,19 @@ class CmdLine(CommonCmdLine):
 
 
     def precmd(self, argv):
-        if len(argv) > 1 and '?' in argv:
-            if argv[0] == snapcliconst.COMMAND_TYPE_SHOW:
-                self.display_show_help(argv)
+        newargv = [self.find_func_cmd_alias(x) for x in argv]
+        if len(newargv) > 1 and '?' in newargv:
+            if newargv[0] == snapcliconst.COMMAND_TYPE_SHOW:
+                self.display_show_help(newargv)
                 return ''
-            elif argv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
-                self.display_help(argv)
+            elif newargv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
+                self.display_help(newargv)
                 return ''
-        if argv and '!' in argv[-1]:
-            self.do_exit(argv)
+        if newargv and '!' in newargv[-1]:
+            self.do_exit(newargv)
             return ''
 
-        return argv
+        return newargv
 
     def do_help(self, argv):
         """Display help for current commands"""

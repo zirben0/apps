@@ -4,7 +4,7 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdGlobalStateSubCmds.json"
     }, 
-    "cliname": "bfd",
+    "cliname": "global",
     "value": {
       "Vrf": {
         "cliname": "vrf"
