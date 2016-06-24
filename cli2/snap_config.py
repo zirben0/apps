@@ -397,7 +397,7 @@ class ConfigCmd(CommonCmdLine):
         if mlineLength > 1:
 
             cmd = newargv[-1]
-            if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
+            if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
                 self.display_help(newargv if 'no' not in newargv[0] else newargv[1:])
                 return ''
             if cmd in ('!',):

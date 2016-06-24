@@ -1164,7 +1164,7 @@ class LeafCmd(CommonCmdLine):
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
         cmd = argv[-1] if argv else ''
-        if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
+        if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
             self.display_help(argv if argv[0] != 'no' else argv[1:])
             return ''
         if cmd in ('!', ):

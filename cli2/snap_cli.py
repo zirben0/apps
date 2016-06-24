@@ -29,7 +29,6 @@
 
 import sys, getopt, socket, os
 import jsonref
-import readline
 import rlcompleter
 import glob
 import shutil
@@ -44,7 +43,7 @@ from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
 from snap_config import ConfigCmd
 from snap_show import ShowCmd
-from commonCmdLine import CommonCmdLine, CmdFunc, USING_READLINE, \
+from commonCmdLine import CommonCmdLine, CmdFunc, \
     SUBCOMMAND_VALUE_NOT_EXPECTED, SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 
 class CmdLine(CommonCmdLine):
@@ -587,7 +586,7 @@ class CmdLine(CommonCmdLine):
 
     def precmd(self, argv):
         newargv = [self.find_func_cmd_alias(x) for x in argv]
-        if len(newargv) > 1 and '?' in newargv:
+        if len(newargv) > 1 and 'help' in newargv:
             if newargv[0] == snapcliconst.COMMAND_TYPE_SHOW:
                 self.display_show_help(newargv)
                 return ''
