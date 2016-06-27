@@ -388,14 +388,43 @@ class ConfigCmd(CommonCmdLine):
             self.cmdloop()
 
     def precmd(self, argv):
+        """
+        Lets perform some pre-checks on the user commands the user has entered.
+        1) Convert the user 'sub' command name to model name
+        2) If a value is expected then do a paramter check
+
+        :param argv:
+        :return:
+        """
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-        newargv = [self.find_func_cmd_alias(x) for x in argv]
-        mline = [parentcmd] + [self.find_func_cmd_alias(x) for x in newargv if x != 'no']
+        newargv = argv
+        subcommands = self.getchildrencmds(parentcmd, self.model, self.schema)
+
+        if 'no' == argv[0]:
+            if len(argv) > 1:
+                if newargv[1] not in subcommands and len(subcommands) > 0:
+                    usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
+                    if usercmd is None:
+                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                        snapcliconst.printErrorValueCmd(1, argv)
+                        return ''
+                    else:
+                        newargv = [usercmd] + newargv[2:]
+        else:
+            if newargv[0] not in subcommands and len(subcommands) > 0:
+                usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
+                if usercmd is None:
+                    sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                    snapcliconst.printErrorValueCmd(0, argv)
+                    return ''
+                else:
+                    newargv = [usercmd] + newargv[1:]
+
+        mline = [parentcmd] + [x for x in newargv if x != 'no']
         mlineLength = len(mline)
         subschema = self.schema
         submodel = self.model
         if mlineLength > 1:
-
             cmd = newargv[-1]
             if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
                 self.display_help(newargv if 'no' not in newargv[0] else newargv[1:])
@@ -409,10 +438,22 @@ class ConfigCmd(CommonCmdLine):
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
+                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
+                        if mline[i] not in subcommands and len(subcommands) > 0:
+                            usercmd = self.convertUserCmdToModelCmd(mline[i], subcommands)
+                            if usercmd is not None:
+                                mline[i] = usercmd
+                                newargv[i-1] = usercmd
+                            else:
+                                sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                snapcliconst.printErrorValueCmd(i, mline)
+                                return ''
+
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         if submodelList and subschemaList:
                             for submodel, subschema in zip(submodelList, subschemaList):
+
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                                 (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
@@ -482,7 +523,7 @@ class ConfigCmd(CommonCmdLine):
         return newargv
 
     def do_help(self, argv):
-        """Display help for current commands"""
+        """"Display help for current commands, short hand notation of ? can be used as well """
         self.display_help(argv)
 
     def do_exit(self, args):

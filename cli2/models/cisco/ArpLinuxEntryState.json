@@ -3,11 +3,12 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpLinuxEntryStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show Linux Arp Entry By IP",
+    "cliname": "arp_entry_linux",
     "value": {
       "IpAddr": {
-        "cliname": "ipaddr"
+        "cliname": "arp_entry_linux"
       }
     }
   }

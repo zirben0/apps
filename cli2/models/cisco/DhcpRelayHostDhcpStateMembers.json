@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "MacAddr": {
-      "cliname": "macaddr"
+      "cliname": "dhcp_host"
     }
   }
 }
