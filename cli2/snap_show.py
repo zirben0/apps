@@ -30,7 +30,7 @@ import pprint
 import inspect
 import string
 import snapcliconst
-from jsonref import JsonRef
+import jsonref
 
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
@@ -565,11 +565,11 @@ class ShowRun(object):
                                                           convertStrValueToValueType(attrtype, defaultVal))
 
 pp = pprint.PrettyPrinter(indent=2)
-class ShowCmd(cmdln.Cmdln, CommonCmdLine):
+class ShowCmd(CommonCmdLine):
 
     def __init__(self, parent, model, schema):
 
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, "", "", "", "", "")
         self.objname = 'show'
         self.parent = parent
         self.model = model
@@ -593,6 +593,19 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
         # show all
         # show individual object
         # show individual object brief
+        def createChildTreeObjectsDict(objcmds):
+            objDict = {}
+            # lets fill out the object to attributes mapping valid for this level in the tree
+            for cmds in objcmds:
+                if type(cmds) in (dict, jsonref.JsonRef):
+                    for k, v in cmds.iteritems():
+                        if v['objname'] not in objDict:
+                            objDict[v['objname']] = {}
+
+                        objDict[v['objname']].update({k:v})
+            return objDict
+
+
 
         if 'run' in argv:
             sdk = self.getSdk()
@@ -625,7 +638,7 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                 #l.applybaseshow(lastcmd)
                 config = None
 
-                if 'objname' in self.schema[schemaname]['properties']:
+                if 'objname' in self.schema[schemaname]['properties'] and argv[-1] == lastcmd:
                     config = CmdEntry(self, self.schema[schemaname]['properties']['objname']['default'], {})
                     config.setValid(True)
                     self.configList.append(config)
@@ -635,15 +648,79 @@ class ShowCmd(cmdln.Cmdln, CommonCmdLine):
                     # only display the what is available from this object
                     for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
                         # looping through the subcmds to find one that has an object associated with it.
-                        if type(v) in (dict, JsonRef):
+                        if type(v) in (dict, jsonref.JsonRef):
                             for kk, vv in v.iteritems():
                                 # each subcmd will either be a link to another subcommand
                                 # or a commands containing attributes of an object, which should hold
                                 # the object in question associated with this command.
                                 if "objname" in kk:
-                                    config = CmdEntry(self, v['objname']['default'], {})
-                                    config.setValid(True)
-                                    self.configList.append(config)
+                                    listAttrs = self.model[schemaname]['listattrs'] if 'listattrs' in self.model[schemaname] else []
+
+                                    allCmdsList = self.prepareConfigTreeObjects(None,
+                                                        schemaname,
+                                                        False,
+                                                        self.model[schemaname]['cliname'],
+                                                        self.model[schemaname]["commands"],
+                                                        self.schema[schemaname]["properties"]["commands"]["properties"],
+                                                        listAttrs)
+
+                                    # lets fill out the object to attributes mapping valid for this level in the tree
+                                    self.objDict = createChildTreeObjectsDict(allCmdsList)
+                                    configObj = self
+                                    if configObj:
+                                        # TODO need to be able to handle multiple keys
+                                        # get the current leaf container key value
+                                        keyvalueDict = {argv[-2]: argv[-1]}
+
+                                        # lets go through the valid sub tree command objects
+                                        # and fill in what command was entered by the user
+                                        for objname, objattrs in self.objDict.iteritems():
+
+                                            config = CmdEntry(self, objname, self.objDict[objname])
+                                            # total keys must be provisioned for config to be valid
+                                            # the keyvalueDict may contain more tree keys than is applicable for the
+                                            # config tree
+                                            objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
+                                                                                if v['isattrkey']])
+
+                                            isvalid = len(keyvalueDict) >= objkeyslen and objkeyslen != 0
+
+                                            isValidKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
+                                                                                         and (k in keyvalueDict)]) > 0
+                                            # we want a full key config
+                                            if isValidKeyConfig:
+                                                for basekey, basevalue in keyvalueDict.iteritems():
+                                                    if basekey in objattrs:
+                                                        # all keys for an object must be set and
+                                                        # and all all attributes must have default values
+                                                        # in order for the object to be considered valid and
+                                                        # ready to be provisioned.
+                                                        config.setValid(isvalid)
+                                                        # no was stripped before
+                                                        config.set(argv, False, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'], isattrlist=objattrs[basekey]['isarray'])
+
+                                                # only add this config if it does not already exist
+                                                cfg = configObj.doesConfigExist(config)
+                                                if not cfg:
+                                                    configObj.configList.append(config)
+                                                elif cfg and snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+                                                    # let remove the previous command if it was set
+                                                    # or lets delete the config
+                                                    if len(config.attrList) == len(keyvalueDict):
+                                                        try:
+                                                            # lets remove this command
+                                                            # because basically the user cleared
+                                                            # the previous unapplied command
+                                                            configObj.configList.remove(cfg)
+                                                            return False
+                                                        except ValueError:
+                                                            pass
+
+                                    #config = CmdEntry(self, v['objname']['default'], slf.objDict)
+                                    #config.setValid(True)
+                                    #self.configList.append(config)
+
+
 
                 self.show_state(all=all)
                 self.configList.remove(config)

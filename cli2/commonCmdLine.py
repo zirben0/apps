@@ -226,6 +226,20 @@ class CommonCmdLine(cmdln.Cmdln):
         self.schemapath = schema_path + layer
         self.baseprompt = "DEFAULT"
         self.currentcmd = []
+        '''
+        try:
+            import readline
+            self.old_completer = readline.get_completer()
+            readline.set_completer(self.complete)
+            if sys.platform == "darwin":
+                readline.parse_and_bind("bind ? rl_complete")
+            else:
+                readline.parse_and_bind("?: complete_2")
+        except ImportError:
+            pass
+        '''
+    def complete_2(self, text, state):
+        print 'hi'
 
     def complete(self, text, state):
         """Return the next possible completion for 'text'.
@@ -287,6 +301,24 @@ class CommonCmdLine(cmdln.Cmdln):
 
             func.aliases = [cmd[:i+1] for i, ch in enumerate(cmd) if i >= prefixlen-1 and cmd[:i+1] != cmd]
             #print cmd, func.aliases
+
+    def convertUserCmdToModelCmd(self, usercmd, cmdNameList):
+        """
+        Convert a partial user command to a model command
+        :param cmdNameList - list of sub commands from the model
+        :return:
+        """
+        print usercmd, cmdNameList
+        cmdNameList = [""] + sorted(cmdNameList) + [""]
+        def cp(x): return len(os.path.commonprefix(x))
+
+
+        cmdDict = {cmdNameList[i]: 1 + max(cp(cmdNameList[i-1:i+1]), cp(cmdNameList[i:i+2])) for i in range(1, len(cmdNameList)-1) }
+        for cmd, prefixlen in cmdDict.iteritems():
+            if usercmd in [cmd[:i+1] for i, ch in enumerate(cmd) if i >= prefixlen-1 and cmd[:i+1] != cmd]:
+                return cmd
+
+        return None
 
     def find_func_cmd_alias(self, subname):
         """
@@ -995,6 +1027,121 @@ class CommonCmdLine(cmdln.Cmdln):
         #print indent([labels]+rows, hasHeader=True, separateRows=True,
         #             prefix='| ', postfix=' |',
         #             wrapfunc=lambda x: wrap_onspace_strict(x,width))
+
+    def prepareConfigTreeObjects(self, key, objname, createwithdefault, subcmd, model, schema, listAttrs):
+        '''
+        Based on the schema and model will fill in the default object parameters
+        :param key:
+        :param objname:
+        :param subcmd:
+        :param model:
+        :param schema:
+        :return: list of commands available from this leaf class
+        '''
+
+        def getObjNameAndCreateWithDefaultFromSchema(schema, model, objname, createwithdefault):
+            objname = objname
+            createwithdefault = createwithdefault
+            if 'objname' in schema:
+                objname = schema['objname']['default']
+            if 'createwithdefault' in schema:
+                createwithdefault = schema['createwithdefault']['default']
+                if 'createwithdefault' in model:
+                    createwithdefault = model['createwithdefault']
+
+            return objname, createwithdefault
+
+        cmdList = []
+        cmdDict = {}
+        tmpobjname = objname
+        tmpcreatewithdefault = createwithdefault
+        for k, v in schema.iteritems():
+            if k == key:
+                return v
+
+            # TODO need to update function to ignore sub commands which are not terminating commands
+            if k in model:
+                tmpmodel = model[k]
+                tmpobjname, tmpcreatewithdefault = getObjNameAndCreateWithDefaultFromSchema(v, tmpmodel, tmpobjname, tmpcreatewithdefault)
+
+                # looking for subcommand attributes
+                if "subcmd" in k and "commands" in v and type(v["commands"]) in (dict, jsonref.JsonRef):
+                    listAttrs = v['listattrs'] if 'listattrs' in v else []
+                    cmds = self.prepareConfigTreeObjects(key, tmpobjname, tmpcreatewithdefault, subcmd, tmpmodel["commands"], v["commands"]["properties"], listAttrs)
+                    cmdList += cmds
+                # looking for subsubcommand as this is an attribute that is an attribute,
+                # this means that this is a reference to a struct or list of structs
+                elif "subcmd" in k and type(v) in (dict, jsonref.JsonRef):
+                    for kk, vv in tmpmodel.iteritems():
+                        if kk in v:
+                            subtmpschema = v[kk]['properties']
+                            if 'objname' in subtmpschema:
+                                tmpobjname = subtmpschema['objname']['default']
+
+                            # a sub cmd is one which has a 'value' attribute defined
+                            tmpsubcmd = None
+                            if 'cliname' in vv:
+                                tmpsubcmd = vv['cliname']
+
+                            if "commands" in vv and len(vv) > 0:
+                                attrDict = dict(listAttrs)
+                                key = key
+
+                                isList = False
+                                if k in attrDict:
+                                    key = attrDict[k]
+                                    isList = True
+
+                                # lets create the object, and tie it to the local object
+                                cmds = self.prepareConfigTreeObjects(key,
+                                                           tmpobjname,
+                                                           tmpcreatewithdefault,
+                                                           tmpsubcmd,
+                                                           vv["commands"],
+                                                           subtmpschema["commands"]["properties"],
+                                                           listAttrs)
+                                cmdList += cmds
+
+                                # lets add the attribute to the subcmd
+                                if key:
+                                    cmdDict.update({tmpsubcmd : {'key': key,
+                                                            'createwithdefaults' : tmpcreatewithdefault,
+                                                            'subcommand' : subcmd,
+                                                            'objname' :  objname,
+                                                            'isattrkey': False,
+                                                            'value': cmds,
+                                                            'isarray': isList,
+                                                            'type': tmpobjname}})
+
+                else:
+                    key = k
+                    if 'subcmd' in key:
+                        attrDict = dict(listAttrs)
+                        key = attrDict[k]
+                    cmdDict.update({tmpmodel['cliname'] : {'key': key,
+                                                    'createwithdefaults' : tmpcreatewithdefault,
+                                                    'subcommand' : subcmd,
+                                                    'objname' : objname,
+                                                    'isattrkey': v['properties']['key']['default'],
+                                                    'value': v['properties']['defaultarg'],
+                                                    'isarray': v['properties']['islist']['default'],
+                                                    'type': v['properties']['argtype']}})
+
+            elif 'properties' in v:
+                cmdDict.update({v['properties']['cliname']['default'] : {'key': k,
+                                                    'createwithdefaults' : tmpcreatewithdefault,
+                                                    'subcommand' : subcmd,
+                                                    'objname' : objname,
+                                                    'isattrkey': v['properties']['key']['default'],
+                                                    'value': v['properties']['defaultarg'],
+                                                    'isarray': v['properties']['islist']['default'],
+                                                    'type': v['properties']['argtype']}})
+
+        if cmdDict:
+            cmdList.append(cmdDict)
+
+        return cmdList
+
 
     def do_quit(self, args):
         " Quiting FlexSwitch CLI.  This will stop the CLI session"

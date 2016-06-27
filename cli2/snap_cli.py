@@ -429,7 +429,7 @@ class CmdLine(CommonCmdLine):
     def _cmd_config(self, args):
         """Global configuration mode"""
 
-        newargs = [self.find_func_cmd_alias(arg) for arg in args]
+        newargs = [self.find_func_cmd_alias(args[0])] + args[1:]
         self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
         if self.privilege is False:
@@ -512,7 +512,7 @@ class CmdLine(CommonCmdLine):
     def _cmd_show(self, argv):
         """ Show running system information """
         RUNNING_CONFIG = "running_config"
-        newargs = [self.find_func_cmd_alias(arg) for arg in argv]
+        newargs = [self.find_func_cmd_alias(argv[0])] + argv[1:]
         mline = newargs
         self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
         mlineLength = len(mline)
@@ -532,6 +532,16 @@ class CmdLine(CommonCmdLine):
                     try:
                         for i in range(1, mlineLength):
                             for submodel, subschema in zip(submodelList, subschemaList):
+                                subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
+                                if mline[i] not in subcommands and len(subcommands) > 0:
+                                    usercmd = self.convertUserCmdToModelCmd(mline[i], subcommands)
+                                    if usercmd is not None:
+                                        mline[i] = usercmd
+                                    else:
+                                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                        snapcliconst.printErrorValueCmd(i, mline)
+                                        return ''
+
                                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                                 submodelList = self.getSubCommand(mline[i],
                                                                   submodel[schemaname]["commands"])
@@ -550,6 +560,15 @@ class CmdLine(CommonCmdLine):
                                                 self.currentcmd = []
                                             else:
                                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
+                                                if mline[i+1] not in subcommands and len(subcommands) > 0:
+                                                    usercmd = self.convertUserCmdToModelCmd(mline[i+1], subcommands)
+                                                    if usercmd is not None:
+                                                        mline[i+1] = usercmd
+                                                    else:
+                                                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                                        snapcliconst.printErrorValueCmd(i+1, mline)
+                                                        return ''
+
                                                 if mline[i+1] not in subcommands:
                                                     self.currentcmd = self.lastcmd
                                                     c = ShowCmd(self, submodel, subschema)
@@ -585,7 +604,9 @@ class CmdLine(CommonCmdLine):
 
 
     def precmd(self, argv):
-        newargv = [self.find_func_cmd_alias(x) for x in argv]
+        newargv = argv
+        if argv > 0:
+            newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:]
         if len(newargv) > 1 and 'help' in newargv:
             if newargv[0] == snapcliconst.COMMAND_TYPE_SHOW:
                 self.display_show_help(newargv)
@@ -600,7 +621,7 @@ class CmdLine(CommonCmdLine):
         return newargv
 
     def do_help(self, argv):
-        """Display help for current commands"""
+        """Display help for current commands, short hand notation of ? can be used as well """
         self.display_help(argv)
 
     do_help.aliases = ["?"]
