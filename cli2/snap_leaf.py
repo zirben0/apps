@@ -1042,6 +1042,7 @@ class LeafCmd(CommonCmdLine):
     def do_help(self, argv):
         """Display help for current commands, short hand notation of ? can be used as well """
         self.display_help(argv)
+    do_help.aliases = ["?"]
 
     def precmd(self, argv):
         """
@@ -1060,7 +1061,7 @@ class LeafCmd(CommonCmdLine):
         submodel = self.modelList[0] if self.modelList else None
 
         subcommands = self.getchildrencmds(parentcmd, submodel, subschema)
-        newargv = argv
+        newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:] if len(argv) > 0 else argv
         if delete:
             if len(argv) > 1:
                 if newargv[1] not in subcommands and len(subcommands) > 0:
