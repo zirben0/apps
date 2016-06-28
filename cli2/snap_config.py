@@ -26,7 +26,6 @@
 #
 import sys, os
 from sets import Set
-import cmdln
 import json
 import pprint
 import inspect
@@ -34,39 +33,42 @@ import string
 import snapcliconst
 from jsonref import JsonRef
 from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
+from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
-from flexswitchV2 import FlexSwitch
 MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 pp = pprint.PrettyPrinter(indent=2)
 
 
-class ExitWithUnappliedConfig(cmdln.Cmdln):
+class ExitWithUnappliedConfig(CommonCmdLine):
 
     def __init__(self, prompt):
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, "", "", "", "", "")
         self.prevprompt = prompt
 
         self.exitconfig = False
 
-    @cmdln.alias("y", "Y", "YES")
     def do_yes(self, argv):
         self.stop = True
         self.exitconfig = True
         self.prompt = self.prevprompt
+    do_yes.aliases = ["y", "Y", "YES"]
 
-    @cmdln.alias("n", "NO", "No")
     def do_no(self, argv):
         self.stop = True
         self.prompt = self.prevprompt
+    do_no.aliases = ["n", "NO", "No"]
 
     def cmdloop(self):
         self.prompt = 'Are you sure you want to exit? You have pending config [no]yes:'
-        cmdln.Cmdln.cmdloop(self)
+        try:
+            CommonCmdLine.cmdloop(self)
+        except KeyboardInterrupt:
+            self.intro = '\n'
+            self.cmdloop()
 
     def precmd(self, argv):
         if not argv:
@@ -74,7 +76,7 @@ class ExitWithUnappliedConfig(cmdln.Cmdln):
 
         return argv
 
-class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
+class ConfigCmd(CommonCmdLine):
 
     def __init__(self, cmdtype, parent, objname, prompt, model, schema):
         '''
@@ -88,7 +90,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         :return:
         '''
 
-        cmdln.Cmdln.__init__(self)
+        CommonCmdLine.__init__(self, parent, parent.switch_ip, parent.schemapath, parent.modelpath, objname)
         self.objname = objname
         self.name = objname + ".json"
         self.parent = parent
@@ -107,19 +109,18 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
 
         sys.stdout.write("\n*** Configuration will only be applied once 'apply' command is entered ***\n\n")
 
-    def setupCommands(self):
+    def setupCommands(self, teardown=False):
         '''
         This api will setup all the do_<command> and comlete_<command> as required by the cmdln class.
         The functionality is common for all commands so we will map the commands based on what is in
         the model.
         :return:
         '''
+
+        cmdNameList = []
         # this loop will setup each of the cliname commands for this model level
         # cmdln/cmd expects that all commands have a function associated with it
         # in the format of 'do_<command>'
-        # TODO need to add support for when the cli mode does not supply the cliname
-        #      in this case need to get the default from the schema model
-        # this loop will setup each of the cliname commands for this model level
         ignoreKeys = []
         if self.objname in self.schema and \
             'properties' in self.schema[self.objname] and \
@@ -140,8 +141,16 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                 self.do_exit([])
                                 cmdname = cmdname.replace('-', '_')
 
-                            setattr(self.__class__, "do_" + cmdname, self._cmd_common)
-                            setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                            cmdNameList.append(cmdname)
+                            funcname = "do_" + cmdname
+                            if not teardown:
+                                setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
+                                setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                            else:
+                                if hasattr(self.__class__, funcname):
+                                    delattr(self.__class__, funcname)
+                                    delattr(self.__class__, "complete_" + cmdname)
+
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
             else:
@@ -153,12 +162,31 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                         self.do_exit([])
                         cmdname = cmdname.replace('-', '_')
 
-                    setattr(self.__class__, "do_" + cmdname, self._cmd_common)
+                    cmdNameList.append(cmdname)
+                    funcname = "do_" + cmdname
+                    if not teardown:
+                        setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
+                    else:
+                        if hasattr(self.__class__, funcname):
+                           delattr(self.__class__, "do_" + cmdname)
+
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
 
         setattr(self.__class__, "do_no", self._cmd_do_delete)
         setattr(self.__class__, "complete_no", self._cmd_complete_delete)
+
+        # lets add any local non model functions to the list
+        '''
+        for localcmd in dir(self.__class__):
+            if localcmd.startswith("do_") and localcmd not in cmdNameList:
+                cmdNameList.append(localcmd.replace("do_", ""))
+        for x in dir(cmdNameList):
+            if x.startswith('do_'):
+                print x
+        '''
+        if not teardown:
+            self.setupalias(cmdNameList)
 
     def teardownCommands(self):
         '''
@@ -167,54 +195,17 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
         the model.
         :return:
         '''
-        # this loop will setup each of the cliname commands for this model level
-        # cmdln/cmd expects that all commands have a function associated with it
-        # in the format of 'do_<command>'
-        # TODO need to add support for when the cli mode does not supply the cliname
-        #      in this case need to get the default from the schema model
-        # this loop will setup each of the cliname commands for this model level
-        for subcmds, cmd in self.model[self.objname]["commands"].iteritems():
-            # handle the links
-            if 'subcmd' in subcmds:
-                try:
-                    for k,v in cmd.iteritems():
-                        cmdname = self.getCliName(v)
-                        if '-' in cmdname:
-                            sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                            self.do_exit([])
-                            cmdname = cmdname.replace('-', '_')
-
-                        if hasattr(self.__class__, "do_" + cmdname):
-                            delattr(self.__class__, "do_" + cmdname)
-                            delattr(self.__class__, "complete_" + cmdname)
-                except Exception as e:
-                        sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
-            else:
-                # handle commands when are not links
-                try:
-                    cmdname = self.getCliName(self.model[self.objname][subcmds])
-                    if '-' in cmdname:
-                        sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                        self.do_exit([])
-                        cmdname = cmdname.replace('-', '_')
-
-                    if hasattr(self.__class__, "do_" + cmdname):
-                        delattr(self.__class__, "do_" + cmdname)
-                except Exception as e:
-                        sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
-
+        self.setupCommands(teardown=True)
         delattr(self.__class__, "do_no")
         delattr(self.__class__, "complete_no")
 
-
     def cmdloop(self, intro=None):
-        cmdln.Cmdln.cmdloop(self)
+        CommonCmdLine.cmdloop(self)
 
     def _cmd_complete_delete(self, text, line, begidx, endidx):
         #sys.stdout.write("\n%s line: %s text: %s %s\n" %('no ' + self.objname, line, text, not text))
         mline = [x for x in line.split(' ') if x != '']
         mline = mline[1:]
-        #sys.stdout.write("\n%s mline %s\n" %('no ' + self.objname, mline))
 
         return self._cmd_complete_common(text, ' '.join(mline), begidx, endidx)
 
@@ -253,16 +244,21 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
                         (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
-                        if i == mlineLength -1:
-                            #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
-                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                    values = self.getCommandValues(objname, keys)
-                                    if not values:
-                                        values = self.getValueSelections(mline[i], submodel, subschema)
-                                    return values
-                            else:
-                                subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
+                        #if i == mlineLength -1:
+                        #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
+                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                values = self.getCommandValues(objname, keys)
+                                if not values:
+                                    values = self.getValueSelections(mline[i], submodel, subschema)
+
+                                # if we have the values we don't want to display any further information
+                                if i+1 < mlineLength and mline[i+1] in values:
+                                    return [snapcliconst.COMMAND_DISPLAY_ENTER]
+
+                                return values
+                        else:
+                            subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
                 elif i == mlineLength - 1:
                     subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
 
@@ -346,7 +342,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 else:
                     self.currentcmd = self.lastcmd[1:]
                 # stop the command loop for config as we will be running a new cmd loop
-                cmdln.Cmdln.stop = True
+                self.stop = True
 
                 # this code was added to handle admin state changes for global objects
                 # like bfd enable
@@ -392,19 +388,49 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             self.cmdloop()
 
     def precmd(self, argv):
+        """
+        Lets perform some pre-checks on the user commands the user has entered.
+        1) Convert the user 'sub' command name to model name
+        2) If a value is expected then do a paramter check
+
+        :param argv:
+        :return:
+        """
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-        mline = [parentcmd] + [x for x in argv if x != 'no']
+        newargv = argv
+        subcommands = self.getchildrencmds(parentcmd, self.model, self.schema)
+
+        if 'no' == argv[0]:
+            if len(argv) > 1:
+                if newargv[1] not in subcommands and len(subcommands) > 0:
+                    usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
+                    if usercmd is None:
+                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                        snapcliconst.printErrorValueCmd(1, argv)
+                        return ''
+                    else:
+                        newargv = [usercmd] + newargv[2:]
+        else:
+            if newargv[0] not in subcommands and len(subcommands) > 0:
+                usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
+                if usercmd is None:
+                    sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                    snapcliconst.printErrorValueCmd(0, argv)
+                    return ''
+                else:
+                    newargv = [usercmd] + newargv[1:]
+
+        mline = [parentcmd] + [x for x in newargv if x != 'no']
         mlineLength = len(mline)
         subschema = self.schema
         submodel = self.model
         if mlineLength > 1:
-
-            cmd = argv[-1]
-            if cmd in ('?', ) and cmd not in ('exit', 'end', 'help', 'no', '!'):
-                self.display_help(argv if 'no' not in argv[0] else argv[1:])
+            cmd = newargv[-1]
+            if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
+                self.display_help(newargv if 'no' not in newargv[0] else newargv[1:])
                 return ''
             if cmd in ('!',):
-                self.do_exit(argv if 'no' not in argv[0] else argv[1:])
+                self.do_exit(newargv if 'no' not in newargv[0] else newargv[1:])
                 return ''
 
             self.commandLen = 0
@@ -412,10 +438,22 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
+                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
+                        if mline[i] not in subcommands and len(subcommands) > 0:
+                            usercmd = self.convertUserCmdToModelCmd(mline[i], subcommands)
+                            if usercmd is not None:
+                                mline[i] = usercmd
+                                newargv[i-1] = usercmd
+                            else:
+                                sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                snapcliconst.printErrorValueCmd(i, mline)
+                                return ''
+
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         if submodelList and subschemaList:
                             for submodel, subschema in zip(submodelList, subschemaList):
+
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                                 (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
@@ -452,7 +490,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                     else:
                                         self.commandLen = len(mline[:i])
                                     self.valueexpected = valueexpected
-                                    return argv
+                                    return newargv
                                 elif i < mlineLength - 1 and mline[i+1] in subcommands:
                                     schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
                                     if schemaname:
@@ -470,7 +508,7 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                                                     else:
                                                         self.commandLen = len(mline[i:])
                                                     self.valueexpected = valueexpected
-                                                    return argv
+                                                    return newargv
                         else:
                             subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                             if mline[i] not in subcommands:
@@ -482,10 +520,10 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                 sys.stdout.write("precmd: error %s" %(e,))
                 pass
 
-        return argv
+        return newargv
 
     def do_help(self, argv):
-        """Display help for current commands"""
+        """"Display help for current commands, short hand notation of ? can be used as well """
         self.display_help(argv)
 
     def do_exit(self, args):
@@ -597,32 +635,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
                     return config
         return None
 
-    def convertKeyValueToDisplay(self, objName, key, value):
-        #TODO this is a hack need a proper common mechanism to change special values
-        returnval = value
-        if key in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
-            # lets strip the string name prepended
-            returnval = returnval.replace(snapcliconst.PORT_NAME_PREFIX, "")
-            # TODO not working when this is enabled so going have to look into this later
-            #returnval = '1/' + returnval
-        return str(returnval)
-
-    def getCommandValues(self, objname, keys):
-
-        # get the sdk
-        try:
-            sdk = self.getSdk()
-            funcObjName = objname
-            getall_func = getattr(sdk, 'getAll' + funcObjName + 's')
-            if getall_func:
-                objs = getall_func()
-                if objs:
-                    return [self.convertKeyValueToDisplay(objname, keys[0], obj['Object'][keys[0]]) for obj in objs]
-        except Exception as e:
-            sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, keys, e,))
-
-        return []
-
     def getConfigOrder(self, configList):
         '''
         It is important that we apply deletes before create in particular order.
@@ -716,8 +728,6 @@ class ConfigCmd(cmdln.Cmdln, CommonCmdLine):
             # get the combination of all config objects which are of the same type
             for c1,c2 in getSameConfigObjects(configList, configList):
 
-                if c1.name == 'BGPNeighbor':
-                    import ipdb; ipdb.set_trace()
                 newConfig = None
                 # lets combine any entries which have the same key values
                 # as the attributes may have been updated by two different config trees

@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "Vrf": {
-      "cliname": "vrf"
+      "cliname": "global"
     }
   }
 }

@@ -33,6 +33,8 @@ COMMAND_TYPE_SHOW = 'show'
 COMMAND_TYPE_CONFIG_NOW = 'now'
 COMMAND_TYPE_INIT = 'init'
 
+COMMAND_DISPLAY_ENTER = '<cr>'
+
 # these model attribute names will possibly have the cliname changed within the cli
 # model to a name picked by asicd.conf to represent a port
 DYNAMIC_MODEL_ATTR_NAME_LIST = ('IntfRef', 'IfIndex', 'Port', 'Members', 'IntfList', 'UntagIntfList', 'PhysicalPort', 'AddressLessIf')
@@ -167,7 +169,7 @@ def updateSpecialValueCases(cfgobj, k, v):
 
 
 def printErrorValueCmd(i, mline):
-    lenstr = len(" ".join(mline[:-1]))
+    lenstr = len(" ".join(mline[:i]))
     sys.stdout.write("%s\n" %(" ".join(mline)))
     spaces = " " * lenstr
     sys.stdout.write("%s\n" %(spaces + " ^"))
