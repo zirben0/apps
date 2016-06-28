@@ -7,7 +7,7 @@
     "cliname": "daemon",
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "daemon"
       }
     }
   }

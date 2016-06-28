@@ -7,7 +7,7 @@
     "cliname": "global",
     "value": {
       "Vrf": {
-        "cliname": "vrf"
+        "cliname": "global"
       }
     }
   }

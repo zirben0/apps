@@ -3,11 +3,12 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayHostDhcpStateSubCmds.json"
-    }, 
+    },
+    "help": "Show DHCP host information, by MAC address",
     "cliname": "dhcp_host",
     "value": {
       "MacAddr": {
-        "cliname": "macaddr"
+        "cliname": "dhcp_host"
       }
     }
   }
