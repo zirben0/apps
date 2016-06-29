@@ -3,7 +3,8 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PortStateSubCmds.json"
-    }, 
+    },
+    "help": "Show Port Interface",
     "cliname": "ethernet",
     "value": {
       "IntfRef": {

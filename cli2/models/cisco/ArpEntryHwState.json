@@ -3,11 +3,12 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpEntryHwStateSubCmds.json"
-    }, 
+    },
+    "help": "Show HW Arp Entry By IP",
     "cliname": "arp_entry_hw",
     "value": {
       "IpAddr": {
-        "cliname": "ipaddr"
+        "cliname": "arp_entry_hw"
       }
     }
   }
