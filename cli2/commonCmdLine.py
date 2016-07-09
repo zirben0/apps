@@ -126,7 +126,6 @@ def line2argv(line):
     i = -1
     WHITESPACE = '\t\n\x0b\x0c\r '  # don't use string.whitespace (bug 81316)
     while 1:
-        print line
         i += 1
         if i >= len(line): break
         ch = line[i]
@@ -187,6 +186,7 @@ class CmdFunc(object):
         self.name = origfuncname
         self.func = func
         self.objowner = objowner
+        self.__name__ = origfuncname
 
         # lets save off the function attributes to the class
         # in case someone like cmdln access it (which it does)
@@ -195,6 +195,7 @@ class CmdFunc(object):
         z = frozenset(x).difference(y)
         for attr in z:
             setattr(self, attr, getattr(func, attr))
+
 
     # allow class to be called as a method
     def __call__(self, *args, **kwargs):
@@ -217,14 +218,28 @@ class CommonCmdLine(cmdln.Cmdln):
         self.parent = parent
         self.switch_ip = switch_ip
         self.switch_name = None
-        self.model = None
+        #self.model = None
         self.basemodelpath = model_path
         self.modelpath = model_path + layer
-        self.schema = None
+        #self.schema = None
         self.baseschemapath = schema_path
         self.schemapath = schema_path + layer
         self.baseprompt = "DEFAULT"
         self.currentcmd = []
+        '''
+        try:
+            import readline
+            self.old_completer = readline.get_completer()
+            readline.set_completer(self.complete)
+            if sys.platform == "darwin":
+                readline.parse_and_bind("bind ? rl_complete")
+            else:
+                readline.parse_and_bind("?: complete_2")
+        except ImportError:
+            pass
+        '''
+    def complete_2(self, text, state):
+        print 'hi'
 
     def complete(self, text, state):
         """Return the next possible completion for 'text'.
@@ -253,6 +268,11 @@ class CommonCmdLine(cmdln.Cmdln):
             matches = compfunc(text, line, begidx, endidx)
             # lets add a space after the command when we know it is the last one
             if len(matches) == 1:
+                if snapcliconst.COMMAND_DISPLAY_ENTER in matches:
+                    # we want to show the user that they have reach the end of command tree
+                    sys.stdout.write("\n%s\n" %(snapcliconst.COMMAND_DISPLAY_ENTER))
+                    sys.stdout.write(self._str(self.prompt) + line)
+                    sys.stdout.flush()
                 self.completion_matches = [x + " " for x in matches if x != snapcliconst.COMMAND_DISPLAY_ENTER]
             else:
                 self.completion_matches = matches
@@ -260,6 +280,62 @@ class CommonCmdLine(cmdln.Cmdln):
             return self.completion_matches[state]
         except IndexError:
             return None
+
+    def setupalias(self, cmdNameList):
+        """
+        Setup the aliases for each of the cmds this should be called as part of setupcommands
+        :param cmdNameList
+        :return:
+        """
+        ALIASES = 'aliases'
+        cmdNameList = [""] + sorted(cmdNameList) + [""]
+
+        def cp(x): return len(os.path.commonprefix(x))
+
+        cmdDict = {cmdNameList[i]: 1 + max(cp(cmdNameList[i-1:i+1]), cp(cmdNameList[i:i+2])) for i in range(1, len(cmdNameList)-1) }
+
+        for cmd, prefixlen in cmdDict.iteritems():
+            func = getattr(self, 'do_' + cmd)
+            if not hasattr(func, ALIASES):
+                setattr(func, ALIASES, [])
+
+            func.aliases = [cmd[:i+1] for i, ch in enumerate(cmd) if i >= prefixlen-1 and cmd[:i+1] != cmd]
+            #print cmd, func.aliases
+
+    def convertUserCmdToModelCmd(self, usercmd, cmdNameList):
+        """
+        Convert a partial user command to a model command
+        :param cmdNameList - list of sub commands from the model
+        :return:
+        """
+        cmdNameList = [""] + sorted(cmdNameList) + [""]
+        def cp(x): return len(os.path.commonprefix(x))
+
+
+        cmdDict = {cmdNameList[i]: 1 + max(cp(cmdNameList[i-1:i+1]), cp(cmdNameList[i:i+2])) for i in range(1, len(cmdNameList)-1) }
+        for cmd, prefixlen in cmdDict.iteritems():
+            if usercmd in [cmd[:i+1] for i, ch in enumerate(cmd) if i >= prefixlen-1 and cmd[:i+1] != cmd]:
+                return cmd
+
+        return None
+
+    def find_func_cmd_alias(self, subname):
+        """
+        function used by do_<cmd> to edit the arg list so that we have the compelete names
+        which should match the model
+        :param subname:
+        :return:
+        """
+        for f in dir(self.__class__):
+            if f.startswith("do_"):
+                func = getattr(self, f)
+                if hasattr(func, 'aliases'):
+                    fcmdname = func.__name__.replace("do_", "")
+                    if subname in func.aliases or \
+                            (len(func.aliases) == 0 and subname == fcmdname):
+                        return fcmdname
+
+        return subname
 
     def getRootAttr(self, attr):
         parent = self.parent
@@ -807,6 +883,33 @@ class CommonCmdLine(cmdln.Cmdln):
             return submodelList, subschemaList
         return [], []
 
+    def convertKeyValueToDisplay(self, objName, key, value):
+        #TODO this is a hack need a proper common mechanism to change special values
+        returnval = value
+        if key in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
+            # lets strip the string name prepended
+            returnval = returnval.replace(snapcliconst.PORT_NAME_PREFIX, "")
+            # TODO not working when this is enabled so going have to look into this later
+            #returnval = '1/' + returnval
+        return str(returnval)
+
+
+    def getCommandValues(self, objname, keys):
+
+        # get the sdk
+        try:
+            sdk = self.getSdk()
+            funcObjName = objname
+            getall_func = getattr(sdk, 'getAll' + funcObjName + 's')
+            if getall_func:
+                objs = getall_func()
+                if objs:
+                    return [self.convertKeyValueToDisplay(objname, keys[0], obj['Object'][keys[0]]) for obj in objs]
+        except Exception as e:
+            sys.stdout.write("CommandValues: FAILED TO GET OBJECT: %s key %s reason:%s\n" %(objname, keys, e,))
+
+        return []
+
     def display_help(self, argv, returnhelp=False):
         """
         This function is being used for two purposes:
@@ -821,8 +924,8 @@ class CommonCmdLine(cmdln.Cmdln):
         else:
             mline = [self.objname] + argv
         mlineLength = len(mline)
-        submodel = self.model
-        subschema = self.schema
+        submodel = self.model if hasattr(self, 'model') else self.modelList[0]
+        subschema = self.schema if hasattr(self, 'schema') else self.schemaList[0]
         helpcommands = []
         if (mlineLength == 1 and not returnhelp) or returnhelp:
             helpcommands = self.getchildrenhelpcmds(self.objname, submodel, subschema)
@@ -845,11 +948,42 @@ class CommonCmdLine(cmdln.Cmdln):
                                     else:
                                         cmd = " ".join(argv[:-1])
                                     helpcommands = [[cmd, help]]
-                                    helpcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
+                                    tmphelpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
+                                    if snapcliconst.COMMAND_TYPE_SHOW in self.cmdtype:
+                                        helpcommands += tmphelpcommands
+                                    else:
+                                        if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                            values = self.getCommandValues(objname, keys)
+                                            strvalues = ''
+                                            if values:
+                                                strvalues += ",".join(values)
+                                            else:
+                                                values = self.getValueSelections(mline[i], submodel, subschema)
+                                                if values:
+                                                    strvalues = ["%s" %(x,) for x in values]
+                                                    strvalues += ",".join(strvalues)
+                                                else:
+                                                    min,max = self.getValueMinMax(mline[i], submodel, subschema)
+                                                    if min is not None and max is not None:
+                                                        strvalues += "%s-%s" %(min, max)
+                                            helpcommands = [[cmd, strvalues + "\n" + help]]
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
-                            elif returnhelp:
-                                helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema)
+                            else:
+                                if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                    helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
+                                    if mline[i+1] in [cmd for (cmd, x) in helpcommands]:
+                                        help = [h for (cmd, h) in helpcommands if mline[i+1] == cmd]
+                                        if help:
+                                            helpcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, help[0]]]
+                                    else:
+                                        if snapcliconst.COMMAND_TYPE_SHOW in self.cmdtype:
+                                            helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
+                                        else:
+                                            helpcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, ""]]
+                                else:
+                                    helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
+
                     else:
                         if 'commands' in submodel[schemaname]:
                             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
@@ -892,6 +1026,121 @@ class CommonCmdLine(cmdln.Cmdln):
         #print indent([labels]+rows, hasHeader=True, separateRows=True,
         #             prefix='| ', postfix=' |',
         #             wrapfunc=lambda x: wrap_onspace_strict(x,width))
+
+    def prepareConfigTreeObjects(self, key, objname, createwithdefault, subcmd, model, schema, listAttrs):
+        '''
+        Based on the schema and model will fill in the default object parameters
+        :param key:
+        :param objname:
+        :param subcmd:
+        :param model:
+        :param schema:
+        :return: list of commands available from this leaf class
+        '''
+
+        def getObjNameAndCreateWithDefaultFromSchema(schema, model, objname, createwithdefault):
+            objname = objname
+            createwithdefault = createwithdefault
+            if 'objname' in schema:
+                objname = schema['objname']['default']
+            if 'createwithdefault' in schema:
+                createwithdefault = schema['createwithdefault']['default']
+                if 'createwithdefault' in model:
+                    createwithdefault = model['createwithdefault']
+
+            return objname, createwithdefault
+
+        cmdList = []
+        cmdDict = {}
+        tmpobjname = objname
+        tmpcreatewithdefault = createwithdefault
+        for k, v in schema.iteritems():
+            if k == key:
+                return v
+
+            # TODO need to update function to ignore sub commands which are not terminating commands
+            if k in model:
+                tmpmodel = model[k]
+                tmpobjname, tmpcreatewithdefault = getObjNameAndCreateWithDefaultFromSchema(v, tmpmodel, tmpobjname, tmpcreatewithdefault)
+
+                # looking for subcommand attributes
+                if "subcmd" in k and "commands" in v and type(v["commands"]) in (dict, jsonref.JsonRef):
+                    listAttrs = v['listattrs'] if 'listattrs' in v else []
+                    cmds = self.prepareConfigTreeObjects(key, tmpobjname, tmpcreatewithdefault, subcmd, tmpmodel["commands"], v["commands"]["properties"], listAttrs)
+                    cmdList += cmds
+                # looking for subsubcommand as this is an attribute that is an attribute,
+                # this means that this is a reference to a struct or list of structs
+                elif "subcmd" in k and type(v) in (dict, jsonref.JsonRef):
+                    for kk, vv in tmpmodel.iteritems():
+                        if kk in v:
+                            subtmpschema = v[kk]['properties']
+                            if 'objname' in subtmpschema:
+                                tmpobjname = subtmpschema['objname']['default']
+
+                            # a sub cmd is one which has a 'value' attribute defined
+                            tmpsubcmd = None
+                            if 'cliname' in vv:
+                                tmpsubcmd = vv['cliname']
+
+                            if "commands" in vv and len(vv) > 0:
+                                attrDict = dict(listAttrs)
+                                key = key
+
+                                isList = False
+                                if k in attrDict:
+                                    key = attrDict[k]
+                                    isList = True
+
+                                # lets create the object, and tie it to the local object
+                                cmds = self.prepareConfigTreeObjects(key,
+                                                           tmpobjname,
+                                                           tmpcreatewithdefault,
+                                                           tmpsubcmd,
+                                                           vv["commands"],
+                                                           subtmpschema["commands"]["properties"],
+                                                           listAttrs)
+                                cmdList += cmds
+
+                                # lets add the attribute to the subcmd
+                                if key:
+                                    cmdDict.update({tmpsubcmd : {'key': key,
+                                                            'createwithdefaults' : tmpcreatewithdefault,
+                                                            'subcommand' : subcmd,
+                                                            'objname' :  objname,
+                                                            'isattrkey': False,
+                                                            'value': cmds,
+                                                            'isarray': isList,
+                                                            'type': tmpobjname}})
+
+                else:
+                    key = k
+                    if 'subcmd' in key:
+                        attrDict = dict(listAttrs)
+                        key = attrDict[k]
+                    cmdDict.update({tmpmodel['cliname'] : {'key': key,
+                                                    'createwithdefaults' : tmpcreatewithdefault,
+                                                    'subcommand' : subcmd,
+                                                    'objname' : objname,
+                                                    'isattrkey': v['properties']['key']['default'],
+                                                    'value': v['properties']['defaultarg'],
+                                                    'isarray': v['properties']['islist']['default'],
+                                                    'type': v['properties']['argtype']}})
+
+            elif 'properties' in v:
+                cmdDict.update({v['properties']['cliname']['default'] : {'key': k,
+                                                    'createwithdefaults' : tmpcreatewithdefault,
+                                                    'subcommand' : subcmd,
+                                                    'objname' : objname,
+                                                    'isattrkey': v['properties']['key']['default'],
+                                                    'value': v['properties']['defaultarg'],
+                                                    'isarray': v['properties']['islist']['default'],
+                                                    'type': v['properties']['argtype']}})
+
+        if cmdDict:
+            cmdList.append(cmdDict)
+
+        return cmdList
+
 
     def do_quit(self, args):
         " Quiting FlexSwitch CLI.  This will stop the CLI session"

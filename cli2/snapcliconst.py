@@ -169,7 +169,7 @@ def updateSpecialValueCases(cfgobj, k, v):
 
 
 def printErrorValueCmd(i, mline):
-    lenstr = len(" ".join(mline[:-1]))
+    lenstr = len(" ".join(mline[:i]))
     sys.stdout.write("%s\n" %(" ".join(mline)))
     spaces = " " * lenstr
     sys.stdout.write("%s\n" %(spaces + " ^"))

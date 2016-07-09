@@ -8,7 +8,7 @@
     "cliname": "vlan",
     "value": {
       "VlanId": {
-        "cliname": "vlanid"
+        "cliname": "vlan"
       }
     }
   }

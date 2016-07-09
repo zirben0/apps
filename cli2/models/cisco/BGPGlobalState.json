@@ -4,11 +4,11 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalStateSubCmds.json"
     },
-    "help": "BGP Global Info",
+    "help": "Show BGP Global Info.  Router Id Ip Address",
     "cliname": "global",
     "value": {
       "RouterId": {
-        "cliname": "routerid"
+        "cliname": "global"
       }
     }
   }
