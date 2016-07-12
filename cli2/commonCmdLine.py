@@ -47,7 +47,8 @@ try:
         readline.parse_and_bind("bind ^I rl_complete")
     else:
         readline.parse_and_bind("tab: complete")
-except:   se
+except Exception as e:
+    print "Exception rasied on import reason: %s" %(e,)
 
 pp = pprint.PrettyPrinter(indent=2)
 

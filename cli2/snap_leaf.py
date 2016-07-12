@@ -1027,7 +1027,7 @@ class LeafCmd(CommonCmdLine):
                                     else:
                                         min,max = self.getValueMinMax(mline[i], submodel, subschema)
                                         if min is not None and max is not None:
-                                            subcommands = [[cmd, ",".join([min, max]) + "\n" + help]]
+                                            subcommands = [[cmd, ",".join(["%s" %(min), "%s" %(max)]) + "\n" + help]]
                             else:
                                 subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 subcommands = [x for x in subcommands if x[0] != mline[0]]
@@ -1067,7 +1067,7 @@ class LeafCmd(CommonCmdLine):
                 if newargv[1] not in subcommands and len(subcommands) > 0:
                     usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
                     if usercmd is None:
-                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                        sys.stdout.write("ERROR: (3) Invalid or incomplete command\n")
                         snapcliconst.printErrorValueCmd(1, argv)
                         return ''
                     else:
@@ -1076,7 +1076,7 @@ class LeafCmd(CommonCmdLine):
             if newargv[0] not in subcommands and len(subcommands) > 0:
                 usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
                 if usercmd is None:
-                    sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                    sys.stdout.write("ERROR: (2) Invalid or incomplete command\n")
                     snapcliconst.printErrorValueCmd(0, argv)
                     return ''
                 else:
@@ -1100,7 +1100,7 @@ class LeafCmd(CommonCmdLine):
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname in subschema and schemaname in submodel:
-
+                        '''
                         subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
                         if mline[i] not in subcommands and len(subcommands) > 0:
                             usercmd = self.convertUserCmdToModelCmd(mline[i], subcommands)
@@ -1108,10 +1108,10 @@ class LeafCmd(CommonCmdLine):
                                 mline[i] = usercmd
                                 newargv[i-1] = usercmd
                             else:
-                                sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                sys.stdout.write("ERROR: (1) Invalid or incomplete command\n")
                                 snapcliconst.printErrorValueCmd(i, mline)
                                 return ''
-
+                        '''
                         subschemaList, submodelList = self.getSubCommand(mline[i],
                                                                          subschema[schemaname]["properties"]["commands"]["properties"],
                                                                          submodel[schemaname]["commands"]), \

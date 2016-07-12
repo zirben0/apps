@@ -405,7 +405,7 @@ class ConfigCmd(CommonCmdLine):
                     if newargv[1] not in subcommands and len(subcommands) > 0:
                         usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
                         if usercmd is None:
-                            sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                            sys.stdout.write("ERROR: (11) Invalid or incomplete command\n")
                         snapcliconst.printErrorValueCmd(1, argv)
                         return ''
                     else:
@@ -414,7 +414,7 @@ class ConfigCmd(CommonCmdLine):
                 if newargv[0] not in subcommands and len(subcommands) > 0:
                     usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
                     if usercmd is None:
-                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                        sys.stdout.write("ERROR: (22) Invalid or incomplete command\n")
                         snapcliconst.printErrorValueCmd(0, argv)
                         return ''
                     else:
@@ -441,14 +441,14 @@ class ConfigCmd(CommonCmdLine):
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
-                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
+                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
                         if mline[i] not in subcommands and len(subcommands) > 0:
                             usercmd = self.convertUserCmdToModelCmd(mline[i], subcommands)
                             if usercmd is not None:
                                 mline[i] = usercmd
                                 newargv[i-1] = usercmd
                             else:
-                                sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                sys.stdout.write("ERROR: (33) Invalid or incomplete command\n")
                                 snapcliconst.printErrorValueCmd(i, mline)
                                 return ''
 
