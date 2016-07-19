@@ -397,28 +397,28 @@ class ConfigCmd(CommonCmdLine):
         :return:
         """
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-        newargv = argv
+        newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:] if len(argv) > 0 else argv
         subcommands = self.getchildrencmds(parentcmd, self.model, self.schema)
-
-        if 'no' == argv[0]:
-            if len(argv) > 1:
-                if newargv[1] not in subcommands and len(subcommands) > 0:
-                    usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
-                    if usercmd is None:
-                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+        if len(argv) > 0:
+            if 'no' == argv[0]:
+                if len(argv) > 1:
+                    if newargv[1] not in subcommands and len(subcommands) > 0:
+                        usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
+                        if usercmd is None:
+                            sys.stdout.write("ERROR: (11) Invalid or incomplete command\n")
                         snapcliconst.printErrorValueCmd(1, argv)
                         return ''
                     else:
                         newargv = [usercmd] + newargv[2:]
-        else:
-            if newargv[0] not in subcommands and len(subcommands) > 0:
-                usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
-                if usercmd is None:
-                    sys.stdout.write("ERROR: Invalid or incomplete command\n")
-                    snapcliconst.printErrorValueCmd(0, argv)
-                    return ''
-                else:
-                    newargv = [usercmd] + newargv[1:]
+            else:
+                if newargv[0] not in subcommands and len(subcommands) > 0:
+                    usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
+                    if usercmd is None:
+                        sys.stdout.write("ERROR: (22) Invalid or incomplete command\n")
+                        snapcliconst.printErrorValueCmd(0, argv)
+                        return ''
+                    else:
+                        newargv = [usercmd] + newargv[1:]
 
         mline = [parentcmd] + [x for x in newargv if x != 'no']
         mlineLength = len(mline)
@@ -432,20 +432,23 @@ class ConfigCmd(CommonCmdLine):
             if cmd in ('!',):
                 self.do_exit(newargv if 'no' not in newargv[0] else newargv[1:])
                 return ''
+            if cmd in ('exit',):
+                self.do_exit(newargv if 'no' not in newargv[0] else newargv[1:])
+                return ''
 
             self.commandLen = 0
             try:
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
-                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
+                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
                         if mline[i] not in subcommands and len(subcommands) > 0:
                             usercmd = self.convertUserCmdToModelCmd(mline[i], subcommands)
                             if usercmd is not None:
                                 mline[i] = usercmd
                                 newargv[i-1] = usercmd
                             else:
-                                sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                sys.stdout.write("ERROR: (33) Invalid or incomplete command\n")
                                 snapcliconst.printErrorValueCmd(i, mline)
                                 return ''
 
@@ -525,6 +528,7 @@ class ConfigCmd(CommonCmdLine):
     def do_help(self, argv):
         """"Display help for current commands, short hand notation of ? can be used as well """
         self.display_help(argv)
+    do_help.aliases = ["?"]
 
     def do_exit(self, args):
         """Exit current CLI tree position, if at base then will exit CLI"""

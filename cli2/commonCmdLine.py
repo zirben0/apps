@@ -47,7 +47,8 @@ try:
         readline.parse_and_bind("bind ^I rl_complete")
     else:
         readline.parse_and_bind("tab: complete")
-except:   se
+except Exception as e:
+    print "Exception rasied on import reason: %s" %(e,)
 
 pp = pprint.PrettyPrinter(indent=2)
 
@@ -308,7 +309,6 @@ class CommonCmdLine(cmdln.Cmdln):
         :param cmdNameList - list of sub commands from the model
         :return:
         """
-        print usercmd, cmdNameList
         cmdNameList = [""] + sorted(cmdNameList) + [""]
         def cp(x): return len(os.path.commonprefix(x))
 
