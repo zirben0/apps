@@ -1073,7 +1073,7 @@ class LeafCmd(CommonCmdLine):
                     else:
                         newargv = [usercmd] + newargv[2:]
         else:
-            if newargv[0] not in subcommands and len(subcommands) > 0:
+            if newargv and newargv[0] not in subcommands and len(subcommands) > 0:
                 usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
                 if usercmd is None:
                     sys.stdout.write("ERROR: (2) Invalid or incomplete command\n")
