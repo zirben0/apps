@@ -59,13 +59,18 @@ class PortMon(object):
         portstat = PortStat()
         portout = portstat.get_portstats("10.1.10.242")
         portcfg = portstat.get_portconfigs("10.1.10.242")
+	pmap = {}
+	for  pcfg in portcfg:
+            pmap[json.dumps(pcfg["Object"]["IntfRef"])] = portstat.parse_speed(pcfg)
+
+
         index = 0
         for port_object in portout:
             portout = portstat.parse_ports(port_object)
-            portspeed = portstat.parse_speed(portcfg[index])
+            port_name = json.dumps(port_object["Object"]["IntfRef"])
+            portspeed = pmap[port_name]
             modspeed = (portout/10**6) * 8
             linkutil = (modspeed/portspeed) * 100
-            port_name = json.dumps(port_object["Object"]["IntfRef"])
             print("port speed %s : %s"%(port_name, str(linkutil)))
             portmon.sendToCollect('gauge', port_name, str(linkutil))
             index = index + 1
@@ -77,15 +82,19 @@ if __name__ == '__main__':
      portout = portstat.get_portstats("10.1.10.242")
      portcfg = portstat.get_portconfigs("10.1.10.242")
      index = 0
+     #parse port names
+     pmap = {}
+     for  pcfg in portcfg:
+	pmap[json.dumps(pcfg["Object"]["IntfRef"])] = portstat.parse_speed(pcfg)
+
      for port_object in portout:
          portout = portstat.parse_ports(port_object)
-         portspeed = portstat.parse_speed(portcfg[index])
+	 port_name = json.dumps(port_object["Object"]["IntfRef"])
+         portspeed = pmap[port_name]
          modspeed = (portout/10**6) * 8
          linkutil = (modspeed/portspeed) * 100 
-	 port_name = json.dumps(port_object["Object"]["IntfRef"])
 	 print("port speed %s : %s"%(port_name, str(linkutil)))
          portmon.sendToCollect('gauge', port_name, str(linkutil))
-	 index = index + 1
      sys.exit(0)
 else:
     import collectd
