@@ -54,9 +54,7 @@ class PortMon(object):
         val.dispatch()
 		    
     def read_callback(self):
-        """
-        Collectd read callback
-        """
+       
         print("Read callback called")
         portstat = PortStat()
         ports = portstat.get_portstats("localhost")
