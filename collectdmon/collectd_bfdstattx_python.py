@@ -5,6 +5,7 @@ import string
 import subprocess
 import sys
 import json
+import datetime
 sys.path.append(os.path.abspath('../../py'))
 from flexswitchV2 import FlexSwitch
 
@@ -63,7 +64,7 @@ class BfdMon(object):
             stat = portstat.parse_bfdstx(port_object)
 	    port_name = port_object["Object"]["IpAddr"]
 	    print("%s : %s"%(port_name, stat))
-            self.sendToCollect('gauge', port_name, stat) 
+            self.sendToCollect('derive', port_name, stat) 
 
 
 if __name__ == '__main__':
@@ -74,7 +75,7 @@ if __name__ == '__main__':
          stat = portstat.parse_bfdstx(port_object)
 	 port_name = json.dumps(port_object["Object"]["IpAddr"])
 	 print("%s : %s"%(port_name, stat))
-         portmon.sendToCollect('gauge', port_name, stat)
+         portmon.sendToCollect('derive', port_name, stat)
 
 
      sys.exit(0)

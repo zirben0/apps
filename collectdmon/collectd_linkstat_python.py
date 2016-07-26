@@ -72,7 +72,7 @@ class PortMon(object):
             modspeed = (portout/10**6) * 8
             linkutil = (modspeed/portspeed) * 100
             print("port speed %s : %s"%(port_name, str(linkutil)))
-            portmon.sendToCollect('gauge', port_name, str(linkutil))
+            portmon.sendToCollect('derive', port_name, str(linkutil))
             index = index + 1
 
 
@@ -97,7 +97,7 @@ if __name__ == '__main__':
          modspeed = (portout/10**6) * 8
          linkutil = (modspeed/portspeed) * 100 
 	 print("port speed %s : %s"%(port_name, str(linkutil)))
-         portmon.sendToCollect('gauge', port_name, str(linkutil))
+         portmon.sendToCollect('derive', port_name, str(linkutil))
      sys.exit(0)
 else:
     import collectd
