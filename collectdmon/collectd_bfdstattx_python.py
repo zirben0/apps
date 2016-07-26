@@ -8,22 +8,31 @@ import json
 sys.path.append(os.path.abspath('../../py'))
 from flexswitchV2 import FlexSwitch
 
-class PortStat(object):
+# send the bfd stats with bits/sec
+class BfdStat(object):
     def __init__(self):
-	print("Start monitoring portstat")
+	print("Start monitoring bfdstat")
 	
-    def get_portstats(self, stwitch_ip):
+    def get_bfdstats(self, stwitch_ip):
         swtch = FlexSwitch (stwitch_ip, 8080)  # Instantiate object to talk to flexSwitch
-	ports = swtch.getAllPortStates()
-        return ports
+	bfds = swtch.getAllBfdSessionStates()
+        return bfds
 	
-    def parse_ports(self, port_object):
-	return json.dumps(port_object["Object"]["IfOutOctets"])	
-
-class PortMon(object):
+    def parse_bfdstx(self, port_object):
+        now1 = datetime.datetime.now()
+	stat1 = port_object["Object"]["NumTxPackets"]
+        now2 = datetime.datetime.now()
+        stat2 = port_object["Object"]["NumTxPackets"]
+        t3 = now2.second - now1.second
+        if t3 == 0:
+            t3 = 1
+        bps = (stat2-stat1)/t3
+        return str(bps)
+    
+class BfdMon(object):
     def __init__(self):
-        self.plugin_name = 'collectd-portstat-python'
-        self.portstat_path = '/usr/bin/portstat'
+        self.plugin_name = 'collectd-bfdstattx-python'
+        self.bfdstat_path = '/usr/bin/bfdstattx'
      
     def init_callback(self):
 	print("Nothing to be done here now ")
@@ -44,31 +53,35 @@ class PortMon(object):
         val.dispatch()
 		    
     def read_callback(self):
+        """
+        Collectd read callback
+        """
         print("Read callback called")
-        portstat = PortStat()
-        ports = portstat.get_portstats("localhost")
+        portstat = BfdStat()
+        ports = portstat.get_bfdstats("localhost")
 	for port_object in ports:
-            stat = portstat.parse_ports(port_object)
-	    port_name = port_object["Object"]["IntfRef"]
+            stat = portstat.parse_bfdstx(port_object)
+	    port_name = port_object["Object"]["IpAddr"]
 	    print("%s : %s"%(port_name, stat))
             self.sendToCollect('gauge', port_name, stat) 
 
 
 if __name__ == '__main__':
-     portstat = PortStat()
-     portmon = PortMon()
-     ports = portstat.get_portstats("localhost")
+     portstat = BfdStat()
+     portmon = BfdMon()
+     ports = portstat.get_bfdstats("localhost")
      for port_object in ports:
-         stat = portstat.parse_ports(port_object)
-	 port_name = json.dumps(port_object["Object"]["IntfRef"])
+         stat = portstat.parse_bfdstx(port_object)
+	 port_name = json.dumps(port_object["Object"]["IpAddr"])
 	 print("%s : %s"%(port_name, stat))
          portmon.sendToCollect('gauge', port_name, stat)
+
 
      sys.exit(0)
 else:
     import collectd
 
-    portmon = PortMon()
+    portmon = BfdMon()
 
     # Register callbacks
   
