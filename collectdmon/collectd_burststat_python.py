@@ -65,7 +65,7 @@ class PortMon(object):
             stat = portstat.parse_ports(port_object)
 	    port_name = port_object["Object"]["IntfRef"]
 	    print("%s : %s"%(port_name, stat))
-            self.sendToCollect('gauge', port_name, stat) 
+            self.sendToCollect('derive', port_name, stat) 
 
 
 if __name__ == '__main__':
@@ -76,7 +76,7 @@ if __name__ == '__main__':
          stat = portstat.parse_ports(port_object)
 	 port_name = json.dumps(port_object["Object"]["IntfRef"])
 	 print("bps %s : %s"%(port_name, stat))
-         portmon.sendToCollect('gauge', port_name, stat)
+         portmon.sendToCollect('derive', port_name, stat)
 
      sys.exit(0)
 else:
