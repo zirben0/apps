@@ -317,6 +317,8 @@ class CommonCmdLine(cmdln.Cmdln):
         for cmd, prefixlen in cmdDict.iteritems():
             if usercmd in [cmd[:i+1] for i, ch in enumerate(cmd) if i >= prefixlen-1 and cmd[:i+1] != cmd]:
                 return cmd
+            elif usercmd == cmd:
+                return cmd
 
         return None
 
