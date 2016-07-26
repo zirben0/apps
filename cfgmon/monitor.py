@@ -9,7 +9,7 @@ import time
 import requests 
 try:
     from flexswitchV2 import FlexSwitch
-    MODELS_DIR='../../models/'
+    MODELS_DIR='../../models/objects/'
 except:
     sys.path.append('/opt/flexswitch/sdk/py/')
     MODELS_DIR='/opt/flexswitch/models/'
