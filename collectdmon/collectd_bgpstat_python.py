@@ -44,9 +44,6 @@ class BGPMon(object):
         val.dispatch()
 		    
     def read_callback(self):
-        """
-        Collectd read callback
-        """
         print("Read callback called")
         bgpstat = BGPStat()
         bgps = bgpstat.get_BGPstats("localhost")

@@ -44,9 +44,6 @@ class BufferMon(object):
         val.dispatch()
 		    
     def read_callback(self):
-        """
-        Collectd read callback
-        """
         print("Read callback called")
         portstat = BufferStat()
         ports = portstat.get_bufferstats("localhost")

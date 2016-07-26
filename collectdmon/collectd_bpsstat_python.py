@@ -4,13 +4,14 @@ import signal
 import string
 import subprocess
 import sys
+import datetime
 import json
 sys.path.append(os.path.abspath('../../py'))
 from flexswitchV2 import FlexSwitch
 
 class PortStat(object):
     def __init__(self):
-	print("Start monitoring portstat")
+	print("Start monitoring portstat in bps")
 	
     def get_portstats(self, stwitch_ip):
         swtch = FlexSwitch (stwitch_ip, 8080)  # Instantiate object to talk to flexSwitch
@@ -18,12 +19,21 @@ class PortStat(object):
         return ports
 	
     def parse_ports(self, port_object):
-	return json.dumps(port_object["Object"]["IfOutOctets"])	
+        now1 = datetime.datetime.now()
+        stat_f = port_object["Object"]["IfOutOctets"]
+        now2 = datetime.datetime.now()
+        stat_s = port_object["Object"]["IfOutOctets"]
+        t3 = now2.second - now1.second
+        t3 = 0
+        if t3 == 0:
+            t3 = 1
+        bps = (stat_s-stat_f)/t3
+    	return str(bps)	
 
 class PortMon(object):
     def __init__(self):
-        self.plugin_name = 'collectd-portstat-python'
-        self.portstat_path = '/usr/bin/portstat'
+        self.plugin_name = 'collectd-bpsstat-python'
+        self.portstat_path = '/usr/bin/bpsstat'
      
     def init_callback(self):
 	print("Nothing to be done here now ")
@@ -44,6 +54,9 @@ class PortMon(object):
         val.dispatch()
 		    
     def read_callback(self):
+        """
+        Collectd read callback
+        """
         print("Read callback called")
         portstat = PortStat()
         ports = portstat.get_portstats("localhost")
@@ -61,7 +74,7 @@ if __name__ == '__main__':
      for port_object in ports:
          stat = portstat.parse_ports(port_object)
 	 port_name = json.dumps(port_object["Object"]["IntfRef"])
-	 print("%s : %s"%(port_name, stat))
+	 print("bps %s : %s"%(port_name, stat))
          portmon.sendToCollect('gauge', port_name, stat)
 
      sys.exit(0)
