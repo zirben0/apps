@@ -396,14 +396,15 @@ class ConfigCmd(CommonCmdLine):
         :param argv:
         :return:
         """
+
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:] if len(argv) > 0 else argv
         subcommands = self.getchildrencmds(parentcmd, self.model, self.schema)
         if len(argv) > 0:
             if 'no' == argv[0]:
                 if len(argv) > 1:
+                    usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
                     if newargv[1] not in subcommands and len(subcommands) > 0:
-                        usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
                         if usercmd is None:
                             sys.stdout.write("ERROR: (11) Invalid or incomplete command\n")
                         snapcliconst.printErrorValueCmd(1, argv)
