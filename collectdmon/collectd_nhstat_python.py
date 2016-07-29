@@ -5,8 +5,11 @@ import string
 import subprocess
 import sys
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 class nhStat(object):
     def __init__(self):

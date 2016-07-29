@@ -5,8 +5,11 @@ import string
 import subprocess
 import sys
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 class PortStat(object):
     def __init__(self):
@@ -52,9 +55,6 @@ class PortMon(object):
         val.dispatch()
 		    
     def read_callback(self):
-        """
-        Collectd read callback
-        """
         print("Read callback called")
         portstat = PortStat()
         portout = portstat.get_portstats("10.1.10.242")
@@ -68,11 +68,14 @@ class PortMon(object):
         for port_object in portout:
             portout = portstat.parse_ports(port_object)
             port_name = json.dumps(port_object["Object"]["IntfRef"])
-            portspeed = pmap[port_name]
+            if port_name in pmap:
+                portspeed = pmap[port_name]
+            else:
+                portspeed = 1
             modspeed = (portout/10**6) * 8
             linkutil = (modspeed/portspeed) * 100
             print("port speed %s : %s"%(port_name, str(linkutil)))
-            portmon.sendToCollect('gauge', port_name, str(linkutil))
+            portmon.sendToCollect('derive', port_name, str(linkutil))
             index = index + 1
 
 
@@ -90,11 +93,14 @@ if __name__ == '__main__':
      for port_object in portout:
          portout = portstat.parse_ports(port_object)
 	 port_name = json.dumps(port_object["Object"]["IntfRef"])
-         portspeed = pmap[port_name]
+         if port_name in pmap:
+             portspeed = pmap[port_name]
+         else: 
+             portspeed = 1
          modspeed = (portout/10**6) * 8
          linkutil = (modspeed/portspeed) * 100 
 	 print("port speed %s : %s"%(port_name, str(linkutil)))
-         portmon.sendToCollect('gauge', port_name, str(linkutil))
+         portmon.sendToCollect('derive', port_name, str(linkutil))
      sys.exit(0)
 else:
     import collectd
