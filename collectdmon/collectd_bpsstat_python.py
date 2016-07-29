@@ -6,8 +6,11 @@ import subprocess
 import sys
 import datetime
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 class PortStat(object):
     def __init__(self):
@@ -19,16 +22,10 @@ class PortStat(object):
         return ports
 	
     def parse_ports(self, port_object):
-        now1 = datetime.datetime.now()
-        stat_f = port_object["Object"]["IfOutOctets"]
-        now2 = datetime.datetime.now()
-        stat_s = port_object["Object"]["IfOutOctets"]
-        t3 = now2.second - now1.second
-        t3 = 0
-        if t3 == 0:
-            t3 = 1
-        bps = (stat_s-stat_f)/t3
-    	return str(bps)	
+        return json.dumps(port_object["Object"]["IfOutOctets"] * 8)
+
+    def parse_inPorts(self, port_object):
+        return json.dumps(port_object["object"]["IfInOctets"] * 8)
 
 class PortMon(object):
     def __init__(self):
@@ -52,17 +49,26 @@ class PortMon(object):
         val.values = [value, ]
         val.meta={'0': True}
         val.dispatch()
-		    
+
+    def collectStats(self, portstat, port_object):
+        stat = portstat.parse_ports(port_object)
+        port_name = port_object["Object"]["IntfRef"]
+
+        outPn = "outBPS"
+        print("%s : %s"%(port_name, stat))
+        self.sendToCollect('derive', port_name+outPn, stat) 
+        
+        inPn = "inBPS"
+        inP = portstat.parse_ports(port_object)  
+        self.sendToCollect('derive', port_name+inPn, inP)
+
     def read_callback(self):
        
         print("Read callback called")
         portstat = PortStat()
         ports = portstat.get_portstats("localhost")
 	for port_object in ports:
-            stat = portstat.parse_ports(port_object)
-	    port_name = port_object["Object"]["IntfRef"]
-	    print("%s : %s"%(port_name, stat))
-            self.sendToCollect('derive', port_name, stat) 
+            self.collectStats(portstat, port_object)
 
 
 if __name__ == '__main__':
@@ -70,10 +76,7 @@ if __name__ == '__main__':
      portmon = PortMon()
      ports = portstat.get_portstats("localhost")
      for port_object in ports:
-         stat = portstat.parse_ports(port_object)
-	 port_name = json.dumps(port_object["Object"]["IntfRef"])
-	 print("bps %s : %s"%(port_name, stat))
-         portmon.sendToCollect('derive', port_name, stat)
+         portmon.collectStats(portstat, port_object)
 
      sys.exit(0)
 else:

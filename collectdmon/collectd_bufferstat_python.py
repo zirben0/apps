@@ -5,8 +5,11 @@ import string
 import subprocess
 import sys
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 class BufferStat(object):
     def __init__(self):
@@ -14,11 +17,11 @@ class BufferStat(object):
 	
     def get_bufferstats(self, stwitch_ip):
         swtch = FlexSwitch (stwitch_ip, 8080)  # Instantiate object to talk to flexSwitch
-	buffers = swtch.getAllBufferStatStates()
+	buffers = swtch.getAllBufferPortStatStates()
         return buffers
 	
     def parse_buffers(self, port_object):
-	return json.dumps(port_object["Object"]["PortPoolBufferStat"])	
+	return json.dumps(port_object["Object"]["PortBufferStat"])	
 
 class BufferMon(object):
     def __init__(self):

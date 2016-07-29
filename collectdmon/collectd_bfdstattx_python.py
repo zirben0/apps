@@ -6,8 +6,11 @@ import subprocess
 import sys
 import json
 import datetime
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 # send the bfd stats with bits/sec
 class BfdStat(object):
