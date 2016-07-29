@@ -23,15 +23,8 @@ class BfdStat(object):
         return bfds
 	
     def parse_bfdstx(self, port_object):
-        now1 = datetime.datetime.now()
 	stat1 = port_object["Object"]["NumTxPackets"]
-        now2 = datetime.datetime.now()
-        stat2 = port_object["Object"]["NumTxPackets"]
-        t3 = now2.second - now1.second
-        if t3 == 0:
-            t3 = 1
-        bps = (stat2-stat1)/t3
-        return str(bps)
+        return json.dumps(stat1)
     
 class BfdMon(object):
     def __init__(self):
