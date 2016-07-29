@@ -6,8 +6,11 @@ import subprocess
 import sys
 import datetime
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 # This script calculates bits per 100th of second
 class PortStat(object):
