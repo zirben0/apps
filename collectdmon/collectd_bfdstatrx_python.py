@@ -6,8 +6,11 @@ import subprocess
 import sys
 import json
 import datetime
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 # send the bfd stats with bits/sec
 class BfdStat(object):
@@ -69,6 +72,9 @@ if __name__ == '__main__':
      portstat = BfdStat()
      portmon = BfdMon()
      ports = portstat.get_bfdstats("localhost")
+     if len(ports) == 0:
+        dummy_port = "dummy"
+        self.SendToCollect('derive', dummy_port, 0)
      for port_object in ports:
 	 port_name = json.dumps(port_object["Object"]["IpAddr"])
          stat_rx = portstat.parse_bfdrx(port_object)
