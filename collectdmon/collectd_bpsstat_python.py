@@ -50,8 +50,8 @@ class PortMon(object):
         val.meta={'0': True}
         val.dispatch()
 
-    def collectStats(port_object):
-        stat = portstat.parse_ports(port_obje    )
+    def collectStats(self, portstat, port_object):
+        stat = portstat.parse_ports(port_object)
         port_name = port_object["Object"]["IntfRef"]
 
         outPn = "outBPS"
@@ -68,7 +68,7 @@ class PortMon(object):
         portstat = PortStat()
         ports = portstat.get_portstats("localhost")
 	for port_object in ports:
-            portstat.collectStats(port_object)
+            self.collectStats(portstat, port_object)
 
 
 if __name__ == '__main__':
@@ -76,7 +76,7 @@ if __name__ == '__main__':
      portmon = PortMon()
      ports = portstat.get_portstats("localhost")
      for port_object in ports:
-         portstat.collectStats(port_object)
+         portmon.collectStats(portstat, port_object)
 
      sys.exit(0)
 else:

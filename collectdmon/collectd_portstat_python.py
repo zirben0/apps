@@ -66,51 +66,51 @@ class PortMon(object):
         val.meta={'0': True}
         val.dispatch()
 
-    def collectStats(self, port_object):
+    def collectStats(self, portstat, port_object):
          stat = portstat.parse_ports(port_object)
 
          port_name = json.dumps(port_object["Object"]["IntfRef"])
          outEn = "outOctets"
          print("%s : %s"%(port_name, stat))
-         portmon.sendToCollect('derive', port_name+outEn, stat)
+         self.sendToCollect('derive', port_name+outEn, stat)
 
          inOcn = "inOctets"
          inOc = portstat.parse_inoctets(port_object)
-         portmon.sendToCollect('counter', port_name+inOcn, inOc)
+         self.sendToCollect('counter', port_name+inOcn, inOc)
 
          inEn = "inError"
          inE = portstat.parse_inerrors(port_object)
-         portmon.sendToCollect('counter', port_name+inEn, inE)
+         self.sendToCollect('counter', port_name+inEn, inE)
 
          outEn = "outError"
          outE = portstat.parse_outerrors(port_object)
-         portmon.sendToCollect('counter', port_name+outEn, outE)
+         self.sendToCollect('counter', port_name+outEn, outE)
 
          inDn = "inDiscard"
          inD = portstat.parse_inDiscards(port_object)
-         portmon.sendToCollect('counter', port_name+inDn, inD)
+         self.sendToCollect('counter', port_name+inDn, inD)
 
          outDn = "outDiscard"
          outD = portstat.parse_outDiscards(port_object)
-         port_mon.sendToCollect('counter', port_name+outDn, outD)
+         self.sendToCollect('counter', port_name+outDn, outD)
 
          eventn = "events"
          event = portstat.parse_events(port_object)
-         portmon.sendToCollect('counter', port_name+eventn, event)
+         self.sendToCollect('counter', port_name+eventn, event)
 		    
     def read_callback(self):
         print("Read callback called")
         portstat = PortStat()
         ports = portstat.get_portstats("localhost")
 	for port_object in ports:
-            portmon.collectStats(port_object)
+            portmon.collectStats(portstat, port_object)
 
 if __name__ == '__main__':
      portstat = PortStat()
      portmon = PortMon()
      ports = portstat.get_portstats("localhost")
      for port_object in ports:
-         portmon.collectStats(port_object)
+         portmon.collectStats(portstat, port_object)
                   
 
      sys.exit(0)
