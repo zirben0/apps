@@ -59,7 +59,7 @@ class PortMon(object):
         self.sendToCollect('derive', port_name+outPn, stat) 
         
         inPn = "inBPS"
-        inP = portstat.parse_ports(port_object)  
+        inP = portstat.parse_inPorts(port_object)  
         self.sendToCollect('derive', port_name+inPn, inP)
 
     def read_callback(self):
