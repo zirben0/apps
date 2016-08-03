@@ -5,8 +5,11 @@ import string
 import subprocess
 import sys
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 class BufferStat(object):
     def __init__(self):
@@ -14,11 +17,17 @@ class BufferStat(object):
 	
     def get_bufferstats(self, stwitch_ip):
         swtch = FlexSwitch (stwitch_ip, 8080)  # Instantiate object to talk to flexSwitch
-	buffers = swtch.getAllBufferStatStates()
+	buffers = swtch.getAllBufferPortStatStates()
         return buffers
 	
     def parse_buffers(self, port_object):
-	return json.dumps(port_object["Object"]["PortPoolBufferStat"])	
+	return json.dumps(port_object["Object"]["PortBufferStat"])	
+
+    def parse_ingBuffers(self, port_object):
+        return json.dumps(port_object["Object"]["IngressPort"])
+
+    def parse_egBuffers(self, port_object):
+        return json.dumps(port_object["Object"]["EgressPort"])
 
 class BufferMon(object):
     def __init__(self):
@@ -42,30 +51,33 @@ class BufferMon(object):
         val.values = [value, ]
         val.meta={'0': True}
         val.dispatch()
-		    
+
+    def collectStats(self, portstat):		    
+        stat = portstat.parse_buffers(port_object)
+        port_name = port_object["Object"]["IntfRef"]
+        self.sendToCollect('gauge', port_name, stat)
+
+        inBn = "ingressBuffer"
+        inB = portstat.parse_ingBuffers(port_object)
+        self.sendToCollect('gauge', port_name+inBn, inB)
+
+        outBn = "egressBuffer"
+        outB = portstat.parse_egBuffers(port_object)
+        self.sendToCollect('gauge', port_name+outBn, outB)
+ 
     def read_callback(self):
-        """
-        Collectd read callback
-        """
         print("Read callback called")
         portstat = BufferStat()
         ports = portstat.get_bufferstats("localhost")
 	for port_object in ports:
-            stat = portstat.parse_buffers(port_object)
-	    port_name = port_object["Object"]["IntfRef"]
-	    print("%s : %s"%(port_name, stat))
-            self.sendToCollect('gauge', port_name, stat) 
-
+            self.collectStats(portstat)
 
 if __name__ == '__main__':
      portstat = BufferStat()
      portmon = BufferMon()
      ports = portstat.get_bufferstats("localhost")
      for port_object in ports:
-         stat = portstat.parse_buffers(port_object)
-	 port_name = json.dumps(port_object["Object"]["IntfRef"])
-	 print("%s : %s"%(port_name, stat))
-         portmon.sendToCollect('gauge', port_name, stat)
+         portmon.collectStats(portstat)
 
      sys.exit(0)
 else:

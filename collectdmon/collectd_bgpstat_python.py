@@ -5,8 +5,11 @@ import string
 import subprocess
 import sys
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
 class BGPStat(object):
     def __init__(self):
@@ -44,9 +47,6 @@ class BGPMon(object):
         val.dispatch()
 		    
     def read_callback(self):
-        """
-        Collectd read callback
-        """
         print("Read callback called")
         bgpstat = BGPStat()
         bgps = bgpstat.get_BGPstats("localhost")

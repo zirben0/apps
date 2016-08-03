@@ -5,9 +5,14 @@ import string
 import subprocess
 import sys
 import json
-sys.path.append(os.path.abspath('../../py'))
-from flexswitchV2 import FlexSwitch
+import datetime
+try:
+    from flexswitchV2 import FlexSwitch
+except:
+    sys.path.append('/opt/flexswitch/sdk/py/')
+    from flexswitchV2 import FlexSwitch
 
+# send the bfd stats with bits/sec
 class BfdStat(object):
     def __init__(self):
 	print("Start monitoring bfdstat")
@@ -17,13 +22,14 @@ class BfdStat(object):
 	bfds = swtch.getAllBfdSessionStates()
         return bfds
 	
-    def parse_bfds(self, port_object):
-	return json.dumps(port_object["Object"]["NumTxPackets"])	
+    def parse_bfdrx(self, port_object):
+        stat1 = port_object["Object"]["NumRxPackets"]
+        return json.dumps(stat1)
 
 class BfdMon(object):
     def __init__(self):
-        self.plugin_name = 'collectd-bfdstat-python'
-        self.bfdstat_path = '/usr/bin/bfdstat'
+        self.plugin_name = 'collectd-bfdstatrx-python'
+        self.bfdstat_path = '/usr/bin/bfdstatrx'
      
     def init_callback(self):
 	print("Nothing to be done here now ")
@@ -51,21 +57,23 @@ class BfdMon(object):
         portstat = BfdStat()
         ports = portstat.get_bfdstats("localhost")
 	for port_object in ports:
-            stat = portstat.parse_bfds(port_object)
 	    port_name = port_object["Object"]["IpAddr"]
-	    print("%s : %s"%(port_name, stat))
-            self.sendToCollect('gauge', port_name, stat) 
+            stat_rx = portstat.parse_bfdrx(port_object)
+            self.sendToCollect('derive', port_name, stat_rx)
 
 
 if __name__ == '__main__':
      portstat = BfdStat()
      portmon = BfdMon()
      ports = portstat.get_bfdstats("localhost")
+     if len(ports) == 0:
+        dummy_port = "dummy"
+        self.SendToCollect('derive', dummy_port, 0)
      for port_object in ports:
-         stat = portstat.parse_bfds(port_object)
 	 port_name = json.dumps(port_object["Object"]["IpAddr"])
-	 print("%s : %s"%(port_name, stat))
-         portmon.sendToCollect('gauge', port_name, stat)
+         stat_rx = portstat.parse_bfdrx(port_object)
+         self.sendToCollect('derive', port_name, stat_rx)
+
 
      sys.exit(0)
 else:
