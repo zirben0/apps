@@ -820,14 +820,14 @@ class ConfigCmd(CommonCmdLine):
                                     r = get_func(*argumentList)
                                     status_code = r.status_code
                                     if status_code not in sdk.httpSuccessCodes + [404]:
-                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Result']))
                                         sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
                                               ",".join(["%s" %(x) for x in argumentList]),
                                               ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
                                     elif status_code not in [404]: # not found
                                         origData = r.json()['Object']
                                     elif status_code in [404] and config.delete:
-                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Error']))
+                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Result']))
                                         sys.stdout.write("warning: nothing to delete invalidating command\n")
                                         sys.stdout.write("sdk:%s(%s,%s)\n\n" %(get_func.__name__,
                                               ",".join(["%s" %(x) for x in argumentList]),
@@ -882,13 +882,13 @@ class ConfigCmd(CommonCmdLine):
                 r = create_func(*argumentList, **kwargs)
             else:
                 r = create_func(*argumentList)
-            errorStr = r.json()['Error']
+            errorStr = r.json()['Result']
             if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
                 sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, errorStr))
                 failurecfg = True
             else:
                 sys.stdout.write("create SUCCESS:   http status code: %s\n" % (r.status_code,))
-                if r.json()['Error']:
+                if errorStr != "Success":
                     sys.stdout.write("warning return code: %s\n" % (errorStr))
 
                 # set configuration to applied state
@@ -914,13 +914,13 @@ class ConfigCmd(CommonCmdLine):
             else:
                 r = delete_func(*argumentList)
 
-            errorStr = r.json()['Error']
+            errorStr = r.json()['Result']
             if r.status_code not in (sdk.httpSuccessCodes + [410]) and ('exists' and 'Nothing to be updated') not in errorStr: # 410 - Done
                 sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, errorStr))
                 failurecfg = True
             else:
                 sys.stdout.write("delete SUCCESS:   http status code: %s\n" % (r.status_code,))
-                if r.json()['Error']:
+                if errorStr != "Success":
                     sys.stdout.write("warning return code: %s\n" % (errorStr))
 
                 # set configuration to applied state
@@ -946,13 +946,13 @@ class ConfigCmd(CommonCmdLine):
             if len(kwargs) > 0:
                 r = update_func(*argumentList, **kwargs)
                 # succes
-                errorStr = r.json()['Error']
+                errorStr = r.json()['Result']
                 if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
                     sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, errorStr))
                     failurecfg = True
                 else:
                     sys.stdout.write("update SUCCESS:   http status code: %s\n" % (r.status_code,))
-                    if r.json()['Error']:
+                    if errorStr != "Success":
                         sys.stdout.write("warning return code: %s\n" % (errorStr))
 
                     # set configuration to applied state
