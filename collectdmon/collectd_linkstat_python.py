@@ -82,8 +82,8 @@ class PortMon(object):
 if __name__ == '__main__':
      portstat = PortStat()
      portmon = PortMon()
-     portout = portstat.get_portstats("10.1.10.242")
-     portcfg = portstat.get_portconfigs("10.1.10.242")
+     portout = portstat.get_portstats("localhost")
+     portcfg = portstat.get_portconfigs("localhost")
      index = 0
      #parse port names
      pmap = {}
