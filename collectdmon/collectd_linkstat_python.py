@@ -57,8 +57,8 @@ class PortMon(object):
     def read_callback(self):
         print("Read callback called")
         portstat = PortStat()
-        portout = portstat.get_portstats("10.1.10.242")
-        portcfg = portstat.get_portconfigs("10.1.10.242")
+        portout = portstat.get_portstats("localhost")
+        portcfg = portstat.get_portconfigs("localhost")
 	pmap = {}
 	for  pcfg in portcfg:
             pmap[json.dumps(pcfg["Object"]["IntfRef"])] = portstat.parse_speed(pcfg)
