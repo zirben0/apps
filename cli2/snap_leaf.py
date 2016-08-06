@@ -408,7 +408,7 @@ class LeafCmd(CommonCmdLine):
 
                             funcname = "do_" + cmdname
                             if not teardown:
-                                setattr(self.__class__, funcname, SetAttrFunc(self._cmd_common))
+                                setattr(self.__class__, funcname, CmdFunc(self, funcname, self._cmd_common))
                             else:
                                 delattr(self.__class__, funcname)
                     except Exception as e:

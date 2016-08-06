@@ -25,7 +25,7 @@ class PortStat(object):
         return json.dumps(port_object["Object"]["IfOutOctets"] * 8)
 
     def parse_inPorts(self, port_object):
-        return json.dumps(port_object["object"]["IfInOctets"] * 8)
+        return json.dumps(port_object["Object"]["IfInOctets"] * 8)
 
 class PortMon(object):
     def __init__(self):
@@ -59,7 +59,7 @@ class PortMon(object):
         self.sendToCollect('derive', port_name+outPn, stat) 
         
         inPn = "inBPS"
-        inP = portstat.parse_ports(port_object)  
+        inP = portstat.parse_inPorts(port_object)  
         self.sendToCollect('derive', port_name+inPn, inP)
 
     def read_callback(self):
