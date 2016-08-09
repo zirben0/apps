@@ -1,0 +1,41 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "HostTxEqDfe": {
+      "cliname": "hosttxeqdfe"
+    }, 
+    "HostRxSerializerTap1Gain": {
+      "cliname": "hostrxserializertap1gain"
+    }, 
+    "HostRxSerializerTap2Delay": {
+      "cliname": "hostrxserializertap2delay"
+    }, 
+    "HostRxSerializerTap2Gain": {
+      "cliname": "hostrxserializertap2gain"
+    }, 
+    "HostRxSerializerTap0Delay": {
+      "cliname": "hostrxserializertap0delay"
+    }, 
+    "HostTxEqCtle": {
+      "cliname": "hosttxeqctle"
+    }, 
+    "HostTxEqLfCtle": {
+      "cliname": "hosttxeqlfctle"
+    }, 
+    "ClntIntfId": {
+      "cliname": "clntIntf"
+    }, 
+    "TXFECDecDisable": {
+      "cliname": "txfecdecdisable"
+    }, 
+    "RXFECDecDisable": {
+      "cliname": "rxfecdecdisable"
+    }, 
+    "HostRxSerializerTap0Gain": {
+      "cliname": "hostrxserializertap0gain"
+    }, 
+    "ModuleId": {
+      "cliname": "dwdm"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "dwdmmodulestate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "ModuleId": {
+        "cliname": "moduleid"
+      }
+    }
+  }
+}

@@ -45,6 +45,9 @@
       },
       "subcmd16": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayGlobal.json"
+      },
+      "subcmd17": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModule.json"
       }
     }
   } 
