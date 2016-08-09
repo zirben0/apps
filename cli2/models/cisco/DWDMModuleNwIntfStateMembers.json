@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "NwIntfId": {
+      "cliname": "nwintfid"
+    }, 
+    "ModuleId": {
+      "cliname": "moduleid"
+    }
+  }
+}

@@ -1,0 +1,360 @@
+{
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "TxPower": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: float64.  Transmit output power for this network interface in dBm default: 0", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "txpower", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "float64"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }
+        }
+      }, 
+      "FECMode": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " 15%SDFEC/15%OvrHeadSDFEC/25%OvrHeadSDFEC  DWDM Module network interface FEC mode", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "fecmode", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "15%SDFEC", 
+              "15%OvrHeadSDFEC", 
+              "25%OvrHeadSDFEC"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "TxPulseShapeFltrRollOff": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: float64.  TX pulse shape filter roll off factor default: 0.301", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "txpulseshapefltrrolloff", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "float64"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "0.301"
+          }
+        }
+      }, 
+      "ModulationFmt": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " QPSK/8QAM/16QAM  Modulation format to use for this network interface default: 16QAM", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "modulationfmt", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "QPSK", 
+              "8QAM", 
+              "16QAM"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "16QAM"
+          }
+        }
+      }, 
+      "WaveLength": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "1530-1565  The ITU-T G.694.1 grid wavelength value to use for this network interface in nm", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "wavelength", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 1530, 
+            "type": "uint16", 
+            "maximum": 1565
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "ModuleId": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "DWDM Module identifier", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "moduleid", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "NwIntfId": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "DWDM Module network interface identifier", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "nwintfid", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "DiffEncoding": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Control to enable/disable DWDM Module network interface encoding type default: true", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "diffencoding", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "true"
+          }
+        }
+      }, 
+      "TxPulseShapeFltrType": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " RootRaisedCos/RaisedCos/Gaussian  TX pulse shaping filter type default: RootRaisedCos", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "txpulseshapefltrtype", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "RootRaisedCos", 
+              "RaisedCos", 
+              "Gaussian"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "RootRaisedCos"
+          }
+        }
+      }
+    }
+  }, 
+  "defaultref": {
+    "type": "object", 
+    "properties": {}, 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+  }, 
+  "objname": {
+    "default": "DWDMModuleNwIntf", 
+    "type": "string", 
+    "description": "object name to which references these attributes"
+  }
+}
