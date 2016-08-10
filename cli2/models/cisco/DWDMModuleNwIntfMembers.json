@@ -1,0 +1,41 @@
+{
+  "listattrs": [
+    [
+      "subcmd1", 
+      "TxPulseShapeFltrRollOff"
+    ], 
+    [
+      "subcmd2", 
+      "TxPower"
+    ]
+  ], 
+  "commands": {
+    "FECMode": {
+      "cliname": "fecmode"
+    }, 
+    "DiffEncoding": {
+      "cliname": "diffencoding"
+    }, 
+    "ModulationFmt": {
+      "cliname": "modulationfmt"
+    }, 
+    "WaveLength": {
+      "cliname": "wavelength"
+    }, 
+    "ModuleId": {
+      "cliname": "moduleid"
+    }, 
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/float64.json"
+    }, 
+    "NwIntfId": {
+      "cliname": "nwintfid"
+    }, 
+    "TxPulseShapeFltrType": {
+      "cliname": "txpulseshapefltrtype"
+    }, 
+    "subcmd2": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/float64.json"
+    }
+  }
+}

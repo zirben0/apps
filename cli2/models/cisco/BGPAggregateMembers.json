@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "SendSummaryOnly": {
+      "cliname": "sendsummaryonly"
+    }, 
+    "GenerateASSet": {
+      "cliname": "generateasset"
+    }, 
+    "IpPrefix": {
+      "cliname": "ipprefix"
+    }
+  }
+}

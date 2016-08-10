@@ -1,0 +1,14 @@
+{
+  "fanstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/FanStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "FanId": {
+        "cliname": "fanid"
+      }
+    }
+  }
+}

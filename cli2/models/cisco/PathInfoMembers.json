@@ -1,0 +1,41 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Origin": {
+      "cliname": "origin"
+    }, 
+    "UpdatedTime": {
+      "cliname": "updatedtime"
+    }, 
+    "LocalPref": {
+      "cliname": "localpref"
+    }, 
+    "AdditionalPath": {
+      "cliname": "additionalpath"
+    }, 
+    "Metric": {
+      "cliname": "metric"
+    }, 
+    "NextHop": {
+      "cliname": "nexthop"
+    }, 
+    "PathType": {
+      "cliname": "pathtype"
+    }, 
+    "BestPath": {
+      "cliname": "bestpath"
+    }, 
+    "ValidPath": {
+      "cliname": "validpath"
+    }, 
+    "PathId": {
+      "cliname": "pathid"
+    }, 
+    "Path": {
+      "cliname": "path"
+    }, 
+    "MultiPath": {
+      "cliname": "multipath"
+    }
+  }
+}

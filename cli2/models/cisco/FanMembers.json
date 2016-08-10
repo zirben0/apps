@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AdminState": {
+      "cliname": "adminstate"
+    }, 
+    "AdminSpeed": {
+      "cliname": "adminspeed"
+    }, 
+    "FanId": {
+      "cliname": "fanid"
+    }
+  }
+}

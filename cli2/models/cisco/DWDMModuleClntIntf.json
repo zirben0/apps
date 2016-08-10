@@ -1,0 +1,17 @@
+{
+  "dwdmmoduleclntintf": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleClntIntfSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "ClntIntfId": {
+        "cliname": "clntintfid"
+      }, 
+      "ModuleId": {
+        "cliname": "moduleid"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IndependentLaneMode": {
+      "cliname": "independentlanemode"
+    }, 
+    "ModuleReset": {
+      "cliname": "modulereset"
+    }, 
+    "ModuleId": {
+      "cliname": "moduleid"
+    }
+  }
+}

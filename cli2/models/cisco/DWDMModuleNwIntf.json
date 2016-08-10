@@ -1,0 +1,17 @@
+{
+  "dwdmmodulenwintf": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntfSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "NwIntfId": {
+        "cliname": "nwintfid"
+      }, 
+      "ModuleId": {
+        "cliname": "moduleid"
+      }
+    }
+  }
+}
