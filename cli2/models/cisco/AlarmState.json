@@ -1,0 +1,26 @@
+{
+  "alarmstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/AlarmStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "EventId": {
+        "cliname": "eventid"
+      }, 
+      "EventName": {
+        "cliname": "eventname"
+      }, 
+      "SrcObjName": {
+        "cliname": "srcobjname"
+      }, 
+      "OwnerName": {
+        "cliname": "ownername"
+      }, 
+      "OwnerId": {
+        "cliname": "ownerid"
+      }
+    }
+  }
+}

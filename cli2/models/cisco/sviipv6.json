@@ -1,0 +1,14 @@
+{
+  "sviipv6": {
+    "cliname": "ipv6",
+    "help": "Interface IPv6 address",
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6sviintfmembers.json"
+      },
+      "subcmd2": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpRelayIntf.json"
+      }
+    }
+  }
+}

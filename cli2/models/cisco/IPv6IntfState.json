@@ -1,0 +1,14 @@
+{
+  "ipv6intfstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv6IntfStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IntfRef": {
+        "cliname": "intfref"
+      }
+    }
+  }
+}

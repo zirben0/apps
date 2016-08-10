@@ -7,5 +7,11 @@
   },
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/schema/BGPPeerGroup.json"
+  },
+  "subcmd4": {
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPIPv6Aggregate.json"
+  },
+  "subcmd5": {
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPAggregate.json"
   }
 }

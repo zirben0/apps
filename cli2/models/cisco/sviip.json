@@ -1,7 +1,7 @@
 {
   "sviip": {
     "cliname": "ip",
-    "help": "Interface IP address",
+    "help": "Interface IPv4 address",
     "commands": {
       "subcmd1": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv4sviintfmembers.json"

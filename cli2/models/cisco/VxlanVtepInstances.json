@@ -1,0 +1,17 @@
+{
+  "vxlanvtepinstances": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/VxlanVtepInstancesSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "VtepId": {
+        "cliname": "vtepid"
+      }, 
+      "VxlanId": {
+        "cliname": "vxlanid"
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "bgppolicyactionstate": {
+    "createwithdefault": {
+      "default": true, 
+      "type": "boolean", 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object", 
+    "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/BGPPolicyActionStateSubCmds.json"
+        }
+      }, 
+      "cliname": {
+        "default": "", 
+        "type": "string", 
+        "description": "name used in cli to describe bfd"
+      }, 
+      "help": {
+        "default": "", 
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "", 
+        "displayValue": false, 
+        "type": "string", 
+        "description": "what to display on the prompt when the user has entered a command"
+      }, 
+      "value": {
+        "type": "object", 
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {
+          "Name": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": "Name of the BGP policy action", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "cliname": {
+                "default": "name", 
+                "type": "string"
+              }, 
+              "argtype": {
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }
+            }
+          }
+        }
+      }, 
+      "objname": {
+        "default": "BGPPolicyActionState", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
+      }
+    }
+  }
+}

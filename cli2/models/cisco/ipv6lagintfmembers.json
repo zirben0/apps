@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "IntfRef": {
+      "cliname": "port_channel"
+    },
+    "IpAddr": {
+      "cliname": "address"
+    }
+  }
+}

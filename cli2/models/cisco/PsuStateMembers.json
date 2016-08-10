@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "PsuId": {
+      "cliname": "psuid"
+    }
+  }
+}

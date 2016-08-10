@@ -1,0 +1,14 @@
+{
+  "ospfeventstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfEventStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Index": {
+        "cliname": "index"
+      }
+    }
+  }
+}

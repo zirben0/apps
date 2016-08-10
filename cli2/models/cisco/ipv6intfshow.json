@@ -1,0 +1,16 @@
+{
+  "ipv6intfshow": {
+    "cliname": "interface",
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6ethernetshow.json"
+      },
+      "subcmd2": {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/ipv6svishow.json"
+      },
+      "subcmd3": {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/ipv6lagshow.json"
+      }
+    }
+  }
+}
