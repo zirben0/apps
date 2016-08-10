@@ -305,6 +305,80 @@
           }
         }
       }, 
+<<<<<<< HEAD
+      "HostRxSerializerTap0Gain": {
+=======
+      "TXFECDecDisable": {
+>>>>>>> 1641655bbc642475335908a8a6af9ccc7bc93fac
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  802.3bj FEC decoder enable/disable state for traffic from Host to DWDM Module default: false", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "txfecdecdisable", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }
+        }
+      }, 
+      "RXFECDecDisable": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  802.3bj FEC decoder enable/disable state for traffic from DWDM module to Host default: false", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "rxfecdecdisable", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }
+        }
+      }, 
       "HostRxSerializerTap0Gain": {
         "type": "object", 
         "properties": {
@@ -339,41 +413,6 @@
           }, 
           "defaultarg": {
             "default": "7"
-          }
-        }
-      }, 
-      "FECEnabled": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  802.3bj FEC enable/disable state default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "fecenabled", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
           }
         }
       }, 

@@ -1,5 +1,11 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleMembers.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleNwIntf.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleClntIntf.json"
   }
 }

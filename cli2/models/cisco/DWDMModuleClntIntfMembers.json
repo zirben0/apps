@@ -23,16 +23,19 @@
       "cliname": "hosttxeqlfctle"
     }, 
     "ClntIntfId": {
-      "cliname": "clntintfid"
+      "cliname": "clntIntf"
+    }, 
+    "TXFECDecDisable": {
+      "cliname": "txfecdecdisable"
+    }, 
+    "RXFECDecDisable": {
+      "cliname": "rxfecdecdisable"
     }, 
     "HostRxSerializerTap0Gain": {
       "cliname": "hostrxserializertap0gain"
     }, 
-    "FECEnabled": {
-      "cliname": "fecenabled"
-    }, 
     "ModuleId": {
-      "cliname": "moduleid"
+      "cliname": "dwdm"
     }
   }
 }

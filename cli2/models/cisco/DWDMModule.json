@@ -1,13 +1,14 @@
 {
   "dwdmmodule": {
-    "prompt": "", 
+    "prompt": "dwdm", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleSubCmds.json"
     }, 
-    "cliname": "", 
+    "help" : "Command to configure dwdm module",
+    "cliname": "dwdm", 
     "value": {
       "ModuleId": {
-        "cliname": "moduleid"
+        "cliname": "dwdm"
       }
     }
   }

@@ -1,14 +1,5 @@
 {
-  "listattrs": [
-    [
-      "subcmd1", 
-      "TxPulseShapeFltrRollOff"
-    ], 
-    [
-      "subcmd2", 
-      "TxPower"
-    ]
-  ], 
+  "listattrs": [], 
   "createwithdefault": {
     "default": false, 
     "type": "boolean", 
@@ -18,6 +9,41 @@
     "type": "object", 
     "description": "", 
     "properties": {
+      "TxPower": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: float64.  Transmit output power for this network interface in dBm default: 0", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "txpower", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "float64"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }
+        }
+      }, 
       "FECMode": {
         "type": "object", 
         "properties": {
@@ -30,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " 15%SDFEC/15OvrHeadSDFEC%/25%OvrHeadSDFEC  DWDM Module network interface FEC mode", 
+            "default": " 15%SDFEC/15%OvrHeadSDFEC/25%OvrHeadSDFEC  DWDM Module network interface FEC mode", 
             "type": "string"
           }, 
           "islist": {
@@ -44,7 +70,7 @@
           "argtype": {
             "enum": [
               "15%SDFEC", 
-              "15OvrHeadSDFEC%", 
+              "15%OvrHeadSDFEC", 
               "25%OvrHeadSDFEC"
             ], 
             "type": "string"
@@ -58,7 +84,7 @@
           }
         }
       }, 
-      "DiffEncoding": {
+      "TxPulseShapeFltrRollOff": {
         "type": "object", 
         "properties": {
           "key": {
@@ -70,7 +96,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  Control to enable/disable DWDM Module network interface encoding type default: true", 
+            "default": "type: float64.  TX pulse shape filter roll off factor default: 0.301", 
             "type": "string"
           }, 
           "islist": {
@@ -78,18 +104,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "diffencoding", 
+            "default": "txpulseshapefltrrolloff", 
             "type": "string"
           }, 
           "argtype": {
-            "type": "bool"
+            "type": "float64"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "true"
+            "default": "0.301"
           }
         }
       }, 
@@ -207,9 +233,6 @@
           }
         }
       }, 
-      "subcmd1": {
-        "$ref": "file:/tmp/snaproute/cli/schema/float64.json"
-      }, 
       "NwIntfId": {
         "type": "object", 
         "properties": {
@@ -244,6 +267,41 @@
           }, 
           "defaultarg": {
             "default": ""
+          }
+        }
+      }, 
+      "DiffEncoding": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Control to enable/disable DWDM Module network interface encoding type default: true", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "diffencoding", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "true"
           }
         }
       }, 
@@ -286,9 +344,6 @@
             "default": "RootRaisedCos"
           }
         }
-      }, 
-      "subcmd2": {
-        "$ref": "file:/tmp/snaproute/cli/schema/float64.json"
       }
     }
   }, 

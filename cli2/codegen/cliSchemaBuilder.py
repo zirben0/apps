@@ -49,7 +49,7 @@ def isboolean(v):
     return v.lower() in ('bool', 'boolean')
 
 def isCommonType(t):
-    return t.startswith('int') or t.startswith('uint') or t in ('string', 'bool', 'boolean', 'char')
+    return t.startswith('int') or t.startswith('uint') or t in ('string', 'bool', 'boolean', 'char', 'float64')
 
 class ModelLeafTemplate(object):
     '''
