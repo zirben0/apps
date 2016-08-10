@@ -1,0 +1,32 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "TxPower": {
+      "cliname": "txpower"
+    }, 
+    "FECMode": {
+      "cliname": "fecmode"
+    }, 
+    "TxPulseShapeFltrRollOff": {
+      "cliname": "txpulseshapefltrrolloff"
+    }, 
+    "ModulationFmt": {
+      "cliname": "modulationfmt"
+    }, 
+    "WaveLength": {
+      "cliname": "wavelength"
+    }, 
+    "ModuleId": {
+      "cliname": "dwdm"
+    }, 
+    "NwIntfId": {
+      "cliname": "nwIntf"
+    }, 
+    "DiffEncoding": {
+      "cliname": "diffencoding"
+    }, 
+    "TxPulseShapeFltrType": {
+      "cliname": "txpulseshapefltrtype"
+    }
+  }
+}

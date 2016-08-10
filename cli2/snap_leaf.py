@@ -1001,8 +1001,8 @@ class LeafCmd(CommonCmdLine):
                     subcommands = [x for x in subcommands if x[0] != parentcmd]
 
         #ignore the help or ? command
-        submodel = self.modelList[0]
-        subschema = self.schemaList[0]
+        submodel = self.modelList[0] if self.modelList else []
+        subschema = self.schemaList[0] if self.schemaList else []
         for i in range(1, mlineLength):
             schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
             if schemaname:
