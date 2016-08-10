@@ -1,23 +1,13 @@
 {
- "ArpDeleteByIPv4Addr": {
-  "access": "x",
-  "owner": "arpd",
-  "srcfile": "arpObjects.go",
-  "multiplicity": "1",
+ "AlarmState": {
+  "access": "r",
+  "owner": "fMgrd",
+  "srcfile": "fMgrObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
-  "linkedObjects": null,
-  "parent": ""
- },
- "ArpDeleteByIfName": {
-  "access": "x",
-  "owner": "arpd",
-  "srcfile": "arpObjects.go",
-  "multiplicity": "1",
-  "accelerated": false,
-  "usesStateDB": false,
-  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -29,6 +19,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -40,6 +31,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -51,6 +43,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -62,28 +55,19 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
- "ArpRefreshByIPv4Addr": {
-  "access": "x",
-  "owner": "arpd",
-  "srcfile": "arpObjects.go",
-  "multiplicity": "1",
+ "BGPAggregate": {
+  "access": "w",
+  "owner": "bgpd",
+  "srcfile": "bgpObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
-  "linkedObjects": null,
-  "parent": ""
- },
- "ArpRefreshByIfName": {
-  "access": "x",
-  "owner": "arpd",
-  "srcfile": "arpObjects.go",
-  "multiplicity": "1",
-  "accelerated": false,
-  "usesStateDB": false,
-  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -95,6 +79,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -106,6 +91,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -117,6 +103,19 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "BGPIPv6Aggregate": {
+  "access": "w",
+  "owner": "bgpd",
+  "srcfile": "bgpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -128,6 +127,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -139,6 +139,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -150,6 +151,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -161,6 +163,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -172,6 +175,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -183,6 +187,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -194,6 +199,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -205,6 +211,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -216,6 +223,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -227,6 +235,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -238,6 +247,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -249,6 +259,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -260,6 +271,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -271,6 +283,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -280,8 +293,9 @@
   "srcfile": "bgpObjects.go",
   "multiplicity": "*",
   "accelerated": false,
-  "usesStateDB": false,
+  "usesStateDB": true,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -293,6 +307,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -304,6 +319,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -315,6 +331,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -326,6 +343,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -337,6 +355,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -348,6 +367,31 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "BufferGlobalStatState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "BufferPortStatState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -359,17 +403,79 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
- "Daemon": {
-  "access": "w",
-  "owner": "sysd",
-  "srcfile": "sysObjects.go",
-  "multiplicity": "*",
+ "DWDMModule": {
+  "access": "rw",
+  "owner": "opticd",
+  "srcfile": "opticdObjects.go",
+  "multiplicity": " \"*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "DWDMModuleClntIntf": {
+  "access": "rw",
+  "owner": "opticd",
+  "srcfile": "opticdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "DWDMModuleClntIntfState": {
+  "access": "r",
+  "owner": "opticd",
+  "srcfile": "opticdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "DWDMModuleNwIntf": {
+  "access": "rw",
+  "owner": "opticd",
+  "srcfile": "opticdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "DWDMModuleNwIntfState": {
+  "access": "r",
+  "owner": "opticd",
+  "srcfile": "opticdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "DWDMModuleState": {
+  "access": "r",
+  "owner": "opticd",
+  "srcfile": "opticdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -381,6 +487,7 @@
   "accelerated": false,
   "usesStateDB": true,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -392,6 +499,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -403,6 +511,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -414,6 +523,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -425,6 +535,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -436,6 +547,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -447,6 +559,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -458,6 +571,55 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "FMgrGlobal": {
+  "access": "w",
+  "owner": "fMgrd",
+  "srcfile": "fMgrObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "Fan": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "FanState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "FaultState": {
+  "access": "r",
+  "owner": "fMgrd",
+  "srcfile": "fMgrObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -469,6 +631,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -480,6 +643,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -491,6 +655,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -502,6 +667,7 @@
   "accelerated": true,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -513,6 +679,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -524,6 +691,55 @@
   "accelerated": false,
   "usesStateDB": true,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "IPv6Intf": {
+  "access": "w",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "IPv6IntfState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "IPv6Route": {
+  "access": "w",
+  "owner": "ribd",
+  "srcfile": "ribdObjects.go",
+  "multiplicity": "*",
+  "accelerated": true,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "IPv6RouteState": {
+  "access": "r",
+  "owner": "ribd",
+  "srcfile": "ribdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -535,6 +751,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -546,28 +763,31 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
  "LLDPIntf": {
-  "access": "w",
+  "access": "rw",
   "owner": "lldpd",
   "srcfile": "lldpObjects.go",
-  "multiplicity": "1",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
-  "autoCreate": true,
+  "autoCreate": false,
+  "autoDiscover": true,
   "linkedObjects": null,
-  "parent": "Port"
+  "parent": ""
  },
  "LLDPIntfState": {
   "access": "r",
   "owner": "lldpd",
   "srcfile": "lldpObjects.go",
-  "multiplicity": "1",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -579,6 +799,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -590,6 +811,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -601,6 +823,31 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "Led": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "LedState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -612,6 +859,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -623,6 +871,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -634,6 +883,31 @@
   "accelerated": false,
   "usesStateDB": true,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "NDPEntryState": {
+  "access": "r",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "NDPGlobal": {
+  "access": "w",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": true,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -645,6 +919,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -656,6 +931,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -667,6 +943,19 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "OspfEventState": {
+  "access": "r",
+  "owner": "ospfd",
+  "srcfile": "ospfdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -678,6 +967,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -689,10 +979,11 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
- "OspfIPv4Routes": {
+ "OspfIPv4RouteState": {
   "access": "r",
   "owner": "ospfd",
   "srcfile": "ospfdObjects.go",
@@ -700,6 +991,7 @@
   "accelerated": false,
   "usesStateDB": true,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -711,6 +1003,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -722,6 +1015,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -733,6 +1027,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -744,6 +1039,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -755,6 +1051,7 @@
   "accelerated": false,
   "usesStateDB": true,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -766,6 +1063,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -777,17 +1075,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
-  "linkedObjects": null,
-  "parent": ""
- },
- "OspfStubAreaEntry": {
-  "access": "w",
-  "owner": "ospfd",
-  "srcfile": "ospfdObjects.go",
-  "multiplicity": "*",
-  "accelerated": false,
-  "usesStateDB": false,
-  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -799,6 +1087,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -810,6 +1099,31 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PathInfo": {
+  "access": "",
+  "owner": "bgpd",
+  "srcfile": "bgpObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PlatformState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -821,6 +1135,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -832,6 +1147,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -843,6 +1159,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -854,6 +1171,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -865,6 +1183,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -876,6 +1195,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -887,6 +1207,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -898,9 +1219,8 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
-  "linkedObjects": [
-   "LLDPIntf"
-  ],
+  "autoDiscover": true,
+  "linkedObjects": null,
   "parent": ""
  },
  "PortState": {
@@ -911,6 +1231,31 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "Psu": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PsuState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -922,6 +1267,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -933,6 +1279,31 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "Sfp": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "SfpState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -944,6 +1315,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -955,6 +1327,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -966,6 +1339,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -977,6 +1351,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -988,6 +1363,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -999,6 +1375,19 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "SubIPv6Intf": {
+  "access": "w",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1010,6 +1399,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1021,6 +1411,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1032,6 +1423,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1043,6 +1435,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1054,6 +1447,19 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "ThermalState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1065,6 +1471,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1076,6 +1483,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1087,6 +1495,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1098,6 +1507,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1109,6 +1519,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1120,10 +1531,11 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
- "VxlanVtepInstances": {
+ "VxlanVtepInstance": {
   "access": "w",
   "owner": "vxland",
   "srcfile": "gen_vxlan.go",
@@ -1131,6 +1543,7 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  }
