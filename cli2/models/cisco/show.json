@@ -65,6 +65,9 @@
       },
       "subcmd23": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/lldpshow.json"
+      },
+      "subcmd24": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleState.json"
       }
     }
   } 

@@ -80,6 +80,9 @@
           },
           "subcmd23": {
             "$ref": "file:/tmp/snaproute/cli/schema/lldpshow.json"
+          },
+          "subcmd24": {
+            "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleState.json"
           }
         }
       }
