@@ -95,7 +95,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The 32-bit identifier of the area from which the LSA was received.", 
+                "default": " The 32-bit identifier of the area from which the LSA was received.", 
                 "type": "string"
               }, 
               "islist": {
@@ -107,9 +107,7 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [
-                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-                ], 
+                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -133,7 +131,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The Link State ID is an LS Type Specific field containing either a Router ID or an IP address; it identifies the piece of the routing domain that is being described by the advertisement.", 
+                "default": " The Link State ID is an LS Type Specific field containing either a Router ID or an IP address; it identifies the piece of the routing domain that is being described by the advertisement.", 
                 "type": "string"
               }, 
               "islist": {
@@ -145,9 +143,7 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [
-                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-                ], 
+                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -171,7 +167,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The 32-bit number that uniquely identifies the originating router in the Autonomous System.", 
+                "default": " The 32-bit number that uniquely identifies the originating router in the Autonomous System.", 
                 "type": "string"
               }, 
               "islist": {
@@ -183,9 +179,7 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [
-                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-                ], 
+                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {
