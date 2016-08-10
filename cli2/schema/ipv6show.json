@@ -1,5 +1,5 @@
 {
-  "ip": {
+  "ipv6": {
     "type" : "object",
     "properties" : {
       "prompt" : {
@@ -13,23 +13,17 @@
       },
       "help": {
         "type" : "string",
-        "default": "Show IP features"
+        "default": "Show IPv6 features"
       },
       "commands": {
         "type": "object",
         "description": "Base commands",
         "properties": {
           "subcmd1" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4RouteState.json"
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv6RouteState.json"
           },
           "subcmd2" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/bgpshow.json"
-          },
-          "subcmd3" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/ipintfshow.json"
-          },
-          "subcmd4" : {
-            "$ref" : "file:/tmp/snaproute/cli/schema/OspfGlobalState.json"
+            "$ref" : "file:/tmp/snaproute/cli/schema/ipv6intfshow.json"
           }
         }
       }

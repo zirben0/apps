@@ -1,6 +1,5 @@
 {
   "ethipv6": {
-    "help": "Configure IPv6 Features",
     "cliname" : "ipv6",
     "commands": {
       "subcmd1" : {

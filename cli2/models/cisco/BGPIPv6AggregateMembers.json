@@ -8,7 +8,7 @@
       "cliname": "generate_as_set"
     }, 
     "IpPrefix": {
-      "cliname": "network_prefix"
+      "cliname": "network_ipv6_prefix"
     }
   }
 }

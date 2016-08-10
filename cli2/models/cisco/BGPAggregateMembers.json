@@ -2,13 +2,13 @@
   "listattrs": [], 
   "commands": {
     "SendSummaryOnly": {
-      "cliname": "sendsummaryonly"
+      "cliname": "send_summary_only"
     }, 
     "GenerateASSet": {
-      "cliname": "generateasset"
+      "cliname": "generate_as_set"
     }, 
     "IpPrefix": {
-      "cliname": "ipprefix"
+      "cliname": "network_prefix"
     }
   }
 }

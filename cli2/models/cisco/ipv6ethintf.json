@@ -1,7 +1,6 @@
 {
   "ipv6ethintf": {
     "cliname": "ethernet",
-    "help": "Configure IPv6 Features",
     "commands": {
       "subcmd1": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6ethintfmembers.json"

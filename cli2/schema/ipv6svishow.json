@@ -1,5 +1,5 @@
 {
-  "sviipv6": {
+  "ipsvishow": {
     "type" : "object",
     "properties" : {
       "prompt": {
@@ -13,19 +13,21 @@
       },
       "help": {
         "type": "string",
-        "default": "Configure IPv6 features"
+        "default": "Show IP features"
       },
       "commands": {
         "type": "object",
         "description": "Base commands",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/tmp/snaproute/cli/schema/ipv6sviintfmembers.json"
-          },
-          "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayIntf.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/IPv6IntfStateMembers.json"
           }
         }
+      },
+      "objname": {
+        "default": "SviIPv6IntfState",
+        "type": "string",
+        "description": "object name to which references these attributes"
       }
     }
   }

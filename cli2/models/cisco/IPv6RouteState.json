@@ -3,8 +3,9 @@
     "prompt": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv6RouteStateSubCmds.json"
-    }, 
-    "cliname": "", 
+    },
+    "help": "Show RIB IPv6 Routes",
+    "cliname": "route", 
     "value": {
       "DestinationNw": {
         "cliname": "destinationnw"

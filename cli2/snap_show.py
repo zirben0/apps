@@ -770,6 +770,7 @@ class ShowCmd(CommonCmdLine):
         showObj = self.getShowObj()
         if showObj and showObj.configList:
             sys.stdout.write("Applying Show:\n")
+
             # tell the user what attributes are being applied
             for i in range(len(showObj.configList)):
                 config = showObj.configList[-(i+1)]
@@ -777,9 +778,9 @@ class ShowCmd(CommonCmdLine):
 
                 # get the sdk
                 sdk = self.getSdkShow()
-
                 #funcObjName = config.name + 's' if 'State' in config.name else config.name + 'States'
                 funcObjName = config.name
+
                 try:
                     if all:
                         printall_func = getattr(sdk, 'print' + funcObjName + 's')
