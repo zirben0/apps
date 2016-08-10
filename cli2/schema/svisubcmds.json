@@ -4,5 +4,8 @@
   },
   "subcmd2": {
      "$ref": "file:/tmp/snaproute/cli/schema/sviip.json"
+  },
+  "subcmd3": {
+     "$ref": "file:/tmp/snaproute/cli/schema/sviipv6.json"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "ipv6route": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv6RouteSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "DestinationNw": {
+        "cliname": "destinationnw"
+      }, 
+      "NetworkMask": {
+        "cliname": "networkmask"
+      }
+    }
+  }
+}

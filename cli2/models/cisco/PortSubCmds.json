@@ -22,5 +22,8 @@
   },
   "subcmd9": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/portvlanmembership.json"
+  },
+  "subcmd10": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/ethipv6.json"
   }
 }

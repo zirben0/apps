@@ -1,14 +1,8 @@
 {
   "arprefreshbyifname": {
     "prompt": "", 
-    "commands": {
-      "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpRefreshByIfNameSubCmds.json"
-    }, 
+    "commands": {}, 
     "cliname": "", 
-    "value": {
-      "IfName": {
-        "cliname": "ifname"
-      }
-    }
+    "value": {}
   }
 }

@@ -13,7 +13,7 @@
       },
       "help": {
         "type" : "string",
-        "default": "Configure IP features"
+        "default": "Show IP features"
       },
       "commands": {
         "type": "object",
