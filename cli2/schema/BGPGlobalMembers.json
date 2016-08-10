@@ -18,7 +18,7 @@
         "type": "object", 
         "properties": {
           "key": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -53,7 +53,7 @@
         "type": "object", 
         "properties": {
           "key": {
-            "default": true,
+            "default": false, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -230,6 +230,41 @@
           }, 
           "defaultarg": {
             "default": "false"
+          }
+        }
+      }, 
+      "Vrf": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "VRF id for BGP global config default: default", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "vrf", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "default"
           }
         }
       }

@@ -305,11 +305,7 @@
           }
         }
       }, 
-<<<<<<< HEAD
-      "HostRxSerializerTap0Gain": {
-=======
       "TXFECDecDisable": {
->>>>>>> 1641655bbc642475335908a8a6af9ccc7bc93fac
         "type": "object", 
         "properties": {
           "key": {

@@ -1,5 +1,5 @@
 {
-  "arprefreshbyipv4addr": {
+  "applyconfig": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -38,7 +38,7 @@
         "properties": {}
       }, 
       "objname": {
-        "default": "ArpRefreshByIPv4Addr", 
+        "default": "ApplyConfig", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }
