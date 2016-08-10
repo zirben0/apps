@@ -1,9 +1,6 @@
 {
   "listattrs": [], 
   "commands": {
-    "NextHop": {
-      "cliname": "nexthop"
-    }, 
     "CIDRLen": {
       "cliname": "cidrlen"
     }, 

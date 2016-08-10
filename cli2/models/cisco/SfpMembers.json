@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AdminState": {
+      "cliname": "adminstate"
+    }, 
+    "SfpId": {
+      "cliname": "sfpid"
+    }
+  }
+}

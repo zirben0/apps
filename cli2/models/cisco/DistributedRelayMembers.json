@@ -1,0 +1,62 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "PortalPriority": {
+      "cliname": "portalpriority"
+    }, 
+    "ConvAdminGateway": {
+      "cliname": "convadmingateway"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }, 
+    "IPLEncapMap": {
+      "cliname": "iplencapmap"
+    }, 
+    "IntraPortalPortProtocolDA": {
+      "cliname": "intraportalportprotocolda"
+    }, 
+    "NetEncapMap": {
+      "cliname": "netencapmap"
+    }, 
+    "NeighborAdminDRCPState": {
+      "cliname": "neighboradmindrcpstate"
+    }, 
+    "PortalSystemNumber": {
+      "cliname": "portalsystemnumber"
+    }, 
+    "NeighborAdminConvPortListDigest": {
+      "cliname": "neighboradminconvportlistdigest"
+    }, 
+    "LagId": {
+      "cliname": "lagid"
+    }, 
+    "NeighborGatewayAlgorithm": {
+      "cliname": "neighborgatewayalgorithm"
+    }, 
+    "PortConversationControl": {
+      "cliname": "portconversationcontrol"
+    }, 
+    "IntraPortalLinkList": {
+      "cliname": "intraportallinklist"
+    }, 
+    "PortalAddress": {
+      "cliname": "portaladdress"
+    }, 
+    "NeighborAdminConvGatewayListDigest": {
+      "cliname": "neighboradminconvgatewaylistdigest"
+    }, 
+    "ThreePortalSystem": {
+      "cliname": "threeportalsystem"
+    }, 
+    "NeighborPortAlgorithm": {
+      "cliname": "neighborportalgorithm"
+    }, 
+    "GatewayAlgorithm": {
+      "cliname": "gatewayalgorithm"
+    }, 
+    "EncapMethod": {
+      "cliname": "encapmethod"
+    }
+  }
+}

@@ -7,5 +7,11 @@
   },
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPPeerGroup.json"
+  },
+  "subcmd4": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPIPv6Aggregate.json"
+  },
+  "subcmd5": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPAggregate.json"
   }
 }

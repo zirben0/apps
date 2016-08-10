@@ -37,28 +37,28 @@
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
           "BrgIfIndex": {
-            "type": "object",
+            "type": "object", 
             "properties": {
               "key": {
-                "default": true,
+                "default": true, 
                 "type": "boolean"
-              },
+              }, 
               "prompt": {
-                "default": "",
+                "default": "", 
                 "type": "string"
-              },
+              }, 
               "help": {
-                "default": "0-2147483647  The value of the instance of the ifIndex object",
+                "default": "0-2147483647  The value of the instance of the ifIndex object", 
                 "type": "string"
-              },
+              }, 
               "islist": {
-                "default": false,
+                "default": false, 
                 "type": "boolean"
-              },
+              }, 
               "cliname": {
-                "default": "brgifindex",
+                "default": "brgifindex", 
                 "type": "string"
-              },
+              }, 
               "argtype": {
                 "minimum": 1,
                 "type": "int32",

@@ -1,0 +1,28 @@
+{
+  "listattrs": [
+    [
+      "subcmd1", 
+      "NextHop"
+    ]
+  ], 
+  "commands": {
+    "DestinationNw": {
+      "cliname": "destinationnw"
+    }, 
+    "Cost": {
+      "cliname": "cost"
+    }, 
+    "Protocol": {
+      "cliname": "protocol"
+    }, 
+    "NetworkMask": {
+      "cliname": "networkmask"
+    }, 
+    "NullRoute": {
+      "cliname": "nullroute"
+    }, 
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/NextHopInfo.json"
+    }
+  }
+}

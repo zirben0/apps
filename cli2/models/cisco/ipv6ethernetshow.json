@@ -1,0 +1,10 @@
+{
+  "ipv6ethernetshow": {
+    "cliname": "ethernet",
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv6IntfStateMembers.json"
+      }
+    }
+  }
+}

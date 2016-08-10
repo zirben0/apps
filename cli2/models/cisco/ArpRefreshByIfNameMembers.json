@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "IfName": {
-      "cliname": "refresh_interface"
+      "cliname": "ifname"
     }
   }
 }

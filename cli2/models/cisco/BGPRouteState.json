@@ -6,9 +6,6 @@
     }, 
     "cliname": "", 
     "value": {
-      "NextHop": {
-        "cliname": "nexthop"
-      }, 
       "CIDRLen": {
         "cliname": "cidrlen"
       }, 

@@ -83,6 +83,9 @@
           },
           "subcmd24": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleState.json"
+		  },
+		  "subcmd25": {
+            "$ref": "file:/tmp/snaproute/cli/schema/ipv6show.json"
           }
         }
       }
