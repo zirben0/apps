@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "LedAdmin": {
+      "cliname": "ledadmin"
+    }, 
+    "LedId": {
+      "cliname": "ledid"
+    }, 
+    "LedSetColor": {
+      "cliname": "ledsetcolor"
+    }
+  }
+}

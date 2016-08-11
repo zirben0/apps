@@ -1,0 +1,74 @@
+{
+  "ipv6ethernetshow": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : ""
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe interfaces for ip",
+        "default" : "ethernet"
+      },
+      "help": {
+        "type" : "string",
+        "default": "Show IPv6 Interface features"
+      },
+       "value" : {
+        "type" : "integer",
+        "properties": {
+          "IntfRef": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "default": true,
+                "type": "boolean"
+              },
+              "prompt": {
+                "default": "",
+                "type": "string"
+              },
+              "help": {
+                "default": "System assigned interface id of L2 interface (port/lag/vlan) to which this IPv4 object is linked",
+                "type": "string"
+              },
+              "islist": {
+                "default": false,
+                "type": "boolean"
+              },
+              "cliname": {
+                "default": "intfref",
+                "type": "string"
+              },
+              "argtype": {
+                "type": "string"
+              },
+              "isdefaultset": {
+                "default": false,
+                "type": "boolean"
+              },
+              "defaultarg": {
+                "default": ""
+              }
+            }
+          }
+        }
+      },
+      "commands": {
+        "type": "object",
+        "description": "Base commands",
+        "properties": {
+          "subcmd1" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv4IntfStateMembers.json"
+          }
+        }
+      },
+      "objname": {
+      "default": "EthIPv6IntfState",
+      "type": "string",
+      "description": "object name to which references these attributes"
+      }
+    }
+  }
+}

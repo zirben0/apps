@@ -1,0 +1,17 @@
+{
+  "ipplinkstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/IppLinkStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IntfRef": {
+        "cliname": "intfref"
+      }, 
+      "DrNameRef": {
+        "cliname": "drnameref"
+      }
+    }
+  }
+}

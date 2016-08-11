@@ -2,10 +2,7 @@
   "listattrs": [], 
   "commands": {
     "ClntIntfId": {
-      "cliname": "clntintfid"
-    }, 
-    "ModuleId": {
-      "cliname": "moduleid"
-    }
+      "cliname": "clntIntf"
+    } 
   }
 }

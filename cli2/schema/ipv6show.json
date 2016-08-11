@@ -1,0 +1,32 @@
+{
+  "ipv6": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type": "string",
+        "default" : ""
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "name used in cli to describe ip",
+        "default" : "ip"
+      },
+      "help": {
+        "type" : "string",
+        "default": "Show IPv6 features"
+      },
+      "commands": {
+        "type": "object",
+        "description": "Base commands",
+        "properties": {
+          "subcmd1" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/IPv6RouteState.json"
+          },
+          "subcmd2" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/ipv6intfshow.json"
+          }
+        }
+      }
+    }
+  }
+}

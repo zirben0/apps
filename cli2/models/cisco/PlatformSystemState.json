@@ -1,0 +1,14 @@
+{
+  "platformsystemstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PlatformSystemStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "ObjName": {
+        "cliname": "objname"
+      }
+    }
+  }
+}

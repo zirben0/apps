@@ -4,10 +4,11 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show DWDM",
+    "cliname": "dwdm", 
     "value": {
       "ModuleId": {
-        "cliname": "moduleid"
+        "cliname": "dwdm"
       }
     }
   }
