@@ -662,27 +662,29 @@ class ConfigCmd(CommonCmdLine):
         # certain objects have a specific order that need to be configured in
         # but not all objects have a dependency.  Lets configure those objects
         # which are part of the dependency list then apply everything else
-        attemptedApplyConfigList = []
         removeList = []
+
+        # remove the ordered config
         for objname in delcfgorder:
             for config in self.configList:
                 if config.isValid() and config.name == objname and config.delete:
-                    attemptedApplyConfigList.append(config)
                     yield config
 
+        # remove non-ordered config
+        for config in self.configList:
+            if config.isValid() and config.delete and config.name not in delcfgorder:
+                yield config
+
+        # config the ordered config
         for objname in cfgorder:
             for config in self.configList:
                 if config.isValid() and config.name == objname and not config.delete:
-                    attemptedApplyConfigList.append(config)
                     yield config
 
+        # config the non-ordered config
         for config in self.configList:
-            if config.isValid() and config.delete and config not in attemptedApplyConfigList:
+            if config.isValid() and config.delete and config.name not in cfgorder:
                 attemptedApplyConfigList.remove(config)
-                yield config
-
-        for config in self.configList:
-            if config.isValid() and not config.delete and config not in attemptedApplyConfigList:
                 yield config
 
         for config in self.configList:
