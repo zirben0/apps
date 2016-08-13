@@ -683,8 +683,7 @@ class ConfigCmd(CommonCmdLine):
 
         # config the non-ordered config
         for config in self.configList:
-            if config.isValid() and config.delete and config.name not in cfgorder:
-                attemptedApplyConfigList.remove(config)
+            if config.isValid() and not config.delete and config.name not in cfgorder:
                 yield config
 
         for config in self.configList:
