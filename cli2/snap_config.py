@@ -400,6 +400,10 @@ class ConfigCmd(CommonCmdLine):
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:] if len(argv) > 0 else argv
         subcommands = self.getchildrencmds(parentcmd, self.model, self.schema)
+        delete = True if 'no' == argv[0] else False
+        if delete:
+            self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
+        
         if len(argv) > 0:
             if 'no' == argv[0]:
                 if len(argv) > 1:
@@ -683,8 +687,7 @@ class ConfigCmd(CommonCmdLine):
 
         # config the non-ordered config
         for config in self.configList:
-            if config.isValid() and config.delete and config.name not in cfgorder:
-                attemptedApplyConfigList.remove(config)
+            if config.isValid() and not config.delete and config.name not in cfgorder:
                 yield config
 
         for config in self.configList:
