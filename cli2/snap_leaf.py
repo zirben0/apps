@@ -524,10 +524,13 @@ class LeafCmd(CommonCmdLine):
         delete = False
         mline = argv
         verifyargv = argv
-        if len(argv) > 0 and argv[0] == 'no':
+        if len(argv) == 0:
+            return
+        elif len(argv) > 0 and argv[0] == 'no':
             verifyargv = argv[1:]
             mline = argv[1:]
             delete = True
+
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
@@ -1053,6 +1056,9 @@ class LeafCmd(CommonCmdLine):
         :param argv:
         :return:
         """
+        if len(argv) == 0:
+            return ''
+
         self.issubcommandlist = False
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         delete = argv[0] == 'no' if argv else False

@@ -397,8 +397,16 @@ class ConfigCmd(CommonCmdLine):
         :return:
         """
 
+        if len(argv) == 0:
+            return ''
+        elif len(argv) == 1:
+            newargv = [self.find_func_cmd_alias(argv[0])]
+        elif len(argv) == 2:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])]
+        else:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
+
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-        newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:] if len(argv) > 0 else argv
         subcommands = self.getchildrencmds(parentcmd, self.model, self.schema)
         delete = True if 'no' == argv[0] else False
         if delete:
