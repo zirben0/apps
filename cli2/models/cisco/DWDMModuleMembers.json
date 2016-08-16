@@ -1,11 +1,11 @@
 {
   "listattrs": [], 
   "commands": {
+    "AdminState": {
+      "cliname": "adminstate"
+    }, 
     "IndependentLaneMode": {
       "cliname": "independentlanemode"
-    }, 
-    "ModuleReset": {
-      "cliname": "modulereset"
     }, 
     "ModuleId": {
       "cliname": "dwdm"
