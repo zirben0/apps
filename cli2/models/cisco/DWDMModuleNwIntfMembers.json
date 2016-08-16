@@ -4,6 +4,9 @@
     "TxPower": {
       "cliname": "txpower"
     }, 
+    "AdminState": {
+      "cliname": "adminstate"
+    }, 
     "FECMode": {
       "cliname": "fecmode"
     }, 
