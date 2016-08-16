@@ -28,6 +28,9 @@
     "TXFECDecDisable": {
       "cliname": "txfecdecdisable"
     }, 
+    "AdminState": {
+      "cliname": "adminstate"
+    }, 
     "RXFECDecDisable": {
       "cliname": "rxfecdecdisable"
     }, 

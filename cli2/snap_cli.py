@@ -605,8 +605,15 @@ class CmdLine(CommonCmdLine):
 
     def precmd(self, argv):
         newargv = argv
-        if len(argv) > 0:
-            newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:]
+        if len(argv) == 1:
+            newargv = [self.find_func_cmd_alias(argv[0])]
+        elif len(argv) == 2:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])]
+        elif len(argv) > 2:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
+        else:
+            return ''
+
         if len(newargv) > 1 and 'help' in newargv:
             if newargv[0] == snapcliconst.COMMAND_TYPE_SHOW:
                 self.display_show_help(newargv)

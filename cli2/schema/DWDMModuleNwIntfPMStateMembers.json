@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": true, 
+    "default": false, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -9,11 +9,11 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "AdminState": {
+      "Type": {
         "type": "object", 
         "properties": {
           "key": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  Reset state of this dwdm module (false (Reset deasserted) default: true", 
+            "default": "Min/Max/Avg", 
             "type": "string"
           }, 
           "islist": {
@@ -29,53 +29,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminstate", 
+            "default": "type", 
             "type": "string"
           }, 
           "argtype": {
-            "type": "bool"
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "true"
-          }
-        }
-      }, 
-      "IndependentLaneMode": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Network lane configuration for the DWDM Module. true-Independent lanes default: true", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "independentlanemode", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "true"
+            "default": ""
           }
         }
       }, 
@@ -115,6 +80,118 @@
             "default": ""
           }
         }
+      }, 
+      "Resource": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Opticd resource name for which PM Data is required", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "resource", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "NwIntfId": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "DWDM Module network interface identifier", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "nwintfid", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "Class": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " CLASS-A/CLASS-B/CLASS-B  Class of PM Data default: CLASS-A", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "class", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "CLASS-A", 
+              "CLASS-B", 
+              "CLASS-B"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "CLASS-A"
+          }
+        }
       }
     }
   }, 
@@ -124,7 +201,7 @@
     "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
-    "default": "DWDMModule", 
+    "default": "DWDMModuleNwIntfPMState", 
     "type": "string", 
     "description": "object name to which references these attributes"
   }
