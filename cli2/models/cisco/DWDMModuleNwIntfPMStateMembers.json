@@ -1,0 +1,20 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Type": {
+      "cliname": "type"
+    }, 
+    "ModuleId": {
+      "cliname": "moduleid"
+    }, 
+    "Resource": {
+      "cliname": "resource"
+    }, 
+    "NwIntfId": {
+      "cliname": "nwintfid"
+    }, 
+    "Class": {
+      "cliname": "class"
+    }
+  }
+}
