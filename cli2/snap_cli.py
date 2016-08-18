@@ -177,6 +177,8 @@ class CmdLine(CommonCmdLine):
             #    print x['Name'], x['State']
             if resp['Object']['Ready'] == True or \
                 len(frozenset(requiredDaemons).intersection([x.get('Name', None) for x in resp['Object']['FlexDaemons'] if str(x.get('State', 'down')) == 'up'])) == 1:
+
+                self.switch_name = resp['Object']['Name']
                 #sys.stdout.write('System Is ready\n')
                 return True
             else:
@@ -349,9 +351,7 @@ class CmdLine(CommonCmdLine):
             sys.exit(2)
         else:
             try:
-                try:
-                    self.switch_name = socket.gethostbyname(self.switch_ip)
-                except socket.gaierror:
+                if not self.switch_name:
                     self.switch_name = self.switch_ip
 
                 # update to add the prompt prefix
@@ -605,8 +605,15 @@ class CmdLine(CommonCmdLine):
 
     def precmd(self, argv):
         newargv = argv
-        if len(argv) > 0:
-            newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:]
+        if len(argv) == 1:
+            newargv = [self.find_func_cmd_alias(argv[0])]
+        elif len(argv) == 2:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])]
+        elif len(argv) > 2:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
+        else:
+            return ''
+
         if len(newargv) > 1 and 'help' in newargv:
             if newargv[0] == snapcliconst.COMMAND_TYPE_SHOW:
                 self.display_show_help(newargv)
