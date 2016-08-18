@@ -4,13 +4,13 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4NeighborStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "neighbor", 
     "value": {
       "IntfRef": {
         "cliname": "intfref"
       }, 
       "NeighborAddress": {
-        "cliname": "neighboraddress"
+        "cliname": "neighbor"
       }
     }
   }

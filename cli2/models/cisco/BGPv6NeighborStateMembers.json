@@ -5,7 +5,7 @@
       "cliname": "intfref"
     }, 
     "NeighborAddress": {
-      "cliname": "neighboraddress"
+      "cliname": "neighbor"
     }
   }
 }
