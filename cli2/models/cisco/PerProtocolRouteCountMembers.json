@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "EcmpCount": {
+      "cliname": "ecmpcount"
+    }, 
+    "Protocol": {
+      "cliname": "protocol"
+    }, 
+    "RouteCount": {
+      "cliname": "routecount"
+    }
+  }
+}

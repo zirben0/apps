@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IpAddr": {
+      "cliname": "ipaddr"
+    }
+  }
+}

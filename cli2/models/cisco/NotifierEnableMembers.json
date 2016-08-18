@@ -1,0 +1,17 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AlarmEnable": {
+      "cliname": "alarmenable"
+    }, 
+    "FaultEnable": {
+      "cliname": "faultenable"
+    }, 
+    "Vrf": {
+      "cliname": "vrf"
+    }, 
+    "EventEnable": {
+      "cliname": "eventenable"
+    }
+  }
+}

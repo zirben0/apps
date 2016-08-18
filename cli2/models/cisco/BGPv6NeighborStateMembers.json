@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IntfRef": {
+      "cliname": "intfref"
+    }, 
+    "NeighborAddress": {
+      "cliname": "neighbor"
+    }
+  }
+}

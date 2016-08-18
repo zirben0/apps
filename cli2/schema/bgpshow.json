@@ -144,7 +144,7 @@
             "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalState.json"
           },
           "subcmd4": {
-            "$ref": "file:/tmp/snaproute/cli/schema/BGPNeighborState.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/BGPv4NeighborState.json"
           }
         }
       }
