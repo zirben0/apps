@@ -10,7 +10,7 @@
         "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalState.json"
       },
       "subcmd4": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighborState.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4NeighborState.json"
       }
     }
   }

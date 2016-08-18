@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "EventName": {
+      "cliname": "eventname"
+    }, 
+    "Enable": {
+      "cliname": "enable"
+    }, 
+    "OwnerName": {
+      "cliname": "ownername"
+    }
+  }
+}

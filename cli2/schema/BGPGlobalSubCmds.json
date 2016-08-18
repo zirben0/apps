@@ -3,15 +3,18 @@
     "$ref": "file:/tmp/snaproute/cli/schema/BGPGlobalMembers.json"
   },
   "subcmd2": {
-    "$ref": "file:/tmp/snaproute/cli/schema/BGPNeighbor.json"
+    "$ref": "file:/tmp/snaproute/cli/schema/bgpneighbor.json"
   },
   "subcmd3": {
-    "$ref": "file:/tmp/snaproute/cli/schema/BGPPeerGroup.json"
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPv4PeerGroup.json"
   },
   "subcmd4": {
     "$ref": "file:/tmp/snaproute/cli/schema/BGPIPv6Aggregate.json"
   },
   "subcmd5": {
     "$ref": "file:/tmp/snaproute/cli/schema/BGPAggregate.json"
+  },
+  "subcmd6": {
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPv6PeerGroup.json"
   }
 }

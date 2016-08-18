@@ -23,6 +23,9 @@
             "$ref" : "file:/tmp/snaproute/cli/schema/IPv6RouteState.json"
           },
           "subcmd2" : {
+            "$ref" : "file:/tmp/snaproute/cli/schema/bgpv6show.json"
+          },
+          "subcmd3" : {
             "$ref" : "file:/tmp/snaproute/cli/schema/ipv6intfshow.json"
           }
         }

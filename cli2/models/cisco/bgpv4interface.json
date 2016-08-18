@@ -1,0 +1,11 @@
+{
+  "interface": {
+    "prompt" : "if",
+    "cliname" : "interface",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpv6neighborinterface.json"
+      }
+    }
+  } 
+}

@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "NeighborAddress": {
+      "cliname": "neighbor"
+    }
+  }
+}
