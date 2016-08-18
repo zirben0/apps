@@ -6,12 +6,15 @@
     "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpneighbor.json"
   },
   "subcmd3": {
-    "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPPeerGroup.json"
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4PeerGroup.json"
   },
   "subcmd4": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPIPv6Aggregate.json"
   },
   "subcmd5": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPAggregate.json"
+  },
+  "subcmd6": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6PeerGroup.json"
   }
 }

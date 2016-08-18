@@ -1,13 +1,13 @@
 {
   "bgpv6peergroup": {
-    "prompt": "", 
+    "prompt": "peer_v6", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6PeerGroupSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "peer_ipv6_group", 
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "peer_ipv6_group"
       }
     }
   }

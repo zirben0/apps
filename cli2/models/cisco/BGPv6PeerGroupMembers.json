@@ -2,58 +2,58 @@
   "listattrs": [], 
   "commands": {
     "MaxPrefixesRestartTimer": {
-      "cliname": "maxprefixesrestarttimer"
+      "cliname": "max_prefixes_restart_timer"
     }, 
     "RouteReflectorClient": {
-      "cliname": "routereflectorclient"
+      "cliname": "route_reflector_client"
     }, 
     "Description": {
       "cliname": "description"
     }, 
     "MultiHopTTL": {
-      "cliname": "multihopttl"
+      "cliname": "ebgp_multihop"
     }, 
     "MaxPrefixesDisconnect": {
-      "cliname": "maxprefixesdisconnect"
+      "cliname": "max_prefixes_disconnect"
     }, 
     "LocalAS": {
-      "cliname": "localas"
+      "cliname": "local_as"
     }, 
     "ConnectRetryTime": {
-      "cliname": "connectretrytime"
+      "cliname": "connect_retry_time"
     }, 
     "KeepaliveTime": {
-      "cliname": "keepalivetime"
+      "cliname": "keep_alive_time"
     }, 
     "AddPathsMaxTx": {
-      "cliname": "addpathsmaxtx"
+      "cliname": "capability_addition_paths_send"
     }, 
     "MultiHopEnable": {
-      "cliname": "multihopenable"
+      "cliname": "multihop_enable"
     }, 
     "AddPathsRx": {
-      "cliname": "addpathsrx"
+      "cliname": "capability_addition_paths_receive"
     }, 
     "UpdateSource": {
-      "cliname": "updatesource"
+      "cliname": "update_source"
     }, 
     "RouteReflectorClusterId": {
-      "cliname": "routereflectorclusterid"
+      "cliname": "cluster_id"
     }, 
     "MaxPrefixesThresholdPct": {
-      "cliname": "maxprefixesthresholdpct"
+      "cliname": "max_prefixes_threshold_pct"
     }, 
     "HoldTime": {
-      "cliname": "holdtime"
+      "cliname": "timers_hold_time"
     }, 
     "MaxPrefixes": {
-      "cliname": "maxprefixes"
+      "cliname": "max_prefixes"
     }, 
     "PeerAS": {
-      "cliname": "peeras"
+      "cliname": "peer_as"
     }, 
     "Name": {
-      "cliname": "name"
+      "cliname": "peer_ipv6_group"
     }
   }
 }
