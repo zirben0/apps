@@ -2,11 +2,13 @@
     "Order": [
         "SystemLogging",
         "ComponentLogging",
+        "SystemParam",
         "Port",
 		"DWDMModule",
 		"DWDMModuleClntIntf",
 		"DWDMModuleNwIntf",
         "LaPortChannel",
+	"LLDPGlobal",
         "LLDPIntf",
         "Vlan",
         "StpBridgeInstance",

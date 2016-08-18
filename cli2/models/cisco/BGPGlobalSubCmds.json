@@ -3,7 +3,7 @@
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalMembers.json"
   },
   "subcmd2": {
-    "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPNeighbor.json"
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpneighbor.json"
   },
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPPeerGroup.json"

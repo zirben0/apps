@@ -1,0 +1,17 @@
+{
+  "bgpv4neighborstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4NeighborStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "IntfRef": {
+        "cliname": "intfref"
+      }, 
+      "NeighborAddress": {
+        "cliname": "neighboraddress"
+      }
+    }
+  }
+}

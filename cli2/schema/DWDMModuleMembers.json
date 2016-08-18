@@ -9,6 +9,78 @@
     "type": "object", 
     "description": "", 
     "properties": {
+      "EnableExtPMTickSrc": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable external tick source for performance monitoring default: false", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "enableextpmticksrc", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }
+        }
+      }, 
+      "PMInterval": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Performance monitoring interval default: 1", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "pminterval", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "1"
+          }
+        }
+      }, 
       "AdminState": {
         "type": "object", 
         "properties": {
@@ -21,7 +93,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  Reset state of this dwdm module (false (Reset deasserted) default: true", 
+            "default": " UP/DOWN  Reset state of this dwdm module (false (Reset deasserted) default: DOWN", 
             "type": "string"
           }, 
           "islist": {
@@ -33,14 +105,18 @@
             "type": "string"
           }, 
           "argtype": {
-            "type": "bool"
+            "enum": [
+              "UP", 
+              "DOWN"
+            ], 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "true"
+            "default": "DOWN"
           }
         }
       }, 

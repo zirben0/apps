@@ -1,5 +1,5 @@
 {
-  "bgpneighbor": {
+  "routestatsperprotocolstate": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/BGPNeighborSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/RouteStatsPerProtocolStateSubCmds.json"
         }
       }, 
       "cliname": {
@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "NeighborAddress": {
+          "Protocol": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "Address of the BGP neighbor", 
+                "default": "Protocol type of the route", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,14 +56,14 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "neighboraddress", 
+                "default": "protocol", 
                 "type": "string"
               }, 
               "argtype": {
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -74,7 +74,7 @@
         }
       }, 
       "objname": {
-        "default": "BGPNeighbor", 
+        "default": "RouteStatsPerProtocolState", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

@@ -1,0 +1,59 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "MaxPrefixesRestartTimer": {
+      "cliname": "maxprefixesrestarttimer"
+    }, 
+    "RouteReflectorClient": {
+      "cliname": "routereflectorclient"
+    }, 
+    "Description": {
+      "cliname": "description"
+    }, 
+    "MultiHopTTL": {
+      "cliname": "multihopttl"
+    }, 
+    "MaxPrefixesDisconnect": {
+      "cliname": "maxprefixesdisconnect"
+    }, 
+    "LocalAS": {
+      "cliname": "localas"
+    }, 
+    "ConnectRetryTime": {
+      "cliname": "connectretrytime"
+    }, 
+    "KeepaliveTime": {
+      "cliname": "keepalivetime"
+    }, 
+    "AddPathsMaxTx": {
+      "cliname": "addpathsmaxtx"
+    }, 
+    "MultiHopEnable": {
+      "cliname": "multihopenable"
+    }, 
+    "AddPathsRx": {
+      "cliname": "addpathsrx"
+    }, 
+    "UpdateSource": {
+      "cliname": "updatesource"
+    }, 
+    "RouteReflectorClusterId": {
+      "cliname": "routereflectorclusterid"
+    }, 
+    "MaxPrefixesThresholdPct": {
+      "cliname": "maxprefixesthresholdpct"
+    }, 
+    "HoldTime": {
+      "cliname": "holdtime"
+    }, 
+    "MaxPrefixes": {
+      "cliname": "maxprefixes"
+    }, 
+    "PeerAS": {
+      "cliname": "peeras"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }
+  }
+}
