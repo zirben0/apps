@@ -17,7 +17,7 @@ class BGPStat(object):
 	
     def get_BGPstats(self, stwitch_ip):
         swtch = FlexSwitch (stwitch_ip, 8080)  # Instantiate object to talk to flexSwitch
-	bgps = swtch.getAllBGPNeighborStates()
+	bgps = swtch.getAllBGPv4NeighborStates()
         return bgps
 	
     def parse_bgps(self, bgp_object):
