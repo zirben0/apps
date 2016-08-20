@@ -1,0 +1,15 @@
+{
+  "bgpv6neighbor": {
+    "prompt": "ipv6", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6NeighborSubCmds.json"
+    }, 
+    "help": "Configure IPv6 Neighbor By IP",
+    "cliname": "ipv6", 
+    "value": {
+      "NeighborAddress": {
+        "cliname": "ipv6"
+      }
+    }
+  }
+}

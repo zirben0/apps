@@ -1,0 +1,71 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "BfdEnable": {
+      "cliname": "bfd"
+    },
+    "RouteReflectorClusterId": {
+      "cliname": "cluster_id"
+    },
+    "PeerGroup": {
+      "cliname": "peer_group"
+    },
+    "MultiHopTTL": {
+      "cliname": "ebgp_multihop"
+    },
+    "MaxPrefixesDisconnect": {
+      "cliname": "max_prefixes_disconnect"
+    },
+    "LocalAS": {
+      "cliname": "local_as"
+    },
+    "KeepaliveTime": {
+      "cliname": "timers_keep_alive"
+    }, 
+    "AddPathsMaxTx": {
+      "cliname": "capability_addition_paths_send"
+    },
+    "RouteReflectorClient": {
+      "cliname": "route_reflector_client"
+    },
+    "AddPathsRx": {
+      "cliname": "capability_addition_paths_receive"
+    },
+    "UpdateSource": {
+      "cliname": "update_source"
+    },
+    "NeighborAddress": {
+      "cliname": "ip"
+    },
+    "MaxPrefixes": {
+      "cliname": "max_prefixes"
+    },
+    "MaxPrefixesThresholdPct": {
+      "cliname": "max_prefixes_threshold_pct"
+    },
+    "MaxPrefixesRestartTimer": {
+      "cliname": "max_prefixes_restart_timer"
+    },
+    "Description": {
+      "cliname": "description"
+    },
+    "HoldTime": {
+      "cliname": "timers_hold_time"
+    },
+    "PeerAS": {
+      "cliname": "peer_as"
+    },
+    "MultiHopEnable": {
+      "cliname": "multihop_enable"
+    }, 
+    "BfdSessionParam": {
+      "cliname": "bfd_session_param"
+    },
+    "AuthPassword": {
+      "cliname": "password"
+    },
+    "ConnectRetryTime": {
+        "cliname": "connect_retry_time"
+    }
+  }
+}

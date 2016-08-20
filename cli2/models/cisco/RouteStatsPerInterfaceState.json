@@ -1,0 +1,14 @@
+{
+  "routestatsperinterfacestate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/RouteStatsPerInterfaceStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Intfref": {
+        "cliname": "intfref"
+      }
+    }
+  }
+}

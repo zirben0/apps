@@ -177,6 +177,8 @@ class CmdLine(CommonCmdLine):
             #    print x['Name'], x['State']
             if resp['Object']['Ready'] == True or \
                 len(frozenset(requiredDaemons).intersection([x.get('Name', None) for x in resp['Object']['FlexDaemons'] if str(x.get('State', 'down')) == 'up'])) == 1:
+
+                self.switch_name = resp['Object']['Name']
                 #sys.stdout.write('System Is ready\n')
                 return True
             else:
@@ -349,9 +351,7 @@ class CmdLine(CommonCmdLine):
             sys.exit(2)
         else:
             try:
-                try:
-                    self.switch_name = socket.gethostbyname(self.switch_ip)
-                except socket.gaierror:
+                if not self.switch_name:
                     self.switch_name = self.switch_ip
 
                 # update to add the prompt prefix

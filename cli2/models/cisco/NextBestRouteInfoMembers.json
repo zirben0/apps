@@ -1,0 +1,16 @@
+{
+  "listattrs": [
+    [
+      "subcmd1", 
+      "NextHopList"
+    ]
+  ], 
+  "commands": {
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/NextHopInfo.json"
+    }, 
+    "Protocol": {
+      "cliname": "protocol"
+    }
+  }
+}
