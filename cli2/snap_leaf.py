@@ -408,7 +408,7 @@ class LeafCmd(CommonCmdLine):
 
                             funcname = "do_" + cmdname
                             if not teardown:
-                                setattr(self.__class__, funcname, SetAttrFunc(self._cmd_common))
+                                setattr(self.__class__, funcname, CmdFunc(self, funcname, self._cmd_common))
                             else:
                                 delattr(self.__class__, funcname)
                     except Exception as e:
@@ -524,10 +524,13 @@ class LeafCmd(CommonCmdLine):
         delete = False
         mline = argv
         verifyargv = argv
-        if len(argv) > 0 and argv[0] == 'no':
+        if len(argv) == 0:
+            return
+        elif len(argv) > 0 and argv[0] == 'no':
             verifyargv = argv[1:]
             mline = argv[1:]
             delete = True
+
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
@@ -1001,8 +1004,8 @@ class LeafCmd(CommonCmdLine):
                     subcommands = [x for x in subcommands if x[0] != parentcmd]
 
         #ignore the help or ? command
-        submodel = self.modelList[0]
-        subschema = self.schemaList[0]
+        submodel = self.modelList[0] if self.modelList else []
+        subschema = self.schemaList[0] if self.schemaList else []
         for i in range(1, mlineLength):
             schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
             if schemaname:
@@ -1053,6 +1056,9 @@ class LeafCmd(CommonCmdLine):
         :param argv:
         :return:
         """
+        if len(argv) == 0:
+            return ''
+
         self.issubcommandlist = False
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         delete = argv[0] == 'no' if argv else False

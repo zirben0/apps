@@ -1,6 +1,7 @@
 {
     "Exclude": [
         "SourcePolicyList",
-        "PolicyDefinitionStmtPriority"
+        "PolicyDefinitionStmtPriority",
+		"DWDMModulePMData"
     ]
 }

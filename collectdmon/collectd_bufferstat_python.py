@@ -52,10 +52,11 @@ class BufferMon(object):
         val.meta={'0': True}
         val.dispatch()
 
-    def collectStats(self, portstat):		    
+    def collectStats(self, portstat, port_object):		    
         stat = portstat.parse_buffers(port_object)
+        bS = "bufferUtil"
         port_name = port_object["Object"]["IntfRef"]
-        self.sendToCollect('gauge', port_name, stat)
+        self.sendToCollect('gauge', port_name+bS, stat)
 
         inBn = "ingressBuffer"
         inB = portstat.parse_ingBuffers(port_object)
@@ -70,14 +71,14 @@ class BufferMon(object):
         portstat = BufferStat()
         ports = portstat.get_bufferstats("localhost")
 	for port_object in ports:
-            self.collectStats(portstat)
+            self.collectStats(portstat, port_object)
 
 if __name__ == '__main__':
      portstat = BufferStat()
      portmon = BufferMon()
      ports = portstat.get_bufferstats("localhost")
      for port_object in ports:
-         portmon.collectStats(portstat)
+         portmon.collectStats(portstat, port_object)
 
      sys.exit(0)
 else:

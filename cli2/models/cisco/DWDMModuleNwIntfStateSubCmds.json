@@ -1,0 +1,8 @@
+{
+  "subcmd1": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntfStateMembers.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntfPMState.json"
+  }
+}

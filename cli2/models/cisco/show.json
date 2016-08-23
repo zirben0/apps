@@ -9,9 +9,6 @@
       "subcmd2" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/VlanState.json"
       },
-      "subcmd3" : {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/router.json"
-      },
       "subcmd4" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/bfdshow.json"
       },
@@ -65,6 +62,12 @@
       },
       "subcmd23": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/lldpshow.json"
+      },
+      "subcmd24": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleState.json"
+	  },
+	  "subcmd25":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6show.json"
       }
     }
   } 

@@ -1,0 +1,20 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "EnableExtPMTickSrc": {
+      "cliname": "enableextpmticksrc"
+    }, 
+    "PMInterval": {
+      "cliname": "pminterval"
+    }, 
+    "AdminState": {
+      "cliname": "adminstate"
+    }, 
+    "IndependentLaneMode": {
+      "cliname": "independentlanemode"
+    }, 
+    "ModuleId": {
+      "cliname": "dwdm"
+    }
+  }
+}

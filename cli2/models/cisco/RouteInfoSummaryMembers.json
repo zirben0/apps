@@ -1,0 +1,19 @@
+{
+  "listattrs": [
+    [
+      "subcmd1", 
+      "NextHopList"
+    ]
+  ], 
+  "commands": {
+    "DestinationNw": {
+      "cliname": "destinationnw"
+    }, 
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/NextHopInfo.json"
+    }, 
+    "IsInstalledInHw": {
+      "cliname": "isinstalledinhw"
+    }
+  }
+}

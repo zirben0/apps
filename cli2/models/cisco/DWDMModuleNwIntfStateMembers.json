@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "NwIntfId": {
+      "cliname": "nwIntf"
+    }
+  }
+}

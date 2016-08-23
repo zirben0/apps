@@ -1,0 +1,11 @@
+{
+  "ipv6lagshow": {
+    "cliname": "port_channel",
+    "help": "Show Lag Interface IP features",
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv6IntfStateMembers.json"
+      }
+    }
+  }
+}
