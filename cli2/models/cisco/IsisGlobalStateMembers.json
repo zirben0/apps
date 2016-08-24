@@ -1,8 +1,8 @@
 {
   "listattrs": [], 
   "commands": {
-    "IfIndex": {
-      "cliname": "ifindex"
+    "Vrf": {
+      "cliname": "vrf"
     }
   }
 }
