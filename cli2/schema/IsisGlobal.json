@@ -1,5 +1,5 @@
 {
-  "laportchannel": {
+  "isisglobal": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/IsisGlobalSubCmds.json"
         }
       }, 
       "cliname": {
@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "IntfRef": {
+          "Vrf": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "Id of the lag group", 
+                "default": "VRF id where ISIS is globally enabled or disabled default: default", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,25 +56,25 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "intfref", 
+                "default": "vrf", 
                 "type": "string"
               }, 
               "argtype": {
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": ""
+                "default": "default"
               }
             }
           }
         }
       }, 
       "objname": {
-        "default": "LaPortChannel", 
+        "default": "IsisGlobal", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

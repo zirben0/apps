@@ -95,7 +95,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " disabled(2)/enabled(1)  The enabled/disabled status of the port.", 
+            "default": " disabled(2)/enabled(1)  The enabled/disabled status of the port. default: 2", 
             "type": "string"
           }, 
           "islist": {
@@ -257,7 +257,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-255  The value of the priority field that is contained in the first (in network byte order) octet of the (2 octet long) Port ID.  The other octet of the Port ID is given by the value of StpPort. On bridges supporting IEEE 802.1t or IEEE 802.1w default: 128", 
+            "default": "0-255  The value of the priority field that is contained in the first in network byte order octet of the 2 octet long Port ID.  The other octet of the Port ID is given by the value of StpPort. On bridges supporting IEEE 802.1t or IEEE 802.1w default: 128", 
             "type": "string"
           }, 
           "islist": {

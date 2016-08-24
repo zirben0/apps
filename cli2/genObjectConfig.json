@@ -839,6 +839,30 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "IsisGlobal": {
+  "access": "w",
+  "owner": "isisd",
+  "srcfile": "isisObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": true,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "IsisGlobalState": {
+  "access": "r",
+  "owner": "isisd",
+  "srcfile": "isisObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "LLDPGlobal": {
   "access": "w",
   "owner": "lldpd",
@@ -887,7 +911,7 @@
   "linkedObjects": null,
   "parent": ""
  },
- "LaPortChannelMemberState": {
+ "LaPortChannelIntfRefListState": {
   "access": "r",
   "owner": "lacpd",
   "srcfile": "gen_lacp.go",
@@ -1735,6 +1759,18 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "XponderGlobal": {
+  "access": "w",
+  "owner": "local",
+  "srcfile": "localObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": true,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""

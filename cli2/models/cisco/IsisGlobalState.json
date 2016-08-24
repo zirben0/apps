@@ -1,0 +1,14 @@
+{
+  "isisglobalstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/IsisGlobalStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Vrf": {
+        "cliname": "vrf"
+      }
+    }
+  }
+}
