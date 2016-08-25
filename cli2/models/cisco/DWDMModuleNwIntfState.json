@@ -5,6 +5,7 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntfStateSubCmds.json"
     }, 
     "cliname": "nwIntf", 
+    "help": "Command to view state of DWDM module network interface",
     "value": {
       "NwIntfId": {
         "cliname": "nwIntf"

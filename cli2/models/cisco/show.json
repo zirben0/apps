@@ -77,6 +77,12 @@
       },
 	  "subcmd28":{
         "$ref": "file:/tmp/snaproute/cli/model/cisco/XponderGlobalState.json"
+      },
+	  "subcmd29":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/FaultState.json"
+      },
+	  "subcmd30":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/AlarmState.json"
       }
     }
   }
