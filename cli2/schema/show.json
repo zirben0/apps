@@ -83,6 +83,12 @@
 		  },
 		  "subcmd25": {
             "$ref": "file:/tmp/snaproute/cli/schema/ipv6show.json"
+          },
+		  "subcmd26": {
+            "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleNwIntfState.json"
+          },
+		  "subcmd27": {
+            "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleClntIntfState.json"
           }
         }
       }

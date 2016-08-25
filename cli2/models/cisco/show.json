@@ -68,7 +68,15 @@
 	  },
 	  "subcmd25":{
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6show.json"
+      },
+	  "subcmd26":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntfState.json"
+      },
+	  "subcmd27":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleClntIntfState.json"
       }
+    }
+    }
     }
   } 
 }
