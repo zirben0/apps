@@ -4,7 +4,8 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/FaultStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "faults", 
+    "help": "Command to query for all faults in the system",
     "value": {
       "EventId": {
         "cliname": "eventid"
