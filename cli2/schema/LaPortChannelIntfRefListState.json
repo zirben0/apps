@@ -1,5 +1,5 @@
 {
-  "laportchannel": {
+  "laportchannelintfrefliststate": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelIntfRefListStateSubCmds.json"
         }
       }, 
       "cliname": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "Id of the lag group", 
+                "default": "Reference to aggregate member interface", 
                 "type": "string"
               }, 
               "islist": {
@@ -63,7 +63,7 @@
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -74,7 +74,7 @@
         }
       }, 
       "objname": {
-        "default": "LaPortChannel", 
+        "default": "LaPortChannelIntfRefListState", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

@@ -9,7 +9,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "LagId": {
+      "IntfRef": {
         "type": "object", 
         "properties": {
           "key": {
@@ -29,13 +29,11 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lagid", 
+            "default": "intfref", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 

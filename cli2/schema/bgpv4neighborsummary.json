@@ -1,5 +1,5 @@
 {
-  "BGPNeighborSummary": {
+  "bgpv4neighborsummary": {
     "type" : "object",
     "properties" : {
       "prompt" : {
@@ -53,7 +53,7 @@
         }
       },
       "objname": {
-        "default": "BGPNeighbor",
+        "default": "BGPv4NeighborState",
         "type": "string",
         "description": "object name to which references these attributes"
       },
@@ -66,7 +66,7 @@
         "description": "holds all related commands related to ethernet port",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/tmp/snaproute/cli/schema/BGPNeighborStateMembers.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/BGPv4NeighborStateMembers.json"
           }
         }
       }

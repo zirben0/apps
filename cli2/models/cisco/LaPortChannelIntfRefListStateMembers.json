@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "IntfRef": {
-      "cliname": "port_channel"
+      "cliname": "Intfref"
     }
   }
 }
