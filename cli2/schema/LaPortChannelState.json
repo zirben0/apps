@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "LagId": {
+          "IntfRef": {
             "type": "object", 
             "properties": {
               "key": {
@@ -56,13 +56,11 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "lagid", 
+                "default": "intfref", 
                 "type": "string"
               }, 
               "argtype": {
-                "minimum": -2147483648, 
-                "type": "int32", 
-                "maximum": 2147483647
+                "type": "string"
               }, 
               "isdefaultset": {
                 "default": true, 

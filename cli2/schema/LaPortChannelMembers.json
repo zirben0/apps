@@ -9,11 +9,11 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "LagId": {
+      "IntfRefList": {
         "type": "object", 
         "properties": {
           "key": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -21,21 +21,19 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Id of the lag group", 
+            "default": "List of current member interfaces for the aggregate", 
             "type": "string"
           }, 
           "islist": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lagid", 
+            "default": "intfreflist", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
@@ -43,6 +41,41 @@
           }, 
           "defaultarg": {
             "default": ""
+          }
+        }
+      }, 
+      "AdminState": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Convenient way to disable/enable a lag group.  The behaviour should be such that all traffic should stop.  LACP frames should continue to be processed default: enable", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "adminstate", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "enable"
           }
         }
       }, 
@@ -85,11 +118,11 @@
           }
         }
       }, 
-      "Members": {
+      "IntfRef": {
         "type": "object", 
         "properties": {
           "key": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -97,21 +130,19 @@
             "type": "string"
           }, 
           "help": {
-            "default": "List of current member interfaces for the aggregate", 
+            "default": "Id of the lag group", 
             "type": "string"
           }, 
           "islist": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "members", 
+            "default": "intfref", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648,
-            "type": "int32",
-            "maximum": 2147483647
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
@@ -134,7 +165,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "The MAC address portion of the node's System ID. This is combined with the system priority to construct the 8-octet system-id", 
+            "default": "The MAC address portion of the nodes System ID. This is combined with the system priority to construct the 8-octet system-id", 
             "type": "string"
           }, 
           "islist": {
@@ -169,7 +200,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Specifies the mininum number of member interfaces that must be active for the aggregate interface to be available", 
+            "default": "Specifies the mininum number of member interfaces that must be active for the aggregate interface to be available default: 1", 
             "type": "string"
           }, 
           "islist": {
@@ -186,7 +217,7 @@
             "maximum": 65536
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -308,41 +339,6 @@
           }, 
           "defaultarg": {
             "default": "0"
-          }
-        }
-      }, 
-      "AdminState": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Convenient way to disable/enable a lag group.  The behaviour should be such that all traffic should stop.  LACP frames should continue to be processed", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "adminstate", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true,
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "enable"
           }
         }
       }, 
