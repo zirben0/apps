@@ -74,9 +74,10 @@
       },
 	  "subcmd27":{
         "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleClntIntfState.json"
+      },
+	  "subcmd28":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/XponderGlobalState.json"
       }
     }
-    }
-    }
-  } 
+  }
 }

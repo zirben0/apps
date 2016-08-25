@@ -93,7 +93,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "InService/InServiceOverSub/InServicePacketOptical/OutOfService  Global operational mode of Xponder module default: OutOfService", 
+            "default": "InServiceWire/InServiceRegen/InServiceOverSub/InServicePacketOptical/OutOfService  Global operational mode of Xponder module default: OutOfService", 
             "type": "string"
           }, 
           "islist": {
@@ -106,7 +106,8 @@
           }, 
           "argtype": {
             "enum": [
-              "InService", 
+              "InServiceWire", 
+              "InServiceRegen", 
               "InServiceOverSub", 
               "InServicePacketOptical", 
               "OutOfService"
