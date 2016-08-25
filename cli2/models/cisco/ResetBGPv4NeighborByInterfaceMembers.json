@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "IntfRef": {
+      "cliname": "intfref"
+    }
+  }
+}

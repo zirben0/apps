@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Prefix": {
+      "cliname": "prefix"
+    }, 
+    "MaskLengthRange": {
+      "cliname": "masklengthrange"
+    }
+  }
+}

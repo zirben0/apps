@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AclName": {
+      "cliname": "aclname"
+    }, 
+    "Direction": {
+      "cliname": "direction"
+    }
+  }
+}

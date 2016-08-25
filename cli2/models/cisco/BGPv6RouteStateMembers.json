@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "CIDRLen": {
+      "cliname": "cidrlen"
+    }, 
+    "Network": {
+      "cliname": "network"
+    }
+  }
+}
