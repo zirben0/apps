@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "XponderDescription": {
+      "cliname": "xponderdescription"
+    }, 
+    "XponderId": {
+      "cliname": "xponder"
+    }, 
+    "XponderMode": {
+      "cliname": "xpondermode"
+    }
+  }
+}
