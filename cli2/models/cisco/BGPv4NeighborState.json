@@ -6,9 +6,6 @@
     }, 
     "cliname": "neighbor", 
     "value": {
-      "IntfRef": {
-        "cliname": "intfref"
-      }, 
       "NeighborAddress": {
         "cliname": "neighbor"
       }

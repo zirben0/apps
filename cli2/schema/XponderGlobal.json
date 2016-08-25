@@ -1,5 +1,5 @@
 {
-  "laportchannel": {
+  "xponderglobal": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/XponderGlobalSubCmds.json"
         }
       }, 
       "cliname": {
@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "IntfRef": {
+          "XponderId": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "Id of the lag group", 
+                "default": "Xponder module identifier default: 0", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,25 +56,27 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "intfref", 
+                "default": "xponder", 
                 "type": "string"
               }, 
               "argtype": {
-                "type": "string"
+                "minimum": 0, 
+                "type": "uint8", 
+                "maximum": 255
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": ""
+                "default": "0"
               }
             }
           }
         }
       }, 
       "objname": {
-        "default": "LaPortChannel", 
+        "default": "XponderGlobal", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

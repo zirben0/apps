@@ -9,7 +9,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "IfIndex": {
+      "XponderId": {
         "type": "object", 
         "properties": {
           "key": {
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Reference to aggregate member interface", 
+            "default": "Xponder module identifier", 
             "type": "string"
           }, 
           "islist": {
@@ -29,13 +29,13 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifindex", 
+            "default": "xponderid", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "type": "int32", 
-            "maximum": 2147483647
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
           }, 
           "isdefaultset": {
             "default": false, 
@@ -54,7 +54,7 @@
     "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
-    "default": "LaPortChannelMemberState", 
+    "default": "XponderGlobalState", 
     "type": "string", 
     "description": "object name to which references these attributes"
   }

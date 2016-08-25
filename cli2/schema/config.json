@@ -64,6 +64,15 @@
           },
           "subcmd17": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModule.json"
+          },
+          "subcmd18": {
+            "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleNwIntf.json"
+          },
+          "subcmd19": {
+            "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleClntIntf.json"
+          },
+          "subcmd20": {
+            "$ref": "file:/tmp/snaproute/cli/schema/XponderGlobal.json"
           }
         }
       }

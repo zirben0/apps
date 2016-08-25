@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-65535  The value of the write-able portion of the Bridge ID (i.e. default: 4096", 
+            "default": "0-65535  The value of the write-able portion of the Bridge ID i.e. default: 32768", 
             "type": "string"
           }, 
           "islist": {

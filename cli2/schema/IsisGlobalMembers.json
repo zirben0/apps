@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": false, 
+    "default": true, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -9,7 +9,42 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "Vlan": {
+      "Enable": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Global ISIS state in this VRF default: true", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "enable", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "true"
+          }
+        }
+      }, 
+      "Vrf": {
         "type": "object", 
         "properties": {
           "key": {
@@ -21,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "1-4095  Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is typically 1", 
+            "default": "VRF id where ISIS is globally enabled or disabled default: default", 
             "type": "string"
           }, 
           "islist": {
@@ -29,20 +64,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vlan", 
+            "default": "vrf", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint16", 
-            "maximum": 4095
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "default"
           }
         }
       }
@@ -54,7 +87,7 @@
     "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
-    "default": "StpBridgeState", 
+    "default": "IsisGlobal", 
     "type": "string", 
     "description": "object name to which references these attributes"
   }

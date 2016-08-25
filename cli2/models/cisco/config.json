@@ -48,6 +48,15 @@
       },
       "subcmd17": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModule.json"
+      },
+      "subcmd18": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntf.json"
+      },
+      "subcmd19": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleClntIntf.json"
+      },
+      "subcmd20": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/XponderGlobal.json"
       }
     }
   } 

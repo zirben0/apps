@@ -1,5 +1,5 @@
 {
-  "laportchannelmemberstate": {
+  "isisglobalstate": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelMemberStateSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/IsisGlobalStateSubCmds.json"
         }
       }, 
       "cliname": {
@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "IfIndex": {
+          "Vrf": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "Reference to aggregate member interface", 
+                "default": "VRF id for which global ISIS state is requested", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,13 +56,11 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "ifindex", 
+                "default": "vrf", 
                 "type": "string"
               }, 
               "argtype": {
-                "minimum": -2147483648, 
-                "type": "int32", 
-                "maximum": 2147483647
+                "type": "string"
               }, 
               "isdefaultset": {
                 "default": true, 
@@ -76,7 +74,7 @@
         }
       }, 
       "objname": {
-        "default": "LaPortChannelMemberState", 
+        "default": "IsisGlobalState", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }
