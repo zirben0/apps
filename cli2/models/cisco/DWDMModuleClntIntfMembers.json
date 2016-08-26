@@ -2,64 +2,64 @@
   "listattrs": [], 
   "commands": {
     "HostTxEqDfe": {
-      "cliname": "hosttxeqdfe"
+      "cliname": "HostTxEqDfe"
     }, 
     "HostRxSerializerTap1Gain": {
-      "cliname": "hostrxserializertap1gain"
+      "cliname": "HostRxSerializerTap1Gain"
     }, 
     "RxPRBSPattern": {
-      "cliname": "rxprbspattern"
+      "cliname": "RxPRBSPattern"
     }, 
     "HostRxSerializerTap2Delay": {
-      "cliname": "hostrxserializertap2delay"
+      "cliname": "HostRxSerializerTap2Delay"
     }, 
     "HostRxSerializerTap2Gain": {
-      "cliname": "hostrxserializertap2gain"
+      "cliname": "HostRxSerializerTap2Gain"
     }, 
     "HostRxSerializerTap0Delay": {
-      "cliname": "hostrxserializertap0delay"
+      "cliname": "HostRxSerializerTap0Delay"
     }, 
     "HostTxEqCtle": {
-      "cliname": "hosttxeqctle"
+      "cliname": "HostTxEqCtle"
     }, 
     "TxPRBSPattern": {
-      "cliname": "txprbspattern"
+      "cliname": "TxPRBSPattern"
     }, 
     "HostTxEqLfCtle": {
-      "cliname": "hosttxeqlfctle"
+      "cliname": "HostTxEqLfCtle"
     }, 
     "ClntIntfId": {
-      "cliname": "clntIntf"
+      "cliname": "ClntIntfId"
     }, 
     "EnableRxPRBS": {
-      "cliname": "enablerxprbs"
+      "cliname": "EnableRxPRBS"
     }, 
     "TXFECDecDisable": {
-      "cliname": "txfecdecdisable"
+      "cliname": "TXFECDecDisable"
     }, 
     "EnableHostLoopback": {
-      "cliname": "enablehostloopback"
+      "cliname": "EnableHostLoopback"
     }, 
     "AdminState": {
-      "cliname": "adminstate"
+      "cliname": "AdminState"
     }, 
     "RXFECDecDisable": {
-      "cliname": "rxfecdecdisable"
+      "cliname": "RXFECDecDisable"
     }, 
     "NwLaneTributaryToClntIntfMap": {
-      "cliname": "nwlanetributarytoclntintfmap"
+      "cliname": "NwLaneTributaryToClntIntfMap"
     }, 
     "EnableIntSerdesNWLoopback": {
-      "cliname": "enableintserdesnwloopback"
+      "cliname": "EnableIntSerdesNWLoopback"
     }, 
     "EnableTxPRBSChecker": {
-      "cliname": "enabletxprbschecker"
+      "cliname": "EnableTxPRBSChecker"
     }, 
     "HostRxSerializerTap0Gain": {
-      "cliname": "hostrxserializertap0gain"
+      "cliname": "HostRxSerializerTap0Gain"
     }, 
     "ModuleId": {
-      "cliname": "dwdm"
+      "cliname": "ModuleId"
     }
   }
 }

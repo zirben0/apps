@@ -2,19 +2,19 @@
   "listattrs": [], 
   "commands": {
     "EventId": {
-      "cliname": "eventid"
+      "cliname": "EventId"
     }, 
     "EventName": {
-      "cliname": "eventname"
+      "cliname": "EventName"
     }, 
     "SrcObjName": {
-      "cliname": "srcobjname"
+      "cliname": "SrcObjName"
     }, 
     "OwnerName": {
-      "cliname": "ownername"
+      "cliname": "OwnerName"
     }, 
     "OwnerId": {
-      "cliname": "ownerid"
+      "cliname": "OwnerId"
     }
   }
 }
