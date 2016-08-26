@@ -9,10 +9,10 @@
     "$ref": "file:/tmp/snaproute/cli/schema/BGPv4PeerGroup.json"
   },
   "subcmd4": {
-    "$ref": "file:/tmp/snaproute/cli/schema/BGPIPv6Aggregate.json"
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPv6Aggregate.json"
   },
   "subcmd5": {
-    "$ref": "file:/tmp/snaproute/cli/schema/BGPAggregate.json"
+    "$ref": "file:/tmp/snaproute/cli/schema/BGPv4Aggregate.json"
   },
   "subcmd6": {
     "$ref": "file:/tmp/snaproute/cli/schema/BGPv6PeerGroup.json"

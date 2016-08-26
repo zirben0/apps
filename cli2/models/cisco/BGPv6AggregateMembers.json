@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "SendSummaryOnly": {
+      "cliname": "send_summary_only"
+    }, 
+    "GenerateASSet": {
+      "cliname": "generate_as_set"
+    }, 
+    "IpPrefix": {
+      "cliname": "aggregatev6"
+    }
+  }
+}

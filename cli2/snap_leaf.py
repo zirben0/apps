@@ -853,7 +853,7 @@ class LeafCmd(CommonCmdLine):
 
         subcommands = []
         # no comamnd case
-        if len(mline) == 1:
+        if mline[0] == 'no':
             for f in dir(self.__class__):
                 if f.startswith('do_') and not f.endswith('no'):
                     subcommands.append(f.lstrip('do_'))

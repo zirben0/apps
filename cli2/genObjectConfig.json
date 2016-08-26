@@ -1,4 +1,52 @@
 {
+ "Acl": {
+  "access": "w",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "AclRule": {
+  "access": "w",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "AclRuleState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "AclState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "AlarmState": {
   "access": "r",
   "owner": "fMgrd",
@@ -59,18 +107,6 @@
   "linkedObjects": null,
   "parent": ""
  },
- "BGPAggregate": {
-  "access": "w",
-  "owner": "bgpd",
-  "srcfile": "bgpObjects.go",
-  "multiplicity": "*",
-  "accelerated": false,
-  "usesStateDB": false,
-  "autoCreate": false,
-  "autoDiscover": false,
-  "linkedObjects": null,
-  "parent": ""
- },
  "BGPCounters": {
   "access": "",
   "owner": "bgpd",
@@ -90,7 +126,7 @@
   "multiplicity": "1",
   "accelerated": false,
   "usesStateDB": false,
-  "autoCreate": false,
+  "autoCreate": true,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -100,18 +136,6 @@
   "owner": "bgpd",
   "srcfile": "bgpObjects.go",
   "multiplicity": "1",
-  "accelerated": false,
-  "usesStateDB": false,
-  "autoCreate": false,
-  "autoDiscover": false,
-  "linkedObjects": null,
-  "parent": ""
- },
- "BGPIPv6Aggregate": {
-  "access": "w",
-  "owner": "bgpd",
-  "srcfile": "bgpObjects.go",
-  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -251,13 +275,13 @@
   "linkedObjects": null,
   "parent": ""
  },
- "BGPRouteState": {
-  "access": "r",
+ "BGPv4Aggregate": {
+  "access": "w",
   "owner": "bgpd",
   "srcfile": "bgpObjects.go",
   "multiplicity": "*",
   "accelerated": false,
-  "usesStateDB": true,
+  "usesStateDB": false,
   "autoCreate": false,
   "autoDiscover": false,
   "linkedObjects": null,
@@ -288,6 +312,30 @@
   "parent": ""
  },
  "BGPv4PeerGroup": {
+  "access": "w",
+  "owner": "bgpd",
+  "srcfile": "bgpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "BGPv4RouteState": {
+  "access": "r",
+  "owner": "bgpd",
+  "srcfile": "bgpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "BGPv6Aggregate": {
   "access": "w",
   "owner": "bgpd",
   "srcfile": "bgpObjects.go",
@@ -330,6 +378,18 @@
   "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "BGPv6RouteState": {
+  "access": "r",
+  "owner": "bgpd",
+  "srcfile": "bgpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": true,
   "autoCreate": false,
   "autoDiscover": false,
   "linkedObjects": null,
@@ -959,6 +1019,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "LinkScopeIpState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "LogicalIntf": {
   "access": "w",
   "owner": "asicd",
@@ -1336,6 +1408,42 @@
   "owner": "ribd",
   "srcfile": "ribdObjects.go",
   "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PolicyPrefix": {
+  "access": "",
+  "owner": "ribd",
+  "srcfile": "ribdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PolicyPrefixSet": {
+  "access": "w",
+  "owner": "ribd",
+  "srcfile": "ribdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PolicyPrefixSetState": {
+  "access": "r",
+  "owner": "ribd",
+  "srcfile": "ribdObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -1771,6 +1879,18 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "XponderGlobalState": {
+  "access": "r",
+  "owner": "local",
+  "srcfile": "localObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""

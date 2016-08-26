@@ -1,0 +1,16 @@
+{
+  "listattrs": [
+    [
+      "subcmd1", 
+      "PrefixList"
+    ]
+  ], 
+  "commands": {
+    "subcmd1": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyPrefix.json"
+    }, 
+    "Name": {
+      "cliname": "name"
+    }
+  }
+}
