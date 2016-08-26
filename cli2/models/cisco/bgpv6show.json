@@ -8,7 +8,7 @@
       },
       "subcmd2" : {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6RouteStateMembers.json"
-      },
+      }
     }
   }
 }
