@@ -603,7 +603,7 @@ class CommonCmdLine(cmdln.Cmdln):
         :return: list of tuples in the format of (model attribute name, cliname, help description)
         """
 
-        cliHelpList = [[snapcliconst.COMMAND_DISPLAY_ENTER, "", LOCAL_COMMAND]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
+        cliHelpList = [[snapcliconst.COMMAND_DISPLAY_ENTER, "", self.LOCAL_COMMAND]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             if schemaname:
