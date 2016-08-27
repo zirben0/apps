@@ -129,7 +129,7 @@
         }
       },
       "objname": {
-        "default": "BGPRouteState",
+        "default": "BGPv6RouteState",
         "type": "string",
         "description": "object name to which references these attributes"
       },
@@ -139,6 +139,9 @@
         "properties": {
           "subcmd1": {
             "$ref": "file:/tmp/snaproute/cli/schema/BGPv6NeighborState.json"
+          },
+          "subcmd2" : {
+            "$ref": "file:/tmp/snaproute/cli/schema/BGPv6RouteStateMembers.json"
           }
         }
       }

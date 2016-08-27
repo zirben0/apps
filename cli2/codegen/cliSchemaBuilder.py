@@ -580,7 +580,9 @@ class ModelToLeafMember(ModelToLeaf):
 
                 memberinfo = LeafMemberTemplate() if self.modeltype == self.SCHEMA_TYPE else ModelLeafMemberTemplate()
                 if isCommonType(type):
-                    memberinfo.setDefault("cliname", name.lower())
+
+                    #memberinfo.setDefault("cliname", name[0].lower() + name[1:])
+                    memberinfo.setDefault("cliname", name)
                     memberinfo.setDefault("key", iskey)
                     memberinfo.setArgType(type, selections, min, max)
                     memberinfo.setDefault("islist", isArray)

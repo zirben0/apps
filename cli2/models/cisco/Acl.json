@@ -1,0 +1,17 @@
+{
+  "acl": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/AclSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "AclName": {
+        "cliname": "aclname"
+      }, 
+      "Direction": {
+        "cliname": "direction"
+      }
+    }
+  }
+}

@@ -2,13 +2,13 @@
   "listattrs": [], 
   "commands": {
     "XponderDescription": {
-      "cliname": "xponderdescription"
+      "cliname": "XponderDescription"
     }, 
     "XponderId": {
       "cliname": "xponder"
     }, 
     "XponderMode": {
-      "cliname": "xpondermode"
+      "cliname": "XponderMode"
     }
   }
 }

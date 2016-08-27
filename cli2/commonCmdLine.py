@@ -36,7 +36,6 @@ from tablePrint import indent, wrap_onspace_strict
 from flexswitchV2 import FlexSwitch
 from flexprint import FlexPrint
 
-
 USING_READLINE = True
 try:
     # For platforms without readline support go visit ...
@@ -204,6 +203,9 @@ class CmdFunc(object):
 
 
 class CommonCmdLine(cmdln.Cmdln):
+
+    MODEL_COMMAND = False
+    LOCAL_COMMAND = True
 
     configDict = {}
     def __init__(self, parent, switch_ip, schema_path, model_path, layer):
@@ -600,7 +602,8 @@ class CommonCmdLine(cmdln.Cmdln):
         :param parentname:
         :return: list of tuples in the format of (model attribute name, cliname, help description)
         """
-        cliHelpList = [[snapcliconst.COMMAND_DISPLAY_ENTER, ""]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
+
+        cliHelpList = [[snapcliconst.COMMAND_DISPLAY_ENTER, "", self.LOCAL_COMMAND]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
             if schemaname:
@@ -625,7 +628,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                         if 'cliname' in vvvv.keys():
                                                             x.append([listattrDict[kkk], vvvv['cliname'], None])
                                             else:
-                                                x.append([kkk, self.getCliName(vvv), self.getCliHelp(vvv)])
+                                                x.append([kkk, self.getCliName(vvv) , self.getCliHelp(vvv)])
                                 elif type(vv) == dict:
                                     x.append([kk, self.getCliName(vv), self.getCliHelp(vv)])
                         # did not find the name in the model lets get from schema
@@ -645,7 +648,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                             val[2] = clihelp["default"]
 
                                                         if val[1] != parentname:
-                                                            cliHelpList.append((val[1], val[2]))
+                                                            cliHelpList.append((val[1], val[2], self.MODEL_COMMAND))
                                     elif "properties" in vv and "commands" in vv["properties"]:
                                         # todo need to get proper parsing to find the help
                                         cliname, clihelp = self.getCliName(vv["properties"]), self.getCliHelp(vv["properties"])
@@ -654,16 +657,20 @@ class CommonCmdLine(cmdln.Cmdln):
                                         elif clihelp:
                                             val[2] = clihelp["default"]
                                         if val[1] != parentname:
-                                            cliHelpList.append((val[1], val[2]))
+                                            cliHelpList.append((val[1], val[2], self.MODEL_COMMAND))
                             else:
-                                cliHelpList.append((val[1], val[2]))
+                                cliHelpList.append((val[1], val[2], self.MODEL_COMMAND))
+
+        #for i, (name, help) in enumerate(cliHelpList):
+        #    name = BOLDSTART + name + BOLDEND
+        #    cliHelpList[i][0] = name
 
         # get all the internal do_<xxx> commands for this class
         if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd:
             for f in dir(self):
                 if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
                     docstr = getattr(self, f).__doc__
-                    cliHelpList.append((f.replace('do_', ''), docstr if docstr else ""))
+                    cliHelpList.append((f.replace('do_', ''), docstr if docstr else "", self.LOCAL_COMMAND))
         return sorted(cliHelpList)
 
     def getValueMinMax(self, cmd, model, schema):
@@ -950,7 +957,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                         cmd = snapcliconst.COMMAND_DISPLAY_ENTER
                                     else:
                                         cmd = " ".join(argv[:-1])
-                                    helpcommands = [[cmd, help]]
+                                    helpcommands = [[cmd, help, self.LOCAL_COMMAND]]
                                     tmphelpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                     if snapcliconst.COMMAND_TYPE_SHOW in self.cmdtype:
                                         helpcommands += tmphelpcommands
@@ -969,26 +976,26 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     min,max = self.getValueMinMax(mline[i], submodel, subschema)
                                                     if min is not None and max is not None:
                                                         strvalues += "%s-%s" %(min, max)
-                                            helpcommands = [[cmd, strvalues + "\n" + help]]
+                                            helpcommands = [[cmd, strvalues + "\n" + help, self.MODEL_COMMAND]]
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                             else:
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
-                                    if mline[i+1] in [cmd for (cmd, x) in helpcommands]:
-                                        help = [h for (cmd, h) in helpcommands if mline[i+1] == cmd]
+                                    if mline[i+1] in [cmd for (cmd, x, y) in helpcommands]:
+                                        help = [h for (cmd, h, y) in helpcommands if mline[i+1] == cmd]
                                         if help:
-                                            helpcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, help[0]]]
+                                            helpcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, help[0], self.LOCAL_COMMAND]]
                                     else:
                                         if snapcliconst.COMMAND_TYPE_SHOW in self.cmdtype:
                                             helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                         else:
-                                            helpcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, ""]]
+                                            helpcommands = [[snapcliconst.COMMAND_DISPLAY_ENTER, "", self.LOCAL_COMMAND]]
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
 
                     else:
-                        if 'commands' in submodel[schemaname]:
+                        if schemaname in submodel and 'commands' in submodel[schemaname]:
                             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
                                 scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
                                 if 'subcmd' in mcmd:
@@ -999,13 +1006,23 @@ class CommonCmdLine(cmdln.Cmdln):
                                                 if attrvalue['cliname'] == mline[i]:
                                                     sattrvalue = scmdvalues['commands']['properties'][attr]
                                                     helpcommands.append([snapcliconst.getAttrCliName(attrvalue, sattrvalue),
-                                                                         snapcliconst.getAttrHelp(attrvalue, sattrvalue)])
+                                                                         snapcliconst.getAttrHelp(attrvalue, sattrvalue),
+                                                                         self.MODEL_COMMAND])
         if not returnhelp:
             self.printCommands(mline, helpcommands)
 
         return helpcommands
 
     def printCommands(self, argv, subcommands):
+
+        COMMAND = 0
+        HELP = 1
+        MODEL_COMMAND_TYPE_MODEL_OR_LOCAL = 2
+
+        OKGREEN = "\033[92m"
+        GREENEND = "\033[0m"
+        OKBOLD = "\033[00m"
+        ENDBOLD = "\033[0m"
 
         def terminal_size():
             import fcntl, termios, struct
@@ -1018,10 +1035,19 @@ class CommonCmdLine(cmdln.Cmdln):
 
         labels = ('Command', 'Description',)
         rows = []
-        for x in subcommands:
-            rows.append((x[0], x[1]))
 
+        rows.append(("control:", ""))
+        for x in subcommands:
+            if x[MODEL_COMMAND_TYPE_MODEL_OR_LOCAL]:
+                rows.append(("  " + OKBOLD+x[COMMAND]+ENDBOLD, x[HELP]))
+
+        rows.append(("context:", ""))
+        for x in subcommands:
+            # model command
+            if not x[MODEL_COMMAND_TYPE_MODEL_OR_LOCAL]:
+                rows.append(("  " + OKGREEN+x[COMMAND]+GREENEND, x[HELP]))
         width = (int(width) / 2) - 5
+
         print indent([labels]+rows, hasHeader=True, separateRows=True,
                      prefix=' ', postfix=' ', headerChar= '-', delim='    ',
                      wrapfunc=lambda x: wrap_onspace_strict(x,width))
