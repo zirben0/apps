@@ -564,10 +564,11 @@ class CmdLine(CommonCmdLine):
                                                     usercmd = self.convertUserCmdToModelCmd(mline[i+1], subcommands)
                                                     if usercmd is not None:
                                                         mline[i+1] = usercmd
-                                                    else:
-                                                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
-                                                        snapcliconst.printErrorValueCmd(i+1, mline)
-                                                        return ''
+                                                    # this is preventing individual values from being set to show
+                                                    #elif valueexpected != :
+                                                    #    sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                                    #    snapcliconst.printErrorValueCmd(i+1, mline)
+                                                    #    return ''
 
                                                 if mline[i+1] not in subcommands:
                                                     self.currentcmd = self.lastcmd
@@ -613,12 +614,13 @@ class CmdLine(CommonCmdLine):
             newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
         else:
             return ''
-
-        if len(newargv) > 1 and 'help' in newargv:
+        if len(newargv) > 1 and 'help' in newargv or '?' in newargv:
             if newargv[0] == snapcliconst.COMMAND_TYPE_SHOW:
+                # strip the last command and display the help for current position
                 self.display_show_help(newargv)
                 return ''
             elif newargv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
+                # strip the last command and display the help for current position
                 self.display_help(newargv)
                 return ''
         if newargv and '!' in newargv[-1]:
