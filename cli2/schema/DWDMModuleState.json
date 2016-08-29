@@ -79,7 +79,8 @@
         "default": "DWDMModuleState", 
         "type": "string", 
         "description": "object name to which references these attributes"
-      }
+      },
+      "useCombinedPrintFn": true
     }
   }
 }
