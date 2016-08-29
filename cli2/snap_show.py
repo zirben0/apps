@@ -783,7 +783,10 @@ class ShowCmd(CommonCmdLine):
 
                 try:
                     if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName + 's')
+                        if self.schema[funcObjName.lower()]['properties'].has_key('useCombinedPrintFn'):
+                            printall_func = getattr(sdk, 'printCombined' + funcObjName + 's')
+                        else:
+                            printall_func = getattr(sdk, 'print' + funcObjName + 's')
                         printall_func()
                     else:
                         # update all the arguments so that the values get set in the get_sdk_...
