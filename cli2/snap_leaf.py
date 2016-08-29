@@ -977,9 +977,9 @@ class LeafCmd(CommonCmdLine):
                                                     if min is not None and max is not None:
                                                         subcommands.append([cmd, ",".join([min, max]) + "\n" + help])
                                             '''
-                                            subcommands.append([cmd, help])
+                                            subcommands.append([cmd, help, self.MODEL_COMMAND])
                                         else:
-                                            subcommands.append([cmd, help])
+                                            subcommands.append([cmd, help, self.MODEL_COMMAND])
                                 else:
                                     for subkey in attrvalue.keys():
                                         subcommands += checkAttributevalues(obj, argv, mlineLength, subkey, attrvalue, sattrvalue)
@@ -1018,19 +1018,19 @@ class LeafCmd(CommonCmdLine):
                         if i == mlineLength - 1:
                             if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                 cmd = " ".join(argv[:-1])
-                                subcommands = [[cmd, help]]
+                                subcommands = [[cmd, help, self.MODEL_COMMAND]]
                                 values = self.getCommandValues(objname, keys)
                                 if values:
-                                    subcommands = [[cmd, ",".join(values) + "\n" + help]]
+                                    subcommands = [[cmd, ",".join(values) + "\n" + help, self.MODEL_COMMAND]]
                                 else:
                                     values = self.getValueSelections(mline[i], submodel, subschema)
                                     if values:
                                         strvalues = ["%s" %(x,) for x in values]
-                                        subcommands = [[cmd, ",".join(strvalues) + "\n" + help]]
+                                        subcommands = [[cmd, ",".join(strvalues) + "\n" + help, self.MODEL_COMMAND]]
                                     else:
                                         min,max = self.getValueMinMax(mline[i], submodel, subschema)
                                         if min is not None and max is not None:
-                                            subcommands = [[cmd, ",".join(["%s" %(min), "%s" %(max)]) + "\n" + help]]
+                                            subcommands = [[cmd, ",".join(["%s" %(min), "%s" %(max)]) + "\n" + help, self.MODEL_COMMAND]]
                             else:
                                 subcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 subcommands = [x for x in subcommands if x[0] != mline[0]]
