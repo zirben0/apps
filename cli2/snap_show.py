@@ -780,10 +780,10 @@ class ShowCmd(CommonCmdLine):
                 sdk = self.getSdkShow()
                 #funcObjName = config.name + 's' if 'State' in config.name else config.name + 'States'
                 funcObjName = config.name
-
                 try:
                     if all:
-                        if self.schema[funcObjName.lower()]['properties'].has_key('useCombinedPrintFn'):
+                        funclower = funcObjName.lower()
+                        if funclower in self.schema and self.schema[funclower]['properties'].has_key('useCombinedPrintFn'):
                             printall_func = getattr(sdk, 'printCombined' + funcObjName + 's')
                         else:
                             printall_func = getattr(sdk, 'print' + funcObjName + 's')
