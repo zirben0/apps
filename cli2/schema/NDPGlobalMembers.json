@@ -9,7 +9,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "Enable": {
+      "RetransmitInterval": {
         "type": "object", 
         "properties": {
           "key": {
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Enable/Diable Neighbor Discovery Globally default: true", 
+            "default": "The time between retransmissions of Neighbor Solicitation messages to a neighbor when resolving the address or when probing the reachability of a neighbor in ms default: 1", 
             "type": "string"
           }, 
           "islist": {
@@ -29,18 +29,20 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enable", 
+            "default": "RetransmitInterval", 
             "type": "string"
           }, 
           "argtype": {
-            "type": "string"
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "true"
+            "default": "1"
           }
         }
       }, 
@@ -64,18 +66,92 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vrf", 
+            "default": "Vrf", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
             "default": "default"
+          }
+        }
+      }, 
+      "RouterAdvertisementInterval": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Delay between each router advertisements in seconds default: 5", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "RouterAdvertisementInterval", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "5"
+          }
+        }
+      }, 
+      "ReachableTime": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "The time a neighbor is considered reachable after receiving a reachability confirmation in ms default: 30000", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "ReachableTime", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "30000"
           }
         }
       }

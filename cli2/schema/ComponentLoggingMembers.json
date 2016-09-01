@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "module", 
+            "default": "Module", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "level", 
+            "default": "Level", 
             "type": "string"
           }, 
           "argtype": {
@@ -83,7 +83,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

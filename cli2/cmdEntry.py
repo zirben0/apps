@@ -163,8 +163,11 @@ class CmdEntry(object):
         # This is a delete command, meaning we want to
         # update to a default or delete an object
         self.delete = False
-        # holds the name of the object
+        # holds the name of the object, plus key attributes
         self.name = name
+        # holds the name of hte object
+        self.objname = name.split(",")[0]
+
         # holds provisioned values from user as a list of CmdSet
         self.attrList = []
         # holds the attributes which are keys to this config object
@@ -186,6 +189,10 @@ class CmdEntry(object):
 
     def isPending(self):
         return self.pending
+
+    def getObjName(self):
+
+        self.name
 
     def setValid(self, v):
         self.valid = v
@@ -382,7 +389,7 @@ class CmdEntry(object):
         if not self.isPending():
             pending = 'APPLIED CONFIG'
 
-        sys.stdout.write('\tobject: %s   status: %s  valid: %s\n' %(self.name, pending, self.valid))
+        sys.stdout.write('\tobject: %s   status: %s  valid: %s\n' %(self.objname, pending, self.valid))
 
         labels = ('command', 'attr', 'value', 'iskey', 'time provisioned')
         rows = []

@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intf", 
+            "default": "Intf", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "tos", 
+            "default": "TOS", 
             "type": "string"
           }, 
           "argtype": {
@@ -73,7 +73,7 @@
             "maximum": 65536
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,7 +101,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vni", 
+            "default": "Vni", 
             "type": "string"
           }, 
           "argtype": {
@@ -138,7 +138,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "mtu", 
+            "default": "Mtu", 
             "type": "string"
           }, 
           "argtype": {
@@ -147,7 +147,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -175,7 +175,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "innervlanhandlingmode", 
+            "default": "InnerVlanHandlingMode", 
             "type": "string"
           }, 
           "argtype": {
@@ -188,7 +188,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -216,7 +216,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfref", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -243,7 +243,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  Destination IP address for the static VxLAN tunnel", 
+            "default": " Destination IP address for the static VxLAN tunnel", 
             "type": "string"
           }, 
           "islist": {
@@ -251,7 +251,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "dstip", 
+            "default": "DstIp", 
             "type": "string"
           }, 
           "argtype": {
@@ -289,7 +289,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vlanid", 
+            "default": "VlanId", 
             "type": "string"
           }, 
           "argtype": {
@@ -326,7 +326,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ttl", 
+            "default": "TTL", 
             "type": "string"
           }, 
           "argtype": {
@@ -335,7 +335,7 @@
             "maximum": 65536
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -355,7 +355,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  Source IP address for the VxLAN tunnel default: 0.0.0.0", 
+            "default": " Source IP address for the VxLAN tunnel default: 0.0.0.0", 
             "type": "string"
           }, 
           "islist": {
@@ -363,17 +363,15 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "srcip", 
+            "default": "SrcIp", 
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-            ], 
+            "enum": [], 
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -401,7 +399,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "dstudp", 
+            "default": "DstUDP", 
             "type": "string"
           }, 
           "argtype": {
@@ -410,7 +408,7 @@
             "maximum": 65536
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

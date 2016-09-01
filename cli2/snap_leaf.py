@@ -79,10 +79,10 @@ class LeafCmd(CommonCmdLine):
         :param cliname:
         :return:
         '''
-        def getParentConfigEntry(configObj, objname, keyvalueDict): #parentattr, parentval):
+        def getParentConfigEntry(configObj, name, keyvalueDict): #parentattr, parentval):
 
             for config in configObj.configList:
-                if config.name == objname:
+                if config.name == name:
                     # todo need to check keys
                     numKeys = len(keyvalueDict)
                     keysfoundcnt = 0
@@ -116,15 +116,21 @@ class LeafCmd(CommonCmdLine):
             return None
 
         def createChildTreeObjectsDict(objcmds):
+            # in order to support objects with multiple keys
+            # we need to ensure that the key is unique otherwise the lookup
+            # for a particular subcommand will not be found
             objDict = {}
             # lets fill out the object to attributes mapping valid for this level in the tree
             for cmds in objcmds:
                 if type(cmds) in (dict, jsonref.JsonRef):
+                    objkeys = ",".join([k for k,v in cmds.iteritems() if v['isattrkey']])
                     for k, v in cmds.iteritems():
-                        if v['objname'] not in objDict:
-                            objDict[v['objname']] = {}
+                        key = (v['objname'], objkeys)
+                        #key = v['objname']
+                        if key not in objDict:
+                            objDict[key] = {}
 
-                        objDict[v['objname']].update({k:v})
+                        objDict[key].update({k:v})
             return objDict
 
         def getCurrentLeafContainerKeyValues(cmdtype, parent, currentcmd, delete, defaultValFunc):
@@ -180,7 +186,8 @@ class LeafCmd(CommonCmdLine):
 
                 # lets go through the valid sub tree command objects
                 # and fill in what command was entered by the user
-                for objname, objattrs in self.objDict.iteritems():
+                for (objname, objkeys), objattrs in self.objDict.iteritems():
+                #for objname, objattrs in self.objDict.iteritems():
 
                     config = None
                     # show commands don't require keys because we
@@ -189,11 +196,17 @@ class LeafCmd(CommonCmdLine):
                     if snapcliconst.COMMAND_TYPE_SHOW not in self.cmdtype:
                         # get the parent object if this is a sub command
                         # as this may be a secondary key for the object
+
+                        if self.parent:
+                            config = getParentConfigEntry(configObj, objname+","+objkeys, keyvalueDict)
+                        if not config:
+                            config = CmdEntry(self, objname+","+objkeys, self.objDict[(objname, objkeys)])
+                        '''
                         if self.parent:
                             config = getParentConfigEntry(configObj, objname, keyvalueDict)
                         if not config:
                             config = CmdEntry(self, objname, self.objDict[objname])
-
+                        '''
                         if cliname in keyvalueDict:
                             # total keys must be provisioned for config to be valid
                             # the keyvalueDict may contain more tree keys than is applicable for the
@@ -257,7 +270,8 @@ class LeafCmd(CommonCmdLine):
                                         config.setValid(isvalid)
                                         config.set(cmd, delete, basekey, basevalue, isKey=True, isattrlist=objattrs[basekey]['isarray'] )
                     else:
-                        config = CmdEntry(self, objname, self.objDict[objname])
+                        config = CmdEntry(self, objname, self.objDict[(objname, objkeys)])
+                        #config = CmdEntry(self, objname, self.objDict[objname])
                         config.setValid(True)
 
                     # only add this config if it does not already exist
@@ -530,7 +544,6 @@ class LeafCmd(CommonCmdLine):
             verifyargv = argv[1:]
             mline = argv[1:]
             delete = True
-
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
@@ -554,7 +567,6 @@ class LeafCmd(CommonCmdLine):
         value = self.getCommandDefaultAttrValue(mline, delcmd=delete)
         if value is not None:
             mline += [str(value)]
-
         # lets set the attribute value
         if isInvalidCommand(verifyargv, delete):
             return
@@ -680,9 +692,9 @@ class LeafCmd(CommonCmdLine):
                                                                                    k == subkey))]) == 1
 
         # key + subkey + value supplied
-        key = mline[0]
-        subkey = mline[1]
-        value = mline[2] if not delete else None
+        key = mline[-3]
+        subkey = mline[-2]
+        value = mline[-1] if not delete else None
         configObj = self.getConfigObj()
         if configObj:
             for config in configObj.configList:

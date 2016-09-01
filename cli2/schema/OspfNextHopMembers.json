@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifipaddr", 
+            "default": "IfIPAddr", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "advrtr", 
+            "default": "AdvRtr", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nexthopip", 
+            "default": "NextHopIP", 
             "type": "string"
           }, 
           "argtype": {
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifidx", 
+            "default": "IfIdx", 
             "type": "string"
           }, 
           "argtype": {

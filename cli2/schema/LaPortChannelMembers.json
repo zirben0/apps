@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": true,
+    "default": false, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfreflist", 
+            "default": "IntfRefList", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,14 +64,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminstate", 
+            "default": "AdminState", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -99,18 +99,20 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lagtype", 
+            "default": "LagType", 
             "type": "string"
           }, 
           "argtype": {
+            "minimum": -2147483648, 
             "enum": [
               0, 
               1
             ], 
-            "type": "int32"
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -138,7 +140,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfref", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -165,7 +167,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "The MAC address portion of the nodes System ID. This is combined with the system priority to construct the 8-octet system-id", 
+            "default": " [0-9a-fA-F]{2}(  The MAC address portion of the nodes System ID. This is combined with the system priority to construct the 8-octet system-id default: 00", 
             "type": "string"
           }, 
           "islist": {
@@ -173,18 +175,21 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "systemidmac", 
+            "default": "SystemIdMac", 
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "[0-9a-fA-F]{2}("
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "00:00:00:00:00:00"
+            "default": "00"
           }
         }
       }, 
@@ -208,7 +213,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "minlinks", 
+            "default": "MinLinks", 
             "type": "string"
           }, 
           "argtype": {
@@ -237,7 +242,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Sytem priority used by the node on this LAG interface. Lower value is higher priority for determining which node is the controlling system.", 
+            "default": "Sytem priority used by the node on this LAG interface. Lower value is higher priority for determining which node is the controlling system. default: 32768", 
             "type": "string"
           }, 
           "islist": {
@@ -245,7 +250,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "systempriority", 
+            "default": "SystemPriority", 
             "type": "string"
           }, 
           "argtype": {
@@ -254,7 +259,7 @@
             "maximum": 65536
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -282,18 +287,20 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "interval", 
+            "default": "Interval", 
             "type": "string"
           }, 
           "argtype": {
+            "minimum": -2147483648, 
             "enum": [
               1, 
               0
             ], 
-            "type": "int32"
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -321,7 +328,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lacpmode", 
+            "default": "LacpMode", 
             "type": "string"
           }, 
           "argtype": {
@@ -334,7 +341,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -362,23 +369,25 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "laghash", 
+            "default": "LagHash", 
             "type": "string"
           }, 
           "argtype": {
+            "minimum": -2147483648, 
             "enum": [
               0, 
               2, 
               1
             ], 
-            "type": "int32"
-          },
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "1"
+            "default": "0"
           }
         }
       }

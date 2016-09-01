@@ -65,11 +65,11 @@
                 "maximum": 4294967296
               },
               "isdefaultset": {
-                "default": false,
+                "default": true,
                 "type": "boolean"
               },
               "defaultarg": {
-                "default": ""
+                "default": 0
               }
             }
           }

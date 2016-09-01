@@ -34,7 +34,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "destinationnw", 
+            "default": "DestinationNw", 
             "type": "string"
           }, 
           "argtype": {
@@ -69,7 +69,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "cost", 
+            "default": "Cost", 
             "type": "string"
           }, 
           "argtype": {
@@ -78,7 +78,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -106,14 +106,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "protocol", 
+            "default": "Protocol", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -141,7 +141,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "networkmask", 
+            "default": "NetworkMask", 
             "type": "string"
           }, 
           "argtype": {
@@ -176,14 +176,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nullroute", 
+            "default": "NullRoute", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

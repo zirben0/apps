@@ -56,7 +56,7 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "xponder", 
+                "default": "xponderid", 
                 "type": "string"
               }, 
               "argtype": {

@@ -1104,7 +1104,6 @@ class CommonCmdLine(cmdln.Cmdln):
         :param schema:
         :return: list of commands available from this leaf class
         '''
-
         def getObjNameAndCreateWithDefaultFromSchema(schema, model, objname, createwithdefault):
             objname = objname
             createwithdefault = createwithdefault

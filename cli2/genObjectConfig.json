@@ -59,6 +59,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "ApiCallState": {
+  "access": "r",
+  "owner": "local",
+  "srcfile": "localObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "ArpEntryHwState": {
   "access": "r",
   "owner": "asicd",
@@ -698,8 +710,8 @@
  "DistributedRelay": {
   "access": "w",
   "owner": "lacpd",
-  "srcfile": "gen_lacp.go",
-  "multiplicity": "1",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -710,8 +722,8 @@
  "DistributedRelayState": {
   "access": "r",
   "owner": "lacpd",
-  "srcfile": "gen_lacp.go",
-  "multiplicity": "1",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -890,8 +902,8 @@
  "IppLinkState": {
   "access": "r",
   "owner": "lacpd",
-  "srcfile": "gen_lacp.go",
-  "multiplicity": "1",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -962,8 +974,8 @@
  "LaPortChannel": {
   "access": "w",
   "owner": "lacpd",
-  "srcfile": "gen_lacp.go",
-  "multiplicity": "1",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -974,8 +986,8 @@
  "LaPortChannelIntfRefListState": {
   "access": "r",
   "owner": "lacpd",
-  "srcfile": "gen_lacp.go",
-  "multiplicity": "1",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -986,11 +998,23 @@
  "LaPortChannelState": {
   "access": "r",
   "owner": "lacpd",
-  "srcfile": "gen_lacp.go",
-  "multiplicity": "1",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "LacpGlobal": {
+  "access": "w",
+  "owner": "lacpd",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": true,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -1646,11 +1670,11 @@
  "StpBridgeInstance": {
   "access": "w",
   "owner": "stpd",
-  "srcfile": "gen_stp.go",
-  "multiplicity": "1",
+  "srcfile": "stpdObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
-  "autoCreate": false,
+  "autoCreate": true,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -1658,8 +1682,8 @@
  "StpBridgeState": {
   "access": "r",
   "owner": "stpd",
-  "srcfile": "gen_stp.go",
-  "multiplicity": "1",
+  "srcfile": "stpdObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -1667,23 +1691,35 @@
   "linkedObjects": null,
   "parent": ""
  },
- "StpPort": {
+ "StpGlobal": {
   "access": "w",
   "owner": "stpd",
-  "srcfile": "gen_stp.go",
+  "srcfile": "stpdObjects.go",
   "multiplicity": "1",
   "accelerated": false,
   "usesStateDB": false,
-  "autoCreate": false,
+  "autoCreate": true,
   "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "StpPort": {
+  "access": "rw",
+  "owner": "stpd",
+  "srcfile": "stpdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
   "linkedObjects": null,
   "parent": ""
  },
  "StpPortState": {
   "access": "r",
   "owner": "stpd",
-  "srcfile": "gen_stp.go",
-  "multiplicity": "1",
+  "srcfile": "stpdObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,

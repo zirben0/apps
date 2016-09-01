@@ -1,11 +1,5 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelMembers.json"
-  },
-  "subcmd2": {
-    "$ref": "file:/tmp/snaproute/cli/schema/ipv4lagintf.json"
-  },
-  "subcmd3": {
-    "$ref": "file:/tmp/snaproute/cli/schema/ipv6lagintf.json"
   }
 }

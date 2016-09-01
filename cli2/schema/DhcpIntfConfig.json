@@ -31,7 +31,7 @@
         "displayValue": false, 
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
-      }, 
+      }
       "objname": {
         "default": "DhcpIntfConfig", 
         "type": "string", 

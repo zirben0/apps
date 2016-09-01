@@ -67,7 +67,7 @@
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": ""
+                "default": "default"
               }
             }
           }

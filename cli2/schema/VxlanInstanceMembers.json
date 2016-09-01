@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vlanid", 
+            "default": "VlanId", 
             "type": "string"
           }, 
           "argtype": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vni", 
+            "default": "Vni", 
             "type": "string"
           }, 
           "argtype": {

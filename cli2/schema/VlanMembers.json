@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "untagintflist", 
+            "default": "UntagIntfList", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intflist", 
+            "default": "IntfList", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vlanid", 
+            "default": "VlanId", 
             "type": "string"
           }, 
           "argtype": {
