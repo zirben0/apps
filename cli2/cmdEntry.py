@@ -259,6 +259,11 @@ class CmdEntry(object):
         :return:
         '''
         def handleListUpdate(attrtype, olddata, newdata):
+            # found that if user replys with None
+            # that this can be bad so lets make sure to
+            # check that old data is actually a list
+            if olddata == None:
+                olddata = []
             updatelist = copy.deepcopy(olddata)
             for nd in newdata:
                 if snapcliconst.isnumeric(attrtype):
