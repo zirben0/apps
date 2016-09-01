@@ -259,7 +259,10 @@ class CmdEntry(object):
         :return:
         '''
         def handleListUpdate(attrtype, olddata, newdata):
-            updatelist = copy.deepcopy(olddata)
+            # found that if user replys with None
+            # that this can be bad so lets make sure to
+            # check that old data is actually a list
+            updatelist = copy.deepcopy(olddata) if type(olddata) is list else []
             for nd in newdata:
                 if snapcliconst.isnumeric(attrtype):
                     # if attribute is supplied and it already exists assume delete
