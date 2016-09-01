@@ -709,6 +709,7 @@ class ConfigCmd(CommonCmdLine):
 
     def do_apply(self, argv):
         """Apply current user unapplied config.  This will send provisioning commands to Flexswitch"""
+        import ipdb; ipdb.set_trace()
         def fixupConfigList(configObj, configList):
             """
             # There may be a config which needs to be merged with a master config

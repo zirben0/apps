@@ -59,18 +59,6 @@
   "linkedObjects": null,
   "parent": ""
  },
- "ApiCallState": {
-  "access": "r",
-  "owner": "local",
-  "srcfile": "localObjects.go",
-  "multiplicity": " \"*",
-  "accelerated": false,
-  "usesStateDB": true,
-  "autoCreate": false,
-  "autoDiscover": false,
-  "linkedObjects": null,
-  "parent": ""
- },
  "ArpEntryHwState": {
   "access": "r",
   "owner": "asicd",
@@ -515,6 +503,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "ConfigLogState": {
+  "access": "r",
+  "owner": "local",
+  "srcfile": "localObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "DWDMModule": {
   "access": "rw",
   "owner": "opticd",
@@ -752,6 +752,54 @@
   "usesStateDB": false,
   "autoCreate": false,
   "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "FanSensor": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "FanSensorPMData": {
+  "access": "",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "FanSensorPMDataState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "FanSensorState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1367,6 +1415,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "PlatformMgmtDeviceState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "PlatformState": {
   "access": "r",
   "owner": "platformd",
@@ -1523,6 +1583,54 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "PowerConverterSensor": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PowerConverterSensorPMData": {
+  "access": "",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PowerConverterSensorPMDataState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PowerConverterSensorState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "Psu": {
   "access": "rw",
   "owner": "platformd",
@@ -1536,6 +1644,54 @@
   "parent": ""
  },
  "PsuState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "Qsfp": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpPMData": {
+  "access": "",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpPMDataState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpState": {
   "access": "r",
   "owner": "platformd",
   "srcfile": "platformdObjects.go",
@@ -1668,14 +1824,14 @@
   "parent": ""
  },
  "StpBridgeInstance": {
-  "access": "w",
+  "access": "rw",
   "owner": "stpd",
   "srcfile": "stpdObjects.go",
   "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
-  "autoCreate": true,
-  "autoDiscover": false,
+  "autoCreate": false,
+  "autoDiscover": true,
   "linkedObjects": null,
   "parent": ""
  },
@@ -1811,6 +1967,54 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "TemperatureSensor": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "TemperatureSensorPMData": {
+  "access": "",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "TemperatureSensorPMDataState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "TemperatureSensorState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "ThermalState": {
   "access": "r",
   "owner": "platformd",
@@ -1840,6 +2044,54 @@
   "owner": "asicd",
   "srcfile": "asicdObjects.go",
   "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "VoltageSensor": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "VoltageSensorPMData": {
+  "access": "",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "VoltageSensorPMDataState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "VoltageSensorState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,

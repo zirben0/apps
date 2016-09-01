@@ -37,7 +37,7 @@ COMMAND_DISPLAY_ENTER = '<cr>'
 
 # these model attribute names will possibly have the cliname changed within the cli
 # model to a name picked by asicd.conf to represent a port
-DYNAMIC_MODEL_ATTR_NAME_LIST = ('IntfRef', 'IfIndex', 'Port', 'Members', 'IntfList', 'UntagIntfList', 'PhysicalPort', 'AddressLessIf')
+DYNAMIC_MODEL_ATTR_NAME_LIST = ('IntfRef', 'IfIndex', 'Port', 'Members', 'IntfList', 'UntagIntfList', 'PhysicalPort', 'AddressLessIf', 'IntfRefList')
 
 # lets keep track of the various two value names that might not need to be represented in the cli
 CLI_COMMAND_POSITIVE_TRUTH_VALUES = ('true', 'on', 'up', True)
@@ -102,7 +102,7 @@ def updateSpecialValueCases(cfgobj, k, v):
 
         # cli always expects the string name, but lets
         # convert the string name to the number
-        if k in ('IfIndex', 'Members'):
+        if k in ('IfIndex', 'Members',):
             # Port object is gathered on cli start
             if type(tmpval) is list:
                 ifindexList = []
