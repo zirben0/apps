@@ -859,16 +859,18 @@ class LeafCmd(CommonCmdLine):
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-        mline = [parentcmd] + [x for x in line.split(' ') if x != '']
+        argv = []
+        if text:
+            argv = [x for x in line.split(' ') if x != '' and x != 'no']
+        mline = [parentcmd] + [x for x in argv if x != '' and x != 'no']
         mlineLength = len(mline)
         #sys.stdout.write("\nmline: %s\n" %(mline))
 
         subcommands = []
         # no comamnd case
-        if mline[0] == 'no':
-            for f in dir(self.__class__):
-                if f.startswith('do_') and not f.endswith('no'):
-                    subcommands.append(f.lstrip('do_'))
+
+        if argv[0] == 'no':
+            subcommands = self.display_help(arvg[1:])
 
         submodel = self.modelList[0]
         subschema = self.schemaList[0]
@@ -1053,6 +1055,7 @@ class LeafCmd(CommonCmdLine):
                     subcommands = checkAttributevalues(self, argv, mlineLength, schemaname, submodel, subschema)
 
         self.printCommands(mline, subcommands)
+        return subcommands
 
     def do_help(self, argv):
         """Display help for current commands, short hand notation of ? can be used as well """
@@ -1222,11 +1225,20 @@ class LeafCmd(CommonCmdLine):
                                                         for subkey in attrvalue.keys():
                                                             checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue, delete)
                                             elif delete and i == (mlineLength - 2):
-                                                erroridx = i+1 if not delete else i+2
-                                                errcmd = mline if not delete else ['no'] + mline
-                                                snapcliconst.printErrorValueCmd(erroridx, errcmd)
-                                                sys.stdout.write("\nERROR Delete commands do not expect value, will revert to default if exists\n")
-                                                return ''
+                                                # reached attribute values
+                                                islist = False
+                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
+                                                    if 'cliname' in attrvalue:
+                                                        if attrvalue['cliname'] == mline[i]:
+                                                            islist = snapcliconst.isValueArgumentList(sattrvalue)
+
+                                                if not islist:
+                                                    erroridx = i+1 if not delete else i+2
+                                                    errcmd = mline if not delete else ['no'] + mline
+                                                    snapcliconst.printErrorValueCmd(erroridx, errcmd)
+                                                    sys.stdout.write("\nERROR Delete commands do not expect value, will revert to default if exists\n")
+                                                    return ''
 
 
                                 return argv
