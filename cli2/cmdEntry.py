@@ -262,7 +262,9 @@ class CmdEntry(object):
             # found that if user replys with None
             # that this can be bad so lets make sure to
             # check that old data is actually a list
-            updatelist = copy.deepcopy(olddata) if type(olddata) is list else []
+            if olddata == None:
+                olddata = []
+            updatelist = copy.deepcopy(olddata)
             for nd in newdata:
                 if snapcliconst.isnumeric(attrtype):
                     # if attribute is supplied and it already exists assume delete
