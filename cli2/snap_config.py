@@ -416,7 +416,7 @@ class ConfigCmd(CommonCmdLine):
             if 'no' == argv[0]:
                 if len(argv) > 1:
                     usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
-                    if newargv[1] not in subcommands and len(subcommands) > 0:
+                    if usercmd not in subcommands and len(subcommands) > 0:
                         if usercmd is None:
                             sys.stdout.write("ERROR: (11) Invalid or incomplete command\n")
                         snapcliconst.printErrorValueCmd(1, argv)

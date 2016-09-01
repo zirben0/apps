@@ -25,6 +25,9 @@
   },
   "subcmd10": {
     "$ref": "file:/tmp/snaproute/cli/schema/ethipv6.json"
+  },
+  "subcmd11": {
+    "$ref": "file:/tmp/snaproute/cli/schema/untaggedvlan.json"
   }
 
 }

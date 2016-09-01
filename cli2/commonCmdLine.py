@@ -349,6 +349,9 @@ class CommonCmdLine(cmdln.Cmdln):
         :param cmdNameList - list of sub commands from the model
         :return:
         """
+        if usercmd == "?":
+            return "help"
+
         cmdNameList = [""] + sorted(cmdNameList) + [""]
         def cp(x): return len(os.path.commonprefix(x))
 

@@ -1,0 +1,10 @@
+{
+  "untaggedvlan": {
+    "cliname": "untagged",
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/untaggedvlansubcmds.json"
+    }, 
+    "prompt": "untagged_vlan",
+    "help": "Untagged Vlan Membership Config"
+  }
+}
