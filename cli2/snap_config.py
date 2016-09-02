@@ -226,10 +226,10 @@ class ConfigCmd(CommonCmdLine):
         subschema = self.schema
 
         subcommands = []
-        if len(mline) == 1:
+        if len(mline) <= 1:
             for f in dir(self.__class__):
                 if f.startswith('do_') and not f.endswith('no'):
-                    subcommands.append(f.lstrip('do_'))
+                    subcommands.append(f.replace('do_', ''))
 
         # advance to next submodel and subschema
         for i in range(1, mlineLength):

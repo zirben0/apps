@@ -357,7 +357,7 @@ class CmdEntry(object):
                         elif attrtype in ('str', 'string'):
                             value = [x.lstrip('').rstrip('') for x in v['value']['default'].split(",")]
                             if len(value) == 1 and value[0] == "":
-                                value = []
+                                value = None
                         else:
                             value = {}
                             for vv in v['value'][0].values():

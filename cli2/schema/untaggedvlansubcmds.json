@@ -1,5 +1,5 @@
 {
   "subcmd1": {
-    "$ref": "file:/tmp/snaproute/cli/schema/VlanMembers.json"
+    "$ref": "file:/tmp/snaproute/cli/schema/portuntaggedvlanmembers.json"
   }
 }

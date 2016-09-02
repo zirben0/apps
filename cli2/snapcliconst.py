@@ -203,6 +203,11 @@ def isValueArgumentList(attrdata):
         return attrdata['properties']['islist']['default']
     return False
 
+def isValueArgumentKey(attrdata):
+    if 'properties' in attrdata and 'key' in attrdata['properties'] and 'default' in attrdata['properties']['key']:
+        return attrdata['properties']['key']['default']
+    return False
+
 
 def getValueArgumentSelections(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'enum' in attrdata['properties']['argtype']:
