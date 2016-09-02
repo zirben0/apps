@@ -2,10 +2,10 @@
   "listattrs": [], 
   "commands": {
     "AclName": {
-      "cliname": "aclname"
+      "cliname": "AclName"
     }, 
     "Direction": {
-      "cliname": "direction"
+      "cliname": "Direction"
     }
   }
 }

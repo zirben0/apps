@@ -4,6 +4,11 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpv6neighborinterfacesubcmds.json"
     }, 
-    "cliname": "interface" 
+    "cliname": "ethernet",
+    "value": {
+      "IntfRef": {
+        "cliname": "ethernet"
+      }
+    }
   }
 }

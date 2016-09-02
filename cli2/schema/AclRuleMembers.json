@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "sourcemac", 
+            "default": "SourceMac", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "proto", 
+            "default": "Proto", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "sourcemask", 
+            "default": "SourceMask", 
             "type": "string"
           }, 
           "argtype": {
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "destmac", 
+            "default": "DestMac", 
             "type": "string"
           }, 
           "argtype": {
@@ -169,7 +169,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "srcport", 
+            "default": "SrcPort", 
             "type": "string"
           }, 
           "argtype": {
@@ -206,7 +206,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "destip", 
+            "default": "DestIp", 
             "type": "string"
           }, 
           "argtype": {
@@ -241,7 +241,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "destmask", 
+            "default": "DestMask", 
             "type": "string"
           }, 
           "argtype": {
@@ -276,7 +276,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "rulename", 
+            "default": "RuleName", 
             "type": "string"
           }, 
           "argtype": {
@@ -311,14 +311,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "action", 
+            "default": "Action", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -346,7 +346,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "dstport", 
+            "default": "DstPort", 
             "type": "string"
           }, 
           "argtype": {
@@ -383,7 +383,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "sourceip", 
+            "default": "SourceIp", 
             "type": "string"
           }, 
           "argtype": {

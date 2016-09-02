@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "",
+                "default": " A 32-bit integer uniquely identifying an area. Area ID 0.0.0.0 is used for the OSPF backbone.", 
                 "type": "string"
               }, 
               "islist": {
@@ -63,7 +63,7 @@
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {

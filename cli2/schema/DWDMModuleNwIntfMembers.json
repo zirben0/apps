@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "clntintfidtotributary0map", 
+            "default": "ClntIntfIdToTributary0Map", 
             "type": "string"
           }, 
           "argtype": {
@@ -66,14 +66,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enablerxprbschecker", 
+            "default": "EnableRxPRBSChecker", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,7 +101,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "rxprbspattern", 
+            "default": "RxPRBSPattern", 
             "type": "string"
           }, 
           "argtype": {
@@ -114,7 +114,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -142,14 +142,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txpulseshapefltrrolloff", 
+            "default": "TxPulseShapeFltrRollOff", 
             "type": "string"
           }, 
           "argtype": {
             "type": "float64"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -177,7 +177,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "clntintfidtotributary1map", 
+            "default": "ClntIntfIdToTributary1Map", 
             "type": "string"
           }, 
           "argtype": {
@@ -214,14 +214,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "rxprbsinvertpattern", 
+            "default": "RxPRBSInvertPattern", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -249,14 +249,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txprbsinvertpattern", 
+            "default": "TxPRBSInvertPattern", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -284,14 +284,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enabletxprbs", 
+            "default": "EnableTxPRBS", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -319,14 +319,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txpower", 
+            "default": "TxPower", 
             "type": "string"
           }, 
           "argtype": {
             "type": "float64"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -354,7 +354,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminstate", 
+            "default": "AdminState", 
             "type": "string"
           }, 
           "argtype": {
@@ -365,7 +365,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -393,7 +393,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "channelnumber", 
+            "default": "ChannelNumber", 
             "type": "string"
           }, 
           "argtype": {
@@ -402,7 +402,7 @@
             "maximum": 100
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -430,7 +430,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "fecmode", 
+            "default": "FECMode", 
             "type": "string"
           }, 
           "argtype": {
@@ -442,7 +442,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -470,7 +470,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nwintfid", 
+            "default": "NwIntfId", 
             "type": "string"
           }, 
           "argtype": {
@@ -507,14 +507,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "diffencoding", 
+            "default": "DiffEncoding", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -542,7 +542,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "moduleid", 
+            "default": "ModuleId", 
             "type": "string"
           }, 
           "argtype": {
@@ -579,7 +579,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txprbspattern", 
+            "default": "TxPRBSPattern", 
             "type": "string"
           }, 
           "argtype": {
@@ -592,7 +592,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -620,7 +620,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "modulationfmt", 
+            "default": "ModulationFmt", 
             "type": "string"
           }, 
           "argtype": {
@@ -632,7 +632,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -660,7 +660,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txpulseshapefltrtype", 
+            "default": "TxPulseShapeFltrType", 
             "type": "string"
           }, 
           "argtype": {
@@ -672,7 +672,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

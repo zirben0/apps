@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "IpAddr": {
-      "cliname": "ipaddr"
+      "cliname": "IpAddr"
     }
   }
 }

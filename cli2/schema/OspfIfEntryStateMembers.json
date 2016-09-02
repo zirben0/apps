@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifipaddress", 
+            "default": "IfIpAddress", 
             "type": "string"
           }, 
           "argtype": {
@@ -37,7 +37,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -65,7 +65,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "addresslessif", 
+            "default": "AddressLessIf", 
             "type": "string"
           }, 
           "argtype": {
@@ -74,7 +74,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

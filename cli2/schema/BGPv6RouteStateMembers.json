@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "cidrlen", 
+            "default": "CIDRLen", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,7 +38,7 @@
             "maximum": 65536
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -66,14 +66,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "network", 
+            "default": "Network", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "BrgIfIndex": {
+          "IntfRef": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "0-2147483647  The value of the instance of the ifIndex object", 
+                "default": "The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,16 +56,14 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "brgifindex", 
+                "default": "intfref", 
                 "type": "string"
               }, 
               "argtype": {
-                "minimum": 0, 
-                "type": "int32", 
-                "maximum": 2147483647
+                "type": "string"
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -73,7 +71,7 @@
               }
             }
           }, 
-          "IfIndex": {
+          "Vlan": {
             "type": "object", 
             "properties": {
               "key": {
@@ -85,7 +83,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "0-65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
+                "default": "0-4094  The value of instance of the vlan object", 
                 "type": "string"
               }, 
               "islist": {
@@ -93,16 +91,16 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "ifindex", 
+                "default": "vlan", 
                 "type": "string"
               }, 
               "argtype": {
                 "minimum": 0, 
                 "type": "int32", 
-                "maximum": 65535
+                "maximum": 4094
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {

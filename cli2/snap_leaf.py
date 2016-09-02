@@ -66,6 +66,7 @@ class LeafCmd(CommonCmdLine):
         # variable used to determine that when set the attribute being set is a key for an object
         self.subcommand = False
         self.issubcommandlist = False
+        self.valueExpected = SUBCOMMAND_VALUE_NOT_EXPECTED
         self.applyexit = False
         self.objDict = {}
 
@@ -79,10 +80,10 @@ class LeafCmd(CommonCmdLine):
         :param cliname:
         :return:
         '''
-        def getParentConfigEntry(configObj, objname, keyvalueDict): #parentattr, parentval):
+        def getParentConfigEntry(configObj, name, keyvalueDict): #parentattr, parentval):
 
             for config in configObj.configList:
-                if config.name == objname:
+                if config.name == name:
                     # todo need to check keys
                     numKeys = len(keyvalueDict)
                     keysfoundcnt = 0
@@ -116,15 +117,21 @@ class LeafCmd(CommonCmdLine):
             return None
 
         def createChildTreeObjectsDict(objcmds):
+            # in order to support objects with multiple keys
+            # we need to ensure that the key is unique otherwise the lookup
+            # for a particular subcommand will not be found
             objDict = {}
             # lets fill out the object to attributes mapping valid for this level in the tree
             for cmds in objcmds:
                 if type(cmds) in (dict, jsonref.JsonRef):
+                    objkeys = ",".join([k for k,v in cmds.iteritems() if v['isattrkey']])
                     for k, v in cmds.iteritems():
-                        if v['objname'] not in objDict:
-                            objDict[v['objname']] = {}
+                        key = (v['objname'], objkeys)
+                        #key = v['objname']
+                        if key not in objDict:
+                            objDict[key] = {}
 
-                        objDict[v['objname']].update({k:v})
+                        objDict[key].update({k:v})
             return objDict
 
         def getCurrentLeafContainerKeyValues(cmdtype, parent, currentcmd, delete, defaultValFunc):
@@ -180,7 +187,8 @@ class LeafCmd(CommonCmdLine):
 
                 # lets go through the valid sub tree command objects
                 # and fill in what command was entered by the user
-                for objname, objattrs in self.objDict.iteritems():
+                for (objname, objkeys), objattrs in self.objDict.iteritems():
+                #for objname, objattrs in self.objDict.iteritems():
 
                     config = None
                     # show commands don't require keys because we
@@ -189,11 +197,17 @@ class LeafCmd(CommonCmdLine):
                     if snapcliconst.COMMAND_TYPE_SHOW not in self.cmdtype:
                         # get the parent object if this is a sub command
                         # as this may be a secondary key for the object
+
+                        if self.parent:
+                            config = getParentConfigEntry(configObj, objname+","+objkeys, keyvalueDict)
+                        if not config:
+                            config = CmdEntry(self, objname+","+objkeys, self.objDict[(objname, objkeys)])
+                        '''
                         if self.parent:
                             config = getParentConfigEntry(configObj, objname, keyvalueDict)
                         if not config:
                             config = CmdEntry(self, objname, self.objDict[objname])
-
+                        '''
                         if cliname in keyvalueDict:
                             # total keys must be provisioned for config to be valid
                             # the keyvalueDict may contain more tree keys than is applicable for the
@@ -257,7 +271,8 @@ class LeafCmd(CommonCmdLine):
                                         config.setValid(isvalid)
                                         config.set(cmd, delete, basekey, basevalue, isKey=True, isattrlist=objattrs[basekey]['isarray'] )
                     else:
-                        config = CmdEntry(self, objname, self.objDict[objname])
+                        config = CmdEntry(self, objname, self.objDict[(objname, objkeys)])
+                        #config = CmdEntry(self, objname, self.objDict[objname])
                         config.setValid(True)
 
                     # only add this config if it does not already exist
@@ -469,7 +484,7 @@ class LeafCmd(CommonCmdLine):
         mline = [x for x in line.split(' ') if x != '']
         mline = mline[1:] if len(mline) > 1 else []
 
-        return ['no'] + self._cmd_complete_common(text, ' '.join(mline), begidx, endidx)
+        return self._cmd_complete_common(text, ' '.join(mline), begidx, endidx)
 
     def _cmd_do_delete(self, argv):
         self._cmd_common(argv)
@@ -530,14 +545,13 @@ class LeafCmd(CommonCmdLine):
             verifyargv = argv[1:]
             mline = argv[1:]
             delete = True
-
         def isInvalidCommand(mline, delete):
             return len(mline) < 2 and not delete
 
-        def isKeyValueCommand(mline, delete, islist):
+        def isKeyValueCommand(mline, delete, valueexpected, islist):
 
             # command is key value
-            if len(mline) == 2 and (not delete or islist):
+            if len(mline) == 2 and ((valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE) or not delete or islist):
                 return True
             elif len(mline) == 2 and len(frozenset([str(mline[-1]).lower()]).intersection(
                 snapcliconst.CLI_COMMAND_POSITIVE_TRUTH_VALUES + snapcliconst.CLI_COMMAND_NEGATIVE_TRUTH_VALUES)) == 1:
@@ -554,11 +568,10 @@ class LeafCmd(CommonCmdLine):
         value = self.getCommandDefaultAttrValue(mline, delcmd=delete)
         if value is not None:
             mline += [str(value)]
-
         # lets set the attribute value
         if isInvalidCommand(verifyargv, delete):
             return
-        elif isKeyValueCommand(verifyargv, delete, self.issubcommandlist):
+        elif isKeyValueCommand(verifyargv, delete, self.valueExpected, self.issubcommandlist):
             # key value supplied
             self.processKeyValueCommand(mline, delete)
         else:
@@ -645,6 +658,8 @@ class LeafCmd(CommonCmdLine):
                         self.subcommand = False
                         self.prompt = self.baseprompt
                         self.currentcmd = prevcmd
+        elif snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+            self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
         # lets restart the cmdloop
         if self.stop and not self.applyexit:
@@ -678,11 +693,10 @@ class LeafCmd(CommonCmdLine):
                                                                        and k == subkey) or
                                                                           (issubcommand and
                                                                                    k == subkey))]) == 1
-
         # key + subkey + value supplied
-        key = mline[0]
-        subkey = mline[1]
-        value = mline[2] if not delete else None
+        key = mline[-3]
+        subkey = mline[-2]
+        value = mline[-1] if not delete else None
         configObj = self.getConfigObj()
         if configObj:
             for config in configObj.configList:
@@ -847,17 +861,22 @@ class LeafCmd(CommonCmdLine):
         #sys.stdout.write("\nline: %s text: %s %s\n" %(line, text, not text))
         # remove spacing/tab
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-        mline = [parentcmd] + [x for x in line.split(' ') if x != '']
+        argv = []
+        if text:
+            argv = [x for x in line.split(' ') if x != '' and x != 'no']
+        mline = [parentcmd] + [x for x in argv if x != '' and x != 'no']
         mlineLength = len(mline)
-        #sys.stdout.write("\nmline: %s\n" %(mline))
+        #sys.stdout.write("\nmline: %s argv %s\n" %(mline, argv))
 
         subcommands = []
         # no comamnd case
-        if mline[0] == 'no':
+
+        if len(argv) <= 1:
             for f in dir(self.__class__):
                 if f.startswith('do_') and not f.endswith('no'):
-                    subcommands.append(f.lstrip('do_'))
+                    subcommands.append(f.replace('do_',''))
 
+        #print mline, subcommands
         submodel = self.modelList[0]
         subschema = self.schemaList[0]
         skipValue = False
@@ -942,8 +961,7 @@ class LeafCmd(CommonCmdLine):
             if hasattr(root, '_cmd_show'):
                 root._cmd_show(argv)
 
-    def display_help(self, argv):
-
+    def display_help(self, argv, printonly=True):
         def checkAttributevalues(obj, argv, mlineLength, schemaname, submodel, subschema):
             subcommands = []
             for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
@@ -1040,7 +1058,9 @@ class LeafCmd(CommonCmdLine):
                 else:
                     subcommands = checkAttributevalues(self, argv, mlineLength, schemaname, submodel, subschema)
 
-        self.printCommands(mline, subcommands)
+        if printonly:
+            self.printCommands(mline, subcommands)
+        return subcommands
 
     def do_help(self, argv):
         """Display help for current commands, short hand notation of ? can be used as well """
@@ -1062,10 +1082,20 @@ class LeafCmd(CommonCmdLine):
         self.issubcommandlist = False
         parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
         delete = argv[0] == 'no' if argv else False
+        if delete:
+            self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
+
+
+        cmd = argv[-1] if argv else ''
+        if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
+            self.display_help(argv if argv[0] != 'no' else argv[1:])
+            return ''
+        if cmd in ('!', ):
+            self.do_exit(argv if argv[0] != 'no' else argv[1:])
+            return ''
 
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
-
         subcommands = self.getchildrencmds(parentcmd, submodel, subschema)
         newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:] if len(argv) > 0 else argv
         if delete:
@@ -1091,14 +1121,6 @@ class LeafCmd(CommonCmdLine):
         mline = [parentcmd] + [x for x in newargv if x != 'no']
 
         mlineLength = len(mline)
-
-        cmd = argv[-1] if argv else ''
-        if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
-            self.display_help(argv if argv[0] != 'no' else argv[1:])
-            return ''
-        if cmd in ('!', ):
-            self.do_exit(argv if argv[0] != 'no' else argv[1:])
-            return ''
 
         if subschema and submodel:
             if mlineLength > 0:
@@ -1159,66 +1181,87 @@ class LeafCmd(CommonCmdLine):
                                         if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE and \
                                             i == mlineLength - 1:
                                             sys.stdout.write("\nERROR: Value expected")
+                                    '''
                                     elif i == mlineLength - 2 and not islist and not issubcommandalist:
+                                        import ipdb; ipdb.set_trace()
                                         erroridx = i+1 if not delete else i+2
                                         errcmd = mline if not delete else ['no'] + mline
                                         snapcliconst.printErrorValueCmd(erroridx, errcmd)
                                         sys.stdout.write("\nERROR Delete commands do not expect value, will revert to default if exists\n")
+                                    '''
+
                                     # found that if commands are entered after the last command then there can be a problem
                                     self.commandLen = len(mline[:i]) + 1
                                     self.subcommand = True
                                     self.issubcommandlist = issubcommandalist
+                                    self.valueExpected = valueexpected
                                 else:
                                     self.commandLen = len(mline[:i])
 
                         else:
-
-                            def checkAttributevalues(argv, mlineLength, schemaname, submodel, subschema, delete):
-
-                                for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
-                                    scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
-                                    if 'subcmd' in mcmd:
-                                        if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
-                                            if not delete and i == (mlineLength - 2):  # value expected from attrs
-                                                # reached attribute values
-                                                for attr, attrvalue in mcmdvalues['commands'].iteritems():
-                                                    sattrvalue = scmdvalues['commands']['properties'][attr]
-                                                    if 'cliname' in attrvalue:
-                                                        if attrvalue['cliname'] == mline[i]:
-                                                            self.subcommand = False
-                                                            values = snapcliconst.getSchemaAttrSelection(sattrvalue)
-                                                            if values:
-                                                                strvalues = ["%s" %(x,) for x in values]
-                                                            if values and mline[i+1] not in strvalues:
-                                                                snapcliconst.printErrorValueCmd(i, mline)
-                                                                sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(strvalues)))
-                                                                return ''
-                                                            min,max = snapcliconst.getSchemaAttrMinMax(sattrvalue)
-                                                            if min is not None and max is not None:
-                                                                try:
-                                                                    num = string.atoi(mline[i+1])
-                                                                    if num < min or num > max:
-                                                                        snapcliconst.printErrorValueCmd(i, mline)
-                                                                        sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
-                                                                        return ''
-                                                                except:
-                                                                    sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
-                                                                    return ''
-                                                    else:
-                                                        self.subcommand = True
-                                                        self.issubcommandlist = False
-                                                        for subkey in attrvalue.keys():
-                                                            checkAttributevalues(argv, mlineLength, subkey, attrvalue, sattrvalue, delete)
-                                            elif delete and i == (mlineLength - 2):
-                                                erroridx = i+1 if not delete else i+2
-                                                errcmd = mline if not delete else ['no'] + mline
-                                                snapcliconst.printErrorValueCmd(erroridx, errcmd)
-                                                sys.stdout.write("\nERROR Delete commands do not expect value, will revert to default if exists\n")
-                                                return ''
-
-
-                                return argv
-
-                            return checkAttributevalues(newargv, mlineLength, schemaname, submodel, subschema, delete)
+                            return self.checkAttributevalues(newargv, i, mline, mlineLength, schemaname, submodel, subschema, delete)
 
         return newargv
+
+    def checkAttributevalues(self, argv, i, mline, mlineLength, schemaname, submodel, subschema, delete):
+
+        for mcmd, mcmdvalues in submodel[schemaname]['commands'].iteritems():
+            scmdvalues = subschema[schemaname]['properties']['commands']['properties'][mcmd]
+            if 'subcmd' in mcmd:
+                if self.isCommandLeafAttrs(mcmdvalues, scmdvalues):
+                    if not delete and i == (mlineLength - 2):  # value expected from attrs
+                        # reached attribute values
+                        for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                            sattrvalue = scmdvalues['commands']['properties'][attr]
+                            if 'cliname' in attrvalue:
+                                if attrvalue['cliname'] == mline[i]:
+                                    self.subcommand = False
+                                    values = snapcliconst.getSchemaAttrSelection(sattrvalue)
+                                    strvalues = []
+                                    if values:
+                                        strvalues = ["%s" %(x,) for x in values]
+                                    if values and mline[i+1] not in strvalues:
+                                        snapcliconst.printErrorValueCmd(i, mline)
+                                        sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (mline[i+1], ",".join(strvalues)))
+                                        return ''
+                                    min,max = snapcliconst.getSchemaAttrMinMax(sattrvalue)
+                                    if min is not None and max is not None:
+                                        try:
+                                            num = string.atoi(mline[i+1])
+                                            if num < min or num > max:
+                                                snapcliconst.printErrorValueCmd(i, mline)
+                                                sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                                return ''
+                                        except:
+                                            sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
+                                            return ''
+                                    self.valueExpected = SUBCOMMAND_VALUE_NOT_EXPECTED
+
+                            else:
+                                self.subcommand = True
+                                self.issubcommandlist = False
+                                for subkey in attrvalue.keys():
+                                    self.checkAttributevalues(argv, i, mline, mlineLength, subkey, attrvalue, sattrvalue, delete)
+
+                    elif delete and i == (mlineLength - 2):
+                        # reached attribute values
+                        islist = False
+                        isKey = False
+                        for attr, attrvalue in mcmdvalues['commands'].iteritems():
+                            sattrvalue = scmdvalues['commands']['properties'][attr]
+                            if 'cliname' in attrvalue:
+                                if attrvalue['cliname'] == mline[i]:
+                                    islist = snapcliconst.isValueArgumentList(sattrvalue)
+                                    isKey  = snapcliconst.isValueArgumentKey(sattrvalue)
+
+                                    self.valueExpected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE if isKey else SUBCOMMAND_VALUE_EXPECTED
+                                    if not islist and not isKey:
+                                        erroridx = i+1 if not delete else i+2
+                                        errcmd = mline if not delete else ['no'] + mline
+                                        snapcliconst.printErrorValueCmd(erroridx, errcmd)
+                                        sys.stdout.write("\nERROR Delete commands do not expect value, will revert to default if exists\n")
+                                        return ''
+
+
+
+        return argv

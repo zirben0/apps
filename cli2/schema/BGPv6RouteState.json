@@ -65,7 +65,7 @@
                 "maximum": 65536
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -100,7 +100,7 @@
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {

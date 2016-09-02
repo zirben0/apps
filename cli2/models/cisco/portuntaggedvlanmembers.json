@@ -1,0 +1,11 @@
+{
+  "listattrs": [],
+  "commands": {
+    "VlanId": {
+      "cliname": "untagged_vlan"
+    },
+    "UntagIntfList": {
+    "cliname": "ethernet"
+    }
+  }
+}

@@ -29,14 +29,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enableextpmticksrc", 
+            "default": "EnableExtPMTickSrc", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "pminterval", 
+            "default": "PMInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -73,7 +73,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,7 +101,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminstate", 
+            "default": "AdminState", 
             "type": "string"
           }, 
           "argtype": {
@@ -112,7 +112,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -140,14 +140,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "independentlanemode", 
+            "default": "IndependentLaneMode", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -175,7 +175,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "moduleid", 
+            "default": "ModuleId", 
             "type": "string"
           }, 
           "argtype": {

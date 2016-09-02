@@ -34,7 +34,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "destinationnw", 
+            "default": "DestinationNw", 
             "type": "string"
           }, 
           "argtype": {
@@ -72,7 +72,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "isinstalledinhw", 
+            "default": "IsInstalledInHw", 
             "type": "string"
           }, 
           "argtype": {

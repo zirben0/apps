@@ -123,12 +123,13 @@ class ModelLeafTemplate(object):
             self.getMemberPropertiesPath()['argtype']["type"] = type
             if selections and ("SELECTION" or "selections" in selections):
                 # selections should be separated by /
-                s = selections.split('/')
-                if isnumeric(type):
-                    s = [x.split('(')[1].rstrip(')') for x in s]
-                else:
-                    s = [x.split('(')[0] for x in s]
-                self.getMemberPropertiesPath()['argtype']["enum"] = s
+                #s = selections.split('/')
+                #if isnumeric(type):
+                #    s = [x.split('(')[1].rstrip(')') for x in s]
+                #else:
+                #    s = [x.split('(')[0] for x in s]
+                #self.getMemberPropertiesPath()['argtype']["enum"] = s
+                self.getMemberPropertiesPath()['argtype']["enum"] = selections 
 
             if isnumeric(type):
                 if min is not None and max is not None:
@@ -221,14 +222,15 @@ class LeafTemplate(object):
             self.getMemberPropertiesPath()['argtype']["type"] = type
             if selections and ("SELECTION" or "selections" in selections):
                 # selections should be separated by /
-                s = [x.lstrip(' ').rstrip(' ') for x in selections.split('/')]
-                if len(s) and 'MIN' not in s[0]:
-                    if isnumeric(type):
-                        if '(' in s[0]:
-                            s = [int(x.split('(')[1].rstrip(')')) for x in s if len(x.split('(')) > 1]
-                        else:
-                            s = [int(x) for x in s if 'range' not in x]
-                    self.getMemberPropertiesPath()['argtype']["enum"] = s
+                #s = [x.lstrip(' ').rstrip(' ') for x in selections.split('/')]
+                #if len(s) and 'MIN' not in s[0]:
+                #    if isnumeric(type):
+                #        if '(' in s[0]:
+                #            s = [int(x.split('(')[1].rstrip(')')) for x in s if len(x.split('(')) > 1]
+                #        else:
+                #            s = [int(x) for x in s if 'range' not in x]
+                #    self.getMemberPropertiesPath()['argtype']["enum"] = s
+                self.getMemberPropertiesPath()['argtype']["enum"] = selections
 
             if isnumeric(type):
                 if min is not None and max is not None:
@@ -425,14 +427,13 @@ class ModelToLeaf(object):
     def setCommands(self):
 
         for name, member in self.model.iteritems():
-
             iskey = member['isKey']
             if iskey:
                 type = member['type']
                 isArray = member['isArray']
                 description = member['description']
                 default = member['default']
-                isdefaultset = member['isDefaultSet'] if 'State' not in self.modelname else True
+                isdefaultset = member['isDefaultSet']
                 #position = member['position']
                 selections = member['selections'] if member['selections'] else None
                 min = member['min'] if member['max'] else None
@@ -559,6 +560,7 @@ class ModelToLeafMember(ModelToLeaf):
 
     def setCommands(self):
 
+        # if all members have default values except the key then we can assume we can create with defaults
         default = not False in [member['isDefaultSet'] for member in self.model.values() if not member['isKey']]
         self.setCreateWithDefaults(default)
         subcmdIdx = 1
@@ -588,6 +590,7 @@ class ModelToLeafMember(ModelToLeaf):
                     memberinfo.setDefault("islist", isArray)
                     memberinfo.setDefault("prompt", "")
                     memberinfo.setDefault("defaultarg", default)
+                    memberinfo.setDefault("isdefaultset", isdefaultset)
 
                     memberinfo.setHelp(description, type, selections, min, max, len, default if isdefaultset else None)
                     if self.modeltype == self.SCHEMA_TYPE:
