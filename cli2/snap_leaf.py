@@ -1236,7 +1236,6 @@ class LeafCmd(CommonCmdLine):
                                             sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                             return ''
                                     self.valueExpected = SUBCOMMAND_VALUE_NOT_EXPECTED
->>>>>>> upstream/master
 
                             else:
                                 self.subcommand = True
