@@ -349,6 +349,9 @@ class CommonCmdLine(cmdln.Cmdln):
         :param cmdNameList - list of sub commands from the model
         :return:
         """
+        if usercmd == "?":
+            return "help"
+
         cmdNameList = [""] + sorted(cmdNameList) + [""]
         def cp(x): return len(os.path.commonprefix(x))
 
@@ -699,12 +702,8 @@ class CommonCmdLine(cmdln.Cmdln):
                             else:
                                 cliHelpList.append((val[1], val[2], self.MODEL_COMMAND))
 
-        #for i, (name, help) in enumerate(cliHelpList):
-        #    name = BOLDSTART + name + BOLDEND
-        #    cliHelpList[i][0] = name
-
         # get all the internal do_<xxx> commands for this class
-        if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd:
+        if self.cmdtype not in (snapcliconst.COMMAND_TYPE_SHOW, snapcliconst.COMMAND_TYPE_DELETE) and not issubcmd:
             for f in dir(self):
                 if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
                     docstr = getattr(self, f).__doc__
