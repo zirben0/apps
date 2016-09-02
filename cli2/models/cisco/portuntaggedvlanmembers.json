@@ -2,7 +2,7 @@
   "listattrs": [],
   "commands": {
     "VlanId": {
-      "cliname": "vlan"
+      "cliname": "untagged_vlan"
     },
     "UntagIntfList": {
     "cliname": "ethernet"

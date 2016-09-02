@@ -349,7 +349,6 @@ class ShowRun(object):
                     # lets check for global attributes
                     '''
                     if not matchattr:
-                        import ipdb; ipdb.set_trace()
                         if 'commands' in sobj and 'properties' in sobj['commands']:
                             for key, cmds in sobj['commands']['properties'].iteritems():
                                 if 'properties' in cmds:

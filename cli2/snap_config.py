@@ -226,10 +226,10 @@ class ConfigCmd(CommonCmdLine):
         subschema = self.schema
 
         subcommands = []
-        if len(mline) == 1:
+        if len(mline) <= 1:
             for f in dir(self.__class__):
                 if f.startswith('do_') and not f.endswith('no'):
-                    subcommands.append(f.lstrip('do_'))
+                    subcommands.append(f.replace('do_', ''))
 
         # advance to next submodel and subschema
         for i in range(1, mlineLength):
@@ -679,27 +679,27 @@ class ConfigCmd(CommonCmdLine):
         # remove the ordered config
         for objname in delcfgorder:
             for config in self.configList:
-                if config.isValid() and config.name == objname and config.delete:
+                if config.isValid() and config.objname == objname and config.delete:
                     yield config
 
         # remove non-ordered config
         for config in self.configList:
-            if config.isValid() and config.delete and config.name not in delcfgorder:
+            if config.isValid() and config.delete and config.objname not in delcfgorder:
                 yield config
 
         # config the ordered config
         for objname in cfgorder:
             for config in self.configList:
-                if config.isValid() and config.name == objname and not config.delete:
+                if config.isValid() and config.objname == objname and not config.delete:
                     yield config
 
         # config the non-ordered config
         for config in self.configList:
-            if config.isValid() and not config.delete and config.name not in cfgorder:
+            if config.isValid() and not config.delete and config.objname not in cfgorder:
                 yield config
 
         for config in self.configList:
-            if config.name in excludeObjs:
+            if config.objname in excludeObjs:
                 removeList.append(config)
 
         for c in removeList:
@@ -814,7 +814,7 @@ class ConfigCmd(CommonCmdLine):
 
                         # get the sdk
                         sdk = self.getSdk()
-                        funcObjName = config.name
+                        funcObjName = config.objname
 
                         #lets see if the object exists, by doing a get first
                         # the only case in which a function should not exist
