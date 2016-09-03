@@ -1,8 +1,5 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4NeighborMembers.json"
-  },
-  "subcmd2": {
-    "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpv4interface.json"
   }
 }

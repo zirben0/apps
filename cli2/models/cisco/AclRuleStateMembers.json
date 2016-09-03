@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "RuleName": {
-      "cliname": "rulename"
+      "cliname": "RuleName"
     }
   }
 }

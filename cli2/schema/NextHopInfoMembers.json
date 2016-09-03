@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nexthopintref", 
+            "default": "NextHopIntRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,14 +64,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nexthopip", 
+            "default": "NextHopIp", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "weight", 
+            "default": "Weight", 
             "type": "string"
           }, 
           "argtype": {
@@ -108,7 +108,7 @@
             "maximum": 31
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

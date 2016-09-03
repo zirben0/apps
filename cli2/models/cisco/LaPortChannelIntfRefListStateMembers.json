@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "IntfRef": {
-      "cliname": "Intfref"
+      "cliname": "IntfRef"
     }
   }
 }

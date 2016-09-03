@@ -1,5 +1,5 @@
 {
-  "bgpinterface": {
+  "bgpv4interface": {
     "type" : "object",
     "properties" : {
       "prompt" : {

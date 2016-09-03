@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "eventid", 
+            "default": "EventId", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,7 +38,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -66,14 +66,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "eventname", 
+            "default": "EventName", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,14 +101,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "srcobjname", 
+            "default": "SrcObjName", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -136,14 +136,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ownername", 
+            "default": "OwnerName", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -171,7 +171,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ownerid", 
+            "default": "OwnerId", 
             "type": "string"
           }, 
           "argtype": {
@@ -180,7 +180,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

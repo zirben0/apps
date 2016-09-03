@@ -9,7 +9,46 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "Index": {
+      "AdminState": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": " UP/DOWN  Administrative state of STPD default: UP", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "AdminState", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "enum": [
+              "UP", 
+              "DOWN"
+            ], 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "UP"
+          }
+        }
+      }, 
+      "Vrf": {
         "type": "object", 
         "properties": {
           "key": {
@@ -21,7 +60,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Event ID", 
+            "default": "global system object defining the global state of STPD. default: default", 
             "type": "string"
           }, 
           "islist": {
@@ -29,20 +68,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "index", 
+            "default": "Vrf", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+            "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "default"
           }
         }
       }
@@ -54,7 +91,7 @@
     "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
   }, 
   "objname": {
-    "default": "IPv4EventState", 
+    "default": "StpGlobal", 
     "type": "string", 
     "description": "object name to which references these attributes"
   }

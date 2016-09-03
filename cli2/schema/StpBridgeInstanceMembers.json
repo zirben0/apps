@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-65535  The value of the write-able portion of the Bridge ID i.e. default: 32768", 
+            "default": "0-65535  The value of the write-able portion of the Bridge ID i.e. the first two octets of the 8 octet long Bridge ID.  The other last 6 octets of the Bridge ID are given by the value of Address. On bridges supporting IEEE 802.1t or IEEE 802.1w permissible values are 0-61440 in steps of 4096.  Extended Priority is enabled when the lower 12 bits are set using the Bridges VLAN id default: 32768", 
             "type": "string"
           }, 
           "islist": {
@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "priority", 
+            "default": "Priority", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,7 +38,7 @@
             "maximum": 65535
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hellotime", 
+            "default": "HelloTime", 
             "type": "string"
           }, 
           "argtype": {
@@ -75,7 +75,7 @@
             "maximum": 2
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -103,7 +103,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txholdcount", 
+            "default": "TxHoldCount", 
             "type": "string"
           }, 
           "argtype": {
@@ -112,7 +112,7 @@
             "maximum": 10
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -132,7 +132,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " The bridge identifier of the root of the spanning tree default: 00:00:00:00:00:00", 
+            "default": "The bridge identifier of the root of the spanning tree as determined by the Spanning Tree Protocol as executed by this node.  This value is used as the Root Identifier parameter in all Configuration Bridge PDUs originated by this node. default: 00", 
             "type": "string"
           }, 
           "islist": {
@@ -140,7 +140,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "address", 
+            "default": "Address", 
             "type": "string"
           }, 
           "argtype": {
@@ -150,7 +150,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -178,7 +178,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "forceversion", 
+            "default": "ForceVersion", 
             "type": "string"
           }, 
           "argtype": {
@@ -190,7 +190,7 @@
             "type": "int32"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -210,7 +210,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-4095  Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is typically 1", 
+            "default": "0-4095  Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is 4095 default: 4095", 
             "type": "string"
           }, 
           "islist": {
@@ -218,7 +218,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vlan", 
+            "default": "Vlan", 
             "type": "string"
           }, 
           "argtype": {
@@ -255,7 +255,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "forwarddelay", 
+            "default": "ForwardDelay", 
             "type": "string"
           }, 
           "argtype": {
@@ -264,7 +264,7 @@
             "maximum": 30
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -292,7 +292,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxage", 
+            "default": "MaxAge", 
             "type": "string"
           }, 
           "argtype": {
@@ -301,7 +301,7 @@
             "maximum": 40
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

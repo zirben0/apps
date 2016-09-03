@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "prefix", 
+            "default": "Prefix", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "masklengthrange", 
+            "default": "MaskLengthRange", 
             "type": "string"
           }, 
           "argtype": {

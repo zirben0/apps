@@ -568,7 +568,6 @@ class LeafCmd(CommonCmdLine):
         value = self.getCommandDefaultAttrValue(mline, delcmd=delete)
         if value is not None:
             mline += [str(value)]
-
         # lets set the attribute value
         if isInvalidCommand(verifyargv, delete):
             return

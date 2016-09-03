@@ -9,7 +9,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "IfIndex": {
+      "IntfRef": {
         "type": "object", 
         "properties": {
           "key": {
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "IfIndex where lldp needs is enabled/disabled", 
+            "default": "IfIndex where lldp needs is enabled/disabled default: None", 
             "type": "string"
           }, 
           "islist": {
@@ -29,20 +29,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifindex", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "None"
           }
         }
       }, 
@@ -66,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enable", 
+            "default": "Enable", 
             "type": "string"
           }, 
           "argtype": {
