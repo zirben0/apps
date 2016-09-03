@@ -29,14 +29,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vrf", 
+            "default": "Vrf", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "timeout", 
+            "default": "Timeout", 
             "type": "string"
           }, 
           "argtype": {

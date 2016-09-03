@@ -29,14 +29,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "macaddr", 
+            "default": "MacAddr", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

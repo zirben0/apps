@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "requiredminrxinterval", 
+            "default": "RequiredMinRxInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,7 +38,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "authtype", 
+            "default": "AuthType", 
             "type": "string"
           }, 
           "argtype": {
@@ -80,7 +80,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -108,14 +108,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "demandenabled", 
+            "default": "DemandEnabled", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -143,7 +143,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "desiredmintxinterval", 
+            "default": "DesiredMinTxInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -152,7 +152,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -180,14 +180,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "authenticationenabled", 
+            "default": "AuthenticationEnabled", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -215,7 +215,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "authkeyid", 
+            "default": "AuthKeyId", 
             "type": "string"
           }, 
           "argtype": {
@@ -224,7 +224,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -252,7 +252,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "requiredminechorxinterval", 
+            "default": "RequiredMinEchoRxInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -261,7 +261,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -289,7 +289,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "localmultiplier", 
+            "default": "LocalMultiplier", 
             "type": "string"
           }, 
           "argtype": {
@@ -298,7 +298,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -326,14 +326,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "authdata", 
+            "default": "AuthData", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -361,7 +361,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "Name", 
             "type": "string"
           }, 
           "argtype": {

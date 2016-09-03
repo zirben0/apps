@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-2147483647  For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address.", 
+            "default": " For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address.", 
             "type": "string"
           }, 
           "islist": {
@@ -29,12 +29,12 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "addresslessif", 
+            "default": "AddressLessIf", 
             "type": "string"
           }, 
           "argtype": {
             "type": "int32"
-          },
+          }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifretransinterval", 
+            "default": "IfRetransInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -101,7 +101,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "iftype", 
+            "default": "IfType", 
             "type": "string"
           }, 
           "argtype": {
@@ -124,11 +124,11 @@
           }
         }
       }, 
-      "IfAuthKey": {
+      "IfIpAddress": {
         "type": "object", 
         "properties": {
           "key": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -136,7 +136,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "The cleartext password used as an OSPF authentication key when simplePassword security is enabled.  This object does not access any OSPF cryptogaphic (e.g.", 
+            "default": " The IP address of this OSPF interface.", 
             "type": "string"
           }, 
           "islist": {
@@ -144,7 +144,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifauthkey", 
+            "default": "IfIpAddress", 
             "type": "string"
           }, 
           "argtype": {
@@ -179,7 +179,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifadminstat", 
+            "default": "IfAdminStat", 
             "type": "string"
           }, 
           "argtype": {
@@ -208,7 +208,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " This element is added for future use. *** The cleartext password used as an OSPF authentication key when simplePassword security is enabled.  This object does not access any OSPF cryptogaphic (e.g.", 
+            "default": " *** This element is added for future use. *** The cleartext password used as an OSPF authentication key when simplePassword security is enabled.  This object does not access any OSPF cryptogaphic (e.g.", 
             "type": "string"
           }, 
           "islist": {
@@ -216,7 +216,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifauthkey", 
+            "default": "IfAuthKey", 
             "type": "string"
           }, 
           "argtype": {
@@ -251,7 +251,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifrtrpriority", 
+            "default": "IfRtrPriority", 
             "type": "string"
           }, 
           "argtype": {
@@ -289,7 +289,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifareaid", 
+            "default": "IfAreaId", 
             "type": "string"
           }, 
           "argtype": {
@@ -325,7 +325,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifpollinterval", 
+            "default": "IfPollInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -362,7 +362,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifauthtype", 
+            "default": "IfAuthType", 
             "type": "string"
           }, 
           "argtype": {
@@ -402,7 +402,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifhellointerval", 
+            "default": "IfHelloInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -411,7 +411,7 @@
             "maximum": 65535
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -476,7 +476,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifrtrdeadinterval", 
+            "default": "IfRtrDeadInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -485,7 +485,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

@@ -1,5 +1,5 @@
 {
-  "platformsystemstate": {
+  "linkscopeipstate": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/PlatformSystemStateSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/LinkScopeIpStateSubCmds.json"
         }
       }, 
       "cliname": {
@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "ObjName": {
+          "LinkScopeIp": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "ObjName default: System", 
+                "default": "Link scope IP Address", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,25 +56,25 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "objname", 
+                "default": "linkscopeip", 
                 "type": "string"
               }, 
               "argtype": {
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": "System"
+                "default": ""
               }
             }
           }
         }
       }, 
       "objname": {
-        "default": "PlatformSystemState", 
+        "default": "LinkScopeIpState", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

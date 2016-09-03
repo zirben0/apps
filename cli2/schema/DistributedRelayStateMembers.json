@@ -9,7 +9,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "Name": {
+      "DrniName": {
         "type": "object", 
         "properties": {
           "key": {
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "A human-readable text string containing a locally significant name for the Distributed Relay / MLAG", 
+            "default": "The unique identifier allocated to this Distributed Relay by the local System. This attribute identifies a Distributed Relay instance among the subordinate managed objects of the containing object.", 
             "type": "string"
           }, 
           "islist": {
@@ -29,14 +29,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "DrniName", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

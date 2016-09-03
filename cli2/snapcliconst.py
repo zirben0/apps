@@ -102,7 +102,7 @@ def updateSpecialValueCases(cfgobj, k, v):
 
         # cli always expects the string name, but lets
         # convert the string name to the number
-        if k in ('IfIndex', 'Members'):
+        if k in ('IfIndex', 'Members',):
             # Port object is gathered on cli start
             if type(tmpval) is list:
                 ifindexList = []

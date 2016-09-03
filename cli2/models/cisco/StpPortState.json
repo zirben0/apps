@@ -6,11 +6,11 @@
     }, 
     "cliname": "", 
     "value": {
-      "BrgIfIndex": {
-        "cliname": "brgifindex"
+      "Vlan": {
+        "cliname": "brg_vlan"
       }, 
-      "IfIndex": {
-        "cliname": "ifindex"
+      "IntfRef": {
+        "cliname": "IntfRef"
       }
     }
   }

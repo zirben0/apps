@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfref", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "macaddr", 
+            "default": "MacAddr", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "type", 
+            "default": "Type", 
             "type": "string"
           }, 
           "argtype": {
@@ -134,14 +134,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enable", 
+            "default": "Enable", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -169,7 +169,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ipaddr", 
+            "default": "IpAddr", 
             "type": "string"
           }, 
           "argtype": {

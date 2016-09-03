@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "priority", 
+            "default": "Priority", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,7 +38,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "advertisementinterval", 
+            "default": "AdvertisementInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -75,7 +75,7 @@
             "maximum": 4095
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -103,14 +103,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "preemptmode", 
+            "default": "PreemptMode", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -141,7 +141,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifindex", 
+            "default": "IfIndex", 
             "type": "string"
           }, 
           "argtype": {
@@ -178,7 +178,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vrid", 
+            "default": "VRID", 
             "type": "string"
           }, 
           "argtype": {
@@ -215,14 +215,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "acceptmode", 
+            "default": "AcceptMode", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

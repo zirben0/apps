@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "User configurable description string for the xponder module", 
+            "default": "User configurable description string for the xponder module default: This is a Voyager platform", 
             "type": "string"
           }, 
           "islist": {
@@ -29,18 +29,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "xponderdescription", 
+            "default": "XponderDescription", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "This is a Voyager platform"
           }
         }
       }, 
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "xponderid", 
+            "default": "XponderId", 
             "type": "string"
           }, 
           "argtype": {
@@ -73,7 +73,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,7 +101,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "xpondermode", 
+            "default": "XponderMode", 
             "type": "string"
           }, 
           "argtype": {
@@ -115,7 +115,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

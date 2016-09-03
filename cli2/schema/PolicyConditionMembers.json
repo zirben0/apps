@@ -9,41 +9,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "MaskLengthRange": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Used in conjuction with IpPrefix to specify specify the IP Prefix to match on when the ConditionType is MatchDstIpPrefix/MatchSrcIpPrefix.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "masklengthrange", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
       "ConditionType": {
         "type": "object", 
         "properties": {
@@ -64,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "conditiontype", 
+            "default": "ConditionType", 
             "type": "string"
           }, 
           "argtype": {
@@ -104,7 +69,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "protocol", 
+            "default": "Protocol", 
             "type": "string"
           }, 
           "argtype": {
@@ -118,6 +83,41 @@
           }, 
           "isdefaultset": {
             "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "PrefixSet": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Name of a pre-defined prefix set to be used as a condition qualifier.", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "PrefixSet", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -145,7 +145,42 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "Name", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "MaskLengthRange": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Used in conjuction with IpPrefix to specify specify the IP Prefix to match on when the ConditionType is MatchDstIpPrefix/MatchSrcIpPrefix.", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "MaskLengthRange", 
             "type": "string"
           }, 
           "argtype": {
@@ -180,7 +215,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ipprefix", 
+            "default": "IpPrefix", 
             "type": "string"
           }, 
           "argtype": {

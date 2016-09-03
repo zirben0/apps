@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "routerid", 
+            "default": "RouterId", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "asbdrrtrstatus", 
+            "default": "ASBdrRtrStatus", 
             "type": "string"
           }, 
           "argtype": {
@@ -91,7 +91,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "True/False  *** This element is added for future use. *** The router's support for type-of-service routing. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "default": "True/False  *** This element is added for future use. *** The router's support for type-of-service routing. This object is persistent and when written the entity SHOULD save the change to non-volatile storage. default: false", 
             "type": "string"
           }, 
           "islist": {
@@ -99,18 +99,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "tossupport", 
+            "default": "TOSSupport", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "false"
           }
         }
       }, 
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminstat", 
+            "default": "AdminStat", 
             "type": "string"
           }, 
           "argtype": {
@@ -171,11 +171,12 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "restartinterval", 
+            "default": "RestartInterval", 
             "type": "string"
           }, 
           "argtype": {
             "minimum": -2147483648, 
+            "enum": [], 
             "type": "int32", 
             "maximum": 2147483647
           }, 
@@ -208,7 +209,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "restartsupport", 
+            "default": "RestartSupport", 
             "type": "string"
           }, 
           "argtype": {
@@ -250,16 +251,17 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "referencebandwidth", 
+            "default": "ReferenceBandwidth", 
             "type": "string"
           }, 
           "argtype": {
             "minimum": 0, 
+            "enum": [], 
             "type": "uint32", 
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

@@ -4,5 +4,11 @@
   },
   "subcmd2": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6Neighbor.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpv4interface.json"
+  },
+  "subcmd4": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/bgpv6interface.json"
   }
 }

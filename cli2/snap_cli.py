@@ -77,7 +77,7 @@ class CmdLine(CommonCmdLine):
         # defaulting to show as it will be overwritten by the first config command
         self.cmdtype = snapcliconst.COMMAND_TYPE_INIT
 
-        # Base work for WD-4, node needs to support authentication, this call
+	# Base work for WD-4, node needs to support authentication, this call 
         # should use the tools provied by the node to authenticate all commands
         #self.auth = Authentication(switch_ip)
 

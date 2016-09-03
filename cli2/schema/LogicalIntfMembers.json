@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "type", 
+            "default": "Type", 
             "type": "string"
           }, 
           "argtype": {
@@ -39,7 +39,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -67,7 +67,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "Name", 
             "type": "string"
           }, 
           "argtype": {

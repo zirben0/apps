@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lsdbtype", 
+            "default": "LsdbType", 
             "type": "string"
           }, 
           "argtype": {
@@ -48,7 +48,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -76,14 +76,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lsdbareaid", 
+            "default": "LsdbAreaId", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -111,14 +111,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lsdblsid", 
+            "default": "LsdbLsid", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -146,14 +146,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "lsdbrouterid", 
+            "default": "LsdbRouterId", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

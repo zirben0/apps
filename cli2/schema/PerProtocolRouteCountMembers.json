@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ecmpcount", 
+            "default": "EcmpCount", 
             "type": "string"
           }, 
           "argtype": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "protocol", 
+            "default": "Protocol", 
             "type": "string"
           }, 
           "argtype": {
@@ -101,7 +101,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "routecount", 
+            "default": "RouteCount", 
             "type": "string"
           }, 
           "argtype": {

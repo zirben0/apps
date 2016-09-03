@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vlanid", 
+            "default": "VlanId", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,7 +38,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

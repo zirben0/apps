@@ -8,7 +8,7 @@
       "cliname": "lagtype"
     }, 
     "IntfRef": {
-      "cliname": "intfref"
+      "cliname": "port_channel"
     }, 
     "SystemPriority": {
       "cliname": "system_priority"
