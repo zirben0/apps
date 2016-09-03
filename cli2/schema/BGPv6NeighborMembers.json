@@ -200,7 +200,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Local AS of the BGP neighbor default: 0", 
+            "default": "Local AS of the BGP neighbor", 
             "type": "string"
           }, 
           "islist": {
@@ -212,16 +212,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0"
+            "default": ""
           }
         }
       }, 
@@ -237,7 +235,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Keep alive time for the BGP neighbor default: 60", 
+            "default": "Keep alive time for the BGP neighbor default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -258,7 +256,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "60"
+            "default": "0"
           }
         }
       }, 
@@ -667,7 +665,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Hold time for the BGP neighbor default: 180", 
+            "default": "Hold time for the BGP neighbor default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -688,7 +686,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "180"
+            "default": "0"
           }
         }
       }, 
@@ -809,7 +807,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Peer AS of the BGP neighbor default: 0", 
+            "default": "Peer AS of the BGP neighbor", 
             "type": "string"
           }, 
           "islist": {
@@ -821,16 +819,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0"
+            "default": ""
           }
         }
       }, 
@@ -846,7 +842,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Connect retry time to connect to BGP neighbor after disconnect default: 60", 
+            "default": "Connect retry time to connect to BGP neighbor after disconnect default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -867,7 +863,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "60"
+            "default": "0"
           }
         }
       }

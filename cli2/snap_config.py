@@ -581,10 +581,12 @@ class ConfigCmd(CommonCmdLine):
         # lets setup the argument list
         # and remove the values from the kwargs
         argumentList = []
+        missingrequiredconfig = []
         # set all the args
         if 'create' in func.__name__ or \
            'get' in func.__name__ or \
            'delete' in func.__name__:
+            # required fields
             for k in getKeys:
                 if k in data:
                     argumentList.append(data[k])
@@ -592,12 +594,14 @@ class ConfigCmd(CommonCmdLine):
                         if k in data:
                             del data[k]
                 elif k != 'self':
+                    missingrequiredconfig.append(k)
                     validconfig = False
 
             if lengthkwargs == 0:
                 data = {}
             else:
                 if lengthkwargs != len(data):
+                    # case of missmatch between model and flexSdk
                     validconfig = False
 
             # special case where the attribute is in fact a list
@@ -632,7 +636,7 @@ class ConfigCmd(CommonCmdLine):
                         data[k] = []
             '''
             
-        return (validconfig, argumentList, data)
+        return (validconfig, argumentList, data, missingrequiredconfig)
 
     def doesConfigExist(self, c):
         '''
@@ -828,25 +832,28 @@ class ConfigCmd(CommonCmdLine):
                                 origData = None
                                 if stage != ROLLBACK_CONFIG:
                                     data = config.getSdkConfig()
-                                    (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, get_func)
-                                    # update all the arguments
-                                    r = get_func(*argumentList)
-                                    status_code = r.status_code
-                                    if status_code not in sdk.httpSuccessCodes + [404]:
-                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Result']))
-                                        sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
-                                              ",".join(["%s" %(x) for x in argumentList]),
-                                              ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
-                                    elif status_code not in [404]: # not found
-                                        origData = r.json()['Object']
-                                    elif status_code in [404] and config.delete:
-                                        sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Result']))
-                                        sys.stdout.write("warning: nothing to delete invalidating command\n")
-                                        sys.stdout.write("sdk:%s(%s,%s)\n\n" %(get_func.__name__,
-                                              ",".join(["%s" %(x) for x in argumentList]),
-                                              ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
-                                        clearAppliedList.append(config)
-                                        continue
+                                    (validconfig, argumentList, kwargs, missingrequiredconfig) = self.get_sdk_func_key_values(data, get_func)
+                                    if validconfig:
+                                        # update all the arguments
+                                        r = get_func(*argumentList)
+                                        status_code = r.status_code
+                                        if status_code not in sdk.httpSuccessCodes + [404]:
+                                            sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Result']))
+                                            sys.stdout.write("sdk:%s(%s,%s)\n" %(get_func.__name__,
+                                                  ",".join(["%s" %(x) for x in argumentList]),
+                                                  ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+                                        elif status_code not in [404]: # not found
+                                            origData = r.json()['Object']
+                                        elif status_code in [404] and config.delete:
+                                            sys.stdout.write("Command Get FAILED\n%s %s\n" %(r.status_code, r.json()['Result']))
+                                            sys.stdout.write("warning: nothing to delete invalidating command\n")
+                                            sys.stdout.write("sdk:%s(%s,%s)\n\n" %(get_func.__name__,
+                                                  ",".join(["%s" %(x) for x in argumentList]),
+                                                  ",".join(["%s=%s" %(x,y) for x,y in kwargs.iteritems()])))
+                                            clearAppliedList.append(config)
+                                            continue
+                                    else:
+                                        sys.stdout.write("Command Get FAILED\nrequired fields missing %s", missingrequiredconfig)
                                 else:
                                     if config in rollbackData:
                                         status_code = rollbackData[config][0]
@@ -878,7 +885,7 @@ class ConfigCmd(CommonCmdLine):
                                         rollbackData[config] = (ROLLBACK_DELETE, origData)
 
                             except Exception as e:
-                                sys.stdout.write("FAILED TO GET OBJECT: %s\n" %(e,))
+                                sys.stdout.write("FAILED TO TO APPLY OBJECT CONFIG: (Exception caught) Reason: %s funcPostfix: %s\n" %(e, funcObjName))
 
             if clearAppliedList:
                 for config in clearAppliedList:
@@ -889,7 +896,7 @@ class ConfigCmd(CommonCmdLine):
         failurecfg = False
         delconfigList = []
         data = config.getSdkConfig()
-        (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, create_func)
+        (validconfig, argumentList, kwargs, missingrequiredconfig) = self.get_sdk_func_key_values(data, create_func)
         if validconfig:
             if kwargs:
                 r = create_func(*argumentList, **kwargs)
@@ -912,7 +919,7 @@ class ConfigCmd(CommonCmdLine):
                                                   ",".join(["%s" % (x) for x in argumentList]),
                                                   ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
         else:
-            sys.stdout.write("Incomplete config not applying for:\n")
+            sys.stdout.write("Incomplete config not applying for:\n missing fields %s", missingrequiredconfig)
             config.show()
         return failurecfg, delconfigList
 
@@ -920,7 +927,7 @@ class ConfigCmd(CommonCmdLine):
         failurecfg = False
         delconfigList = []
         data = config.getSdkConfig()
-        (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, delete_func)
+        (validconfig, argumentList, kwargs, missingrequiredconfig) = self.get_sdk_func_key_values(data, delete_func)
         if validconfig:
             if kwargs:
                 r = delete_func(*argumentList, **kwargs)
@@ -944,7 +951,7 @@ class ConfigCmd(CommonCmdLine):
                                                   ",".join(["%s" % (x) for x in argumentList]),
                                                   ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
         else:
-            sys.stdout.write("Incomplete config not applying for:\n")
+            sys.stdout.write("Incomplete config not applying for:\nmissing arguments %s", missingrequiredconfig)
             config.show()
 
         return failurecfg, delconfigList
@@ -954,7 +961,7 @@ class ConfigCmd(CommonCmdLine):
         delconfigList = []
         failurecfg = False
         data = config.getSdkConfig(readdata=readdata, rollback=rollback)
-        (validconfig, argumentList, kwargs) = self.get_sdk_func_key_values(data, update_func, rollback=True)
+        (validconfig, argumentList, kwargs, missingrequiredconfig) = self.get_sdk_func_key_values(data, update_func, rollback=True)
         if validconfig:
             if len(kwargs) > 0:
                 r = update_func(*argumentList, **kwargs)
@@ -976,7 +983,7 @@ class ConfigCmd(CommonCmdLine):
                                                       ",".join(["%s" % (x) for x in argumentList]),
                                                       ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
         else:
-            sys.stdout.write("Incomplete config not applying for:\n")
+            sys.stdout.write("Incomplete config not applying for:\nmissing arguments %s", missingrequiredconfig)
             config.show()
 
         return (failurecfg, delconfigList)
