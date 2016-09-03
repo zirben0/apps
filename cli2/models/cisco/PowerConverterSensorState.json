@@ -1,0 +1,14 @@
+{
+  "powerconvertersensorstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PowerConverterSensorStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Name": {
+        "cliname": "name"
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
     "Vlan": {
       "cliname": "brg_vlan"
     }, 
-    "Enable": {
+    "AdminState": {
       "cliname": "enable"
     }, 
     "AdminEdgePort": {
