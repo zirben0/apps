@@ -1,0 +1,14 @@
+{
+  "asicglobalstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/AsicGlobalStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "ModuleId": {
+        "cliname": "moduleid"
+      }
+    }
+  }
+}

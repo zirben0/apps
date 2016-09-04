@@ -107,6 +107,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "AsicGlobalState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "BGPCounters": {
   "access": "",
   "owner": "bgpd",
@@ -510,6 +522,18 @@
   "multiplicity": " \"*",
   "accelerated": false,
   "usesStateDB": true,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "CoppStatState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
   "autoCreate": false,
   "autoDiscover": false,
   "linkedObjects": null,
