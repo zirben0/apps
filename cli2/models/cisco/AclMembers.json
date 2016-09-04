@@ -2,16 +2,16 @@
   "listattrs": [], 
   "commands": {
     "AclName": {
-      "cliname": "aclname"
+      "cliname": "AclName"
     }, 
     "IntfList": {
-      "cliname": "intflist"
+      "cliname": "IntfList"
     }, 
     "Direction": {
-      "cliname": "direction"
+      "cliname": "Direction"
     }, 
     "RuleNameList": {
-      "cliname": "rulenamelist"
+      "cliname": "RuleNameList"
     }
   }
 }

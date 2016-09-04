@@ -31,6 +31,7 @@ import cmdln
 from jsonschema import Draft4Validator
 import pprint
 import requests
+import getpass
 import snapcliconst
 from tablePrint import indent, wrap_onspace_strict
 from flexswitchV2 import FlexSwitch
@@ -173,6 +174,43 @@ def line2argv(line):
     return argv
 
 
+
+# overkill but hey in case we want to do more with this we can
+class Authentication(cmdln.Cmdln):
+    USERNAME_PROMPT = "username:"
+    PASSWORD_PROMPT = "password:"
+    def __init__ (self, switch_ip):
+        cmdln.Cmdln.__init__(self)
+        if not USING_READLINE:
+            self.completekey = None
+
+        #self.optparser = self.get_optparser()
+        self.optparser = None
+        self.options = None
+        self.switch_ip = switch_ip
+        self.username = None
+        self.password = ''
+        self.prompt = self.USERNAME_PROMPT
+        self.cmdloop()
+
+    def do_help(self, argv):
+        return ''
+
+    def precmd(self, argv):
+
+        if len(argv) != 1:
+            return ''
+
+        if self.prompt == self.USERNAME_PROMPT:
+            self.username = argv[0]
+            self.prompt = self.PASSWORD_PROMPT
+            while self.password == '':
+                self.password = getpass.getpass("password:")
+
+            sys.stdout.write("WARNING: Authentication not being done...\n")
+            self.stop = True
+            return ''
+
 # this is not a terminating command
 SUBCOMMAND_VALUE_NOT_EXPECTED = 1
 # this is a terminating command which expects a value from user
@@ -311,6 +349,9 @@ class CommonCmdLine(cmdln.Cmdln):
         :param cmdNameList - list of sub commands from the model
         :return:
         """
+        if usercmd == "?":
+            return "help"
+
         cmdNameList = [""] + sorted(cmdNameList) + [""]
         def cp(x): return len(os.path.commonprefix(x))
 
@@ -661,12 +702,8 @@ class CommonCmdLine(cmdln.Cmdln):
                             else:
                                 cliHelpList.append((val[1], val[2], self.MODEL_COMMAND))
 
-        #for i, (name, help) in enumerate(cliHelpList):
-        #    name = BOLDSTART + name + BOLDEND
-        #    cliHelpList[i][0] = name
-
         # get all the internal do_<xxx> commands for this class
-        if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd:
+        if self.cmdtype not in (snapcliconst.COMMAND_TYPE_SHOW, snapcliconst.COMMAND_TYPE_DELETE) and not issubcmd:
             for f in dir(self):
                 if f.startswith('do_') and f.replace('do_', '') not in [x[0] for x in cliHelpList]:
                     docstr = getattr(self, f).__doc__

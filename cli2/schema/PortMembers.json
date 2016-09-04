@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "macaddr", 
+            "default": "MacAddr", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,14 +64,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "description", 
+            "default": "Description", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfref", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -126,7 +126,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " Half Duplex/Full Duplex  Duplex setting for this port", 
+            "default": " Half Duplex/Full Duplex DEFAULT  Duplex setting for this port", 
             "type": "string"
           }, 
           "islist": {
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "duplex", 
+            "default": "Duplex", 
             "type": "string"
           }, 
           "argtype": {
@@ -208,7 +208,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "mtu", 
+            "default": "Mtu", 
             "type": "string"
           }, 
           "argtype": {
@@ -245,7 +245,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "phyintftype", 
+            "default": "PhyIntfType", 
             "type": "string"
           }, 
           "argtype": {
@@ -294,7 +294,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " ON/OFF  Administrative state of this port", 
+            "default": " UP/DOWN  Administrative state of this port default: DOWN", 
             "type": "string"
           }, 
           "islist": {
@@ -302,18 +302,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminstate", 
+            "default": "AdminState", 
             "type": "string"
           }, 
           "argtype": {
             "enum": [
-              "UP",
+              "UP", 
               "DOWN"
             ], 
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -341,7 +341,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "breakoutmode", 
+            "default": "BreakOutMode", 
             "type": "string"
           }, 
           "argtype": {
@@ -380,7 +380,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifindex", 
+            "default": "IfIndex", 
             "type": "string"
           }, 
           "argtype": {
@@ -409,7 +409,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " ON/OFF  Autonegotiation setting for this port", 
+            "default": " ON/OFF  Autonegotiation setting for this port default: OFF", 
             "type": "string"
           }, 
           "islist": {
@@ -417,7 +417,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "autoneg", 
+            "default": "Autoneg", 
             "type": "string"
           }, 
           "argtype": {
@@ -428,7 +428,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -456,7 +456,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "speed", 
+            "default": "Speed", 
             "type": "string"
           }, 
           "argtype": {
@@ -465,11 +465,11 @@
             "maximum": 100000
           }, 
           "isdefaultset": {
-            "default": true,
+            "default": false, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "1000"
+            "default": ""
           }
         }
       }

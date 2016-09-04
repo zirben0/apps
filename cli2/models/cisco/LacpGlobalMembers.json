@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AdminState": {
+      "cliname": "AdminState"
+    }, 
+    "Vrf": {
+      "cliname": "Vrf"
+    }
+  }
+}

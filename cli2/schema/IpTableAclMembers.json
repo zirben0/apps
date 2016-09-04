@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "protocol", 
+            "default": "Protocol", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "Name", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "action", 
+            "default": "Action", 
             "type": "string"
           }, 
           "argtype": {
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ipaddr", 
+            "default": "IpAddr", 
             "type": "string"
           }, 
           "argtype": {
@@ -169,14 +169,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "port", 
+            "default": "Port", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -204,14 +204,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "physicalport", 
+            "default": "PhysicalPort", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

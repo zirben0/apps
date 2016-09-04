@@ -65,7 +65,7 @@
                 "maximum": 2147483647
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -79,7 +79,8 @@
         "default": "VlanState", 
         "type": "string", 
         "description": "object name to which references these attributes"
-      }
+      },
+      "useCombinedPrintFn": true
     }
   }
 }

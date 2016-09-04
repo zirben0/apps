@@ -31,48 +31,7 @@
         "displayValue": false, 
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
-      }, 
-      "value": {
-        "type": "object", 
-        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
-        "properties": {
-          "RouterId": {
-            "type": "object", 
-            "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
-                "type": "string"
-              }, 
-              "help": {
-                "default": "A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "routerid", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "type": "string"
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }
-        }
-      }, 
+      },
       "objname": {
         "default": "OspfGlobal", 
         "type": "string", 

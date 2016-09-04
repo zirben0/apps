@@ -349,7 +349,6 @@ class ShowRun(object):
                     # lets check for global attributes
                     '''
                     if not matchattr:
-                        import ipdb; ipdb.set_trace()
                         if 'commands' in sobj and 'properties' in sobj['commands']:
                             for key, cmds in sobj['commands']['properties'].iteritems():
                                 if 'properties' in cmds:
@@ -780,10 +779,13 @@ class ShowCmd(CommonCmdLine):
                 sdk = self.getSdkShow()
                 #funcObjName = config.name + 's' if 'State' in config.name else config.name + 'States'
                 funcObjName = config.name
-
                 try:
                     if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName + 's')
+                        funclower = funcObjName.lower()
+                        if funclower in self.schema and self.schema[funclower]['properties'].has_key('useCombinedPrintFn'):
+                            printall_func = getattr(sdk, 'printCombined' + funcObjName + 's')
+                        else:
+                            printall_func = getattr(sdk, 'print' + funcObjName + 's')
                         printall_func()
                     else:
                         # update all the arguments so that the values get set in the get_sdk_...

@@ -65,7 +65,7 @@
                 "maximum": 255
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -102,7 +102,7 @@
                 "maximum": 255
               }, 
               "isdefaultset": {
-                "default": true, 
+                "default": false, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -116,7 +116,8 @@
         "default": "DWDMModuleNwIntfState", 
         "type": "string", 
         "description": "object name to which references these attributes"
-      }
+      },
+      "useCombinedPrintFn": true
     }
   }
 }

@@ -43,8 +43,10 @@ from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
 from snap_config import ConfigCmd
 from snap_show import ShowCmd
-from commonCmdLine import CommonCmdLine, CmdFunc, \
+from commonCmdLine import CommonCmdLine, CmdFunc, Authentication, \
     SUBCOMMAND_VALUE_NOT_EXPECTED, SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
+
+
 
 class CmdLine(CommonCmdLine):
 
@@ -74,6 +76,10 @@ class CmdLine(CommonCmdLine):
         self.IfIndexToIntfRef = {}
         # defaulting to show as it will be overwritten by the first config command
         self.cmdtype = snapcliconst.COMMAND_TYPE_INIT
+
+	# Base work for WD-4, node needs to support authentication, this call 
+        # should use the tools provied by the node to authenticate all commands
+        #self.auth = Authentication(switch_ip)
 
         # check if we can reach the switch_ip will timeout if we can't
         if self.check_switch_connectivity(switch_ip, 8080):
@@ -724,9 +730,8 @@ if __name__ == '__main__':
     cli_model_path = options.cli_model_path
     cli_schema_path = options.cli_schema_path
 
+
     cmdLine = CmdLine(switch_ip, cli_model_path, cli_schema_path, )
-    #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #result = sock.connect_ex((switch_ip,8080))
     result = True
     if result:
         cmdLine.cmdloop()

@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Class": {
+      "cliname": "Class"
+    }, 
+    "Name": {
+      "cliname": "Name"
+    }
+  }
+}

@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "origin", 
+            "default": "Origin", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "updatedtime", 
+            "default": "UpdatedTime", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "localpref", 
+            "default": "LocalPref", 
             "type": "string"
           }, 
           "argtype": {
@@ -136,7 +136,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "additionalpath", 
+            "default": "AdditionalPath", 
             "type": "string"
           }, 
           "argtype": {
@@ -171,7 +171,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "metric", 
+            "default": "Metric", 
             "type": "string"
           }, 
           "argtype": {
@@ -208,7 +208,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nexthop", 
+            "default": "NextHop", 
             "type": "string"
           }, 
           "argtype": {
@@ -243,7 +243,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "pathtype", 
+            "default": "PathType", 
             "type": "string"
           }, 
           "argtype": {
@@ -278,7 +278,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "bestpath", 
+            "default": "BestPath", 
             "type": "string"
           }, 
           "argtype": {
@@ -313,7 +313,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "validpath", 
+            "default": "ValidPath", 
             "type": "string"
           }, 
           "argtype": {
@@ -348,7 +348,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "pathid", 
+            "default": "PathId", 
             "type": "string"
           }, 
           "argtype": {
@@ -385,7 +385,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "path", 
+            "default": "Path", 
             "type": "string"
           }, 
           "argtype": {
@@ -420,7 +420,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "multipath", 
+            "default": "MultiPath", 
             "type": "string"
           }, 
           "argtype": {

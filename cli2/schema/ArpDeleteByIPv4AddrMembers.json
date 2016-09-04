@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ipaddr", 
+            "default": "IpAddr", 
             "type": "string"
           }, 
           "argtype": {

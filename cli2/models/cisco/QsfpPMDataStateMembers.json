@@ -1,0 +1,14 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "Resource": {
+      "cliname": "Resource"
+    }, 
+    "Class": {
+      "cliname": "Class"
+    }, 
+    "QsfpId": {
+      "cliname": "QsfpId"
+    }
+  }
+}

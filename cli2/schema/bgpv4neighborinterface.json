@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/bgpv4neighborinterfacesubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/bgpv4neighborinterfacesubcmds.json"
         }
       }, 
       "cliname": {
@@ -72,7 +72,12 @@
            }
          }
         }
-      }  
+      },
+      "objname": {
+        "default": "BGPv4Neighbor",
+        "type": "string",
+        "description": "object name to which references these attributes"
+      }
     }
   }
 }

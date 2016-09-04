@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vlan", 
+            "default": "Vlan", 
             "type": "string"
           }, 
           "argtype": {
