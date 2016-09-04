@@ -1,0 +1,11 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "TimeStamp": {
+      "cliname": "TimeStamp"
+    }, 
+    "Value": {
+      "cliname": "Value"
+    }
+  }
+}

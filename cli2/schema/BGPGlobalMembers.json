@@ -61,7 +61,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Local AS for BGP global config default: 0", 
+            "default": "Local AS for BGP global config. Both AsPlain and AsDot formats are supported.", 
             "type": "string"
           }, 
           "islist": {
@@ -73,16 +73,14 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0"
+            "default": ""
           }
         }
       }, 
