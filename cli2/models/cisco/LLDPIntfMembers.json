@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "IntfRef": {
-      "cliname": "IntfRef"
+      "cliname": "ethernet"
     }, 
     "Enable": {
       "cliname": "Enable"
