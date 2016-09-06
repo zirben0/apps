@@ -694,9 +694,9 @@ class LeafCmd(CommonCmdLine):
                                                                           (issubcommand and
                                                                                    k == subkey))]) == 1
         # key + subkey + value supplied
-        key = mline[-3]
-        subkey = mline[-2]
-        value = mline[-1] if not delete else None
+        key = mline[-3] if self.valueExpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE else mline[-2]
+        subkey = mline[-2] if self.valueExpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE else mline[-1]
+        value = mline[-1] if not delete or self.valueExpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE else None
         configObj = self.getConfigObj()
         if configObj:
             for config in configObj.configList:
@@ -1253,9 +1253,10 @@ class LeafCmd(CommonCmdLine):
                                 if attrvalue['cliname'] == mline[i]:
                                     islist = snapcliconst.isValueArgumentList(sattrvalue)
                                     isKey  = snapcliconst.isValueArgumentKey(sattrvalue)
-
-                                    self.valueExpected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE if isKey else SUBCOMMAND_VALUE_EXPECTED
-                                    if not islist and not isKey:
+                                    isDefaultSet = snapcliconst.isValueDefaultSet(sattrvalue)
+                                    import ipdb; ipdb.set_trace()
+                                    self.valueExpected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE if (isKey or not isDefaultSet) else SUBCOMMAND_VALUE_EXPECTED
+                                    if (not islist and not isKey) and isDefaultSet:
                                         erroridx = i+1 if not delete else i+2
                                         errcmd = mline if not delete else ['no'] + mline
                                         snapcliconst.printErrorValueCmd(erroridx, errcmd)
