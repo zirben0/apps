@@ -208,6 +208,10 @@ def isValueArgumentKey(attrdata):
         return attrdata['properties']['key']['default']
     return False
 
+def isValueDefaultSet(attrdata):
+    if 'properties' in attrdata and 'isdefaultset' in attrdata['properties'] and 'default' in attrdata['properties']['isdefaultset']:
+        return attrdata['properties']['isdefaultset']['default']
+    return False
 
 def getValueArgumentSelections(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'enum' in attrdata['properties']['argtype']:

@@ -29,7 +29,7 @@
       "cliname": "HostTxEqLfCtle"
     }, 
     "ClntIntfId": {
-      "cliname": "ClntIntfId"
+      "cliname": "clntIntf"
     }, 
     "EnableRxPRBS": {
       "cliname": "EnableRxPRBS"
