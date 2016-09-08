@@ -496,12 +496,17 @@ class CmdLine(CommonCmdLine):
 
     def get_show_complete_commands(self, mline):
         # calling
+
+        # special internal cases
+        if mline[-1] == "run":
+            return ["full"]
+
         submodelList = self.getSubCommand("show", self.model["commands"])
         subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
         if submodelList and subschemaList:
             for submodel, subschema in zip(submodelList, subschemaList):
                 c = ShowCmd(self, submodel, subschema)
-                return [cmd for (cmd, help, x) in c.display_help(mline[1:], returnhelp=True)]
+                return [cmd for (cmd, help, x) in c.display_help(mline[1:], returnhelp=True)] + ["run"]
         return []
 
 
