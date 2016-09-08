@@ -1235,7 +1235,11 @@ class LeafCmd(CommonCmdLine):
                                         except:
                                             sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (mline[i+1], min, max))
                                             return ''
-                                    self.valueExpected = SUBCOMMAND_VALUE_NOT_EXPECTED
+                                    isdefaultset = snapcliconst.getSchemaCommandAttrIsDefaultSet(sattrvalue)
+                                    if not isdefaultset:
+                                        self.valueExpected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE
+                                    else:
+                                        self.valueExpected = SUBCOMMAND_VALUE_NOT_EXPECTED
 
                             else:
                                 self.subcommand = True
@@ -1254,7 +1258,6 @@ class LeafCmd(CommonCmdLine):
                                     islist = snapcliconst.isValueArgumentList(sattrvalue)
                                     isKey  = snapcliconst.isValueArgumentKey(sattrvalue)
                                     isDefaultSet = snapcliconst.isValueDefaultSet(sattrvalue)
-                                    import ipdb; ipdb.set_trace()
                                     self.valueExpected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE if (isKey or not isDefaultSet) else SUBCOMMAND_VALUE_EXPECTED
                                     if (not islist and not isKey) and isDefaultSet:
                                         erroridx = i+1 if not delete else i+2
