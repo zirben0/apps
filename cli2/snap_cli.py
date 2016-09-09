@@ -506,7 +506,12 @@ class CmdLine(CommonCmdLine):
         if submodelList and subschemaList:
             for submodel, subschema in zip(submodelList, subschemaList):
                 c = ShowCmd(self, submodel, subschema)
-                return [cmd for (cmd, help, x) in c.display_help(mline[1:], returnhelp=True)] + ["run"]
+
+                specialCmds = []
+                if len(mline) == 1:
+                    specialCmds = ["run"]
+
+                return [cmd for (cmd, help, x) in c.display_help(mline[1:], returnhelp=True)] + specialCmds
         return []
 
 
