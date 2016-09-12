@@ -313,7 +313,7 @@ class ShowRun(object):
         for objName, objInfo  in self.objects.iteritems():
             if 'w' in objInfo['access']:
                 methodName = 'getAll'+objName+'s'
-                print methodName
+                #print methodName
                 method = getattr(self.swtch, methodName, None)
                 if method:
                     try:
