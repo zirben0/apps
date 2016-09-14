@@ -1,0 +1,14 @@
+{
+  "temperaturesensorstate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/TemperatureSensorStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Name": {
+        "cliname": "name"
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleClntIntfStateSubCmds.json"
     }, 
     "cliname": "clntIntf", 
+    "help": "Command to view state of DWDM module client interface",
     "value": {
       "ClntIntfId": {
         "cliname": "clntIntf"

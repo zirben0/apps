@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "sha1", 
+            "default": "Sha1", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "Name", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "branch", 
+            "default": "Branch", 
             "type": "string"
           }, 
           "argtype": {

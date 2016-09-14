@@ -1,9 +1,9 @@
 {
   "port": {
-    "prompt": "eth",
+    "prompt": "eth", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PortSubCmds.json"
-    },
+    }, 
     "help": "Ethernet Port Commands",
     "cliname": "ethernet",
     "value": {

@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": true,
+    "default": true, 
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -9,43 +9,6 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "BrgIfIndex": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-2147483647  The value of the instance of the ifIndex object", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "brgifindex", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 1,
-            "type": "int32", 
-            "maximum": 4095
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
       "PathCost": {
         "type": "object", 
         "properties": {
@@ -58,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-65535  The contribution of this port to the path cost of paths towards the spanning tree root which include this port.  802.1D-1998 recommends that the default value of this parameter be in inverse proportion to the speed of the attached LAN.  New implementations should support PathCost32. If the port path costs exceeds the maximum value of this object then this object should report the maximum value default: 1", 
+            "default": "0-65535  The contribution of this port to the path cost of paths towards the spanning tree root which include this port.  802.1D-1998 recommends that the default value of this parameter be in inverse proportion to the speed of the attached LAN.  New implementations should support PathCost32. If the port path costs exceeds the maximum value of this object then this object should report the maximum value; namely 65535.  Applications should try to read the PathCost32 object if this object reports the maximum value.  Value of 1 will force node to auto discover the value        based on the ports capabilities. default: 1", 
             "type": "string"
           }, 
           "islist": {
@@ -66,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "pathcost", 
+            "default": "PathCost", 
             "type": "string"
           }, 
           "argtype": {
@@ -75,50 +38,11 @@
             "maximum": 65535
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
             "default": "1"
-          }
-        }
-      }, 
-      "Enable": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": " disabled(2)/enabled(1)  The enabled/disabled status of the port.", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "enable", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "enum": [
-              2, 
-              1
-            ], 
-            "type": "int32"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "2"
           }
         }
       }, 
@@ -134,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " false(2)/true(1)  When operating in RSTP (version 2) mode default: 1", 
+            "default": " false(2)/true(1)  When operating in RSTP (version 2) mode writing true(1) to this object forces this port to transmit RSTP BPDUs. Any other operation on this object has no effect and it always returns false(2) when read. default: 1", 
             "type": "string"
           }, 
           "islist": {
@@ -142,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "protocolmigration", 
+            "default": "ProtocolMigration", 
             "type": "string"
           }, 
           "argtype": {
@@ -155,11 +79,48 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
             "default": "1"
+          }
+        }
+      }, 
+      "Vlan": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "0-4094  The value of instance of the vlan object", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "Vlan", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 4094
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -175,7 +136,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " false(2)/true(1)  The administrative value of the Edge Port parameter.  A value of true(1) indicates that this port should be assumed as an edge-port default: 2", 
+            "default": " false(2)/true(1)  The administrative value of the Edge Port parameter.  A value of true(1) indicates that this port should be assumed as an edge-port and a value of false(2) indicates that this port should be assumed as a non-edge-port.  Setting this object will also cause the corresponding instance of OperEdgePort to change to the same value.  Note that even when this object's value is true the value of the corresponding instance of OperEdgePort can be false if a BPDU has been received.  The value of this object MUST be retained across reinitializations of the management system. default: 2", 
             "type": "string"
           }, 
           "islist": {
@@ -183,7 +144,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminedgeport", 
+            "default": "AdminEdgePort", 
             "type": "string"
           }, 
           "argtype": {
@@ -196,7 +157,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -224,7 +185,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "bridgeassurance", 
+            "default": "BridgeAssurance", 
             "type": "string"
           }, 
           "argtype": {
@@ -237,7 +198,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -257,7 +218,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-255  The value of the priority field that is contained in the first (in network byte order) octet of the (2 octet long) Port ID.  The other octet of the Port ID is given by the value of StpPort. On bridges supporting IEEE 802.1t or IEEE 802.1w default: 128", 
+            "default": "0-255  The value of the priority field that is contained in the first in network byte order octet of the 2 octet long Port ID.  The other octet of the Port ID is given by the value of StpPort. On bridges supporting IEEE 802.1t or IEEE 802.1w default: 128", 
             "type": "string"
           }, 
           "islist": {
@@ -265,7 +226,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "priority", 
+            "default": "Priority", 
             "type": "string"
           }, 
           "argtype": {
@@ -274,7 +235,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -282,7 +243,42 @@
           }
         }
       }, 
-      "BpduGuardInterval": {
+      "IntfRef": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "IntfRef", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "AdminState": {
         "type": "object", 
         "properties": {
           "key": {
@@ -294,7 +290,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "The interval time to which a port will try to recover from BPDU Guard err-disable state.  If no BPDU frames are detected after this timeout plus 3 Times Hello Time then the port will transition back to Up state.  If condition is cleared manually then this operation is ignored.  If set to zero then timer is inactive and recovery is based on manual intervention.", 
+            "default": " UP/DOWN  The enabled/disabled status of the port. default: UP", 
             "type": "string"
           }, 
           "islist": {
@@ -302,20 +298,22 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "bpduguardinterval", 
+            "default": "AdminState", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "type": "int32", 
-            "maximum": 2147483647
+            "enum": [
+              "UP", 
+              "DOWN"
+            ], 
+            "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "UP"
           }
         }
       }, 
@@ -339,7 +337,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "bpduguard", 
+            "default": "BpduGuard", 
             "type": "string"
           }, 
           "argtype": {
@@ -352,7 +350,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -372,7 +370,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " forceTrue(0)/forceFalse(1)/auto(2)  The administrative point-to-point status of the LAN segment attached to this port default: 2", 
+            "default": " forceTrue(0)/forceFalse(1)/auto(2)  The administrative point-to-point status of the LAN segment attached to this port using the enumeration values of the IEEE 802.1w clause.  A value of forceTrue(0) indicates that this port should always be treated as if it is connected to a point-to-point link.  A value of forceFalse(1) indicates that this port should be treated as having a shared media connection.  A value of auto(2) indicates that this port is considered to have a point-to-point link if it is an Aggregator and all of its    members are aggregatable or if the MAC entity is configured for full duplex operation default: 2", 
             "type": "string"
           }, 
           "islist": {
@@ -380,7 +378,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminpointtopoint", 
+            "default": "AdminPointToPoint", 
             "type": "string"
           }, 
           "argtype": {
@@ -394,7 +392,7 @@
             "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -402,11 +400,11 @@
           }
         }
       }, 
-      "IfIndex": {
+      "BpduGuardInterval": {
         "type": "object", 
         "properties": {
           "key": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
           "prompt": {
@@ -414,7 +412,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-65535  The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
+            "default": "The interval time to which a port will try to recover from BPDU Guard err-disable state.  If no BPDU frames are detected after this timeout plus 3 Times Hello Time then the port will transition back to Up state.  If condition is cleared manually then this operation is ignored.  If set to zero then timer is inactive and recovery is based on manual intervention. default: 15", 
             "type": "string"
           }, 
           "islist": {
@@ -422,20 +420,20 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifindex", 
+            "default": "BpduGuardInterval", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
+            "minimum": -2147483648, 
             "type": "int32", 
-            "maximum": 65535
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "15"
           }
         }
       }, 
@@ -451,7 +449,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-200000000  The administratively assigned value for the contribution of this port to the path cost of paths toward the spanning tree root.  Writing a value of '0' assigns the automatically calculated default Path Cost value to the port.  If the default Path Cost is being used default: 200000", 
+            "default": "0-200000000  The administratively assigned value for the contribution of this port to the path cost of paths toward the spanning tree root.  Writing a value of '0' assigns the automatically calculated default Path Cost value to the port.  If the default Path Cost is being used this object returns '0' when read.  This complements the object PathCost or PathCost32 which returns the operational value of the path cost.    The value of this object MUST be retained across reinitializations of the management system. default: 200000", 
             "type": "string"
           }, 
           "islist": {
@@ -459,7 +457,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminpathcost", 
+            "default": "AdminPathCost", 
             "type": "string"
           }, 
           "argtype": {
@@ -468,7 +466,7 @@
             "maximum": 200000000
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -496,7 +494,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "pathcost32", 
+            "default": "PathCost32", 
             "type": "string"
           }, 
           "argtype": {
@@ -505,7 +503,7 @@
             "maximum": 200000000
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

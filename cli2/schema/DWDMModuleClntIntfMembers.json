@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hosttxeqdfe", 
+            "default": "HostTxEqDfe", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,7 +38,7 @@
             "maximum": 63
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hostrxserializertap1gain", 
+            "default": "HostRxSerializerTap1Gain", 
             "type": "string"
           }, 
           "argtype": {
@@ -75,7 +75,7 @@
             "maximum": 7
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -103,7 +103,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "rxprbspattern", 
+            "default": "RxPRBSPattern", 
             "type": "string"
           }, 
           "argtype": {
@@ -116,7 +116,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -144,7 +144,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hostrxserializertap2delay", 
+            "default": "HostRxSerializerTap2Delay", 
             "type": "string"
           }, 
           "argtype": {
@@ -153,7 +153,7 @@
             "maximum": 7
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -181,7 +181,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hostrxserializertap2gain", 
+            "default": "HostRxSerializerTap2Gain", 
             "type": "string"
           }, 
           "argtype": {
@@ -190,7 +190,7 @@
             "maximum": 15
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -218,7 +218,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hostrxserializertap0delay", 
+            "default": "HostRxSerializerTap0Delay", 
             "type": "string"
           }, 
           "argtype": {
@@ -227,7 +227,7 @@
             "maximum": 7
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -255,7 +255,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hosttxeqctle", 
+            "default": "HostTxEqCtle", 
             "type": "string"
           }, 
           "argtype": {
@@ -264,7 +264,7 @@
             "maximum": 20
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -292,7 +292,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txprbspattern", 
+            "default": "TxPRBSPattern", 
             "type": "string"
           }, 
           "argtype": {
@@ -305,7 +305,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -333,7 +333,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hosttxeqlfctle", 
+            "default": "HostTxEqLfCtle", 
             "type": "string"
           }, 
           "argtype": {
@@ -342,7 +342,7 @@
             "maximum": 8
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -370,7 +370,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "clntintfid", 
+            "default": "ClntIntfId", 
             "type": "string"
           }, 
           "argtype": {
@@ -407,14 +407,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enablerxprbs", 
+            "default": "EnableRxPRBS", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -442,14 +442,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "txfecdecdisable", 
+            "default": "TXFECDecDisable", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -477,14 +477,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enablehostloopback", 
+            "default": "EnableHostLoopback", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -512,7 +512,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "adminstate", 
+            "default": "AdminState", 
             "type": "string"
           }, 
           "argtype": {
@@ -523,7 +523,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -551,14 +551,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "rxfecdecdisable", 
+            "default": "RXFECDecDisable", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -586,7 +586,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nwlanetributarytoclntintfmap", 
+            "default": "NwLaneTributaryToClntIntfMap", 
             "type": "string"
           }, 
           "argtype": {
@@ -623,14 +623,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enableintserdesnwloopback", 
+            "default": "EnableIntSerdesNWLoopback", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -658,14 +658,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enabletxprbschecker", 
+            "default": "EnableTxPRBSChecker", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -693,7 +693,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hostrxserializertap0gain", 
+            "default": "HostRxSerializerTap0Gain", 
             "type": "string"
           }, 
           "argtype": {
@@ -702,7 +702,7 @@
             "maximum": 7
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -730,7 +730,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "moduleid", 
+            "default": "ModuleId", 
             "type": "string"
           }, 
           "argtype": {

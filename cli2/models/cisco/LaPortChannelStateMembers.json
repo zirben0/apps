@@ -1,8 +1,8 @@
 {
   "listattrs": [], 
   "commands": {
-    "LagId": {
-      "cliname": "lagid"
+    "IntfRef": {
+      "cliname": "port_channel"
     }
   }
 }

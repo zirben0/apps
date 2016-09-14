@@ -1,0 +1,8 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "LinkScopeIp": {
+      "cliname": "linkscopeip"
+    }
+  }
+}

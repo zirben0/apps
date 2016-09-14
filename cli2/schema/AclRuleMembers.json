@@ -1,0 +1,413 @@
+{
+  "listattrs": [], 
+  "createwithdefault": {
+    "default": false, 
+    "type": "boolean", 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+  }, 
+  "commands": {
+    "type": "object", 
+    "description": "", 
+    "properties": {
+      "SourceMac": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Source MAC address.", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "SourceMac", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "Proto": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Protocol type", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "Proto", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "SourceMask": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Network mask for source IP", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "SourceMask", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "DestMac": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Destination MAC address", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "DestMac", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "SrcPort": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Source Port", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "SrcPort", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "DestIp": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Destination IP address", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "DestIp", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "DestMask": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Network mark for dest IP", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "DestMask", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "RuleName": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Acl rule name", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "RuleName", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "Action": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Type of action (Allow/Deny) default: Allow", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "Action", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "Allow"
+          }
+        }
+      }, 
+      "DstPort": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Dest Port", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "DstPort", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "SourceIp": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Source IP address", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "SourceIp", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }
+    }
+  }, 
+  "defaultref": {
+    "type": "object", 
+    "properties": {}, 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+  }, 
+  "objname": {
+    "default": "AclRule", 
+    "type": "string", 
+    "description": "object name to which references these attributes"
+  }
+}

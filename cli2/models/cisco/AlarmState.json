@@ -4,7 +4,8 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/AlarmStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "cliname": "alarms", 
+    "help": "Command to query for all alarms in the system",
     "value": {
       "EventId": {
         "cliname": "eventid"

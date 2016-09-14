@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtifretransinterval", 
+            "default": "VirtIfRetransInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtifhellointerval", 
+            "default": "VirtIfHelloInterval", 
             "type": "string"
           }, 
           "argtype": {
@@ -103,7 +103,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtifauthtype", 
+            "default": "VirtIfAuthType", 
             "type": "string"
           }, 
           "argtype": {
@@ -137,7 +137,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The Router ID of the virtual neighbor.", 
+            "default": " The Router ID of the virtual neighbor.", 
             "type": "string"
           }, 
           "islist": {
@@ -145,13 +145,11 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtifneighbor", 
+            "default": "VirtIfNeighbor", 
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
-            ], 
+            "enum": [], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -183,7 +181,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtiftransitdelay", 
+            "default": "VirtIfTransitDelay", 
             "type": "string"
           }, 
           "argtype": {
@@ -212,7 +210,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?  The transit area that the virtual link traverses.  By definition", 
+            "default": " The transit area that the virtual link traverses.  By definition", 
             "type": "string"
           }, 
           "islist": {
@@ -220,7 +218,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtifareaid", 
+            "default": "VirtIfAreaId", 
             "type": "string"
           }, 
           "argtype": {
@@ -258,7 +256,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtifauthkey", 
+            "default": "VirtIfAuthKey", 
             "type": "string"
           }, 
           "argtype": {
@@ -293,7 +291,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "virtifrtrdeadinterval", 
+            "default": "VirtIfRtrDeadInterval", 
             "type": "string"
           }, 
           "argtype": {

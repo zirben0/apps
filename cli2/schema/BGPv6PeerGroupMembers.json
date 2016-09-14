@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxprefixesrestarttimer", 
+            "default": "MaxPrefixesRestartTimer", 
             "type": "string"
           }, 
           "argtype": {
@@ -38,11 +38,46 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
             "default": "0"
+          }
+        }
+      }, 
+      "AdjRIBInFilter": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Policy that is applied for Adj-RIB-In prefix filtering", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "AdjRIBInFilter", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -66,14 +101,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "routereflectorclient", 
+            "default": "RouteReflectorClient", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,339 +136,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "description", 
+            "default": "Description", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "MultiHopTTL": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "TTL for multi hop BGP neighbor default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "multihopttl", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
-      "MaxPrefixesDisconnect": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Disconnect the BGP peer session when we receive the max prefixes from the neighbor default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "maxprefixesdisconnect", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "LocalAS": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Local AS of the BGP neighbor default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "localas", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
-      "ConnectRetryTime": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Connect retry time to connect to BGP neighbor after disconnect default: 60", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "connectretrytime", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "60"
-          }
-        }
-      }, 
-      "KeepaliveTime": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Keep alive time for the BGP neighbor default: 60", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "keepalivetime", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "60"
-          }
-        }
-      }, 
-      "AddPathsMaxTx": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Max number of additional paths that can be transmitted to BGP neighbor default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "addpathsmaxtx", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
-      "MultiHopEnable": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable/Disable multi hop for BGP neighbor default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "multihopenable", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "AddPathsRx": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Receive additional paths from BGP neighbor default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "addpathsrx", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "UpdateSource": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Source IP to connect to the BGP neighbor", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "updatesource", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -461,7 +171,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "routereflectorclusterid", 
+            "default": "RouteReflectorClusterId", 
             "type": "string"
           }, 
           "argtype": {
@@ -470,11 +180,369 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
             "default": "0"
+          }
+        }
+      }, 
+      "MaxPrefixesDisconnect": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Disconnect the BGP peer session when we receive the max prefixes from the neighbor default: false", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "MaxPrefixesDisconnect", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }
+        }
+      }, 
+      "LocalAS": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Local AS of the BGP neighbor", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "LocalAS", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "AdjRIBOutFilter": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Policy that is applied for Adj-RIB-Out prefix filtering", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "AdjRIBOutFilter", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
+      "KeepaliveTime": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Keep alive time for the BGP neighbor default: 0", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "KeepaliveTime", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }
+        }
+      }, 
+      "AddPathsMaxTx": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Max number of additional paths that can be transmitted to BGP neighbor default: 0", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "AddPathsMaxTx", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }
+        }
+      }, 
+      "MultiHopEnable": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable multi hop for BGP neighbor default: false", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "MultiHopEnable", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }
+        }
+      }, 
+      "MultiHopTTL": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "TTL for multi hop BGP neighbor default: 0", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "MultiHopTTL", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint8", 
+            "maximum": 255
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }
+        }
+      }, 
+      "ConnectRetryTime": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Connect retry time to connect to BGP neighbor after disconnect default: 0", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "ConnectRetryTime", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }
+        }
+      }, 
+      "AddPathsRx": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "True/False  Receive additional paths from BGP neighbor default: false", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "AddPathsRx", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "bool"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }
+        }
+      }, 
+      "UpdateSource": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Source IP to connect to the BGP neighbor", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "UpdateSource", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -490,7 +558,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "The percentage of maximum prefixes before we start logging default: 0", 
+            "default": "The percentage of maximum prefixes before we start logging default: 80", 
             "type": "string"
           }, 
           "islist": {
@@ -498,7 +566,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxprefixesthresholdpct", 
+            "default": "MaxPrefixesThresholdPct", 
             "type": "string"
           }, 
           "argtype": {
@@ -507,11 +575,11 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0"
+            "default": "80"
           }
         }
       }, 
@@ -527,7 +595,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Hold time for the BGP neighbor default: 180", 
+            "default": "Hold time for the BGP neighbor default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -535,7 +603,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "holdtime", 
+            "default": "HoldTime", 
             "type": "string"
           }, 
           "argtype": {
@@ -544,11 +612,11 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "180"
+            "default": "0"
           }
         }
       }, 
@@ -572,7 +640,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxprefixes", 
+            "default": "MaxPrefixes", 
             "type": "string"
           }, 
           "argtype": {
@@ -581,7 +649,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -601,7 +669,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Peer AS of the BGP neighbor default: 0", 
+            "default": "Peer AS of the BGP neighbor", 
             "type": "string"
           }, 
           "islist": {
@@ -609,20 +677,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "peeras", 
+            "default": "PeerAS", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+            "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0"
+            "default": ""
           }
         }
       }, 
@@ -646,7 +712,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "Name", 
             "type": "string"
           }, 
           "argtype": {

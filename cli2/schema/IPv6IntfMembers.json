@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfref", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,14 +64,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ipaddr", 
+            "default": "IpAddr", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -99,14 +99,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "linkip", 
+            "default": "LinkIp", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

@@ -1,0 +1,20 @@
+{
+  "qsfppmdatastate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/QsfpPMDataStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Resource": {
+        "cliname": "resource"
+      }, 
+      "Class": {
+        "cliname": "class"
+      }, 
+      "QsfpId": {
+        "cliname": "qsfpid"
+      }
+    }
+  }
+}

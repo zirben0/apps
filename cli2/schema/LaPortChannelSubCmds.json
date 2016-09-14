@@ -8,4 +8,5 @@
   "subcmd3": {
     "$ref": "file:/tmp/snaproute/cli/schema/ipv6lagintf.json"
   }
+
 }

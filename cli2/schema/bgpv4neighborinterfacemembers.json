@@ -29,14 +29,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "bfdenable", 
+            "default": "BfdEnable", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "routereflectorclusterid", 
+            "default": "RouteReflectorClusterId", 
             "type": "string"
           }, 
           "argtype": {
@@ -73,7 +73,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,14 +101,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "peergroup", 
+            "default": "PeerGroup", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -136,7 +136,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "multihopttl", 
+            "default": "MultiHopTTL", 
             "type": "string"
           }, 
           "argtype": {
@@ -145,7 +145,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -173,14 +173,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxprefixesdisconnect", 
+            "default": "MaxPrefixesDisconnect", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -200,7 +200,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Local AS of the BGP neighbor default: 0", 
+            "default": "Local AS of the BGP neighbor", 
             "type": "string"
           }, 
           "islist": {
@@ -208,20 +208,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "localas", 
+            "default": "LocalAS", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+            "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0"
+            "default": ""
           }
         }
       }, 
@@ -237,7 +235,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Keep alive time for the BGP neighbor default: 60", 
+            "default": "Keep alive time for the BGP neighbor default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -245,7 +243,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "keepalivetime", 
+            "default": "KeepaliveTime", 
             "type": "string"
           }, 
           "argtype": {
@@ -254,11 +252,11 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "60"
+            "default": "0"
           }
         }
       }, 
@@ -282,7 +280,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfref", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -317,7 +315,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "addpathsmaxtx", 
+            "default": "AddPathsMaxTx", 
             "type": "string"
           }, 
           "argtype": {
@@ -326,11 +324,46 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
             "default": "0"
+          }
+        }
+      }, 
+      "AdjRIBInFilter": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Policy that is applied for Adj-RIB-In prefix filtering", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "AdjRIBInFilter", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -354,14 +387,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "routereflectorclient", 
+            "default": "RouteReflectorClient", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -389,14 +422,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "addpathsrx", 
+            "default": "AddPathsRx", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -424,14 +457,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "updatesource", 
+            "default": "UpdateSource", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -443,7 +476,7 @@
         "type": "object", 
         "properties": {
           "key": {
-            "default": true, 
+            "default": false,
             "type": "boolean"
           }, 
           "prompt": {
@@ -459,14 +492,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "neighboraddress", 
+            "default": "NeighborAddress", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true,
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -494,7 +527,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxprefixes", 
+            "default": "MaxPrefixes", 
             "type": "string"
           }, 
           "argtype": {
@@ -503,7 +536,7 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -531,7 +564,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxprefixesthresholdpct", 
+            "default": "MaxPrefixesThresholdPct", 
             "type": "string"
           }, 
           "argtype": {
@@ -540,7 +573,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -568,7 +601,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxprefixesrestarttimer", 
+            "default": "MaxPrefixesRestartTimer", 
             "type": "string"
           }, 
           "argtype": {
@@ -577,7 +610,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -605,14 +638,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "description", 
+            "default": "Description", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -632,7 +665,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Hold time for the BGP neighbor default: 180", 
+            "default": "Hold time for the BGP neighbor default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -640,7 +673,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "holdtime", 
+            "default": "HoldTime", 
             "type": "string"
           }, 
           "argtype": {
@@ -649,11 +682,46 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "180"
+            "default": "0"
+          }
+        }
+      }, 
+      "AdjRIBOutFilter": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Policy that is applied for Adj-RIB-Out prefix filtering", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "AdjRIBOutFilter", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
           }
         }
       }, 
@@ -669,7 +737,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Peer AS of the BGP neighbor default: 0", 
+            "default": "Peer AS of the BGP neighbor", 
             "type": "string"
           }, 
           "islist": {
@@ -677,20 +745,18 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "peeras", 
+            "default": "PeerAS", 
             "type": "string"
           }, 
           "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+            "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "0"
+            "default": ""
           }
         }
       }, 
@@ -714,14 +780,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "multihopenable", 
+            "default": "MultiHopEnable", 
             "type": "string"
           }, 
           "argtype": {
             "type": "bool"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -749,14 +815,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "bfdsessionparam", 
+            "default": "BfdSessionParam", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -784,14 +850,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "authpassword", 
+            "default": "AuthPassword", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -811,7 +877,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Connect retry time to connect to BGP neighbor after disconnect default: 60", 
+            "default": "Connect retry time to connect to BGP neighbor after disconnect default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -819,7 +885,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "connectretrytime", 
+            "default": "ConnectRetryTime", 
             "type": "string"
           }, 
           "argtype": {
@@ -828,11 +894,11 @@
             "maximum": 4294967296
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "60"
+            "default": "0"
           }
         }
       }

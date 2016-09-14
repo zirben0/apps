@@ -34,7 +34,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "matchtype", 
+            "default": "MatchType", 
             "type": "string"
           }, 
           "argtype": {
@@ -76,7 +76,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "name", 
+            "default": "Name", 
             "type": "string"
           }, 
           "argtype": {
@@ -111,7 +111,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "precedence", 
+            "default": "Precedence", 
             "type": "string"
           }, 
           "argtype": {

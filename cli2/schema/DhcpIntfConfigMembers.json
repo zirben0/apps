@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "dnsserveraddr", 
+            "default": "DNSServerAddr", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "broadcastaddr", 
+            "default": "BroadcastAddr", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ipaddrrange", 
+            "default": "IPAddrRange", 
             "type": "string"
           }, 
           "argtype": {
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enable", 
+            "default": "Enable", 
             "type": "string"
           }, 
           "argtype": {
@@ -169,7 +169,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "routeraddr", 
+            "default": "RouterAddr", 
             "type": "string"
           }, 
           "argtype": {
@@ -204,7 +204,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "intfref", 
+            "default": "IntfRef", 
             "type": "string"
           }, 
           "argtype": {
@@ -239,7 +239,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "domainname", 
+            "default": "DomainName", 
             "type": "string"
           }, 
           "argtype": {
@@ -274,7 +274,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "subnetmask", 
+            "default": "SubnetMask", 
             "type": "string"
           }, 
           "argtype": {
@@ -309,7 +309,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "subnet", 
+            "default": "Subnet", 
             "type": "string"
           }, 
           "argtype": {

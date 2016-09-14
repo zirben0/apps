@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "defaultleasetime", 
+            "default": "DefaultLeaseTime", 
             "type": "string"
           }, 
           "argtype": {
@@ -66,7 +66,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "dhcpconfigkey", 
+            "default": "DhcpConfigKey", 
             "type": "string"
           }, 
           "argtype": {
@@ -77,7 +77,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "Vrf"
+            "default": ""
           }
         }
       }, 
@@ -101,7 +101,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "enable", 
+            "default": "Enable", 
             "type": "string"
           }, 
           "argtype": {

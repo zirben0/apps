@@ -68,7 +68,22 @@
 	  },
 	  "subcmd25":{
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6show.json"
+      },
+	  "subcmd26":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntfState.json"
+      },
+	  "subcmd27":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleClntIntfState.json"
+      },
+	  "subcmd28":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/XponderGlobalState.json"
+      },
+	  "subcmd29":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/FaultState.json"
+      },
+	  "subcmd30":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/AlarmState.json"
       }
     }
-  } 
+  }
 }

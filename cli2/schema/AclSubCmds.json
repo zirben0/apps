@@ -1,0 +1,5 @@
+{
+  "subcmd1": {
+    "$ref": "file:/tmp/snaproute/cli/schema/AclMembers.json"
+  }
+}

@@ -43,8 +43,10 @@ from jsonschema import Draft4Validator
 #from snap_global import Global_CmdLine
 from snap_config import ConfigCmd
 from snap_show import ShowCmd
-from commonCmdLine import CommonCmdLine, CmdFunc, \
+from commonCmdLine import CommonCmdLine, CmdFunc, Authentication, \
     SUBCOMMAND_VALUE_NOT_EXPECTED, SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
+
+
 
 class CmdLine(CommonCmdLine):
 
@@ -74,6 +76,10 @@ class CmdLine(CommonCmdLine):
         self.IfIndexToIntfRef = {}
         # defaulting to show as it will be overwritten by the first config command
         self.cmdtype = snapcliconst.COMMAND_TYPE_INIT
+
+	# Base work for WD-4, node needs to support authentication, this call 
+        # should use the tools provied by the node to authenticate all commands
+        #self.auth = Authentication(switch_ip)
 
         # check if we can reach the switch_ip will timeout if we can't
         if self.check_switch_connectivity(switch_ip, 8080):
@@ -490,12 +496,22 @@ class CmdLine(CommonCmdLine):
 
     def get_show_complete_commands(self, mline):
         # calling
+
+        # special internal cases
+        if mline[-1] == "run":
+            return ["full"]
+
         submodelList = self.getSubCommand("show", self.model["commands"])
         subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
         if submodelList and subschemaList:
             for submodel, subschema in zip(submodelList, subschemaList):
                 c = ShowCmd(self, submodel, subschema)
-                return [cmd for (cmd,help) in c.display_help(mline[1:], returnhelp=True)]
+
+                specialCmds = []
+                if len(mline) == 1:
+                    specialCmds = ["run"]
+
+                return [cmd for (cmd, help, x) in c.display_help(mline[1:], returnhelp=True)] + specialCmds
         return []
 
 
@@ -564,10 +580,11 @@ class CmdLine(CommonCmdLine):
                                                     usercmd = self.convertUserCmdToModelCmd(mline[i+1], subcommands)
                                                     if usercmd is not None:
                                                         mline[i+1] = usercmd
-                                                    else:
-                                                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
-                                                        snapcliconst.printErrorValueCmd(i+1, mline)
-                                                        return ''
+                                                    # this is preventing individual values from being set to show
+                                                    #elif valueexpected != :
+                                                    #    sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                                    #    snapcliconst.printErrorValueCmd(i+1, mline)
+                                                    #    return ''
 
                                                 if mline[i+1] not in subcommands:
                                                     self.currentcmd = self.lastcmd
@@ -613,12 +630,13 @@ class CmdLine(CommonCmdLine):
             newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
         else:
             return ''
-
-        if len(newargv) > 1 and 'help' in newargv:
+        if len(newargv) > 1 and 'help' in newargv or '?' in newargv:
             if newargv[0] == snapcliconst.COMMAND_TYPE_SHOW:
+                # strip the last command and display the help for current position
                 self.display_show_help(newargv)
                 return ''
             elif newargv[0] == snapcliconst.COMMAND_TYPE_CONFIG:
+                # strip the last command and display the help for current position
                 self.display_help(newargv)
                 return ''
         if newargv and '!' in newargv[-1]:
@@ -722,9 +740,8 @@ if __name__ == '__main__':
     cli_model_path = options.cli_model_path
     cli_schema_path = options.cli_schema_path
 
+
     cmdLine = CmdLine(switch_ip, cli_model_path, cli_schema_path, )
-    #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #result = sock.connect_ex((switch_ip,8080))
     result = True
     if result:
         cmdLine.cmdloop()

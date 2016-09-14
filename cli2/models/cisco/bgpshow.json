@@ -4,7 +4,7 @@
     "help": "Show BGP IPv4 Routes",
     "commands": {
       "subcmd2" : {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPRouteStateMembers.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4RouteStateMembers.json"
       },
       "subcmd3": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalState.json"

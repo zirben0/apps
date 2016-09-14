@@ -1,0 +1,15 @@
+{
+  "bgpv6aggregate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6AggregateSubCmds.json"
+    },
+    "help": "Configure IPv6 Aggregate", 
+    "cliname": "aggregatev6", 
+    "value": {
+      "IpPrefix": {
+        "cliname": "aggregatev6"
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "HigherAlarmTemperature": {
+      "cliname": "HigherAlarmTemperature"
+    }, 
+    "HigherAlarmTXBias": {
+      "cliname": "HigherAlarmTXBias"
+    }, 
+    "HigherAlarmRXPower": {
+      "cliname": "HigherAlarmRXPower"
+    }, 
+    "LowerWarningTXBias": {
+      "cliname": "LowerWarningTXBias"
+    }, 
+    "HigherWarningTemperature": {
+      "cliname": "HigherWarningTemperature"
+    }, 
+    "LowerAlarmTXBias": {
+      "cliname": "LowerAlarmTXBias"
+    }, 
+    "QsfpId": {
+      "cliname": "QsfpId"
+    }, 
+    "AdminState": {
+      "cliname": "AdminState"
+    }, 
+    "LowerWarningVoltage": {
+      "cliname": "LowerWarningVoltage"
+    }, 
+    "HigherAlarmVoltage": {
+      "cliname": "HigherAlarmVoltage"
+    }, 
+    "LowerWarningRXPower": {
+      "cliname": "LowerWarningRXPower"
+    }, 
+    "HigherWarningTXBias": {
+      "cliname": "HigherWarningTXBias"
+    }, 
+    "HigherAlarmTXPower": {
+      "cliname": "HigherAlarmTXPower"
+    }, 
+    "LowerWarningTemperature": {
+      "cliname": "LowerWarningTemperature"
+    }, 
+    "LowerAlarmRXPower": {
+      "cliname": "LowerAlarmRXPower"
+    }, 
+    "LowerWarningTXPower": {
+      "cliname": "LowerWarningTXPower"
+    }, 
+    "HigherWarningTXPower": {
+      "cliname": "HigherWarningTXPower"
+    }, 
+    "HigherWarningRXPower": {
+      "cliname": "HigherWarningRXPower"
+    }, 
+    "LowerAlarmTemperature": {
+      "cliname": "LowerAlarmTemperature"
+    }, 
+    "LowerAlarmVoltage": {
+      "cliname": "LowerAlarmVoltage"
+    }, 
+    "HigherWarningVoltage": {
+      "cliname": "HigherWarningVoltage"
+    }, 
+    "LowerAlarmTXPower": {
+      "cliname": "LowerAlarmTXPower"
+    }
+  }
+}

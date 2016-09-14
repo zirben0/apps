@@ -1,0 +1,23 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AdminState": {
+      "cliname": "AdminState"
+    }, 
+    "LowerAlarmThreshold": {
+      "cliname": "LowerAlarmThreshold"
+    }, 
+    "Name": {
+      "cliname": "Name"
+    }, 
+    "HigherWarningThreshold": {
+      "cliname": "HigherWarningThreshold"
+    }, 
+    "LowerWarningThreshold": {
+      "cliname": "LowerWarningThreshold"
+    }, 
+    "HigherAlarmThreshold": {
+      "cliname": "HigherAlarmThreshold"
+    }
+  }
+}

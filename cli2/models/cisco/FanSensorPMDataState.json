@@ -1,0 +1,17 @@
+{
+  "fansensorpmdatastate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/FanSensorPMDataStateSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Class": {
+        "cliname": "class"
+      }, 
+      "Name": {
+        "cliname": "name"
+      }
+    }
+  }
+}

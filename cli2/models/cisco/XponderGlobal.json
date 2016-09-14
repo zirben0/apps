@@ -1,0 +1,15 @@
+{
+  "xponderglobal": {
+    "prompt": "xponderglobal",
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/XponderGlobalSubCmds.json"
+    }, 
+    "help": "Command to configure Xponder system as a whole",
+    "cliname": "xponder", 
+    "value": {
+      "XponderId": {
+        "cliname": "xponder"
+      }
+    }
+  }
+}

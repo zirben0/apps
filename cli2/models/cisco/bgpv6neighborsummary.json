@@ -1,0 +1,15 @@
+{
+  "bgpv6neighborsummary": {
+    "cliname" : "summary",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6NeighborStateMembers.json"
+      }
+    },
+    "value": {
+      "NeighborAddress": {
+        "cliname": "neighbor"
+      }
+    }
+  }
+}

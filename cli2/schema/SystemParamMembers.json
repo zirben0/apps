@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "version", 
+            "default": "Version", 
             "type": "string"
           }, 
           "argtype": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "description", 
+            "default": "Description", 
             "type": "string"
           }, 
           "argtype": {
@@ -99,7 +99,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "mgmtip", 
+            "default": "MgmtIp", 
             "type": "string"
           }, 
           "argtype": {
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "hostname", 
+            "default": "Hostname", 
             "type": "string"
           }, 
           "argtype": {
@@ -169,7 +169,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "switchmac", 
+            "default": "SwitchMac", 
             "type": "string"
           }, 
           "argtype": {
@@ -204,14 +204,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vrf", 
+            "default": "Vrf", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

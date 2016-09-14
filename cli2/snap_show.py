@@ -127,7 +127,7 @@ def convertRawConfigtoTreeCli(cls):
 
         if 'cliname' in c.objKeyVal:
             value = convertStrValueToValueType(c.objKeyVal['type'],
-                                               convertPortToSpecialFmt(c.objKeyVal['modelname'],c.objKeyVal['value']))
+                                               convertPortToSpecialFmt(c.objKeyVal['modelname'], c.objKeyVal['value']))
             line += c.cmd + " %s" %(value)
             yield lvl, line
             lvl += (1 if len(line) > 0 else 0)
@@ -241,11 +241,40 @@ class ConfigElement(object):
         self.objname = o
 
     def setObjKeyVal(self, m, t, k, v, df):
-        self.objKeyVal = {'modelname': m,
-                          'type': t,
-                          'cliname': k,
-                          'value': v,
-                          'defaultvalue': df}
+        '''
+            this function may need to be updated to support more than one key
+        '''
+        # special cases
+        if self.objname == "StpBridgeInstance":
+            if m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+                self.objKeyVal = {'modelname': m,
+                                  'type': 'string',
+                                  'cliname': '',
+                                  'value': '',
+                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                self.cmd = self.cmd.split(' ')[0] + " rstp"
+        elif self.objname == 'StpPort':
+            if m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+                self.objKeyVal = {'modelname': m,
+                                  'type': 'string',
+                                  'cliname': '',
+                                  'value': '',
+                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                self.cmd = self.cmd.split(' ')[0] + " rstp"
+        elif self.objname == "Port":
+            if m == "IntfRef":
+                self.objKeyVal = {'modelname': m,
+                                  'type': t,
+                                  'cliname': k,
+                                  'value': v,
+                                  'defaultvalue': df}
+                self.cmd = self.cmd.split(' ')[0]
+        else:
+            self.objKeyVal = {'modelname': m,
+                              'type': t,
+                              'cliname': k,
+                              'value': v,
+                              'defaultvalue': df}
 
     def setAttributes(self, modelname, cliname, t, v, df):
         self.attributes.update({modelname: {'cliname': cliname,
@@ -275,16 +304,18 @@ class ShowRun(object):
         self.objects = {}
         self.currRawCfg = {}
 
+        # this json contains all the object files known by flexswitch
         with open(MODELS_DIR + 'genObjectConfig.json') as objInfoFile:
             self.objects = json.load(objInfoFile)
 
     def getRawConfigFromNode(self):
 
-        for objName, objInfo  in self.objects.iteritems ():
-            if 'w' in objInfo['access'] :
+        for objName, objInfo  in self.objects.iteritems():
+            if 'w' in objInfo['access']:
                 methodName = 'getAll'+objName+'s'
-                method =  getattr(self.swtch, methodName, None)
-                if method :
+                #print methodName
+                method = getattr(self.swtch, methodName, None)
+                if method:
                     try:
                         cfgList = method()
                     except Exception as e:
@@ -349,7 +380,6 @@ class ShowRun(object):
                     # lets check for global attributes
                     '''
                     if not matchattr:
-                        import ipdb; ipdb.set_trace()
                         if 'commands' in sobj and 'properties' in sobj['commands']:
                             for key, cmds in sobj['commands']['properties'].iteritems():
                                 if 'properties' in cmds:
@@ -380,10 +410,11 @@ class ShowRun(object):
                                                            convertStrValueToValueType(matchattrtype, matchvalue)):
                             # lets get an element from the raw config json objects
                             if cfgObj or subattrobj:
+
                                 element = ConfigElement()
-                                pelement.setSubCfg(element)
-                                element.setFormat(pelement.fmt)
                                 element.setCmd(cmd)
+                                element.setFormat(pelement.fmt)
+                                ignoreobj = False
                                 # found an element lets populate the contents of the element from this object
                                 element.setObjName(objname)
                                 if 'value' in mobj:
@@ -408,7 +439,8 @@ class ShowRun(object):
                                                             mattrobj['cliname'] != matchattr:
                                                 defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
                                                 attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
-                                                if (cfgObj and  mattr in cfgObj) or \
+                                                iskey = svalues['commands']['properties'][mattr]['properties']['key']['default']
+                                                if not iskey and (cfgObj and  mattr in cfgObj) or \
                                                         (subattrobj and mattr in subattrobj):
                                                     value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
                                                     element.setAttributes(mattr,
@@ -416,6 +448,18 @@ class ShowRun(object):
                                                                           attrtype,
                                                                           convertStrValueToValueType(attrtype, value),
                                                                           convertStrValueToValueType(attrtype, defaultVal))
+                                                elif iskey and pelement and 'cliname' in pelement.objKeyVal:
+                                                    # check if the key exists as the key from the parent
+                                                    value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
+                                                    ignoreobj = True
+                                                    if mattrobj['cliname'] == pelement.objKeyVal['cliname'] and \
+                                                        value == pelement.objKeyVal['value']:
+                                                        ignoreobj = False
+
+                                # lets set the parent object if
+                                # this object is part of this parent
+                                if not ignoreobj:
+                                    pelement.setSubCfg(element)
 
                                 # sub model objects
                                 for (mcmds, mvalues) in mobj['commands'].iteritems():
@@ -618,7 +662,7 @@ class ShowCmd(CommonCmdLine):
             if cmd == ("show run",):
                 print 'printing without defaluts'
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_NO_DEFAULT)
-            elif cmd in ("show run all",):
+            elif cmd in ("show run full",):
                 print 'printing with defaluts'
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_FULL)
             elif cmd in ("show run json",):
@@ -780,10 +824,13 @@ class ShowCmd(CommonCmdLine):
                 sdk = self.getSdkShow()
                 #funcObjName = config.name + 's' if 'State' in config.name else config.name + 'States'
                 funcObjName = config.name
-
                 try:
                     if all:
-                        printall_func = getattr(sdk, 'print' + funcObjName + 's')
+                        funclower = funcObjName.lower()
+                        if funclower in self.schema and self.schema[funclower]['properties'].has_key('useCombinedPrintFn'):
+                            printall_func = getattr(sdk, 'printCombined' + funcObjName + 's')
+                        else:
+                            printall_func = getattr(sdk, 'print' + funcObjName + 's')
                         printall_func()
                     else:
                         # update all the arguments so that the values get set in the get_sdk_...

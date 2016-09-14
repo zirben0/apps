@@ -1,0 +1,17 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "AclName": {
+      "cliname": "AclName"
+    }, 
+    "IntfList": {
+      "cliname": "IntfList"
+    }, 
+    "Direction": {
+      "cliname": "Direction"
+    }, 
+    "RuleNameList": {
+      "cliname": "RuleNameList"
+    }
+  }
+}

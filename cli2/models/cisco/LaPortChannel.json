@@ -7,7 +7,7 @@
     "help": "Port Channel Interface",
     "cliname": "port_channel",
     "value": {
-      "LagId": {
+      "IntfRef": {
         "cliname": "port_channel"
       }
     }

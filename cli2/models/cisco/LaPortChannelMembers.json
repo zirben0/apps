@@ -1,11 +1,14 @@
 {
   "listattrs": [], 
   "commands": {
-    "LagId": {
-      "cliname": "port_channel"
+    "AdminState": {
+      "cliname": "admin_state"
     }, 
     "LagType": {
       "cliname": "lagtype"
+    }, 
+    "IntfRef": {
+      "cliname": "port_channel"
     }, 
     "SystemPriority": {
       "cliname": "system_priority"

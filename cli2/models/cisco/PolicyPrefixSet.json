@@ -1,0 +1,14 @@
+{
+  "policyprefixset": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyPrefixSetSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "Name": {
+        "cliname": "name"
+      }
+    }
+  }
+}

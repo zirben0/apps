@@ -1,0 +1,14 @@
+{
+  "qsfp": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/QsfpSubCmds.json"
+    }, 
+    "cliname": "", 
+    "value": {
+      "QsfpId": {
+        "cliname": "qsfpid"
+      }
+    }
+  }
+}

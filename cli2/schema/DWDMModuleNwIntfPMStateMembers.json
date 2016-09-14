@@ -29,14 +29,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "type", 
+            "default": "Type", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "moduleid", 
+            "default": "ModuleId", 
             "type": "string"
           }, 
           "argtype": {
@@ -73,7 +73,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -101,14 +101,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "resource", 
+            "default": "Resource", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -136,7 +136,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "nwintfid", 
+            "default": "NwIntfId", 
             "type": "string"
           }, 
           "argtype": {
@@ -145,7 +145,7 @@
             "maximum": 255
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -173,7 +173,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "class", 
+            "default": "Class", 
             "type": "string"
           }, 
           "argtype": {
@@ -185,7 +185,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

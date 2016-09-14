@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "logging", 
+            "default": "Logging", 
             "type": "string"
           }, 
           "argtype": {
@@ -40,7 +40,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -68,14 +68,14 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "vrf", 
+            "default": "Vrf", 
             "type": "string"
           }, 
           "argtype": {
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

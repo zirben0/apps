@@ -1,0 +1,38 @@
+{
+  "listattrs": [], 
+  "commands": {
+    "SourceMac": {
+      "cliname": "SourceMac"
+    }, 
+    "Proto": {
+      "cliname": "Proto"
+    }, 
+    "SourceMask": {
+      "cliname": "SourceMask"
+    }, 
+    "DestMac": {
+      "cliname": "DestMac"
+    }, 
+    "SrcPort": {
+      "cliname": "SrcPort"
+    }, 
+    "DestIp": {
+      "cliname": "DestIp"
+    }, 
+    "DestMask": {
+      "cliname": "DestMask"
+    }, 
+    "RuleName": {
+      "cliname": "RuleName"
+    }, 
+    "Action": {
+      "cliname": "Action"
+    }, 
+    "DstPort": {
+      "cliname": "DstPort"
+    }, 
+    "SourceIp": {
+      "cliname": "SourceIp"
+    }
+  }
+}
