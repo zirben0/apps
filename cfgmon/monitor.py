@@ -27,8 +27,8 @@ class ConfigMonitor (object) :
         self.ip = ip
         self.port = port
         self.cfgDir = cfgDir
-        self.runningCfg = cfgDir + 'runningConfig.json'
-        self.desiredCfg = cfgDir + 'desiredConfig.json'
+        self.runningCfg = cfgDir + '/runningConfig.json'
+        self.desiredCfg = cfgDir + '/desiredConfig.json'
         self.apiBase = 'http://%s:%s/public/v1/'%(self.ip,str(self.port))                                                         
 
     @runIfSystemIsReady
