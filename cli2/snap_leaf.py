@@ -1097,7 +1097,15 @@ class LeafCmd(CommonCmdLine):
         subschema = self.schemaList[0] if self.schemaList else None
         submodel = self.modelList[0] if self.modelList else None
         subcommands = self.getchildrencmds(parentcmd, submodel, subschema)
-        newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:] if len(argv) > 0 else argv
+        if len(argv) == 0:
+            return ''
+        elif len(argv) == 1:
+            newargv = [self.find_func_cmd_alias(argv[0])]
+        elif len(argv) == 2:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])]
+        else:
+            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
+
         if delete:
             if len(argv) > 1:
                 if newargv[1] not in subcommands and len(subcommands) > 0:
