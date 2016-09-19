@@ -217,6 +217,8 @@ SUBCOMMAND_VALUE_NOT_EXPECTED = 1
 SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE = 2
 # this is a terminating command but no value is necessary
 SUBCOMMAND_VALUE_EXPECTED = 3
+# this subcommand is not part of this object
+SUBCOMMAND_INVALID = 4
 
 
 class CmdFunc(object):
@@ -754,15 +756,17 @@ class CommonCmdLine(cmdln.Cmdln):
         keys = []
         islist = False
         objname = None
-        expected = SUBCOMMAND_VALUE_NOT_EXPECTED
+        expected = SUBCOMMAND_INVALID
         help = ''
         for (mattr, mattrval), (sattr, sattrval) in self.commandAttrsLoop(modelcmds["commands"], schemacmds["commands"]["properties"]):
-            if sattrval['properties']['key']['default']:
-                keys.append(sattr)
 
             if 'cliname' in mattrval and mattrval['cliname'] == cliname:
                 help = ''
-                if 'enum' in sattrval['properties']['argtype']:
+                if sattrval['properties']['key']['default']:
+                    keys.append(sattr)
+                    if not sattrval['properties']['isdefaultset']['default']:
+                        expected = SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE
+                elif 'enum' in sattrval['properties']['argtype']:
                     help = "/".join(sattrval['properties']['argtype']['enum']) + '\n'
                     if len(sattrval['properties']['argtype']['enum']) == 2:
                         expected = SUBCOMMAND_VALUE_EXPECTED
@@ -772,6 +776,8 @@ class CommonCmdLine(cmdln.Cmdln):
                 elif 'type' in sattrval['properties']['argtype'] and \
                         snapcliconst.isboolean(sattrval['properties']['argtype']['type']):
                     expected = SUBCOMMAND_VALUE_EXPECTED
+                else:
+                    expected = SUBCOMMAND_VALUE_NOT_EXPECTED
 
                 objname = schemacmds['objname']['default']
                 help += sattrval['properties']['help']['default']

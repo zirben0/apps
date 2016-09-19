@@ -34,7 +34,7 @@ import snapcliconst
 from jsonref import JsonRef
 from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
-    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
+    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_INVALID
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
@@ -512,19 +512,22 @@ class ConfigCmd(CommonCmdLine):
                                     if schemaname:
                                         for (submodelkey, submodel2), (subschemakey, subschema2) in zip(submodel[schemaname]["commands"].iteritems(),
                                                                                                       subschema[schemaname]['properties']["commands"]["properties"].iteritems()):
+                                            # might be multiple sub commands so lets find the one which contains
+                                            # our attribute
                                             if 'subcmd' in submodelkey:
                                                 if self.isCommandLeafAttrs(submodel2, subschema2):
                                                     #leaf attr model
                                                     (valueexpected, objname, keys, help, islist) = self.isLeafValueExpected(mline[i+1], submodel2, subschema2)
-                                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                                        if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                                            self.commandLen = len(mline[i:])
+                                                    if valueexpected != SUBCOMMAND_INVALID:
+                                                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                                                self.commandLen = len(mline[i:])
+                                                            else:
+                                                                self.commandLen = len(mline[i:])
                                                         else:
                                                             self.commandLen = len(mline[i:])
-                                                    else:
-                                                        self.commandLen = len(mline[i:])
-                                                    self.valueexpected = valueexpected
-                                                    return newargv
+                                                        self.valueexpected = valueexpected
+                                                        return newargv
                         else:
                             subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                             if mline[i] not in subcommands:
