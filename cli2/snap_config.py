@@ -31,8 +31,6 @@ import pprint
 import inspect
 import string
 import snapcliconst
-from jsonref import JsonRef
-from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_INVALID
 from snap_leaf import LeafCmd
@@ -136,20 +134,21 @@ class ConfigCmd(CommonCmdLine):
                         # don't add the base key
                         if k not in ignoreKeys:
                             cmdname = self.getCliName(v)
-                            if '-' in cmdname:
-                                sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                                self.do_exit([])
-                                cmdname = cmdname.replace('-', '_')
+                            if cmdname:
+                                if '-' in cmdname:
+                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                    self.do_exit([])
+                                    cmdname = cmdname.replace('-', '_')
 
-                            cmdNameList.append(cmdname)
-                            funcname = "do_" + cmdname
-                            if not teardown:
-                                setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
-                                setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
-                            else:
-                                if hasattr(self.__class__, funcname):
-                                    delattr(self.__class__, funcname)
-                                    delattr(self.__class__, "complete_" + cmdname)
+                                cmdNameList.append(cmdname)
+                                funcname = "do_" + cmdname
+                                if not teardown:
+                                    setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
+                                    setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                                else:
+                                    if hasattr(self.__class__, funcname):
+                                        delattr(self.__class__, funcname)
+                                        delattr(self.__class__, "complete_" + cmdname)
 
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
