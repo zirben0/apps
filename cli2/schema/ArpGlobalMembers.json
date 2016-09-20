@@ -56,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Global Arp entry timeout value. Default value default: 600", 
+            "default": "300-1500  Global Arp entry timeout value. Default value default: 600", 
             "type": "string"
           }, 
           "islist": {

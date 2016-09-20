@@ -56,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Convenient way to disable/enable a lag group.  The behaviour should be such that all traffic should stop.  LACP frames should continue to be processed default: enable", 
+            "default": "UP/DOWN  Convenient way to disable/enable a lag group.  The behaviour should be such that all traffic should stop.  LACP frames should continue to be processed default: UP", 
             "type": "string"
           }, 
           "islist": {
@@ -68,6 +68,10 @@
             "type": "string"
           }, 
           "argtype": {
+            "enum": [
+              "UP", 
+              "DOWN"
+            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -75,7 +79,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "enable"
+            "default": "UP"
           }
         }
       }, 
@@ -91,7 +95,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " LACP(0)/STATIC(1)  Sets the type of LAG default: 0", 
+            "default": "LACP(0)/STATIC(1)  Sets the type of LAG default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -167,7 +171,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " [0-9a-fA-F]{2}(  The MAC address portion of the nodes System ID. This is combined with the system priority to construct the 8-octet system-id default: 00", 
+            "default": "The MAC address portion of the nodes System ID. This is combined with the system priority to construct the 8-octet system-id default: 00-00-00-00-00-00", 
             "type": "string"
           }, 
           "islist": {
@@ -179,9 +183,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "[0-9a-fA-F]{2}("
-            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -189,7 +190,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "00"
+            "default": "00-00-00-00-00-00"
           }
         }
       }, 
@@ -279,7 +280,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " SLOW(1)/FAST(0)  Set the period between LACP messages -- uses the lacp-period-type enumeration. default: 1", 
+            "default": "SLOW(1)/FAST(0)  Set the period between LACP messages -- uses the lacp-period-type enumeration. default: 1", 
             "type": "string"
           }, 
           "islist": {
@@ -320,7 +321,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " ACTIVE(0)/PASSIVE(1)  ACTIVE is to initiate the transmission of LACP packets. PASSIVE is to wait for peer to initiate the transmission of LACP packets. default: 0", 
+            "default": "ACTIVE(0)/PASSIVE(1)  ACTIVE is to initiate the transmission of LACP packets. PASSIVE is to wait for peer to initiate the transmission of LACP packets. default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -361,7 +362,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " LAYER2(0)/LAYER3_4(2)/LAYER2_3(1)  The tx hashing algorithm used by the lag group default: 0", 
+            "default": "LAYER2(0)/LAYER3_4(2)/LAYER2_3(1)  The tx hashing algorithm used by the lag group default: 0", 
             "type": "string"
           }, 
           "islist": {

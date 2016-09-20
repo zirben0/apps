@@ -167,7 +167,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " discard-inner-vlan(0)/no-discard-inner-vlan(1)  The inner vlan tag handling mode. default: 0", 
+            "default": "discard-inner-vlan(0)/no-discard-inner-vlan(1)  The inner vlan tag handling mode. default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -179,13 +179,11 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               0, 
               1
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "int32"
           }, 
           "isdefaultset": {
             "default": true, 

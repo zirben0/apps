@@ -78,6 +78,43 @@
             "default": "default"
           }
         }
+      }, 
+      "TranmitInterval": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "LLDP Re-Transmit Interval in seconds default: 30", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "TranmitInterval", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": -2147483648, 
+            "type": "int32", 
+            "maximum": 2147483647
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "30"
+          }
+        }
       }
     }
   }, 

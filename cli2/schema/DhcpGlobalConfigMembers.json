@@ -136,7 +136,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "maxleasetime", 
+            "default": "MaxLeaseTime", 
             "type": "string"
           }, 
           "argtype": {
