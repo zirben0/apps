@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " {'pattern'  The transit area that the virtual link traverses.  By definition", 
+                "default": "The transit area that the virtual link traverses.  By definition", 
                 "type": "string"
               }, 
               "islist": {
@@ -60,9 +60,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [
-                  "{'pattern'"
-                ], 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -86,7 +83,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " {'pattern'  The Router ID of the virtual neighbor.", 
+                "default": "The Router ID of the virtual neighbor.", 
                 "type": "string"
               }, 
               "islist": {
@@ -98,7 +95,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {

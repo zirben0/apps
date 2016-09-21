@@ -1,0 +1,83 @@
+{
+  "platformmgmtdevicestate": {
+    "createwithdefault": {
+      "default": true, 
+      "type": "boolean", 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object", 
+    "properties": {
+      "commands": {
+        "type": "object", 
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/PlatformMgmtDeviceStateSubCmds.json"
+        }
+      }, 
+      "cliname": {
+        "default": "", 
+        "type": "string", 
+        "description": "name used in cli to describe bfd"
+      }, 
+      "help": {
+        "default": "", 
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "", 
+        "displayValue": false, 
+        "type": "string", 
+        "description": "what to display on the prompt when the user has entered a command"
+      }, 
+      "value": {
+        "type": "object", 
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {
+          "DeviceName": {
+            "type": "object", 
+            "properties": {
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }, 
+              "help": {
+                "default": "Device Name default: BMC", 
+                "type": "string"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "cliname": {
+                "default": "devicename", 
+                "type": "string"
+              }, 
+              "argtype": {
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "defaultarg": {
+                "default": "BMC"
+              }
+            }
+          }
+        }
+      }, 
+      "objname": {
+        "default": "PlatformMgmtDeviceState", 
+        "type": "string", 
+        "description": "object name to which references these attributes"
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@
     "cliname" : "spanning_tree",
     "commands" : {
       "subcmd1": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeState.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeInstanceState.json"
       }
     }
   }

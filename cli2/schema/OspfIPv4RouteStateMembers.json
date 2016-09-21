@@ -56,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " {'pattern'  Dest ip", 
+            "default": "Dest ip", 
             "type": "string"
           }, 
           "islist": {
@@ -68,9 +68,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "{'pattern'"
-            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -94,7 +91,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " {'pattern'  netmask", 
+            "default": "netmask", 
             "type": "string"
           }, 
           "islist": {
@@ -106,9 +103,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "{'pattern'"
-            ], 
             "type": "string"
           }, 
           "isdefaultset": {

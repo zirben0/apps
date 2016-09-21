@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "IntfId": {
+          "IfIndex": {
             "type": "object", 
             "properties": {
               "key": {
@@ -56,7 +56,7 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "intfid", 
+                "default": "ifindex", 
                 "type": "string"
               }, 
               "argtype": {

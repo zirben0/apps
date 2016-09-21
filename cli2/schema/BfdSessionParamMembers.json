@@ -58,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " metmd5/keyedmd5/metsha1/keyedsha1/simple  Authentication type default: simple", 
+            "default": "metmd5/keyedmd5/metsha1/keyedsha1/simple  Authentication type default: simple", 
             "type": "string"
           }, 
           "islist": {

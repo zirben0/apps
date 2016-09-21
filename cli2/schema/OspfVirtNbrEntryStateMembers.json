@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " {'pattern'  The Transit Area Identifier.", 
+            "default": "The Transit Area Identifier.", 
             "type": "string"
           }, 
           "islist": {
@@ -33,7 +33,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -57,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " A 32-bit integer uniquely identifying the neighboring router in the Autonomous System.", 
+            "default": "A 32-bit integer uniquely identifying the neighboring router in the Autonomous System.", 
             "type": "string"
           }, 
           "islist": {
@@ -69,7 +68,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [], 
             "type": "string"
           }, 
           "isdefaultset": {

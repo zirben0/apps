@@ -122,7 +122,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " The IP address of this OSPF interface.  On row creation", 
+                "default": "The IP address of this OSPF interface.  On row creation", 
                 "type": "string"
               }, 
               "islist": {
@@ -134,7 +134,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {

@@ -105,7 +105,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " BGP/OSPF/ALL  Specifies the intended protocol application for the policy default: ALL", 
+            "default": "BGP/OSPF/ALL  Specifies the intended protocol application for the policy default: ALL", 
             "type": "string"
           }, 
           "islist": {

@@ -220,19 +220,20 @@ class LeafTemplate(object):
         }
         if 'argtype' in self.getMemberPropertiesPath():
             self.getMemberPropertiesPath()['argtype']["type"] = type
-            if selections and ("SELECTION" or "selections" in selections):
+            if selections and ("SELECTION" or "selection" in selections):
                 # selections should be separated by /
-                #s = [x.lstrip(' ').rstrip(' ') for x in selections.split('/')]
-                #if len(s) and 'MIN' not in s[0]:
-                #    if isnumeric(type):
-                #        if '(' in s[0]:
-                #            s = [int(x.split('(')[1].rstrip(')')) for x in s if len(x.split('(')) > 1]
-                #        else:
-                #            s = [int(x) for x in s if 'range' not in x]
-                #    self.getMemberPropertiesPath()['argtype']["enum"] = s
-                self.getMemberPropertiesPath()['argtype']["enum"] = selections
+                s = selections
+                if len(s) and 'MIN' not in s[0]:
+                    if isnumeric(type):
+                        if '(' in s[0]:
+                            s = [int(x.split('(')[1].rstrip(')')) for x in s if len(x.split('(')) > 1]
+                        else:
+                            s = [int(x) for x in s if 'range' not in x]
+                    self.getMemberPropertiesPath()['argtype']["enum"] = s
+                else:
+                    self.getMemberPropertiesPath()['argtype']["enum"] = selections
 
-            if isnumeric(type):
+            if isnumeric(type) and not selections:
                 if min is not None and max is not None:
                     self.getMemberPropertiesPath()['argtype']["minimum"] = min
                     self.getMemberPropertiesPath()['argtype']["maximum"] = max
@@ -246,7 +247,7 @@ class LeafTemplate(object):
             if min not in ('', None) and max not in ('', None):
                 lines.append("%s-%s  %s" %(min, max, d))
             elif selections not in ('', None):
-                lines.append("%s  %s" %(selections, d))
+                lines.append("%s  %s" % ("/".join(selections), d))
             elif len not in ('', None):
                 lines.append("len(%s) %s" %(len, d))
             else:
@@ -255,7 +256,7 @@ class LeafTemplate(object):
             lines.append("True/False  %s" %(d, ))
         elif type == 'string':
             if selections not in ('', None):
-                lines.append("%s  %s" %(selections, d))
+                lines.append("%s  %s" %("/".join(selections), d))
             else:
                 lines.append("%s" %(d, ))
         else:
@@ -387,10 +388,66 @@ class ModelToLeaf(object):
                 except OSError as exc: # Guard against race condition
                     if exc.errno != errno.EEXIST:
                         raise
+            '''
+            # if hte file does not exist in the master copy then lets add it
+            if "gen" in filename:
+                masterfile = filename.split('gen/')[0] + filename.split('gen/')[-1]
+                if not os.path.exists(os.path.dirname(masterfile)):
+                    try:
+                        os.makedirs(os.path.dirname(masterfile))
+                    except OSError as exc: # Guard against race condition
+                        if exc.errno != errno.EEXIST:
+                            raise
 
+                    with open(masterfile, 'w') as f:
+                        json.dump(data, f, indent=2)
+
+                    self.mergeToBaseConfigOrShow(masterfile, data)
+            '''
             if overwrite or not os.path.exists(filename):
                 with open(filename, 'w') as f:
                     json.dump(data, f, indent=2)
+
+    def mergeToBaseConfigOrShow(self, filename, newdata):
+        """
+         This function will merge / add the base model file to an existing
+         place in the tree, default will place the object in the config.json
+         or show.json
+
+         TODO need a mechanism to determine where to place the file, for
+         now all are place either in show or config files.
+
+        :param filename: path to existing file name
+        :param newdata: data to merge to existing
+        :return:
+        """
+
+        def getNextSubCmdNum(listofints):
+            length = len(listofints)
+            diff = frozenset([x for x in xrange(1, length)]).difference(listofints)
+            if len(diff) == 0:
+                return length + 1
+            return diff[0]
+
+        SHOW_FILENAME = "show.json"
+        CONFIG_FILENAME = "config.json"
+
+
+        if "SubCmds" not in filename:
+
+            path = filename.split("gen/")[0]
+            fname = filename.split("gen/")[-1]
+            if "State" in self.modelname:
+                pathfile = path + SHOW_FILENAME
+            else:
+                pathfile = path + CONFIG_FILENAME
+
+            with open(pathfile, 'w') as f:
+                olddata = json.loads(json_data)
+                subcmdname = "subcmd%s" % getNextSubCmdNum([ int(x.lstrip("subcmd")) for x in olddata["config"]["properties"]["commands"]["properties"].keys()])
+                generatedpath = GENERATED_SCHEMA_PATH if self.modeltype == self.SCHEMA_TYPE else GENERATED_MODEL_PATH
+                olddata["config"]["properties"]["commands"]["properties"].update({subcmdname: generatedpath + fname})
+                json.dump(olddata, f, indent=2)
 
     def setTemplate(self):
         if self.modeltype == self.SCHEMA_TYPE:
@@ -482,6 +539,21 @@ class ModelToLeafMember(ModelToLeaf):
             except OSError as exc: # Guard against race condition
                 if exc.errno != errno.EEXIST:
                     raise
+        '''
+        # if hte file does not exist in the master copy then lets add it
+        if "gen" in self.clidatapath:
+            masterfile = self.clidatapath.split('gen/')[0] + self.clidatapath.split('gen/')[-1]
+            if not os.path.exists(os.path.dirname(masterfile)):
+                try:
+                    os.makedirs(os.path.dirname(masterfile))
+                except OSError as exc: # Guard against race condition
+                    if exc.errno != errno.EEXIST:
+                        raise
+
+            if not os.path.exists(masterfile):
+                with open(masterfile, 'w') as f:
+                    json.dump(self.clidata, f, indent=2)
+        '''
         with open(self.clidatapath, 'w') as f:
             json.dump(self.clidata, f, indent=2)
 

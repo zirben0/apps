@@ -1,7 +1,7 @@
 {
   "ospflsdbentrystate": {
     "createwithdefault": {
-      "default": false, 
+      "default": true, 
       "type": "boolean", 
       "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
     }, 
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " routerLink(1)/asSummaryLink(4)/asExternalLink(5)/nssaExternalLink(7)/networkLink(2)/multicastLink(6)/summaryLink(3)/areaOpaqueLink(10)  The type of the link state advertisement. Each link state type has a separate advertisement format.  Note", 
+                "default": "routerLink(1)/asSummaryLink(4)/asExternalLink(5)/nssaExternalLink(7)/networkLink(2)/multicastLink(6)/summaryLink(3)/areaOpaqueLink(10)  The type of the link state advertisement. Each link state type has a separate advertisement format.  Note", 
                 "type": "string"
               }, 
               "islist": {
@@ -60,7 +60,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "minimum": -2147483648, 
                 "enum": [
                   1, 
                   4, 
@@ -71,8 +70,7 @@
                   3, 
                   10
                 ], 
-                "type": "int32", 
-                "maximum": 2147483647
+                "type": "int32"
               }, 
               "isdefaultset": {
                 "default": false, 
@@ -95,7 +93,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " The 32-bit identifier of the area from which the LSA was received.", 
+                "default": "The 32-bit identifier of the area from which the LSA was received.", 
                 "type": "string"
               }, 
               "islist": {
@@ -107,7 +105,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -131,7 +128,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " The Link State ID is an LS Type Specific field containing either a Router ID or an IP address; it identifies the piece of the routing domain that is being described by the advertisement.", 
+                "default": "The Link State ID is an LS Type Specific field containing either a Router ID or an IP address; it identifies the piece of the routing domain that is being described by the advertisement.", 
                 "type": "string"
               }, 
               "islist": {
@@ -143,7 +140,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {
@@ -167,7 +163,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " The 32-bit number that uniquely identifies the originating router in the Autonomous System.", 
+                "default": "The 32-bit number that uniquely identifies the originating router in the Autonomous System.", 
                 "type": "string"
               }, 
               "islist": {
@@ -179,7 +175,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {

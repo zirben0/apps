@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " The IP address this neighbor is using in its IP source address.  Note that", 
+            "default": "The IP address this neighbor is using in its IP source address.  Note that", 
             "type": "string"
           }, 
           "islist": {
@@ -33,7 +33,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [], 
             "type": "string"
           }, 
           "isdefaultset": {

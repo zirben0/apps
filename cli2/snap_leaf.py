@@ -536,6 +536,7 @@ class LeafCmd(CommonCmdLine):
 
 
     def _cmd_common(self, argv):
+
         delete = False
         mline = argv
         verifyargv = argv
@@ -641,7 +642,7 @@ class LeafCmd(CommonCmdLine):
                         if delete:
                             cmdtype = snapcliconst.COMMAND_TYPE_DELETE + snapcliconst.COMMAND_TYPE_CONFIG_NOW
 
-                        c = LeafCmd(objname, mline[-2], cmdtype, self.parent, self.prompt, submodelList, subschemaList)
+                        c = LeafCmd(objname, mline[-2], cmdtype, self, self.prompt, submodelList, subschemaList)
                         if delete:
                             c.currentcmd = self.lastcmd[1:]
                         else:
@@ -688,9 +689,14 @@ class LeafCmd(CommonCmdLine):
                                  is a key of a leaf container
             :return:
             """
+
+            # NOTE: second case is to handle subcommand as an attribute
+
             return len([k for k, v in config.keysDict.iteritems() if ((v['subcommand'] == key
                                                                        and not issubcommand
                                                                        and k == subkey) or
+                                                                      (not issubcommand and k == key and
+                                                                       type(v['value']) is list and subkey in v['value'][0].keys()) or
                                                                           (issubcommand and
                                                                                    k == subkey))]) == 1
         # key + subkey + value supplied

@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "time", 
+            "default": "Time", 
             "type": "string"
           }, 
           "argtype": {
