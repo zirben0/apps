@@ -6,6 +6,9 @@
     }, 
     "IpAddr": {
       "cliname": "ipaddr"
+    }, 
+    "LinkIp": {
+      "cliname": "linkip"
     }
   }
 }

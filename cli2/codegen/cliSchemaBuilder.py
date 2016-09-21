@@ -399,14 +399,55 @@ class ModelToLeaf(object):
                         if exc.errno != errno.EEXIST:
                             raise
 
-                if overwrite or not os.path.exists(masterfile):
                     with open(masterfile, 'w') as f:
                         json.dump(data, f, indent=2)
-            '''
 
+                    self.mergeToBaseConfigOrShow(masterfile, data)
+            '''
             if overwrite or not os.path.exists(filename):
                 with open(filename, 'w') as f:
                     json.dump(data, f, indent=2)
+
+    def mergeToBaseConfigOrShow(self, filename, newdata):
+        """
+         This function will merge / add the base model file to an existing
+         place in the tree, default will place the object in the config.json
+         or show.json
+
+         TODO need a mechanism to determine where to place the file, for
+         now all are place either in show or config files.
+
+        :param filename: path to existing file name
+        :param newdata: data to merge to existing
+        :return:
+        """
+
+        def getNextSubCmdNum(listofints):
+            length = len(listofints)
+            diff = frozenset([x for x in xrange(1, length)]).difference(listofints)
+            if len(diff) == 0:
+                return length + 1
+            return diff[0]
+
+        SHOW_FILENAME = "show.json"
+        CONFIG_FILENAME = "config.json"
+
+
+        if "SubCmds" not in filename:
+
+            path = filename.split("gen/")[0]
+            fname = filename.split("gen/")[-1]
+            if "State" in self.modelname:
+                pathfile = path + SHOW_FILENAME
+            else:
+                pathfile = path + CONFIG_FILENAME
+
+            with open(pathfile, 'w') as f:
+                olddata = json.loads(json_data)
+                subcmdname = "subcmd%s" % getNextSubCmdNum([ int(x.lstrip("subcmd")) for x in olddata["config"]["properties"]["commands"]["properties"].keys()])
+                generatedpath = GENERATED_SCHEMA_PATH if self.modeltype == self.SCHEMA_TYPE else GENERATED_MODEL_PATH
+                olddata["config"]["properties"]["commands"]["properties"].update({subcmdname: generatedpath + fname})
+                json.dump(olddata, f, indent=2)
 
     def setTemplate(self):
         if self.modeltype == self.SCHEMA_TYPE:
