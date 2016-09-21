@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "The IP address of this OSPF interface.",
+                "default": "The IP address of this OSPF interface.", 
                 "type": "string"
               }, 
               "islist": {
@@ -83,7 +83,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " {'range'  For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address.", 
+                "default": "0-2147483647  For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address.", 
                 "type": "string"
               }, 
               "islist": {
@@ -95,8 +95,7 @@
                 "type": "string"
               }, 
               "argtype": {
-                "minimum": -2147483648, 
-                "enum": [], 
+                "minimum": 0, 
                 "type": "int32", 
                 "maximum": 2147483647
               }, 

@@ -144,9 +144,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "[0-9a-fA-F]{2}("
-            ], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -154,7 +151,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "00:00:00:00:00:00"
+            "default": "00-00-00-00-00-00"
           }
         }
       }, 
@@ -170,7 +167,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " stp(1)/rstp-pvst(2)/mstp(3)  Stp Version default: 2", 
+            "default": "stp(1)/rstp-pvst(2)/mstp(3)  Stp Version default: 2", 
             "type": "string"
           }, 
           "islist": {
@@ -210,7 +207,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-4095  Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is 4095 default: 4095", 
+            "default": "1-4095  Each bridge is associated with a domain.  Typically this domain is represented as the vlan; The default domain is 4095", 
             "type": "string"
           }, 
           "islist": {

@@ -76,6 +76,41 @@
             "type": "string"
           }
         }
+      },
+      "LinkIp": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "default": false,
+            "type": "boolean"
+          },
+          "prompt": {
+            "default": "",
+            "type": "string"
+          },
+          "help": {
+            "default": "True/False  Interface Link Scope IP Address auto-configured default: true",
+            "type": "string"
+          },
+          "islist": {
+            "default": false,
+            "type": "boolean"
+          },
+          "cliname": {
+            "default": "LinkIp",
+            "type": "string"
+          },
+          "argtype": {
+            "type": "bool"
+          },
+          "isdefaultset": {
+            "default": true,
+            "type": "boolean"
+          },
+          "defaultarg": {
+            "default": "true"
+          }
+        }
       }
     }
   }, 

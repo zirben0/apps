@@ -245,24 +245,32 @@ class ConfigElement(object):
             this function may need to be updated to support more than one key
         '''
         # special cases
-        if self.objname == "StpBridgeInstance":
-            if m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+        if self.objname == "StpBridgeInstance" and \
+            m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
                                   'defaultvalue': snapcliconst.DEFAULT_PVID}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
-        elif self.objname == 'StpPort':
-            if m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+        elif self.objname == 'StpPort' and \
+            m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
                                   'defaultvalue': snapcliconst.DEFAULT_PVID}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
-        elif self.objname == "Port":
-            if m == "IntfRef":
+        elif self.objname == "Port" and \
+            m == "IntfRef":
+                self.objKeyVal = {'modelname': m,
+                                  'type': t,
+                                  'cliname': k,
+                                  'value': v,
+                                  'defaultvalue': df}
+                self.cmd = self.cmd.split(' ')[0]
+        elif self.objname == "IPv4Intf" and \
+            m == "IntfRef":
                 self.objKeyVal = {'modelname': m,
                                   'type': t,
                                   'cliname': k,
@@ -360,6 +368,30 @@ class ShowRun(object):
     def fillObjAttrs(self, element, keyval, cfgObj):
         pass
 
+    def checkForSpecialCasesToIgnore(self, cmd, objname, value):
+        # special interface command check since there are three
+        # port
+        # svi
+        # lag
+        ignoreobj = False
+        if 'interface' in cmd and "IPv" in objname:
+            import ipdb; ipdb.set_trace()
+            # need to determine the type of interface this is to see if it applies
+            # to this portion of the tree
+            methodName = 'get'+objname+'State'
+            method = getattr(self.swtch, methodName, None)
+            r = method(value)
+            data = r.json()
+            if data.has_key("Object"):
+                iftype = data['Object']['L2IntfType']
+                if iftype == "Port" and ("eth" not in cmd and "fpPort" not in cmd):
+                    ignoreobj = True
+                elif iftype == "Lag" and ("port_channel" not in cmd):
+                    ignoreobj = True
+                elif iftype == "Vlan" and ("svi" not in cmd and "vlan" not in cmd):
+                    ignoreobj = True
+        return ignoreobj
+
     def buildTreeObj(self, cmd, pelement, matchattrtype, matchattr, matchvalue, model, schema, subattrobj=False):
 
         def isModelObj(mobj, sobj):
@@ -422,6 +454,9 @@ class ShowRun(object):
                                         defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
                                         attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
                                         value = cfgObj[attr] if cfgObj else subattrobj[attr]
+
+                                        ignoreobj = self.checkForSpecialCasesToIgnore(cmd, objname, value)
+
                                         element.setObjKeyVal(attr,
                                                              attrtype,
                                                              attrobj['cliname'],

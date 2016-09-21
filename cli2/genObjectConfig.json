@@ -59,6 +59,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "ApiInfoState": {
+  "access": "r",
+  "owner": "local",
+  "srcfile": "localObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "ArpEntryHwState": {
   "access": "r",
   "owner": "asicd",
@@ -678,7 +690,7 @@
   "multiplicity": "1",
   "accelerated": false,
   "usesStateDB": false,
-  "autoCreate": false,
+  "autoCreate": true,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -947,6 +959,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "IPv6RouteHwState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "IPv6RouteState": {
   "access": "r",
   "owner": "ribd",
@@ -1019,6 +1043,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "LLDPGlobalState": {
+  "access": "r",
+  "owner": "lldpd",
+  "srcfile": "lldpObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "LLDPIntf": {
   "access": "rw",
   "owner": "lldpd",
@@ -1087,6 +1123,18 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "LacpGlobalState": {
+  "access": "r",
+  "owner": "lacpd",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -1177,6 +1225,18 @@
  },
  "NDPGlobal": {
   "access": "w",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": true,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "NDPGlobalState": {
+  "access": "r",
   "owner": "ndpd",
   "srcfile": "ndpObjects.go",
   "multiplicity": "1",
@@ -1859,7 +1919,7 @@
   "linkedObjects": null,
   "parent": ""
  },
- "StpBridgeState": {
+ "StpBridgeInstanceState": {
   "access": "r",
   "owner": "stpd",
   "srcfile": "stpdObjects.go",

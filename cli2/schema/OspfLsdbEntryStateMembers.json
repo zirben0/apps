@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " routerLink(1)/asSummaryLink(4)/asExternalLink(5)/nssaExternalLink(7)/networkLink(2)/multicastLink(6)/summaryLink(3)/areaOpaqueLink(10)  The type of the link state advertisement. Each link state type has a separate advertisement format.  Note", 
+            "default": "routerLink(1)/asSummaryLink(4)/asExternalLink(5)/nssaExternalLink(7)/networkLink(2)/multicastLink(6)/summaryLink(3)/areaOpaqueLink(10)  The type of the link state advertisement. Each link state type has a separate advertisement format.  Note", 
             "type": "string"
           }, 
           "islist": {
@@ -33,7 +33,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               1, 
               4, 
@@ -44,8 +43,7 @@
               3, 
               10
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "int32"
           }, 
           "isdefaultset": {
             "default": true, 

@@ -9,7 +9,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "IntfId": {
+      "IfIndex": {
         "type": "object", 
         "properties": {
           "key": {
@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "IntfId", 
+            "default": "IfIndex", 
             "type": "string"
           }, 
           "argtype": {

@@ -504,7 +504,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " UP/DOWN  Administrative state of this client interface default: UP", 
+            "default": "UP/DOWN  Administrative state of this client interface default: UP", 
             "type": "string"
           }, 
           "islist": {

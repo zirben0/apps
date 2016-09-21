@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " UP/DOWN  Administrative state of STPD default: UP", 
+            "default": "UP/DOWN  Administrative state of STPD default: UP", 
             "type": "string"
           }, 
           "islist": {
@@ -40,7 +40,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {

@@ -163,7 +163,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " {'range'  *** This element is added for future use. *** Configured OSPF graceful restart timeout interval. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
+            "default": "0-1800  *** This element is added for future use. *** Configured OSPF graceful restart timeout interval. This object is persistent and when written the entity SHOULD save the change to non-volatile storage.", 
             "type": "string"
           }, 
           "islist": {
@@ -175,10 +175,9 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "enum": [], 
+            "minimum": 0, 
             "type": "int32", 
-            "maximum": 2147483647
+            "maximum": 1800
           }, 
           "isdefaultset": {
             "default": false, 
@@ -201,7 +200,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " plannedAndUnplanned(3)/none(1)/plannedOnly(2)  *** This element is added for future use. *** The router's support for OSPF graceful restart. Options include", 
+            "default": "plannedAndUnplanned(3)/none(1)/plannedOnly(2)  *** This element is added for future use. *** The router's support for OSPF graceful restart. Options include", 
             "type": "string"
           }, 
           "islist": {
@@ -213,14 +212,12 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               3, 
               1, 
               2
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "int32"
           }, 
           "isdefaultset": {
             "default": false, 
@@ -243,7 +240,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Reference bandwidth in kilobits/second for calculating default interface metrics. Unit default: 100", 
+            "default": "0-2147483647  Reference bandwidth in kilobits/second for calculating default interface metrics. Unit default: 100", 
             "type": "string"
           }, 
           "islist": {
@@ -256,9 +253,8 @@
           }, 
           "argtype": {
             "minimum": 0, 
-            "enum": [], 
             "type": "uint32", 
-            "maximum": 4294967296
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
             "default": true, 

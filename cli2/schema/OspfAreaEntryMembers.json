@@ -58,7 +58,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " none(0)/simplePassword(1)/md5(2)  The authentication type specified for an area.", 
+            "default": "none(0)/simplePassword(1)/md5(2)  The authentication type specified for an area.", 
             "type": "string"
           }, 
           "islist": {
@@ -70,14 +70,12 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               0, 
               1, 
               2
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "int32"
           }, 
           "isdefaultset": {
             "default": false, 
@@ -100,7 +98,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " importExternal(1)/importNoExternal(2)/importNssa(3)  Indicates if an area is a stub area", 
+            "default": "importExternal(1)/importNoExternal(2)/importNssa(3)  Indicates if an area is a stub area", 
             "type": "string"
           }, 
           "islist": {
@@ -140,7 +138,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " sendAreaSummary(2)/noAreaSummary(1)  The variable ospfAreaSummary controls the import of summary LSAs into stub and NSSA areas. It has no effect on other areas.  If it is noAreaSummary", 
+            "default": "sendAreaSummary(2)/noAreaSummary(1)  The variable ospfAreaSummary controls the import of summary LSAs into stub and NSSA areas. It has no effect on other areas.  If it is noAreaSummary", 
             "type": "string"
           }, 
           "islist": {
@@ -179,7 +177,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " always(1)/candidate(2)  Indicates an NSSA border router's ability to perform NSSA translation of type-7 LSAs into type-5 LSAs.", 
+            "default": "always(1)/candidate(2)  Indicates an NSSA border router's ability to perform NSSA translation of type-7 LSAs into type-5 LSAs.", 
             "type": "string"
           }, 
           "islist": {
@@ -218,7 +216,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " {'pattern'  A 32-bit integer uniquely identifying an area. Area ID 0.0.0.0 is used for the OSPF backbone.", 
+            "default": "A 32-bit integer uniquely identifying an area. Area ID 0.0.0.0 is used for the OSPF backbone.", 
             "type": "string"
           }, 
           "islist": {
@@ -230,9 +228,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [
-              "{'pattern'"
-            ], 
             "type": "string"
           }, 
           "isdefaultset": {

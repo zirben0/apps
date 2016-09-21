@@ -6,6 +6,9 @@
     }, 
     "cliname": "", 
     "value": {
+      "SeqNum": {
+        "cliname": "seqnum"
+      }, 
       "API": {
         "cliname": "api"
       }, 
