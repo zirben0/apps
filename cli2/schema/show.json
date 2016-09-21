@@ -31,7 +31,7 @@
             "$ref": "file:/tmp/snaproute/cli/schema/ipshow.json"
           },
           "subcmd8": {
-            "$ref": "file:/tmp/snaproute/cli/schema/StpBridgeState.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/StpBridgeInstanceState.json"
           },
           "subcmd9": {
             "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinitionState.json"

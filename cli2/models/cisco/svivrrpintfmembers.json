@@ -13,7 +13,7 @@
     "subcmd1": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/vrrpip.json"
     },
-    "IntfRef": {
+    "IfIndex": {
       "cliname": "vlan"
     }, 
     "VRID": {

@@ -1,8 +1,8 @@
 {
   "listattrs": [], 
   "commands": {
-    "Vlan": {
-      "cliname": "brg_vlan"
+    "IpAddr": {
+      "cliname": "IpAddr"
     }
   }
 }

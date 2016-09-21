@@ -126,7 +126,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "[u'Half Duplex', u'Full Duplex DEFAULT']  Duplex setting for this port", 
+            "default": "Half Duplex/Full Duplex  Duplex setting for this port default: Full Duplex", 
             "type": "string"
           }, 
           "islist": {
@@ -140,16 +140,16 @@
           "argtype": {
             "enum": [
               "Half Duplex", 
-              "Full Duplex DEFAULT"
+              "Full Duplex"
             ], 
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "Full Duplex"
           }
         }
       }, 
@@ -165,7 +165,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "[u'UP', u'DOWN']  Administrative state of this port default: DOWN", 
+            "default": "UP/DOWN  Administrative state of this port default: DOWN", 
             "type": "string"
           }, 
           "islist": {
@@ -274,7 +274,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "[u'GMII', u'SGMII', u'QSMII', u'SFI', u'XFI', u'XAUI', u'XLAUI', u'RXAUI', u'CR', u'CR2', u'CR4', u'KR', u'KR2', u'KR4', u'SR', u'SR2', u'SR4', u'SR10', u'LR', u'LR4']  Type of internal phy interface", 
+            "default": "GMII/SGMII/QSMII/SFI/XFI/XAUI/XLAUI/RXAUI/CR/CR2/CR4/KR/KR2/KR4/SR/SR2/SR4/SR10/LR/LR4  Type of internal phy interface", 
             "type": "string"
           }, 
           "islist": {
@@ -331,7 +331,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "[u'NONE', u'MAC', u'PHY']  Desired loopback setting for this port default: NONE", 
+            "default": "NONE/MAC/PHY  Desired loopback setting for this port default: NONE", 
             "type": "string"
           }, 
           "islist": {
@@ -371,7 +371,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "[u'1x40(1)', u'4x10(2)']  Break out mode for the port. Only applicable on ports that support breakout. Valid modes - 1x40", 
+            "default": "1x40(1)/4x10(2)  Break out mode for the port. Only applicable on ports that support breakout. Valid modes - 1x40", 
             "type": "string"
           }, 
           "islist": {
@@ -447,7 +447,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "[u'ON', u'OFF']  Autonegotiation setting for this port default: OFF", 
+            "default": "ON/OFF  Autonegotiation setting for this port default: OFF", 
             "type": "string"
           }, 
           "islist": {

@@ -31,8 +31,6 @@ import pprint
 import inspect
 import string
 import snapcliconst
-from jsonref import JsonRef
-from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_INVALID
 from snap_leaf import LeafCmd
@@ -136,20 +134,21 @@ class ConfigCmd(CommonCmdLine):
                         # don't add the base key
                         if k not in ignoreKeys:
                             cmdname = self.getCliName(v)
-                            if '-' in cmdname:
-                                sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                                self.do_exit([])
-                                cmdname = cmdname.replace('-', '_')
+                            if cmdname:
+                                if '-' in cmdname:
+                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                    self.do_exit([])
+                                    cmdname = cmdname.replace('-', '_')
 
-                            cmdNameList.append(cmdname)
-                            funcname = "do_" + cmdname
-                            if not teardown:
-                                setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
-                                setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
-                            else:
-                                if hasattr(self.__class__, funcname):
-                                    delattr(self.__class__, funcname)
-                                    delattr(self.__class__, "complete_" + cmdname)
+                                cmdNameList.append(cmdname)
+                                funcname = "do_" + cmdname
+                                if not teardown:
+                                    setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
+                                    setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                                else:
+                                    if hasattr(self.__class__, funcname):
+                                        delattr(self.__class__, funcname)
+                                        delattr(self.__class__, "complete_" + cmdname)
 
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
@@ -451,6 +450,7 @@ class ConfigCmd(CommonCmdLine):
 
             self.commandLen = 0
             try:
+                # lets walk the command line along with the model
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
@@ -464,14 +464,17 @@ class ConfigCmd(CommonCmdLine):
                                 sys.stdout.write("ERROR: (33) Invalid or incomplete command\n")
                                 snapcliconst.printErrorValueCmd(i, mline)
                                 return ''
-
+                        # now that we have the schema based on the previous command
+                        # lets get the list of sub commands
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         if submodelList and subschemaList:
+                            # lets search among the sub commands to find the current command
                             for submodel, subschema in zip(submodelList, subschemaList):
-
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                                 (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                                # lets see if there is a value that is expected with this command
+                                # if there is lets do some additional processing on the value
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         if i+1 > mlineLength:
@@ -483,11 +486,14 @@ class ConfigCmd(CommonCmdLine):
                                             if "/" in cmdvalue:
                                                 cmdvalue = cmdvalue.split('/')[1]
 
+                                        # is the value by the user one of the selections?
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                         if i < mlineLength and values and cmdvalue not in values:
                                             snapcliconst.printErrorValueCmd(i, mline)
                                             sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (cmdvalue, ",".join(values)))
                                             return ''
+
+                                        # is the value by the user between the min and max range
                                         min,max = self.getValueMinMax(mline[i], submodel, subschema)
                                         if min is not None and max is not None:
                                             try:

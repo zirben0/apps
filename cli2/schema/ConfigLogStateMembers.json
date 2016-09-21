@@ -9,6 +9,43 @@
     "type": "object", 
     "description": "", 
     "properties": {
+      "SeqNum": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "Sequence number of the API call", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "SeqNum", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "minimum": 0, 
+            "type": "uint32", 
+            "maximum": 4294967296
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }
+        }
+      }, 
       "API": {
         "type": "object", 
         "properties": {

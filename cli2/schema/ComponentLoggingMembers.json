@@ -56,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " crit/err/warn/alert/emerg/notice/info/debug/trace/off  Logging level default: info", 
+            "default": "crit/err/warn/alert/emerg/notice/info/debug/trace/off  Logging level default: info", 
             "type": "string"
           }, 
           "islist": {

@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " UP/DOWN  Administrative state of LACPD default: DOWN", 
+            "default": "UP/DOWN  Administrative state of LACPD default: DOWN", 
             "type": "string"
           }, 
           "islist": {
