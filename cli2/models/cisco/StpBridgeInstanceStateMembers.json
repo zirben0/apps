@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "Vlan": {
-      "cliname": "Vlan"
+      "cliname": "brg_vlan"
     }
   }
 }

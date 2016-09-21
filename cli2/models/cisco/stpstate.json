@@ -1,0 +1,11 @@
+{
+  "stpstate": {
+    "cliname" : "spanning_tree",
+    "help" : "Show Rapid-Spanning Tree Bridge Info",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeInstanceState.json"
+      }
+    }
+  }
+}

@@ -19,7 +19,7 @@
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipshow.json"
       },
       "subcmd8": {
-        "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeInstanceState.json"
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/stpstate.json"
       },
       "subcmd9": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyDefinitionState.json"
