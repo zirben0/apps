@@ -11,7 +11,7 @@
       "cliname": "ethernet"
     }, 
     "Duplex": {
-      "cliname": "Duplex"
+      "cliname": "duplex"
     }, 
     "AdminState": {
       "cliname": "shutdown"
@@ -38,10 +38,10 @@
       "cliname": "negotiate"
     }, 
     "Mtu": {
-      "cliname": "Mtu"
+      "cliname": "mtu"
     }, 
     "Speed": {
-      "cliname": "Speed"
+      "cliname": "speed"
     }
   }
 }

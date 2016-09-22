@@ -238,7 +238,8 @@ class ConfigCmd(CommonCmdLine):
                     subcommands.append(f.replace('do_', ''))
 
         # advance to next submodel and subschema
-        for i in range(1, mlineLength):
+        i = 1
+        for cmdIdx in range(1, mlineLength):
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
             #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
@@ -249,24 +250,43 @@ class ConfigCmd(CommonCmdLine):
                 if submodelList and subschemaList:
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
-                        #if i == mlineLength -1:
+                        #(valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                        expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
+                        valueexpected = expectedInfo.getCmdValueExpected(mline[i])
                         #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
                         if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                            # we have reached a key command attribute
                             if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                values = self.getCommandValues(objname, keys)
-                                if not values:
-                                    values = self.getValueSelections(mline[i], submodel, subschema)
+                                if i < mlineLength - 1:
+                                    objname = expectedInfo.getCmdObjName(mline[i])
+                                    key = expectedInfo.getCmdKey(mline[i])
+                                    values = self.getCommandValues(objname, key)
+                                    if not values:
+                                        values = self.getValueSelections(mline[i], submodel, subschema)
 
-                                # if we have the values we don't want to display any further information
-                                if i+1 < mlineLength and mline[i+1] in values:
-                                    return [snapcliconst.COMMAND_DISPLAY_ENTER]
+                                    # if we have the values we don't want to display any further information
+                                    # unless there is multiple keys
+                                    if i+1 == mlineLength - 1 and mline[i+1] in values:
+                                        return [snapcliconst.COMMAND_DISPLAY_ENTER]
 
-                                return values
+                                    return values
+                                else:
+                                    # we can assume that i+1 contains a value
+                                    # thus lets skip over this value, validation will be done in the precmd
+                                    i += 1
+                                    if (i == mlineLength - 1) and \
+                                            (len(frozenset(expectedInfo.getAllCliCmds()).intersection(mline)) == len(expectedInfo)):
+                                        return [snapcliconst.COMMAND_DISPLAY_ENTER]
+
+                                    # user still needs to enter more key info
+                                    subcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
                         else:
                             subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
                 elif i == mlineLength - 1:
                     subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
+
+            # increment to the next command
+            i += 1
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -479,7 +499,12 @@ class ConfigCmd(CommonCmdLine):
                             # lets search among the sub commands to find the current command
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                                (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                                #(valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                                expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
+                                valueexpected = expectedInfo.getCmdValueExpected(mline[i])
+                                # set the current value expected for the actual command execution
+                                self.valueexpected = valueexpected
+
                                 # lets see if there is a value that is expected with this command
                                 # if there is lets do some additional processing on the value
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
@@ -489,9 +514,9 @@ class ConfigCmd(CommonCmdLine):
                                             return ''
 
                                         cmdvalue = mline[i+1]
-                                        if len(frozenset(keys).intersection(snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST)) == 1:
-                                            if "/" in cmdvalue:
-                                                cmdvalue = cmdvalue.split('/')[1]
+                                        #if len(frozenset(keys).intersection(snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST)) == 1:
+                                        #    if "/" in cmdvalue:
+                                        #        cmdvalue = cmdvalue.split('/')[1]
 
                                         # is the value by the user one of the selections?
                                         values = self.getValueSelections(mline[i], submodel, subschema)
@@ -516,10 +541,24 @@ class ConfigCmd(CommonCmdLine):
                                         #values = self.getCommandValues(objname, keys)
                                         #sys.stdout.write("FOUND values %s" %(values))
                                         self.commandLen = len(mline[:i]) + 1
-                                    else:
+
+                                        # we have reached all commands
+                                        if i == mlineLength - 2 and \
+                                                (len(frozenset(expectedInfo.getAllCliCmds()).intersection(newargv)) == len(expectedInfo)):
+                                            return newargv
+
+                                    else: # SUBCOMMAND_VALUE_EXPECTED_VALUE
                                         self.commandLen = len(mline[:i])
-                                    self.valueexpected = valueexpected
-                                    return newargv
+
+                                        # we have reached all commands
+                                        if i == mlineLength - 1:
+                                            if (len(frozenset(expectedInfo.getAllCliCmds()).intersection(newargv)) == len(expectedInfo)):
+                                                return newargv
+                                            else:
+                                                missingcmds = frozenset(expectedInfo.getAllCliCmds()).difference(newargv)
+                                                sys.stdout.write("\nERROR: Incomplete command %s, missing %s\n" % (" ".join(newargv), " ".join(missingcmds)))
+                                                return ''
+
                                 elif i < mlineLength - 1 and mline[i+1] in subcommands:
                                     schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
                                     if schemaname:
@@ -729,7 +768,6 @@ class ConfigCmd(CommonCmdLine):
 
     def do_apply(self, argv):
         """Apply current user unapplied config.  This will send provisioning commands to Flexswitch"""
-
         def fixupConfigList(configObj, configList):
             """
             # There may be a config which needs to be merged with a master config
@@ -937,7 +975,7 @@ class ConfigCmd(CommonCmdLine):
                                                   ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
                                                   resultstr))
         else:
-            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\n missing fields %s" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\n missing fields %s\n" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
         return failurecfg, delconfigList
 
@@ -970,7 +1008,7 @@ class ConfigCmd(CommonCmdLine):
                                                   ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
                                                   resultstr))
         else:
-            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s\n" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
 
         return failurecfg, delconfigList
@@ -1003,7 +1041,7 @@ class ConfigCmd(CommonCmdLine):
                                                       ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
                                                       resultstr))
         else:
-            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s\n" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
 
         return (failurecfg, delconfigList)

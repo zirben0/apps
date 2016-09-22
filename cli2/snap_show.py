@@ -375,7 +375,6 @@ class ShowRun(object):
         # lag
         ignoreobj = False
         if 'interface' in cmd and "IPv" in objname:
-            import ipdb; ipdb.set_trace()
             # need to determine the type of interface this is to see if it applies
             # to this portion of the tree
             methodName = 'get'+objname+'State'
@@ -646,7 +645,7 @@ class ShowRun(object):
 pp = pprint.PrettyPrinter(indent=2)
 class ShowCmd(CommonCmdLine):
 
-    def __init__(self, parent, model, schema):
+    def __init__(self, parent, model, schema, numKeys):
 
         CommonCmdLine.__init__(self, "", "", "", "", "")
         self.objname = 'show'
@@ -654,6 +653,7 @@ class ShowCmd(CommonCmdLine):
         self.model = model
         self.schema = schema
         self.configList = []
+        self.numKeys = numKeys
         self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
 
     def doesConfigExist(self, c):
@@ -709,7 +709,9 @@ class ShowCmd(CommonCmdLine):
             ce.dump()
 
         else:
-            lastcmd = argv[-1] if all else argv[-2] if argv[-1] != 'brief' else argv[-3]
+            # TODO need to know how many keys there are so that we can get the first one
+            # so that it matches the initial command key
+            lastcmd = argv[-1] if all else argv[-(self.numKeys * 2)]
             schemaname = self.getSchemaCommandNameFromCliName(lastcmd, self.model)
             if schemaname:
                 # leaf will gather all the config info for the object
@@ -749,7 +751,13 @@ class ShowCmd(CommonCmdLine):
                                 if configObj:
                                     # TODO need to be able to handle multiple keys
                                     # get the current leaf container key value
-                                    keyvalueDict = {argv[-2]: argv[-1]}
+                                    keyvalueDict = {}
+                                    # only care about command indexes
+                                    numKeys = [x for x in range(1, (self.numKeys*2)+1) if x % 2 == 0]
+                                    numKeys.reverse()
+                                    # lets record the command
+                                    for i in numKeys:
+                                        keyvalueDict.update({argv[-i]: argv[-(i-1)]})
 
                                     # lets go through the valid sub tree command objects
                                     # and fill in what command was entered by the user

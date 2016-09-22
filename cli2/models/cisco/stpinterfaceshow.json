@@ -1,0 +1,11 @@
+{
+  "stpinterfaceshow": {
+    "cliname" : "interface",
+    "help": "Show All Spanning-Tree interfaces for this interface",
+    "commands" : {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/StpPortState.json"
+      }
+    }
+  } 
+}
