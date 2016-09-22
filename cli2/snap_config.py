@@ -76,6 +76,13 @@ class ExitWithUnappliedConfig(CommonCmdLine):
 
 class ConfigCmd(CommonCmdLine):
 
+    ERROR_RED = '\033[31m'
+    ERROR_RED_END = '\033[00m'
+    OK_GREEN = '\033[32m'
+    OK_GREEN_END = '\033[00m'
+    WARNING_YELLOW = '\033[93m'
+    WARNING_YELLOW_END = '\033[00m'
+
     def __init__(self, cmdtype, parent, objname, prompt, model, schema):
         '''
 
@@ -722,6 +729,7 @@ class ConfigCmd(CommonCmdLine):
 
     def do_apply(self, argv):
         """Apply current user unapplied config.  This will send provisioning commands to Flexswitch"""
+
         def fixupConfigList(configObj, configList):
             """
             # There may be a config which needs to be merged with a master config
@@ -815,7 +823,7 @@ class ConfigCmd(CommonCmdLine):
                     if not failurecfg:
                         continue
                     else:
-                        sys.stdout.write("*************CONFIG FAILED ROLLING BACK ANY SUCCESSFUL CONFIG*************\n")
+                        sys.stdout.write(self.ERROR_RED + "*************CONFIG FAILED ROLLING BACK ANY SUCCESSFUL CONFIG*************\n" + self.ERROR_RED_END)
 
                 # apply delete config before create
                 for config in self.getConfigOrder(self.configList):
@@ -913,22 +921,23 @@ class ConfigCmd(CommonCmdLine):
                 r = create_func(*argumentList)
             errorStr = r.json()['Result']
             if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
-                sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, errorStr))
+                resultstr = self.ERROR_RED + "FAILED: %s %s\n" % (r.status_code, errorStr) + self.ERROR_RED_END
                 failurecfg = True
             else:
-                sys.stdout.write("create SUCCESS:   http status code: %s\n" % (r.status_code,))
+                resultstr = self.OK_GREEN + "SUCCESS: http status code: %s\n" % (r.status_code,) + self.OK_GREEN_END
                 if errorStr != "Success":
-                    sys.stdout.write("warning return code: %s\n" % (errorStr))
+                    resultstr += self.WARNING_YELLOW + "WARNING return: %s\n" % (errorStr) + self.WARNING_YELLOW_END
 
                 # set configuration to applied state
                 config.setPending(False)
                 config.show()
                 delconfigList.append(config)
-            sys.stdout.write("sdk:%s(%s,%s)\n\n" % (create_func.__name__,
+            sys.stdout.write("sdk:%s(%s,%s) result: %s\n\n" % (create_func.__name__,
                                                   ",".join(["%s" % (x) for x in argumentList]),
-                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
+                                                  resultstr))
         else:
-            sys.stdout.write("Incomplete config not applying for:\n missing fields %s", missingrequiredconfig)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\n missing fields %s" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
         return failurecfg, delconfigList
 
@@ -945,22 +954,23 @@ class ConfigCmd(CommonCmdLine):
 
             errorStr = r.json()['Result']
             if r.status_code not in (sdk.httpSuccessCodes + [410]) and ('exists' and 'Nothing to be updated') not in errorStr: # 410 - Done
-                sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, errorStr))
+                resultstr = self.ERROR_RED + "FAILED: %s %s\n" % (r.status_code, errorStr) + self.ERROR_RED_END
                 failurecfg = True
             else:
-                sys.stdout.write("delete SUCCESS:   http status code: %s\n" % (r.status_code,))
+                resultstr = self.OK_GREEN + "SUCCESS:   http status code: %s\n" % (r.status_code,) + self.OK_GREEN_END
                 if errorStr != "Success":
-                    sys.stdout.write("warning return code: %s\n" % (errorStr))
+                    resultstr += self.WARNING_YELLOW + "WARNING return: %s\n" % (errorStr) + self.WARNING_YELLOW_END
 
                 # set configuration to applied state
                 config.setPending(False)
                 config.show()
                 delconfigList.append(config)
-            sys.stdout.write("sdk:%s(%s,%s)\n\n" % (delete_func.__name__,
+            sys.stdout.write("sdk:%s(%s,%s) result: %s\n\n" % (delete_func.__name__,
                                                   ",".join(["%s" % (x) for x in argumentList]),
-                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
+                                                  resultstr))
         else:
-            sys.stdout.write("Incomplete config not applying for:\nmissing arguments %s", missingrequiredconfig)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
 
         return failurecfg, delconfigList
@@ -977,22 +987,23 @@ class ConfigCmd(CommonCmdLine):
                 # succes
                 errorStr = r.json()['Result']
                 if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
-                    sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, errorStr))
+                    resultstr = self.ERROR_RED + "FAILED: %s %s\n" % (r.status_code, errorStr) + self.ERROR_RED_END
                     failurecfg = True
                 else:
-                    sys.stdout.write("update SUCCESS:   http status code: %s\n" % (r.status_code,))
+                    resultstr = self.OK_GREEN + "SUCCESS: http status code: %s\n" % (r.status_code,) + self.OK_GREEN_END
                     if errorStr != "Success":
-                        sys.stdout.write("warning return code: %s\n" % (errorStr))
+                        resultstr += self.WARNING_YELLOW + "WARNING return: %s\n" % (errorStr) + self.WARNING_YELLOW_END
 
                     # set configuration to applied state
                     config.setPending(False)
                     config.show()
                     delconfigList.append(config)
-                sys.stdout.write("sdk:%s(%s,%s)\n\n" % (update_func.__name__,
+                sys.stdout.write("sdk:%s(%s,%s) result: %s\n\n" % (update_func.__name__,
                                                       ",".join(["%s" % (x) for x in argumentList]),
-                                                      ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+                                                      ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
+                                                      resultstr))
         else:
-            sys.stdout.write("Incomplete config not applying for:\nmissing arguments %s", missingrequiredconfig)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
 
         return (failurecfg, delconfigList)
