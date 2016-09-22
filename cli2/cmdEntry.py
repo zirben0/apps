@@ -351,7 +351,7 @@ class CmdEntry(object):
                             else: # struct
                                 value = getDictEntryValue(entry, vv['value'][0])
 
-                            if readdata:
+                            if readdata and type(value) is list and key in readdata:
                                 value = handleListUpdate(attrtype, readdata[key], value)
                         else:
                             if snapcliconst.isnumeric(attrtype):

@@ -941,6 +941,7 @@ class ConfigCmd(CommonCmdLine):
 
                             except Exception as e:
                                 sys.stdout.write("FAILED TO TO APPLY OBJECT CONFIG: (Exception caught) Reason: %s funcPostfix: %s\n" %(e, funcObjName))
+                                config.show()
 
             if clearAppliedList:
                 for config in clearAppliedList:
@@ -950,6 +951,7 @@ class ConfigCmd(CommonCmdLine):
     def applyCreateNodeConfig(self, sdk, config, create_func):
         failurecfg = False
         delconfigList = []
+
         data = config.getSdkConfig()
         (validconfig, argumentList, kwargs, missingrequiredconfig) = self.get_sdk_func_key_values(data, create_func)
         if validconfig:
