@@ -335,7 +335,7 @@ class CmdEntry(object):
                     if isMyAttr or \
                             isMySubCommand:
                         # overwrite the default value
-                        if not isMySubCommand:
+                        if not isMySubCommand or vv['isarray']: # or (isMySubCommand and type(entry.val) in (dict, list)):
                             attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
                             key = vv['key']
                         else:
@@ -364,7 +364,8 @@ class CmdEntry(object):
                                 value = getDictEntryValue(entry, vv['value'][0])
 
                         if readdata:
-                            del readdata[key]
+                            if key in readdata:
+                                del readdata[key]
 
                         #self.keysDict[kk].update({'value': value})
                         newdict.update({key: value})
