@@ -549,6 +549,7 @@ class ConfigCmd(CommonCmdLine):
                                                 sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (cmdvalue, min, max))
                                                 return ''
 
+                                        self.commandLen = len(mline[:i]) + 1
                                         # lets check with the node what values exist
                                         if not values:
                                             # TODO need a way to know if a value is discovered
