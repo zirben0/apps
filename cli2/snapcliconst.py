@@ -187,7 +187,7 @@ def GET_SCHEMA_COMMANDS(schemaname, schema):
 def getValueInModel(model):
     if "value" in model:
         return model["value"]
-    return None
+    return {}
 
 def getValueInSchema(schema):
     '''
@@ -199,7 +199,7 @@ def getValueInSchema(schema):
             "value" in schema["properties"] and \
             'properties' in schema['properties']['value']:
         return schema['properties']['value']['properties']
-    return None
+    return {}
 
 def getValueArgumentType(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'type' in attrdata['properties']['argtype']:

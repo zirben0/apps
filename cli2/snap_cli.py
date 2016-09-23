@@ -566,7 +566,7 @@ class CmdLine(CommonCmdLine):
                                     if usercmd is not None:
                                         mline[i] = usercmd
                                     else:
-                                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                        sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
                                         snapcliconst.printErrorValueCmd(i, mline)
                                         return ''
 
