@@ -30,47 +30,6 @@
           }
         }
       },
-      "value": {
-        "type": "object",
-        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate",
-        "properties": {
-          "IntfRefAll": {
-            "type": "object",
-            "properties": {
-              "key": {
-                "default": true,
-                "type": "boolean"
-              },
-              "prompt": {
-                "default": "",
-                "type": "string"
-              },
-              "help": {
-                "default": "Show Command For All Interfaces",
-                "type": "string"
-              },
-              "islist": {
-                "default": false,
-                "type": "boolean"
-              },
-              "cliname": {
-                "default": "intfref",
-                "type": "string"
-              },
-              "argtype": {
-                "type": "string"
-              },
-              "isdefaultset": {
-                "default": false,
-                "type": "boolean"
-              },
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }
-        }
-      },
       "objname": {
         "default": "Interface",
         "type": "string",

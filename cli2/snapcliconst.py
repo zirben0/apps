@@ -184,6 +184,11 @@ def GET_MODEL_COMMANDS(schemaname, model):
 def GET_SCHEMA_COMMANDS(schemaname, schema):
     return schema[schemaname]["properties"]["commands"]["properties"] if schemaname in schema else schema["properties"]["commands"]["properties"]
 
+def getValueInModel(model):
+    if "value" in model:
+        return model["value"]
+    return {}
+
 def getValueInSchema(schema):
     '''
     Value contains the keys for a given model object
@@ -194,7 +199,7 @@ def getValueInSchema(schema):
             "value" in schema["properties"] and \
             'properties' in schema['properties']['value']:
         return schema['properties']['value']['properties']
-    return None
+    return {}
 
 def getValueArgumentType(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'type' in attrdata['properties']['argtype']:
