@@ -277,6 +277,14 @@ class ConfigElement(object):
                                   'value': v,
                                   'defaultvalue': df}
                 self.cmd = self.cmd.split(' ')[0]
+        elif self.objname == "IPv6Intf" and \
+            m == "IntfRef":
+                self.objKeyVal = {'modelname': m,
+                                  'type': t,
+                                  'cliname': k,
+                                  'value': v,
+                                  'defaultvalue': df}
+                self.cmd = self.cmd.split(' ')[0]
         else:
             self.objKeyVal = {'modelname': m,
                               'type': t,
@@ -374,7 +382,7 @@ class ShowRun(object):
         # svi
         # lag
         ignoreobj = False
-        if 'interface' in cmd and "IPv" in objname:
+        if 'interface' in cmd and objname in ("IPv4Intf", "IPv6Intf"):
             # need to determine the type of interface this is to see if it applies
             # to this portion of the tree
             methodName = 'get'+objname+'State'
@@ -465,6 +473,7 @@ class ShowRun(object):
                                 # lets get key attributes for this model object
                                 # the attributes that we are interested in will come from the model
                                 # lets find the attr obj
+                                foundParentKeyCliName = False
                                 for (mcmds, mvalues) in mobj['commands'].iteritems():
                                     svalues = sobj['properties']['commands']['properties'][mcmds]
                                     if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
@@ -486,9 +495,21 @@ class ShowRun(object):
                                                     # check if the key exists as the key from the parent
                                                     value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
                                                     ignoreobj = True
+                                                    # two cases
+                                                    # 1) parent key is a key for the element
+                                                    # 2) parent key is not a member, the element just lives under
+                                                    #    this object in the tree
+                                                    if mattrobj['cliname'] == pelement.objKeyVal['cliname']:
+                                                        foundParentKeyCliName = True
+
                                                     if mattrobj['cliname'] == pelement.objKeyVal['cliname'] and \
                                                         value == pelement.objKeyVal['value']:
                                                         ignoreobj = False
+
+
+
+                                if not foundParentKeyCliName:
+                                    ignoreobj = False
 
                                 # lets set the parent object if
                                 # this object is part of this parent
