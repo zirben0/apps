@@ -98,6 +98,9 @@
           },
           "subcmd30": {
             "$ref": "file:/tmp/snaproute/cli/schema/AlarmState.json"
+          },
+          "subcmd31": {
+            "$ref": "file:/tmp/snaproute/cli/schema/NDPEntryState.json"
           }
         }
       }
