@@ -240,6 +240,9 @@ class ConfigCmd(CommonCmdLine):
         # advance to next submodel and subschema
         i = 1
         for cmdIdx in range(1, mlineLength):
+            if i >= mlineLength:
+                continue
+
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
             #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
@@ -253,33 +256,41 @@ class ConfigCmd(CommonCmdLine):
                         #(valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                         expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
                         valueexpected = expectedInfo.getCmdValueExpected(mline[i])
+                        objname = expectedInfo.getCmdObjName(mline[i])
+                        keys = expectedInfo.getAllCliCmds()
+                        help = expectedInfo.getCmdHelp(mline[i])
                         #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
                         if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                             # we have reached a key command attribute
                             if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                if i < mlineLength - 1:
-                                    objname = expectedInfo.getCmdObjName(mline[i])
-                                    key = expectedInfo.getCmdKey(mline[i])
-                                    values = self.getCommandValues(objname, key)
-                                    if not values:
-                                        values = self.getValueSelections(mline[i], submodel, subschema)
+                                # from the key we know that number of keys * 2 is the expected length
+                                # keys always expect a value
+                                keyslength = len(expectedInfo) * 2
+                                # all key command have been entered
+                                if (i-1 + keyslength) == mlineLength - 1:
+                                    return [snapcliconst.COMMAND_DISPLAY_ENTER]
 
-                                    # if we have the values we don't want to display any further information
-                                    # unless there is multiple keys
-                                    if i+1 == mlineLength - 1 and mline[i+1] in values:
-                                        return [snapcliconst.COMMAND_DISPLAY_ENTER]
+                                # current index is pointing to a key command
+                                for j in xrange(1, keyslength):
+                                    # get value
+                                    if j % 2 != 0:
+                                        # value not found, lets give the user some options
+                                        if i == mlineLength - 1:
+                                            objname = expectedInfo.getCmdObjName(mline[i])
+                                            key = expectedInfo.getCmdKey(mline[i])
+                                            values = self.getCommandValues(objname, key)
+                                            if not values:
+                                                values = self.getValueSelections(mline[i], submodel, subschema)
 
-                                    return values
-                                else:
-                                    # we can assume that i+1 contains a value
-                                    # thus lets skip over this value, validation will be done in the precmd
+                                            # if we have the values we don't want to display any further information
+                                            # unless there is multiple keys
+                                            if i+1 == mlineLength - 1 and mline[i+1] in values:
+                                                return [snapcliconst.COMMAND_DISPLAY_ENTER]
+                                            return values
+                                    else: # get command
+                                        subcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
+                                    # increment to the next command
                                     i += 1
-                                    if (i == mlineLength - 1) and \
-                                            (len(frozenset(expectedInfo.getAllCliCmds()).intersection(mline)) == len(expectedInfo)):
-                                        return [snapcliconst.COMMAND_DISPLAY_ENTER]
-
-                                    # user still needs to enter more key info
-                                    subcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
                         else:
                             subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
                 elif i == mlineLength - 1:
@@ -444,7 +455,7 @@ class ConfigCmd(CommonCmdLine):
                     usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
                     if usercmd not in subcommands and len(subcommands) > 0:
                         if usercmd is None:
-                            sys.stdout.write("ERROR: (11) Invalid or incomplete command\n")
+                            sys.stdout.write(self.ERROR_RED + "ERROR: (11) Invalid or incomplete command\n" + self.ERROR_RED_END)
                         snapcliconst.printErrorValueCmd(1, argv)
                         return ''
                     else:
@@ -453,7 +464,7 @@ class ConfigCmd(CommonCmdLine):
                 if newargv[0] not in subcommands and len(subcommands) > 0:
                     usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
                     if usercmd is None:
-                        sys.stdout.write("ERROR: (22) Invalid or incomplete command\n")
+                        sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
                         snapcliconst.printErrorValueCmd(0, argv)
                         return ''
                     else:
@@ -488,7 +499,7 @@ class ConfigCmd(CommonCmdLine):
                                 mline[i] = usercmd
                                 newargv[i-1] = usercmd
                             else:
-                                sys.stdout.write("ERROR: (33) Invalid or incomplete command\n")
+                                sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
                                 snapcliconst.printErrorValueCmd(i, mline)
                                 return ''
                         # now that we have the schema based on the previous command
@@ -510,7 +521,7 @@ class ConfigCmd(CommonCmdLine):
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         if i+1 > mlineLength:
-                                            sys.stdout.write("\nERROR Value expected\n")
+                                            sys.stdout.write(self.ERROR_RED + "\nERROR Value expected\n" + self.ERROR_RED_END)
                                             return ''
 
                                         cmdvalue = mline[i+1]
@@ -538,9 +549,15 @@ class ConfigCmd(CommonCmdLine):
                                                 sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (cmdvalue, min, max))
                                                 return ''
 
-                                        #values = self.getCommandValues(objname, keys)
-                                        #sys.stdout.write("FOUND values %s" %(values))
-                                        self.commandLen = len(mline[:i]) + 1
+                                        # lets check with the node what values exist
+                                        if not values:
+                                            # TODO need a way to know if a value is discovered
+                                            # so that we can validate it here
+                                            #self.getCommandValues(objname, expectedInfo.getAllCliCmds())
+                                            #values = self.getCommandValues(objname, keys)
+                                            #sys.stdout.write("FOUND values %s" %(values))
+                                            #self.commandLen = len(mline[:i]) + 1
+                                            pass
 
                                         # we have reached all commands
                                         if i == mlineLength - 2 and \
