@@ -261,30 +261,15 @@ class ConfigElement(object):
                                   'value': '',
                                   'defaultvalue': snapcliconst.DEFAULT_PVID}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
-        elif self.objname == "Port" and \
+        elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor")  and \
             m == "IntfRef":
                 self.objKeyVal = {'modelname': m,
                                   'type': t,
                                   'cliname': k,
                                   'value': v,
                                   'defaultvalue': df}
-                self.cmd = self.cmd.split(' ')[0]
-        elif self.objname == "IPv4Intf" and \
-            m == "IntfRef":
-                self.objKeyVal = {'modelname': m,
-                                  'type': t,
-                                  'cliname': k,
-                                  'value': v,
-                                  'defaultvalue': df}
-                self.cmd = self.cmd.split(' ')[0]
-        elif self.objname == "IPv6Intf" and \
-            m == "IntfRef":
-                self.objKeyVal = {'modelname': m,
-                                  'type': t,
-                                  'cliname': k,
-                                  'value': v,
-                                  'defaultvalue': df}
-                self.cmd = self.cmd.split(' ')[0]
+                cmdList = self.cmd.split(' ')
+                self.cmd = " ".join( "%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
         else:
             self.objKeyVal = {'modelname': m,
                               'type': t,
@@ -515,8 +500,6 @@ class ShowRun(object):
                                                     if mattrobj['cliname'] == pelement.objKeyVal['cliname'] and \
                                                         value == pelement.objKeyVal['value']:
                                                         ignoreobj = False
-                                                        if objname == "BGPv4Neighbor" and attr == "IntfRef":
-                                                            import ipdb; ipdb.set_trace()
 
 
                                 # element lives under this tree but a non default key
