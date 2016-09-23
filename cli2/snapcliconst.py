@@ -184,6 +184,11 @@ def GET_MODEL_COMMANDS(schemaname, model):
 def GET_SCHEMA_COMMANDS(schemaname, schema):
     return schema[schemaname]["properties"]["commands"]["properties"] if schemaname in schema else schema["properties"]["commands"]["properties"]
 
+def getValueInModel(model):
+    if "value" in model:
+        return model["value"]
+    return None
+
 def getValueInSchema(schema):
     '''
     Value contains the keys for a given model object

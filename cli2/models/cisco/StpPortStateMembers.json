@@ -2,10 +2,10 @@
   "listattrs": [], 
   "commands": {
     "Vlan": {
-      "cliname": "Vlan"
+      "cliname": "brg_vlan"
     }, 
     "IntfRef": {
-      "cliname": "IntfRef"
+      "cliname": "ethernet"
     }
   }
 }
