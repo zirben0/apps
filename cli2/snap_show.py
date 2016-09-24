@@ -261,30 +261,15 @@ class ConfigElement(object):
                                   'value': '',
                                   'defaultvalue': snapcliconst.DEFAULT_PVID}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
-        elif self.objname == "Port" and \
+        elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor")  and \
             m == "IntfRef":
                 self.objKeyVal = {'modelname': m,
                                   'type': t,
                                   'cliname': k,
                                   'value': v,
                                   'defaultvalue': df}
-                self.cmd = self.cmd.split(' ')[0]
-        elif self.objname == "IPv4Intf" and \
-            m == "IntfRef":
-                self.objKeyVal = {'modelname': m,
-                                  'type': t,
-                                  'cliname': k,
-                                  'value': v,
-                                  'defaultvalue': df}
-                self.cmd = self.cmd.split(' ')[0]
-        elif self.objname == "IPv6Intf" and \
-            m == "IntfRef":
-                self.objKeyVal = {'modelname': m,
-                                  'type': t,
-                                  'cliname': k,
-                                  'value': v,
-                                  'defaultvalue': df}
-                self.cmd = self.cmd.split(' ')[0]
+                cmdList = self.cmd.split(' ')
+                self.cmd = " ".join( "%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
         else:
             self.objKeyVal = {'modelname': m,
                               'type': t,
@@ -376,7 +361,7 @@ class ShowRun(object):
     def fillObjAttrs(self, element, keyval, cfgObj):
         pass
 
-    def checkForSpecialCasesToIgnore(self, cmd, objname, value):
+    def checkForKeySpecialCasesToIgnore(self, cmd, objname, value):
         # special interface command check since there are three
         # port
         # svi
@@ -397,6 +382,11 @@ class ShowRun(object):
                     ignoreobj = True
                 elif iftype == "Vlan" and ("svi" not in cmd and "vlan" not in cmd):
                     ignoreobj = True
+
+        # there are cases where keys are optional so lets check to see if the value
+        if value in (None, '', {}, [], ()):
+            ignoreobj = True
+
         return ignoreobj
 
     def buildTreeObj(self, cmd, pelement, matchattrtype, matchattr, matchvalue, model, schema, subattrobj=False):
@@ -454,6 +444,7 @@ class ShowRun(object):
                                 element.setCmd(cmd)
                                 element.setFormat(pelement.fmt)
                                 ignoreobj = False
+                                keyisdefault = False
                                 # found an element lets populate the contents of the element from this object
                                 element.setObjName(objname)
                                 if 'value' in mobj:
@@ -462,7 +453,11 @@ class ShowRun(object):
                                         attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
                                         value = cfgObj[attr] if cfgObj else subattrobj[attr]
 
-                                        ignoreobj = self.checkForSpecialCasesToIgnore(cmd, objname, value)
+                                        if value == defaultVal:
+                                            keyisdefault = True
+
+                                        if not ignoreobj:
+                                            ignoreobj = self.checkForKeySpecialCasesToIgnore(cmd, objname, value)
 
                                         element.setObjKeyVal(attr,
                                                              attrtype,
@@ -507,8 +502,10 @@ class ShowRun(object):
                                                         ignoreobj = False
 
 
-
-                                if not foundParentKeyCliName:
+                                # element lives under this tree but a non default key
+                                # was not set so lets make sure we make this a valid
+                                # element
+                                if not foundParentKeyCliName and not keyisdefault:
                                     ignoreobj = False
 
                                 # lets set the parent object if
