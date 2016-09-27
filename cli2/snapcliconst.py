@@ -201,6 +201,27 @@ def getValueInSchema(schema):
         return schema['properties']['value']['properties']
     return {}
 
+def getValueAttrDefault(schema, attr):
+
+    defaultarg = None
+    valuesdict = getValueInSchema(schema)
+    if attr in valuesdict:
+        if 'properties' in valuesdict[attr] and 'defaultarg' in valuesdict[attr]['properties'] and \
+                        'default' in valuesdict[attr]['properties']['defaultarg']:
+            defaultarg = valuesdict[attr]['properties']['defaultarg']['default']
+
+    return defaultarg
+
+def getValueAttrType(schema, attr):
+    argtype = None
+    valuesdict = getValueInSchema(schema)
+    if attr in valuesdict:
+        if 'properties' in valuesdict[attr] and 'argtype' in valuesdict[attr]['properties'] and \
+                        'type' in valuesdict[attr]['properties']['argtype']:
+            argtype = valuesdict[attr]['properties']['argtype']['type']
+
+    return argtype
+
 def getValueArgumentType(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'type' in attrdata['properties']['argtype']:
         return attrdata['properties']['argtype']['type']
