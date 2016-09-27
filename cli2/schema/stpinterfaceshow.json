@@ -1,0 +1,35 @@
+{
+  "stpinterfaceshow": {
+    "type" : "object",
+    "properties" : {
+      "prompt" : {
+        "type" : "string",
+        "default" : "interface"
+      },
+      "cliname" : {
+        "type" : "string",
+        "description" : "Name used in cli to describe an interface",
+        "default" : "interface"
+      },
+      "help" : {
+        "type" : "string",
+        "default": "Show Rapid Spanning-Tre interfaces"
+      },
+      "commands" : {
+        "type": "object",
+        "description": "holds all related commands related to the different interfaces",
+        "properties": {
+          "subcmd1": {
+            "$ref": "file:/tmp/snaproute/cli/schema/StpPortState.json"
+          }
+        }
+      },
+      "objname": {
+        "default": "StpPortState",
+        "type": "string",
+        "description": "object name to which references these attributes"
+      }
+    }
+
+  }
+}
