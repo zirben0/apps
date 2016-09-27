@@ -22,7 +22,6 @@
         "StpBridgeInstance",
         "StpPort",
 	"ArpGlobal",
-        "ArpConfig",
         "LogicalIntf",
         "IPv4Intf",
 	"IPv6Intf",
@@ -34,7 +33,7 @@
 	"AclRule",
 	"Acl",
         "BfdGlobal",
-        "BfdInterface",
+        "BfdSessionParam",
         "BfdSession",
 	"PolicyPrefixSet",
         "PolicyCondition",
@@ -50,16 +49,12 @@
         "BGPPolicyAction",
         "BGPPolicyCondition",
         "BGPPolicyDefinition",
-        "BGPPolicyDefinitionStmtPrecedence",
         "BGPPolicyStmt",
         "OspfGlobal",
         "OspfAreaAggregateEntry",
         "OspfAreaEntry",
-        "OspfHostEntry",
         "OspfIfEntry",
         "OspfIfMetricEntry",
-        "OspfNbrEntry",
-        "OspfStubAreaEntry",
         "OspfVirtIfEntry",
 	"IsisGlobal",
         "VrrpIntf",
@@ -68,6 +63,6 @@
         "DhcpRelayGlobal",
         "DhcpRelayIntf",
         "VxlanInstance",
-        "VxlanVtepInstances"
+        "VxlanVtepInstance"
     ]
 }

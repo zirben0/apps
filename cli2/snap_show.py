@@ -23,22 +23,15 @@
 #
 # This is class handles the action of the show command
 import sys, os
-from sets import Set
-import cmdln
 import json
 import pprint
 import inspect
-import string
 import snapcliconst
 import jsonref
 
-from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
-    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
-from snap_leaf import LeafCmd
+from commonCmdLine import CommonCmdLine
 from cmdEntry import CmdEntry
-
-from flexswitchV2 import FlexSwitch
+import snapcliconst
 MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 gObjectsInfo =  {}
@@ -434,6 +427,7 @@ class ShowRun(object):
                     if isModelObj(mobj, sobj):
                         objname = sobj['properties']['objname']['default']
 
+
                         for cfgObj in self.getNewConfigObj(objname,
                                                            getModelAttrFromMatchAttr(matchattr, mobj, sobj),
                                                            convertStrValueToValueType(matchattrtype, matchvalue)):
@@ -449,8 +443,8 @@ class ShowRun(object):
                                 element.setObjName(objname)
                                 if 'value' in mobj:
                                     for attr, attrobj in mobj['value'].iteritems():
-                                        defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
-                                        attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
+                                        defaultVal = snapcliconst.getValueAttrDefault(sobj, attr )
+                                        attrtype = snapcliconst.getValueAttrType(sobj, attr)
                                         value = cfgObj[attr] if cfgObj else subattrobj[attr]
 
                                         if value == defaultVal:
