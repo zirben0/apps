@@ -239,20 +239,20 @@ class ConfigElement(object):
         '''
         # special cases
         if self.objname == "StpBridgeInstance" and \
-            m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+            m == "Vlan" and v == 0:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
-                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                                  'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
         elif self.objname == 'StpPort' and \
-            m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+            m == "Vlan" and v == 0:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
-                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                                  'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
         elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor")  and \
             m == "IntfRef":
