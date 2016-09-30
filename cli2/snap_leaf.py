@@ -234,6 +234,10 @@ class LeafCmd(CommonCmdLine):
                                         if delete and 'no' != cmd[0]:
                                             cmd = ['no'] + cmd
                                         config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'], isattrlist=objattrs[basekey]['isarray'])
+                            '''
+                            # this logic will cause config to be missed, it is better to not support this case
+                            # let the cli model fix this by making the attribute a key even if it is not a key
+                            # according to flexswitch model]-
                             else:
                                 isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
                                                ((v['createwithdefaults'] and v['value']['default']) or delete)]) > 0
@@ -251,6 +255,7 @@ class LeafCmd(CommonCmdLine):
                                             # to create the object as is the case with router bgp
                                             config.setValid(isvalid)
                                             config.set(cmd, delete, basekey, basevalue, isKey=True, isattrlist=objattrs[basekey]['isarray'] )
+                            '''
                         else:
                             # may be jsut setting an attribute against a global object?
                             isvalid = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey'] and
@@ -1271,7 +1276,7 @@ class LeafCmd(CommonCmdLine):
                                         self.valueExpected = SUBCOMMAND_VALUE_NOT_EXPECTED
 
                             else:
-                                self.subcommand = True
+                                self.subcommand = False
                                 self.issubcommandlist = False
                                 for subkey in attrvalue.keys():
                                     self.checkAttributevalues(argv, i, mline, mlineLength, subkey, attrvalue, sattrvalue, delete)

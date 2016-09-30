@@ -520,7 +520,7 @@ class CmdLine(CommonCmdLine):
                 cmds, values = c.display_help(mline[1:], returnhelp=True)
                 subcommands = [cmd for (cmd, help, x) in cmds]
                 if subcommands and snapcliconst.COMMAND_DISPLAY_ENTER == subcommands[0]:
-                    subcommands = values
+                    subcommands += values
                 return subcommands + specialCmds
         return []
 
@@ -619,7 +619,7 @@ class CmdLine(CommonCmdLine):
                                                 else:
                                                     missingcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
                                                     if missingcommands:
-                                                        sys.stdout.write("ERROR incomplete command missing %s" % (missingcommands))
+                                                        sys.stdout.write("ERROR incomplete command missing %s" % (",".join(missingcommands)))
                                                         return
                                                     else:  # commands are present lets see if values are present
                                                         # assumption is that all keys expect a value
