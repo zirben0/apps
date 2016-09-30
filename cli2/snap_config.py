@@ -823,7 +823,6 @@ class ConfigCmd(CommonCmdLine):
             # get the combination of all config objects which are of the same type
             for c1,c2 in getSameConfigObjects(configList, configList):
 
-                newConfig = None
                 # lets combine any entries which have the same key values
                 # as the attributes may have been updated by two different config trees
                 if isAttrEqual(c1, c2):

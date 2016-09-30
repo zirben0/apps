@@ -1095,6 +1095,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     if min is not None and max is not None:
                                                         strvalues += "%s-%s" %(min, max)
                                             helpcommands = [[cmd, strvalues + "\n" + help, self.MODEL_COMMAND]]
+                                            helpcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                     else:
                                         key = expectedInfo.getCmdKey(mline[i])
                                         objname = expectedInfo.getCmdObjName(mline[i])
@@ -1113,6 +1114,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     if min is not None and max is not None:
                                                         strvalues += "%s-%s" %(min, max)
                                             helpcommands = [[cmd, strvalues + "\n" + help, self.MODEL_COMMAND]]
+                                            helpcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                             else:
