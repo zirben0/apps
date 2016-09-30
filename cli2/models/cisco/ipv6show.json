@@ -10,6 +10,9 @@
       },
       "subcmd3" : {
         "$ref" : "file:/tmp/snaproute/cli/model/cisco/ipv6intfshow.json"
+      },
+      "subcmd4" : {
+        "$ref" : "file:/tmp/snaproute/cli/model/cisco/IPV6AdjState.json"
       }
     }
   }
