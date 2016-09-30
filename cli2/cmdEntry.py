@@ -295,16 +295,18 @@ class CmdEntry(object):
                 else: # struct
                     for od in olddata:
                         deleteupdate = False
-                        for key,value in nd:
+                        for key,value in nd.iteritems():
                             # find a key that matches and that the nd value is not zero, empty string as these are usually
                             # defaults
                             if key in od and od[key] and od[key] == value:
                                 deleteupdate = True
 
                         if deleteupdate:
-                            updatelist.remove(nd)
+                            updatelist.remove(od)
                         else:
                             updatelist.append(nd)
+                    if not olddata:
+                        updatelist.append(nd)
             return updatelist
 
         def isAttrValueSubCommand(vv, attr):
@@ -332,8 +334,9 @@ class CmdEntry(object):
                 for kk, vv in copy.deepcopy(self.keysDict).iteritems():
                     isMyAttr = kk == getEntryAttribute(entry)
                     isMySubCommand = isAttrValueSubCommand(vv, kk)
-                    if isMyAttr or \
-                            isMySubCommand:
+                    #if isMyAttr or \
+                    #        isMySubCommand:
+                    if isMyAttr:
                         # overwrite the default value
                         if not isMySubCommand or vv['isarray']: # or (isMySubCommand and type(entry.val) in (dict, list)):
                             attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
