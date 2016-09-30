@@ -40,7 +40,7 @@
             "type": "object",
             "properties": {
               "key": {
-                "default": false,
+                "default": true,
                 "type": "boolean"
               },
               "prompt": {
