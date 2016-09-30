@@ -1276,7 +1276,7 @@ class LeafCmd(CommonCmdLine):
                                         self.valueExpected = SUBCOMMAND_VALUE_NOT_EXPECTED
 
                             else:
-                                self.subcommand = True
+                                self.subcommand = False
                                 self.issubcommandlist = False
                                 for subkey in attrvalue.keys():
                                     self.checkAttributevalues(argv, i, mline, mlineLength, subkey, attrvalue, sattrvalue, delete)
