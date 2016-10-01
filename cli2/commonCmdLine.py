@@ -706,7 +706,6 @@ class CommonCmdLine(cmdln.Cmdln):
         :param parentname:
         :return: list of tuples in the format of (model attribute name, cliname, help description)
         """
-
         cliHelpList = [[snapcliconst.COMMAND_DISPLAY_ENTER, "", self.LOCAL_COMMAND]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
@@ -730,7 +729,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                 if type(vvv) in (dict, jsonref.JsonRef):
                                                     for kkkk, vvvv in vvv.iteritems():
                                                         if 'cliname' in vvvv.keys():
-                                                            x.append([listattrDict[kkk], vvvv['cliname'], None])
+                                                            x.append([listattrDict[kkk], vvvv['cliname'], vvvv.get('help')])
                                             else:
                                                 x.append([kkk, self.getCliName(vvv) , self.getCliHelp(vvv)])
                                 elif type(vv) == dict:
@@ -743,6 +742,12 @@ class CommonCmdLine(cmdln.Cmdln):
                                     if kk == "commands":
                                         if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW:
                                             for kkk, vvv in vv["properties"].iteritems():
+                                                if "subcmd" in kkk and "listattrs" in schemaobj:
+                                                    for (subcmd, attr) in schemaobj['listattrs']:
+                                                        if subcmd == kkk:
+                                                            kkk = attr
+                                                            break
+
                                                 if kkk == val[0]:
                                                     if "properties" in vvv:
                                                         cliname, clihelp = self.getCliName(vvv["properties"]), self.getCliHelp(vvv["properties"])

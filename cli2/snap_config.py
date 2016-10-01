@@ -521,6 +521,7 @@ class ConfigCmd(CommonCmdLine):
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         if i+1 > mlineLength:
+                                            snapcliconst.printErrorValueCmd(i+1, mline)
                                             sys.stdout.write(self.ERROR_RED + "\nERROR Value expected\n" + self.ERROR_RED_END)
                                             return ''
 
@@ -757,23 +758,27 @@ class ConfigCmd(CommonCmdLine):
         for objname in delcfgorder:
             for config in self.configList:
                 if config.isValid() and config.objname == objname and config.delete:
-                    yield config
+                    if config.objname not in excludeObjs:
+                        yield config
 
         # remove non-ordered config
         for config in self.configList:
             if config.isValid() and config.delete and config.objname not in delcfgorder:
-                yield config
+                if config.objname not in excludeObjs:
+                    yield config
 
         # config the ordered config
         for objname in cfgorder:
             for config in self.configList:
                 if config.isValid() and config.objname == objname and not config.delete:
-                    yield config
+                    if config.objname not in excludeObjs:
+                        yield config
 
         # config the non-ordered config
         for config in self.configList:
             if config.isValid() and not config.delete and config.objname not in cfgorder:
-                yield config
+                if config.objname not in excludeObjs:
+                    yield config
 
         for config in self.configList:
             if config.objname in excludeObjs:
@@ -968,7 +973,6 @@ class ConfigCmd(CommonCmdLine):
     def applyCreateNodeConfig(self, sdk, config, create_func):
         failurecfg = False
         delconfigList = []
-
         data = config.getSdkConfig()
         (validconfig, argumentList, kwargs, missingrequiredconfig) = self.get_sdk_func_key_values(data, create_func)
         if validconfig:

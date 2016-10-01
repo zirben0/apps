@@ -11,6 +11,9 @@
       },
       "subcmd4": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/LogicalIntfState.json"
+      },
+      "subcmd5": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/showinterfacestatus.json"
       }
     },
     "value": {
