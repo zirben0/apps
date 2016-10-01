@@ -84,7 +84,7 @@
 	  "subcmd30":{
         "$ref": "file:/tmp/snaproute/cli/model/cisco/AlarmState.json"
       },
-          "subcmd31":{
+      "subcmd31":{
         "$ref": "file:/tmp/snaproute/cli/model/cisco/NDPEntryState.json"
       }
     }
