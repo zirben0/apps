@@ -23,19 +23,21 @@
 #
 # Class contains common methods used the various tree elements of the cli.
 #
-import copy
 import jsonref
 import sys
 import os
 import cmdln
-from jsonschema import Draft4Validator
 import pprint
-import requests
 import getpass
 import snapcliconst
 from tablePrint import indent, wrap_onspace_strict
-from flexswitchV2 import FlexSwitch
-from flexprint import FlexPrint
+
+try:
+    from flexswitchV2 import FlexSwitch
+    from flexprint import FlexPrint
+except ImportError:
+    # running via flexswitch install
+    os.sys.path.append("/opt/flexswitch/sdk/py")
 
 USING_READLINE = True
 try:

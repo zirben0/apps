@@ -286,35 +286,47 @@ class CliCmdTreeHelper(object):
             self.update_cmd_key_object()
 
     def insert_new_commands_to_model(self):
+
+        def get_subcmd(schemadata, file_name):
+            # see if command exists, if it does not return
+            # next valid command
+            subcmds = []
+            for subcmd, ref in schemadata[self.cmd_type]["properties"]["commands"]["properties"].iteritems():
+                subcmds.append(subcmd)
+                if file_name == ref.split("/")[-1]:
+                    return subcmd
+
+            keynums = [int(subcmd.lstrip("subcmd")) for subcmd in subcmds]
+            num = list(frozenset([x for x in range(1, len(keynums))]).difference(keynums))
+            new_subcmd_key = "subcmd" + str(len(keynums) + 1)
+            if num:
+                new_subcmd_key = "subcmd" + str(num[0])
+            return new_subcmd_key
+
         if self.insertion_file:
             with open(self.schema_path + self.insertion_file, 'r+') as f1:
                 schemadata = json.load(f1)
 
-                subcmds = schemadata[self.cmd_type]["properties"]["commands"]["properties"].keys()
-                keynums = [int(subcmd.lstrip("subcmd")) for subcmd in subcmds]
-                num = list(frozenset([x for x in range(1, len(keynums))]).difference(keynums))
-                new_subcmd_key = "subcmd" + str(len(keynums) + 1)
-                if num:
-                    new_subcmd_key = "subcmd" + str(num[0])
+                subcmd = get_subcmd(schemadata, self.save_file)
 
                 schemadata[self.cmd_type]["properties"]["commands"]["properties"].update(
-                    {new_subcmd_key: GENERATED_SCHEMA_PATH + self.save_file}
+                    {subcmd: GENERATED_SCHEMA_PATH + self.save_file}
                 )
 
                 with open(self.schema_path + self.insertion_file, 'w') as f2:
                     # save the info
                     json.dump(schemadata, f2, indent=2)
 
-            with open(self.model_path + self.insertion_file, 'r+') as f3:
-                modeldata = json.load(f3)
+                with open(self.model_path + self.insertion_file, 'r+') as f3:
+                    modeldata = json.load(f3)
 
-                modeldata[self.cmd_type]["commands"].update(
-                    {new_subcmd_key: {"$ref": GENERATED_MODEL_PATH + self.save_file}}
-                )
+                    modeldata[self.cmd_type]["commands"].update(
+                        {subcmd: {"$ref": GENERATED_MODEL_PATH + self.save_file}}
+                    )
 
-                with open(self.model_path + self.insertion_file, 'w') as f4:
-                    # save the info
-                    json.dump(modeldata, f4, indent=2)
+                    with open(self.model_path + self.insertion_file, 'w') as f4:
+                        # save the info
+                        json.dump(modeldata, f4, indent=2)
 
 
 def show_cli_intro():
