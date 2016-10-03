@@ -38,6 +38,8 @@ try:
 except ImportError:
     # running via flexswitch install
     os.sys.path.append("/opt/flexswitch/sdk/py")
+    from flexswitchV2 import FlexSwitch
+    from flexprint import FlexPrint
 
 USING_READLINE = True
 try:
