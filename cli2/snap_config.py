@@ -24,13 +24,11 @@
 #
 # Class handles initial config command
 #
-import sys, os
+import os
 from sets import Set
 import json
 import pprint
 import inspect
-import string
-import snapcliconst
 from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_INVALID
 from snap_leaf import LeafCmd
