@@ -1,4 +1,5 @@
 COMPS=cfgmon\
+	cli2
 
 all: install
 
