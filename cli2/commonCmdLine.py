@@ -299,10 +299,10 @@ class CliObjKeysClass():
         return self.cmdDict[clicmd].valueexpected if self.cmdDict.has_key(clicmd) else SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE
 
     def getCmdObjName(self, clicmd):
-        return self.cmdDict[clicmd].objname if self.cmdDict.has_key(clicmd) else None
+        return self.cmdDict[clicmd].objname if self.cmdDict.has_key(clicmd) else ""
 
     def getCmdHelp(self, clicmd):
-        return self.cmdDict[clicmd].help if self.cmdDict.has_key(clicmd) else None
+        return self.cmdDict[clicmd].help if self.cmdDict.has_key(clicmd) else ""
 
     def getCmdIsAttrAList(self, clicmd):
         return self.cmdDict[clicmd].islist if self.cmdDict.has_key(clicmd) else None
@@ -1089,6 +1089,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                         #helpcommands += tmphelpcommands
                                         key = expectedInfo.getCmdKey(mline[i])
                                         objname = expectedInfo.getCmdObjName(mline[i])
+                                        help = expectedInfo.getCmdHelp(mline[i])
                                         if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                             values = self.getCommandValues(objname, key)
                                             strvalues = ''
@@ -1108,6 +1109,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                     else:
                                         key = expectedInfo.getCmdKey(mline[i])
                                         objname = expectedInfo.getCmdObjName(mline[i])
+                                        help = expectedInfo.getCmdHelp(mline[i])
                                         if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                             values = self.getCommandValues(objname, key)
                                             strvalues = ''
