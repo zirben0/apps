@@ -382,6 +382,16 @@ class ShowRun(object):
 
         return ignoreobj
 
+    def checkIfXObjDepsExist(self, objname, cfgobj):
+        ignoreobj = False
+        if objname in 'Port':
+            r = self.swtch.getPortState(cfgobj['IntfRef'])
+            data = r.json()
+            if 'NO' in data['Object']['PresentInHW']:
+                ignoreobj = True
+        return ignoreobj
+
+
     def buildTreeObj(self, cmd, pelement, matchattrtype, matchattr, matchvalue, model, schema, subattrobj=False):
 
         def isModelObj(mobj, sobj):
@@ -501,6 +511,10 @@ class ShowRun(object):
                                 # element
                                 if not foundParentKeyCliName and not keyisdefault:
                                     ignoreobj = False
+
+                                # check for any X object dependencies
+                                if self.checkIfXObjDepsExist(objname, cfgObj) == True:
+                                    ignoreobj = True
 
                                 # lets set the parent object if
                                 # this object is part of this parent
@@ -706,7 +720,7 @@ class ShowCmd(CommonCmdLine):
 
             cmd = " ".join(argv)
             # TODO MOVE THESE TO NEW Cmdln objects
-            if cmd == ("show run",):
+            if cmd in ("show run",):
                 print 'printing without defaluts'
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_NO_DEFAULT)
             elif cmd in ("show run full",):
