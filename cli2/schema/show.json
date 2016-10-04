@@ -101,7 +101,11 @@
           },
           "subcmd31": {
             "$ref": "file:/tmp/snaproute/cli/schema/NDPEntryState.json"
+          },
+          "subcmd32": {
+            "$ref": "file:/tmp/snaproute/cli/schema/NdpEntryHwState.json"
           }
+
         }
       }
     }
