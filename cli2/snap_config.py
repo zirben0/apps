@@ -24,13 +24,11 @@
 #
 # Class handles initial config command
 #
-import sys, os
+import os
 from sets import Set
 import json
 import pprint
 import inspect
-import string
-import snapcliconst
 from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
     SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_INVALID
 from snap_leaf import LeafCmd
@@ -521,6 +519,7 @@ class ConfigCmd(CommonCmdLine):
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         if i+1 > mlineLength:
+                                            snapcliconst.printErrorValueCmd(i+1, mline)
                                             sys.stdout.write(self.ERROR_RED + "\nERROR Value expected\n" + self.ERROR_RED_END)
                                             return ''
 
@@ -757,23 +756,27 @@ class ConfigCmd(CommonCmdLine):
         for objname in delcfgorder:
             for config in self.configList:
                 if config.isValid() and config.objname == objname and config.delete:
-                    yield config
+                    if config.objname not in excludeObjs:
+                        yield config
 
         # remove non-ordered config
         for config in self.configList:
             if config.isValid() and config.delete and config.objname not in delcfgorder:
-                yield config
+                if config.objname not in excludeObjs:
+                    yield config
 
         # config the ordered config
         for objname in cfgorder:
             for config in self.configList:
                 if config.isValid() and config.objname == objname and not config.delete:
-                    yield config
+                    if config.objname not in excludeObjs:
+                        yield config
 
         # config the non-ordered config
         for config in self.configList:
             if config.isValid() and not config.delete and config.objname not in cfgorder:
-                yield config
+                if config.objname not in excludeObjs:
+                    yield config
 
         for config in self.configList:
             if config.objname in excludeObjs:
@@ -823,7 +826,6 @@ class ConfigCmd(CommonCmdLine):
             # get the combination of all config objects which are of the same type
             for c1,c2 in getSameConfigObjects(configList, configList):
 
-                newConfig = None
                 # lets combine any entries which have the same key values
                 # as the attributes may have been updated by two different config trees
                 if isAttrEqual(c1, c2):
@@ -969,7 +971,6 @@ class ConfigCmd(CommonCmdLine):
     def applyCreateNodeConfig(self, sdk, config, create_func):
         failurecfg = False
         delconfigList = []
-
         data = config.getSdkConfig()
         (validconfig, argumentList, kwargs, missingrequiredconfig) = self.get_sdk_func_key_values(data, create_func)
         if validconfig:

@@ -1,0 +1,14 @@
+{
+  "showinterfacestatus": {
+    "cliname" : "status",
+    "help" : "Show All interfaces brief",
+    "commands" : {
+    },
+    "value": {
+      "IntfRefAll": {
+        "cliname": "interface"
+      }
+    }
+  }
+}
+

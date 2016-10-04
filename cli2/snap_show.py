@@ -23,22 +23,15 @@
 #
 # This is class handles the action of the show command
 import sys, os
-from sets import Set
-import cmdln
 import json
 import pprint
 import inspect
-import string
 import snapcliconst
 import jsonref
 
-from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
-    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
-from snap_leaf import LeafCmd
+from commonCmdLine import CommonCmdLine
 from cmdEntry import CmdEntry
-
-from flexswitchV2 import FlexSwitch
+import snapcliconst
 MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 gObjectsInfo =  {}
@@ -246,20 +239,20 @@ class ConfigElement(object):
         '''
         # special cases
         if self.objname == "StpBridgeInstance" and \
-            m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+            m == "Vlan" and v == 0:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
-                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                                  'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
         elif self.objname == 'StpPort' and \
-            m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+            m == "Vlan" and v == 0:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
-                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                                  'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
         elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor")  and \
             m == "IntfRef":
@@ -389,6 +382,16 @@ class ShowRun(object):
 
         return ignoreobj
 
+    def checkIfXObjDepsExist(self, objname, cfgobj):
+        ignoreobj = False
+        if objname in 'Port':
+            r = self.swtch.getPortState(cfgobj['IntfRef'])
+            data = r.json()
+            if 'NO' in data['Object']['PresentInHW']:
+                ignoreobj = True
+        return ignoreobj
+
+
     def buildTreeObj(self, cmd, pelement, matchattrtype, matchattr, matchvalue, model, schema, subattrobj=False):
 
         def isModelObj(mobj, sobj):
@@ -434,6 +437,7 @@ class ShowRun(object):
                     if isModelObj(mobj, sobj):
                         objname = sobj['properties']['objname']['default']
 
+
                         for cfgObj in self.getNewConfigObj(objname,
                                                            getModelAttrFromMatchAttr(matchattr, mobj, sobj),
                                                            convertStrValueToValueType(matchattrtype, matchvalue)):
@@ -449,8 +453,8 @@ class ShowRun(object):
                                 element.setObjName(objname)
                                 if 'value' in mobj:
                                     for attr, attrobj in mobj['value'].iteritems():
-                                        defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
-                                        attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
+                                        defaultVal = snapcliconst.getValueAttrDefault(sobj, attr )
+                                        attrtype = snapcliconst.getValueAttrType(sobj, attr)
                                         value = cfgObj[attr] if cfgObj else subattrobj[attr]
 
                                         if value == defaultVal:
@@ -507,6 +511,10 @@ class ShowRun(object):
                                 # element
                                 if not foundParentKeyCliName and not keyisdefault:
                                     ignoreobj = False
+
+                                # check for any X object dependencies
+                                if self.checkIfXObjDepsExist(objname, cfgObj) == True:
+                                    ignoreobj = True
 
                                 # lets set the parent object if
                                 # this object is part of this parent
@@ -712,7 +720,7 @@ class ShowCmd(CommonCmdLine):
 
             cmd = " ".join(argv)
             # TODO MOVE THESE TO NEW Cmdln objects
-            if cmd == ("show run",):
+            if cmd in ("show run",):
                 print 'printing without defaluts'
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_NO_DEFAULT)
             elif cmd in ("show run full",):

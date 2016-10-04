@@ -63,7 +63,7 @@
                 "type": "string"
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
@@ -83,7 +83,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "0-2147483647  For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address.", 
+                "default": "0-2147483647  For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address. default: 0", 
                 "type": "string"
               }, 
               "islist": {
@@ -100,11 +100,11 @@
                 "maximum": 2147483647
               }, 
               "isdefaultset": {
-                "default": false, 
+                "default": true, 
                 "type": "boolean"
               }, 
               "defaultarg": {
-                "default": ""
+                "default": "0"
               }
             }
           }

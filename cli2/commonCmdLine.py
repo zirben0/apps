@@ -23,19 +23,23 @@
 #
 # Class contains common methods used the various tree elements of the cli.
 #
-import copy
 import jsonref
 import sys
 import os
 import cmdln
-from jsonschema import Draft4Validator
 import pprint
-import requests
 import getpass
 import snapcliconst
 from tablePrint import indent, wrap_onspace_strict
-from flexswitchV2 import FlexSwitch
-from flexprint import FlexPrint
+
+try:
+    from flexswitchV2 import FlexSwitch
+    from flexprint import FlexPrint
+except ImportError:
+    # running via flexswitch install
+    os.sys.path.append("/opt/flexswitch/sdk/py")
+    from flexswitchV2 import FlexSwitch
+    from flexprint import FlexPrint
 
 USING_READLINE = True
 try:
@@ -706,7 +710,6 @@ class CommonCmdLine(cmdln.Cmdln):
         :param parentname:
         :return: list of tuples in the format of (model attribute name, cliname, help description)
         """
-
         cliHelpList = [[snapcliconst.COMMAND_DISPLAY_ENTER, "", self.LOCAL_COMMAND]] if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW and not issubcmd else []
         if schema:
             schemaname = self.getSchemaCommandNameFromCliName(parentname, model)
@@ -730,7 +733,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                 if type(vvv) in (dict, jsonref.JsonRef):
                                                     for kkkk, vvvv in vvv.iteritems():
                                                         if 'cliname' in vvvv.keys():
-                                                            x.append([listattrDict[kkk], vvvv['cliname'], None])
+                                                            x.append([listattrDict[kkk], vvvv['cliname'], vvvv.get('help')])
                                             else:
                                                 x.append([kkk, self.getCliName(vvv) , self.getCliHelp(vvv)])
                                 elif type(vv) == dict:
@@ -743,6 +746,12 @@ class CommonCmdLine(cmdln.Cmdln):
                                     if kk == "commands":
                                         if self.cmdtype != snapcliconst.COMMAND_TYPE_SHOW:
                                             for kkk, vvv in vv["properties"].iteritems():
+                                                if "subcmd" in kkk and "listattrs" in schemaobj:
+                                                    for (subcmd, attr) in schemaobj['listattrs']:
+                                                        if subcmd == kkk:
+                                                            kkk = attr
+                                                            break
+
                                                 if kkk == val[0]:
                                                     if "properties" in vvv:
                                                         cliname, clihelp = self.getCliName(vvv["properties"]), self.getCliHelp(vvv["properties"])
@@ -1095,6 +1104,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     if min is not None and max is not None:
                                                         strvalues += "%s-%s" %(min, max)
                                             helpcommands = [[cmd, strvalues + "\n" + help, self.MODEL_COMMAND]]
+                                            helpcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                     else:
                                         key = expectedInfo.getCmdKey(mline[i])
                                         objname = expectedInfo.getCmdObjName(mline[i])
@@ -1113,6 +1123,7 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     if min is not None and max is not None:
                                                         strvalues += "%s-%s" %(min, max)
                                             helpcommands = [[cmd, strvalues + "\n" + help, self.MODEL_COMMAND]]
+                                            helpcommands += self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i], submodel, subschema, issubcmd=True)
                             else:

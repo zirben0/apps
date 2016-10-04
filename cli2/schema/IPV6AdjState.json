@@ -1,5 +1,5 @@
 {
-  "ospfglobal": {
+  "ipv6adjstate": {
     "createwithdefault": {
       "default": true, 
       "type": "boolean", 
@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/OspfGlobalSubCmds.json"
+          "$ref": "file:/tmp/snaproute/cli/schema/IPV6AdjStateSubCmds.json"
         }
       }, 
       "cliname": {
@@ -36,7 +36,7 @@
         "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "RouterId": {
+          "IntfRef": {
             "type": "object", 
             "properties": {
               "key": {
@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
+                "default": "Port where neighbor ip's are learned", 
                 "type": "string"
               }, 
               "islist": {
@@ -56,7 +56,7 @@
                 "type": "boolean"
               }, 
               "cliname": {
-                "default": "routerid", 
+                "default": "intfref", 
                 "type": "string"
               }, 
               "argtype": {
@@ -74,7 +74,7 @@
         }
       }, 
       "objname": {
-        "default": "OspfGlobal", 
+        "default": "IPV6AdjState", 
         "type": "string", 
         "description": "object name to which references these attributes"
       }

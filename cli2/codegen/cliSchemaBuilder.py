@@ -35,7 +35,9 @@
 #   'selections' - If there are any string or enumerated values which are selectable for the user
 #
 import json
-import os, copy, sys, string
+import os
+import string
+import errno
 from optparse import OptionParser
 
 
@@ -61,6 +63,7 @@ class ModelLeafTemplate(object):
         self.templateinfo = {
             "prompt": "", # empty string will not display anything
             "cliname": "",
+            "help": "",
             "value": {
 
             },
@@ -72,7 +75,8 @@ class ModelLeafTemplate(object):
         return self.templateinfo
 
     def setHelp(self, *args, **kwargs):
-        pass
+        helpStr = args[0]
+        self.templateinfo["help"] = helpStr
 
     def getMemberPropertiesPath(self):
         return self.templateinfo["value"]
@@ -97,12 +101,8 @@ class ModelLeafTemplate(object):
             "$ref": GENERATED_MODEL_PATH + filename
         })
 
-    def setAdditionalShowCommands(self):
-        self.leafmodel['commands'].update({
-            "brief" : {
-                "cliname": "brief",
-            },
-        })
+    def setCliName(self, cliname):
+        self.templateinfo["cliname"] = cliname
 
     def setArgType(self, type, selections=None, min=None, max=None):
 
@@ -136,8 +136,8 @@ class ModelLeafTemplate(object):
                     self.getMemberPropertiesPath()['argtype']["minimum"] = string.atoi(min)
                     self.getMemberPropertiesPath()['argtype']["maximum"] = string.atoi(max)
                 else:
-                    self.getMemberPropertiesPath()[attr]["minimum"] = defaultMinMaxDict[type][0]
-                    self.getMemberPropertiesPath()[attr]["maximum"] = defaultMinMaxDict[type][1]
+                    self.getMemberPropertiesPath()['argtype']["minimum"] = defaultMinMaxDict[type][0]
+                    self.getMemberPropertiesPath()['argtype']["maximum"] = defaultMinMaxDict[type][1]
 
 class LeafTemplate(object):
     '''
@@ -147,7 +147,7 @@ class LeafTemplate(object):
     def __init__(self,):
 
         self.templateinfo = {
-                "type" : "object",
+                "type": "object",
                 "properties": {
                     "prompt": {
                         "type": "string",
@@ -160,7 +160,7 @@ class LeafTemplate(object):
                         "description": "name used in cli to describe bfd",
                         "default": ""
                     },
-                    "help" : {
+                    "help": {
                         "type": "string",
                         "default": ""
                     },
@@ -243,29 +243,30 @@ class LeafTemplate(object):
 
     def setHelp(self, d, type=None, selections=None, min=None, max=None, len=None, default=None):
         lines = []
-        if 'int' in type:
-            if min not in ('', None) and max not in ('', None):
-                lines.append("%s-%s  %s" %(min, max, d))
-            elif selections not in ('', None):
-                lines.append("%s  %s" % ("/".join(selections), d))
-            elif len not in ('', None):
-                lines.append("len(%s) %s" %(len, d))
+        if type is not None:
+            if 'int' in type:
+                if min not in ('', None) and max not in ('', None):
+                    lines.append("%s-%s  %s" %(min, max, d))
+                elif selections not in ('', None):
+                    lines.append("%s  %s" % ("/".join(selections), d))
+                elif len not in ('', None):
+                    lines.append("len(%s) %s" %(len, d))
+                else:
+                    lines.append("%s" %(d))
+            elif type == 'bool':
+                lines.append("True/False  %s" %(d, ))
+            elif type == 'string':
+                if selections not in ('', None):
+                    lines.append("%s  %s" %("/".join(selections), d))
+                else:
+                    lines.append("%s" %(d, ))
             else:
-                lines.append("%s" %(d))
-        elif type == 'bool':
-            lines.append("True/False  %s" %(d, ))
-        elif type == 'string':
-            if selections not in ('', None):
-                lines.append("%s  %s" %("/".join(selections), d))
-            else:
-                lines.append("%s" %(d, ))
-        else:
-            lines.append("type: %s.  %s" %(type, d))
+                lines.append("type: %s.  %s" %(type, d))
 
-        if default:
-            lines.append("default: %s" %(default,))
+            if default:
+                lines.append("default: %s" %(default,))
 
-        self.getMemberPropertiesPath()["help"]["default"] = " ".join(lines)
+            self.getMemberPropertiesPath()["help"]["default"] = " ".join(lines)
 
     def setSubCommandRef(self, filename):
         '''
@@ -279,6 +280,9 @@ class LeafTemplate(object):
             "$ref": GENERATED_SCHEMA_PATH + filename
         })
 
+    def setCliName(self, *args, **kwargs):
+        pass
+
 class ModelLeafMemberTemplate(ModelLeafTemplate):
     '''
     Class container to serve as a template to hold the attribute members of the model class
@@ -289,6 +293,12 @@ class ModelLeafMemberTemplate(ModelLeafTemplate):
                 # what gets displayed when a tab is pressed
                 "cliname": ""
             }
+
+    def setHelp(self, *args, **kwargs):
+        pass
+
+    def setCliName(self, *args, **kwargs):
+        pass
 
     def getMemberPropertiesPath(self):
 
@@ -388,66 +398,10 @@ class ModelToLeaf(object):
                 except OSError as exc: # Guard against race condition
                     if exc.errno != errno.EEXIST:
                         raise
-            '''
-            # if hte file does not exist in the master copy then lets add it
-            if "gen" in filename:
-                masterfile = filename.split('gen/')[0] + filename.split('gen/')[-1]
-                if not os.path.exists(os.path.dirname(masterfile)):
-                    try:
-                        os.makedirs(os.path.dirname(masterfile))
-                    except OSError as exc: # Guard against race condition
-                        if exc.errno != errno.EEXIST:
-                            raise
 
-                    with open(masterfile, 'w') as f:
-                        json.dump(data, f, indent=2)
-
-                    self.mergeToBaseConfigOrShow(masterfile, data)
-            '''
             if overwrite or not os.path.exists(filename):
                 with open(filename, 'w') as f:
                     json.dump(data, f, indent=2)
-
-    def mergeToBaseConfigOrShow(self, filename, newdata):
-        """
-         This function will merge / add the base model file to an existing
-         place in the tree, default will place the object in the config.json
-         or show.json
-
-         TODO need a mechanism to determine where to place the file, for
-         now all are place either in show or config files.
-
-        :param filename: path to existing file name
-        :param newdata: data to merge to existing
-        :return:
-        """
-
-        def getNextSubCmdNum(listofints):
-            length = len(listofints)
-            diff = frozenset([x for x in xrange(1, length)]).difference(listofints)
-            if len(diff) == 0:
-                return length + 1
-            return diff[0]
-
-        SHOW_FILENAME = "show.json"
-        CONFIG_FILENAME = "config.json"
-
-
-        if "SubCmds" not in filename:
-
-            path = filename.split("gen/")[0]
-            fname = filename.split("gen/")[-1]
-            if "State" in self.modelname:
-                pathfile = path + SHOW_FILENAME
-            else:
-                pathfile = path + CONFIG_FILENAME
-
-            with open(pathfile, 'w') as f:
-                olddata = json.loads(json_data)
-                subcmdname = "subcmd%s" % getNextSubCmdNum([ int(x.lstrip("subcmd")) for x in olddata["config"]["properties"]["commands"]["properties"].keys()])
-                generatedpath = GENERATED_SCHEMA_PATH if self.modeltype == self.SCHEMA_TYPE else GENERATED_MODEL_PATH
-                olddata["config"]["properties"]["commands"]["properties"].update({subcmdname: generatedpath + fname})
-                json.dump(olddata, f, indent=2)
 
     def setTemplate(self):
         if self.modeltype == self.SCHEMA_TYPE:
@@ -459,8 +413,14 @@ class ModelToLeaf(object):
         self.clidata = {self.modelname.lower(): {} }
         self.clisubcmddata = {}
 
+    def setCliName(self, cliname):
+        self.template.setCliName(cliname)
+
     def setHelp(self):
-        pass
+        if 'State' in self.modelname:
+            self.template.setHelp("Show %s Info" % (self.modelname, ))
+        else:
+            self.template.setHelp("Config %s Info" % (self.modelname, ))
 
     def build(self):
         self.open()
@@ -483,9 +443,18 @@ class ModelToLeaf(object):
 
     def setCommands(self):
 
+        self.setHelp()
+        clinameset = False
         for name, member in self.model.iteritems():
             iskey = member['isKey']
             if iskey:
+
+                displayname = name
+                if not clinameset:
+                    displayname = self.modelname.lower().rstrip("state")
+                    self.setCliName(displayname)
+                    clinameset = True
+
                 type = member['type']
                 isArray = member['isArray']
                 description = member['description']
@@ -498,7 +467,7 @@ class ModelToLeaf(object):
                 len = member['len'] if member['len'] else None
 
                 memberinfo = LeafMemberTemplate() if self.modeltype == self.SCHEMA_TYPE else ModelLeafMemberTemplate()
-                memberinfo.setDefault("cliname", name.lower())
+                memberinfo.setDefault("cliname", displayname)
                 memberinfo.setDefault("key", iskey)
                 memberinfo.setArgType(type, selections, min, max)
                 memberinfo.setDefault("islist", isArray)
@@ -636,7 +605,14 @@ class ModelToLeafMember(ModelToLeaf):
         default = not False in [member['isDefaultSet'] for member in self.model.values() if not member['isKey']]
         self.setCreateWithDefaults(default)
         subcmdIdx = 1
+        clinameset = False
         for name, member in self.model.iteritems():
+
+            displayname = name
+            if not clinameset:
+                displayname = self.modelname.lower().rstrip("state")
+                clinameset = True
+
             type = member['type']
             iskey = member['isKey']
             isArray = member['isArray']
@@ -656,7 +632,7 @@ class ModelToLeafMember(ModelToLeaf):
                 if isCommonType(type):
 
                     #memberinfo.setDefault("cliname", name[0].lower() + name[1:])
-                    memberinfo.setDefault("cliname", name)
+                    memberinfo.setDefault("cliname", displayname)
                     memberinfo.setDefault("key", iskey)
                     memberinfo.setArgType(type, selections, min, max)
                     memberinfo.setDefault("islist", isArray)

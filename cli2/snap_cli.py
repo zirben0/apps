@@ -520,7 +520,7 @@ class CmdLine(CommonCmdLine):
                 cmds, values = c.display_help(mline[1:], returnhelp=True)
                 subcommands = [cmd for (cmd, help, x) in cmds]
                 if subcommands and snapcliconst.COMMAND_DISPLAY_ENTER == subcommands[0]:
-                    subcommands = values
+                    subcommands += values
                 return subcommands + specialCmds
         return []
 
@@ -583,13 +583,19 @@ class CmdLine(CommonCmdLine):
                                             expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
                                             valueexpected = expectedInfo.getCmdValueExpected(mline[i])
                                             # we want to keep looping untill there are no more value commands
-                                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED and i < mlineLength -1 :
-
+                                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED and i < mlineLength - 1:
+                                                processvalue = True
                                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                                                 if mline[i+1] not in subcommands and len(subcommands) > 0:
                                                     usercmd = self.convertUserCmdToModelCmd(mline[i+1], subcommands)
                                                     if usercmd is not None:
                                                         mline[i+1] = usercmd
+                                                        if mline[i+1] in subcommands:
+                                                            processvalue = False
+                                                elif mline[i+1] in subcommands:
+                                                    processvalue = False
+
+
                                                     # this is preventing individual values from being set to show
                                                     #elif valueexpected != :
                                                     #    sys.stdout.write("ERROR: Invalid or incomplete command\n")
@@ -603,16 +609,17 @@ class CmdLine(CommonCmdLine):
                                                 # are all expected keys entered?
 
                                                 if (len(frozenset(expectedInfo.getAllCliCmds()).intersection(mline)) == len(expectedInfo)) and \
-                                                    (i + (len(expectedInfo) * 2) - 1) == mlineLength -1:
-                                                    self.currentcmd = self.lastcmd
-                                                    c = ShowCmd(self, submodel, subschema, len(expectedInfo))
-                                                    c.show(mline, all=False)
-                                                    self.currentcmd = []
-                                                    return
+                                                    (i + (len(expectedInfo) * 2) - 1) == mlineLength - 1:
+                                                    if processvalue:
+                                                        self.currentcmd = self.lastcmd
+                                                        c = ShowCmd(self, submodel, subschema, len(expectedInfo))
+                                                        c.show(mline, all=False)
+                                                        self.currentcmd = []
+                                                        return
                                                 else:
                                                     missingcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
                                                     if missingcommands:
-                                                        sys.stdout.write("ERROR incomplete command missing %s" % (missingcommands))
+                                                        sys.stdout.write("ERROR incomplete command missing %s" % (",".join(missingcommands)))
                                                         return
                                                     else:  # commands are present lets see if values are present
                                                         # assumption is that all keys expect a value

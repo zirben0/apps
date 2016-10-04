@@ -1,5 +1,13 @@
 {
     "Exclude": [
+        "DWDMModulePMData",
+        "FanSensorPMData",
+        "TemperatureSensorPMData",
+        "VoltageSensorPMData",
+        "PowerConverterSensorPMData",
+        "QsfpPMData",
+        "QsfpChannelPMData",
+        "PMData",
         "SourcePolicyList",
         "PolicyDefinitionStmtPriority",
 		"DWDMModulePMData"

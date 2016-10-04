@@ -4,10 +4,11 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/NdpEntryHwStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show IPv6 Hardware Installed NDP entries",
+    "cliname": "ndp_entry_hw", 
     "value": {
       "IpAddr": {
-        "cliname": "ipaddr"
+        "cliname": "ndp_entry_hw"
       }
     }
   }

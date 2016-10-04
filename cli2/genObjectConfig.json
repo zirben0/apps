@@ -119,6 +119,30 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "AsicGlobalPM": {
+  "access": "rw",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "AsicGlobalPMState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "AsicGlobalState": {
   "access": "r",
   "owner": "asicd",
@@ -767,6 +791,30 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "EthernetPM": {
+  "access": "rw",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "EthernetPMState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "FMgrGlobal": {
   "access": "w",
   "owner": "fMgrd",
@@ -1247,11 +1295,35 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "NDPIntfState": {
+  "access": "r",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "NdpEntryHwState": {
   "access": "r",
   "owner": "asicd",
   "srcfile": "asicdObjects.go",
   "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "NeighborEntry": {
+  "access": "",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -1468,6 +1540,18 @@
   "owner": "ospfd",
   "srcfile": "ospfdObjects.go",
   "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PMData": {
+  "access": "",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -1748,6 +1832,54 @@
   "usesStateDB": false,
   "autoCreate": false,
   "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpChannel": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpChannelPMData": {
+  "access": "",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpChannelPMDataState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpChannelState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
  },
