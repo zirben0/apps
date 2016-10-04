@@ -86,6 +86,9 @@
       },
       "subcmd31":{
         "$ref": "file:/tmp/snaproute/cli/model/cisco/NDPEntryState.json"
+      },
+      "subcmd32":{
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/NdpEntryHwState.json"
       }
     }
   }
