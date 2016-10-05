@@ -4,10 +4,11 @@
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/NDPEntryStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show IPv6 NDP entries",
+    "cliname": "ndp_entry", 
     "value": {
       "IpAddr": {
-        "cliname": "ipaddr"
+        "cliname": "ndp_entry"
       }
     }
   }

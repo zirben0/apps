@@ -93,7 +93,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " UP/DOWN  Reset state of this dwdm module (false (Reset deasserted) default: DOWN", 
+            "default": "UP/DOWN  Reset state of this dwdm module (false (Reset deasserted) default: DOWN", 
             "type": "string"
           }, 
           "islist": {

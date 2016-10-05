@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "A 32-bit integer uniquely identifying the router in the Autonomous System. By convention",
+                "default": "A 32-bit integer uniquely identifying the router in the Autonomous System. By convention", 
                 "type": "string"
               }, 
               "islist": {

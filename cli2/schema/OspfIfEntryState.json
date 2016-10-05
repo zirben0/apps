@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " The IP address of this OSPF interface.", 
+                "default": "The IP address of this OSPF interface.", 
                 "type": "string"
               }, 
               "islist": {
@@ -60,7 +60,6 @@
                 "type": "string"
               }, 
               "argtype": {
-                "enum": [], 
                 "type": "string"
               }, 
               "isdefaultset": {

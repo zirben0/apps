@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " on/off  Global logging default: on", 
+            "default": "on/off  Global logging default: on", 
             "type": "string"
           }, 
           "islist": {

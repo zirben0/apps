@@ -192,7 +192,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": " CLASS-A/CLASS-B/CLASS-B  Class of PM Data default: CLASS-A", 
+                "default": "CLASS-A/CLASS-B/CLASS-B  Class of PM Data default: CLASS-A", 
                 "type": "string"
               }, 
               "islist": {

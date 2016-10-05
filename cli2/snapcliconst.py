@@ -184,6 +184,11 @@ def GET_MODEL_COMMANDS(schemaname, model):
 def GET_SCHEMA_COMMANDS(schemaname, schema):
     return schema[schemaname]["properties"]["commands"]["properties"] if schemaname in schema else schema["properties"]["commands"]["properties"]
 
+def getValueInModel(model):
+    if "value" in model:
+        return model["value"]
+    return {}
+
 def getValueInSchema(schema):
     '''
     Value contains the keys for a given model object
@@ -194,7 +199,28 @@ def getValueInSchema(schema):
             "value" in schema["properties"] and \
             'properties' in schema['properties']['value']:
         return schema['properties']['value']['properties']
-    return None
+    return {}
+
+def getValueAttrDefault(schema, attr):
+
+    defaultarg = None
+    valuesdict = getValueInSchema(schema)
+    if attr in valuesdict:
+        if 'properties' in valuesdict[attr] and 'defaultarg' in valuesdict[attr]['properties'] and \
+                        'default' in valuesdict[attr]['properties']['defaultarg']:
+            defaultarg = valuesdict[attr]['properties']['defaultarg']['default']
+
+    return defaultarg
+
+def getValueAttrType(schema, attr):
+    argtype = None
+    valuesdict = getValueInSchema(schema)
+    if attr in valuesdict:
+        if 'properties' in valuesdict[attr] and 'argtype' in valuesdict[attr]['properties'] and \
+                        'type' in valuesdict[attr]['properties']['argtype']:
+            argtype = valuesdict[attr]['properties']['argtype']['type']
+
+    return argtype
 
 def getValueArgumentType(attrdata):
     if 'properties' in attrdata and 'argtype' in attrdata['properties'] and 'type' in attrdata['properties']['argtype']:

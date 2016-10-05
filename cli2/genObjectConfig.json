@@ -59,6 +59,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "ApiInfoState": {
+  "access": "r",
+  "owner": "local",
+  "srcfile": "localObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "ArpEntryHwState": {
   "access": "r",
   "owner": "asicd",
@@ -100,6 +112,30 @@
   "owner": "arpd",
   "srcfile": "arpObjects.go",
   "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "AsicGlobalPM": {
+  "access": "rw",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "AsicGlobalPMState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"1",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -678,7 +714,7 @@
   "multiplicity": "1",
   "accelerated": false,
   "usesStateDB": false,
-  "autoCreate": false,
+  "autoCreate": true,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -748,6 +784,30 @@
   "owner": "lacpd",
   "srcfile": "lacpdObjects.go",
   "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "EthernetPM": {
+  "access": "rw",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": " \"*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "EthernetPMState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "*",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -947,6 +1007,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "IPv6RouteHwState": {
+  "access": "r",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "IPv6RouteState": {
   "access": "r",
   "owner": "ribd",
@@ -1019,6 +1091,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "LLDPGlobalState": {
+  "access": "r",
+  "owner": "lldpd",
+  "srcfile": "lldpObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "LLDPIntf": {
   "access": "rw",
   "owner": "lldpd",
@@ -1087,6 +1171,18 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "LacpGlobalState": {
+  "access": "r",
+  "owner": "lacpd",
+  "srcfile": "lacpdObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -1187,11 +1283,47 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "NDPGlobalState": {
+  "access": "r",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "1",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": true,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "NDPIntfState": {
+  "access": "r",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "NdpEntryHwState": {
   "access": "r",
   "owner": "asicd",
   "srcfile": "asicdObjects.go",
   "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "NeighborEntry": {
+  "access": "",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -1408,6 +1540,18 @@
   "owner": "ospfd",
   "srcfile": "ospfdObjects.go",
   "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "PMData": {
+  "access": "",
+  "owner": "asicd",
+  "srcfile": "asicdObjects.go",
+  "multiplicity": "",
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
@@ -1691,6 +1835,54 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "QsfpChannel": {
+  "access": "rw",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": true,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpChannelPMData": {
+  "access": "",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpChannelPMDataState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
+ "QsfpChannelState": {
+  "access": "r",
+  "owner": "platformd",
+  "srcfile": "platformdObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "QsfpPMData": {
   "access": "",
   "owner": "platformd",
@@ -1859,7 +2051,7 @@
   "linkedObjects": null,
   "parent": ""
  },
- "StpBridgeState": {
+ "StpBridgeInstanceState": {
   "access": "r",
   "owner": "stpd",
   "srcfile": "stpdObjects.go",

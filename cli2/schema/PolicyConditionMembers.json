@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " MatchProtocol/MatchDstIpPrefix/MatchSrcIpPrefix  Specifies the match criterion this condition defines", 
+            "default": "MatchProtocol/MatchDstIpPrefix/MatchSrcIpPrefix  Specifies the match criterion this condition defines", 
             "type": "string"
           }, 
           "islist": {

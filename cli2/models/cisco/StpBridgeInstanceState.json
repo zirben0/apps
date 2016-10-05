@@ -1,0 +1,15 @@
+{
+  "stpbridgeinstancestate": {
+    "prompt": "", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/StpBridgeInstanceStateSubCmds.json"
+    },
+    "help": "Show Spanning Tree Bridge Info", 
+    "cliname": "brg_vlan",
+    "value": {
+      "Vlan": {
+        "cliname": "brg_vlan"
+      }
+    }
+  }
+}

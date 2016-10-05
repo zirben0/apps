@@ -1,5 +1,5 @@
 {
-  "stp": {
+  "stpshow": {
     "type" : "object",
     "properties" : {
       "prompt" : {
@@ -20,9 +20,17 @@
         "description": "holds all related commands related to ethernet port",
         "properties": {
           "subcmd1": {
-            "$ref": "file:/tmp/snaproute/cli/schema/StpBridgeState.json"
+            "$ref": "file:/tmp/snaproute/cli/schema/StpBridgeInstanceState.json"
+          },
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/stpinterfaceshow.json"
           }
         }
+      },
+      "objname": {
+        "default": "StpBridgeInstanceState",
+        "type": "string",
+        "description": "object name to which references these attributes"
       }
     }
   }

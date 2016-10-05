@@ -44,7 +44,7 @@
           }
         }
       }, 
-      "DhcpRelay": {
+      "Vrf": {
         "type": "object", 
         "properties": {
           "key": {
@@ -56,7 +56,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "Global Dhcp Relay Agent Information", 
+            "default": "Global Dhcp Relay Agent Information default: default", 
             "type": "string"
           }, 
           "islist": {
@@ -64,7 +64,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "DhcpRelay", 
+            "default": "Vrf", 
             "type": "string"
           }, 
           "argtype": {
@@ -75,7 +75,7 @@
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": "Vrf"
+            "default": "default"
           }
         }
       }

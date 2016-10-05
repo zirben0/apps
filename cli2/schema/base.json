@@ -13,7 +13,7 @@
     },
     "cli-version": {
       "type": "string",
-      "default": "1.0.0.143"
+      "default": "1.0.0.168"
     },
     "prompt" : {
       "type" : "string",

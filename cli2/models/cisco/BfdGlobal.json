@@ -1,14 +1,10 @@
 {
   "bfdglobal": {
-    "prompt": "", 
-    "commands": {
-      "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdGlobalSubCmds.json"
-    }, 
-    "cliname": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "vrf"
-      }
-    }
+  "prompt": "", 
+  "commands": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdGlobalSubCmds.json"
+  },
+  "help": "Enable Bfd Admin Status",
+  "cliname": "bfd"
   }
 }

@@ -9,7 +9,7 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "Version": {
+      "Hostname": {
         "type": "object", 
         "properties": {
           "key": {
@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "System Version Information", 
+            "default": "System Host Name", 
             "type": "string"
           }, 
           "islist": {
@@ -29,7 +29,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "Version", 
+            "default": "Hostname", 
             "type": "string"
           }, 
           "argtype": {
@@ -114,7 +114,7 @@
           }
         }
       }, 
-      "Hostname": {
+      "SwVersion": {
         "type": "object", 
         "properties": {
           "key": {
@@ -126,7 +126,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "System Host Name", 
+            "default": "FlexSwitch Version Information", 
             "type": "string"
           }, 
           "islist": {
@@ -134,7 +134,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "Hostname", 
+            "default": "SwVersion", 
             "type": "string"
           }, 
           "argtype": {

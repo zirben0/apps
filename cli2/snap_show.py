@@ -23,22 +23,15 @@
 #
 # This is class handles the action of the show command
 import sys, os
-from sets import Set
-import cmdln
 import json
 import pprint
 import inspect
-import string
 import snapcliconst
 import jsonref
 
-from jsonschema import Draft4Validator
-from commonCmdLine import CommonCmdLine, SUBCOMMAND_VALUE_NOT_EXPECTED, \
-    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
-from snap_leaf import LeafCmd
+from commonCmdLine import CommonCmdLine
 from cmdEntry import CmdEntry
-
-from flexswitchV2 import FlexSwitch
+import snapcliconst
 MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 gObjectsInfo =  {}
@@ -245,30 +238,31 @@ class ConfigElement(object):
             this function may need to be updated to support more than one key
         '''
         # special cases
-        if self.objname == "StpBridgeInstance":
-            if m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+        if self.objname == "StpBridgeInstance" and \
+            m == "Vlan" and v == 0:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
-                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                                  'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
-        elif self.objname == 'StpPort':
-            if m == "Vlan" and v == snapcliconst.DEFAULT_PVID:
+        elif self.objname == 'StpPort' and \
+            m == "Vlan" and v == 0:
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
-                                  'defaultvalue': snapcliconst.DEFAULT_PVID}
+                                  'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
-        elif self.objname == "Port":
-            if m == "IntfRef":
+        elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor")  and \
+            m == "IntfRef":
                 self.objKeyVal = {'modelname': m,
                                   'type': t,
                                   'cliname': k,
                                   'value': v,
                                   'defaultvalue': df}
-                self.cmd = self.cmd.split(' ')[0]
+                cmdList = self.cmd.split(' ')
+                self.cmd = " ".join( "%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
         else:
             self.objKeyVal = {'modelname': m,
                               'type': t,
@@ -360,6 +354,44 @@ class ShowRun(object):
     def fillObjAttrs(self, element, keyval, cfgObj):
         pass
 
+    def checkForKeySpecialCasesToIgnore(self, cmd, objname, value):
+        # special interface command check since there are three
+        # port
+        # svi
+        # lag
+        ignoreobj = False
+        if 'interface' in cmd and objname in ("IPv4Intf", "IPv6Intf"):
+            # need to determine the type of interface this is to see if it applies
+            # to this portion of the tree
+            methodName = 'get'+objname+'State'
+            method = getattr(self.swtch, methodName, None)
+            r = method(value)
+            data = r.json()
+            if data.has_key("Object"):
+                iftype = data['Object']['L2IntfType']
+                if iftype == "Port" and ("eth" not in cmd and "fpPort" not in cmd):
+                    ignoreobj = True
+                elif iftype == "Lag" and ("port_channel" not in cmd):
+                    ignoreobj = True
+                elif iftype == "Vlan" and ("svi" not in cmd and "vlan" not in cmd):
+                    ignoreobj = True
+
+        # there are cases where keys are optional so lets check to see if the value
+        if value in (None, '', {}, [], ()):
+            ignoreobj = True
+
+        return ignoreobj
+
+    def checkIfXObjDepsExist(self, objname, cfgobj):
+        ignoreobj = False
+        if objname in 'Port':
+            r = self.swtch.getPortState(cfgobj['IntfRef'])
+            data = r.json()
+            if 'NO' in data['Object']['PresentInHW']:
+                ignoreobj = True
+        return ignoreobj
+
+
     def buildTreeObj(self, cmd, pelement, matchattrtype, matchattr, matchvalue, model, schema, subattrobj=False):
 
         def isModelObj(mobj, sobj):
@@ -405,6 +437,7 @@ class ShowRun(object):
                     if isModelObj(mobj, sobj):
                         objname = sobj['properties']['objname']['default']
 
+
                         for cfgObj in self.getNewConfigObj(objname,
                                                            getModelAttrFromMatchAttr(matchattr, mobj, sobj),
                                                            convertStrValueToValueType(matchattrtype, matchvalue)):
@@ -415,13 +448,21 @@ class ShowRun(object):
                                 element.setCmd(cmd)
                                 element.setFormat(pelement.fmt)
                                 ignoreobj = False
+                                keyisdefault = False
                                 # found an element lets populate the contents of the element from this object
                                 element.setObjName(objname)
                                 if 'value' in mobj:
                                     for attr, attrobj in mobj['value'].iteritems():
-                                        defaultVal = sobj['properties']['value']['properties'][attr]['properties']['defaultarg']['default']
-                                        attrtype = sobj['properties']['value']['properties'][attr]['properties']['argtype']['type']
+                                        defaultVal = snapcliconst.getValueAttrDefault(sobj, attr )
+                                        attrtype = snapcliconst.getValueAttrType(sobj, attr)
                                         value = cfgObj[attr] if cfgObj else subattrobj[attr]
+
+                                        if value == defaultVal:
+                                            keyisdefault = True
+
+                                        if not ignoreobj:
+                                            ignoreobj = self.checkForKeySpecialCasesToIgnore(cmd, objname, value)
+
                                         element.setObjKeyVal(attr,
                                                              attrtype,
                                                              attrobj['cliname'],
@@ -431,6 +472,7 @@ class ShowRun(object):
                                 # lets get key attributes for this model object
                                 # the attributes that we are interested in will come from the model
                                 # lets find the attr obj
+                                foundParentKeyCliName = False
                                 for (mcmds, mvalues) in mobj['commands'].iteritems():
                                     svalues = sobj['properties']['commands']['properties'][mcmds]
                                     if 'subcmd' in mcmds and isLeafAttrObj(mvalues, svalues):
@@ -452,9 +494,27 @@ class ShowRun(object):
                                                     # check if the key exists as the key from the parent
                                                     value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
                                                     ignoreobj = True
+                                                    # two cases
+                                                    # 1) parent key is a key for the element
+                                                    # 2) parent key is not a member, the element just lives under
+                                                    #    this object in the tree
+                                                    if mattrobj['cliname'] == pelement.objKeyVal['cliname']:
+                                                        foundParentKeyCliName = True
+
                                                     if mattrobj['cliname'] == pelement.objKeyVal['cliname'] and \
                                                         value == pelement.objKeyVal['value']:
                                                         ignoreobj = False
+
+
+                                # element lives under this tree but a non default key
+                                # was not set so lets make sure we make this a valid
+                                # element
+                                if not foundParentKeyCliName and not keyisdefault:
+                                    ignoreobj = False
+
+                                # check for any X object dependencies
+                                if self.checkIfXObjDepsExist(objname, cfgObj) == True:
+                                    ignoreobj = True
 
                                 # lets set the parent object if
                                 # this object is part of this parent
@@ -611,7 +671,7 @@ class ShowRun(object):
 pp = pprint.PrettyPrinter(indent=2)
 class ShowCmd(CommonCmdLine):
 
-    def __init__(self, parent, model, schema):
+    def __init__(self, parent, model, schema, numKeys):
 
         CommonCmdLine.__init__(self, "", "", "", "", "")
         self.objname = 'show'
@@ -619,6 +679,7 @@ class ShowCmd(CommonCmdLine):
         self.model = model
         self.schema = schema
         self.configList = []
+        self.numKeys = numKeys
         self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
 
     def doesConfigExist(self, c):
@@ -659,7 +720,7 @@ class ShowCmd(CommonCmdLine):
 
             cmd = " ".join(argv)
             # TODO MOVE THESE TO NEW Cmdln objects
-            if cmd == ("show run",):
+            if cmd in ("show run",):
                 print 'printing without defaluts'
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_NO_DEFAULT)
             elif cmd in ("show run full",):
@@ -674,7 +735,9 @@ class ShowCmd(CommonCmdLine):
             ce.dump()
 
         else:
-            lastcmd = argv[-1] if all else argv[-2] if argv[-1] != 'brief' else argv[-3]
+            # TODO need to know how many keys there are so that we can get the first one
+            # so that it matches the initial command key
+            lastcmd = argv[-1] if all else argv[-(self.numKeys * 2)]
             schemaname = self.getSchemaCommandNameFromCliName(lastcmd, self.model)
             if schemaname:
                 # leaf will gather all the config info for the object
@@ -693,72 +756,78 @@ class ShowCmd(CommonCmdLine):
                     for k, v in self.schema[schemaname]['properties']['commands']['properties'].iteritems():
                         # looping through the subcmds to find one that has an object associated with it.
                         if type(v) in (dict, jsonref.JsonRef):
-                            for kk, vv in v.iteritems():
+                            if "objname" in v.keys():
                                 # each subcmd will either be a link to another subcommand
                                 # or a commands containing attributes of an object, which should hold
                                 # the object in question associated with this command.
-                                if "objname" in kk:
-                                    listAttrs = self.model[schemaname]['listattrs'] if 'listattrs' in self.model[schemaname] else []
 
-                                    allCmdsList = self.prepareConfigTreeObjects(None,
-                                                        schemaname,
-                                                        False,
-                                                        self.model[schemaname]['cliname'],
-                                                        self.model[schemaname]["commands"],
-                                                        self.schema[schemaname]["properties"]["commands"]["properties"],
-                                                        listAttrs)
+                                listAttrs = self.model[schemaname]['listattrs'] if 'listattrs' in self.model[schemaname] else []
 
-                                    # lets fill out the object to attributes mapping valid for this level in the tree
-                                    self.objDict = createChildTreeObjectsDict(allCmdsList)
-                                    configObj = self
-                                    if configObj:
-                                        # TODO need to be able to handle multiple keys
-                                        # get the current leaf container key value
-                                        keyvalueDict = {argv[-2]: argv[-1]}
+                                allCmdsList = self.prepareConfigTreeObjects(None,
+                                                    schemaname,
+                                                    False,
+                                                    self.model[schemaname]['cliname'],
+                                                    self.model[schemaname]["commands"],
+                                                    self.schema[schemaname]["properties"]["commands"]["properties"],
+                                                    listAttrs)
 
-                                        # lets go through the valid sub tree command objects
-                                        # and fill in what command was entered by the user
-                                        for objname, objattrs in self.objDict.iteritems():
+                                # lets fill out the object to attributes mapping valid for this level in the tree
+                                self.objDict = createChildTreeObjectsDict(allCmdsList)
+                                configObj = self
+                                if configObj:
+                                    # TODO need to be able to handle multiple keys
+                                    # get the current leaf container key value
+                                    keyvalueDict = {}
+                                    # only care about command indexes
+                                    numKeys = [x for x in range(1, (self.numKeys*2)+1) if x % 2 == 0]
+                                    numKeys.reverse()
+                                    # lets record the command
+                                    for i in numKeys:
+                                        keyvalueDict.update({argv[-i]: argv[-(i-1)]})
 
-                                            config = CmdEntry(self, objname, self.objDict[objname])
-                                            # total keys must be provisioned for config to be valid
-                                            # the keyvalueDict may contain more tree keys than is applicable for the
-                                            # config tree
-                                            objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
-                                                                                if v['isattrkey']])
+                                    # lets go through the valid sub tree command objects
+                                    # and fill in what command was entered by the user
+                                    for objname, objattrs in self.objDict.iteritems():
 
-                                            isvalid = len(keyvalueDict) >= objkeyslen and objkeyslen != 0
+                                        config = CmdEntry(self, objname, self.objDict[objname])
+                                        # total keys must be provisioned for config to be valid
+                                        # the keyvalueDict may contain more tree keys than is applicable for the
+                                        # config tree
+                                        objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
+                                                                            if v['isattrkey']])
 
-                                            isValidKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
-                                                                                         and (k in keyvalueDict)]) > 0
-                                            # we want a full key config
-                                            if isValidKeyConfig:
-                                                for basekey, basevalue in keyvalueDict.iteritems():
-                                                    if basekey in objattrs:
-                                                        # all keys for an object must be set and
-                                                        # and all all attributes must have default values
-                                                        # in order for the object to be considered valid and
-                                                        # ready to be provisioned.
-                                                        config.setValid(isvalid)
-                                                        # no was stripped before
-                                                        config.set(argv, False, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'], isattrlist=objattrs[basekey]['isarray'])
+                                        isvalid = len(keyvalueDict) >= objkeyslen and objkeyslen != 0
 
-                                                # only add this config if it does not already exist
-                                                cfg = configObj.doesConfigExist(config)
-                                                if not cfg:
-                                                    configObj.configList.append(config)
-                                                elif cfg and snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
-                                                    # let remove the previous command if it was set
-                                                    # or lets delete the config
-                                                    if len(config.attrList) == len(keyvalueDict):
-                                                        try:
-                                                            # lets remove this command
-                                                            # because basically the user cleared
-                                                            # the previous unapplied command
-                                                            configObj.configList.remove(cfg)
-                                                            return False
-                                                        except ValueError:
-                                                            pass
+                                        isValidKeyConfig = len([(k, v) for k, v in objattrs.iteritems() if v['isattrkey']
+                                                                                     and (k in keyvalueDict)]) > 0
+                                        # we want a full key config
+                                        if isValidKeyConfig:
+                                            for basekey, basevalue in keyvalueDict.iteritems():
+                                                if basekey in objattrs:
+                                                    # all keys for an object must be set and
+                                                    # and all all attributes must have default values
+                                                    # in order for the object to be considered valid and
+                                                    # ready to be provisioned.
+                                                    config.setValid(isvalid)
+                                                    # no was stripped before
+                                                    config.set(argv, False, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'], isattrlist=objattrs[basekey]['isarray'])
+
+                                            # only add this config if it does not already exist
+                                            cfg = configObj.doesConfigExist(config)
+                                            if not cfg:
+                                                configObj.configList.append(config)
+                                            elif cfg and snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
+                                                # let remove the previous command if it was set
+                                                # or lets delete the config
+                                                if len(config.attrList) == len(keyvalueDict):
+                                                    try:
+                                                        # lets remove this command
+                                                        # because basically the user cleared
+                                                        # the previous unapplied command
+                                                        configObj.configList.remove(cfg)
+                                                        return False
+                                                    except ValueError:
+                                                        pass
 
                                     #config = CmdEntry(self, v['objname']['default'], slf.objDict)
                                     #config.setValid(True)

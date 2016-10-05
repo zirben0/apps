@@ -264,6 +264,41 @@
           }
         }
       }, 
+      "TxPowerRampdBmPerSec": {
+        "type": "object", 
+        "properties": {
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }, 
+          "help": {
+            "default": "type: float64.  Rate of change of tx power on this network interface default: 1", 
+            "type": "string"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "cliname": {
+            "default": "TxPowerRampdBmPerSec", 
+            "type": "string"
+          }, 
+          "argtype": {
+            "type": "float64"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "defaultarg": {
+            "default": "1"
+          }
+        }
+      }, 
       "EnableTxPRBS": {
         "type": "object", 
         "properties": {
@@ -346,7 +381,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " UP/DOWN  Administrative state of this network interface default: UP", 
+            "default": "UP/DOWN  Administrative state of this network interface default: UP", 
             "type": "string"
           }, 
           "islist": {
@@ -422,7 +457,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " 15%SDFEC/15%OvrHeadSDFEC/25%OvrHeadSDFEC  DWDM Module network interface FEC mode default: 15%SDFEC", 
+            "default": "15%SDFEC/15%OvrHeadSDFEC/25%OvrHeadSDFEC  DWDM Module network interface FEC mode default: 15%SDFEC", 
             "type": "string"
           }, 
           "islist": {
@@ -612,7 +647,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " QPSK/8QAM/16QAM  Modulation format to use for this network interface default: 16QAM", 
+            "default": "QPSK/8QAM/16QAM  Modulation format to use for this network interface default: 16QAM", 
             "type": "string"
           }, 
           "islist": {
@@ -652,7 +687,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " RootRaisedCos/RaisedCos/Gaussian  TX pulse shaping filter type default: RootRaisedCos", 
+            "default": "RootRaisedCos/RaisedCos/Gaussian  TX pulse shaping filter type default: RootRaisedCos", 
             "type": "string"
           }, 
           "islist": {

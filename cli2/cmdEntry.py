@@ -49,11 +49,14 @@ def getDictEntryValue(entry, attrDict):
                 rval.update({newKey: val})
             rvallist.append(rval)
         return rvallist
-    else:
+    elif type(entry.val) is dict:
         for key, val in entry.val.iteritems():
             newKey = attrDict[key]['key']
             rval = {newKey: val}
             return rval
+    else: # subcommand value
+        if entry.attr in attrDict:
+            rval.update({attrDict[entry.attr]['key']: entry.val})
 
 def getEntryCmd(entry):
     return entry.cmd
@@ -292,52 +295,83 @@ class CmdEntry(object):
                 else: # struct
                     for od in olddata:
                         deleteupdate = False
-                        for key,value in nd:
+                        for key,value in nd.iteritems():
                             # find a key that matches and that the nd value is not zero, empty string as these are usually
                             # defaults
                             if key in od and od[key] and od[key] == value:
                                 deleteupdate = True
 
                         if deleteupdate:
-                            updatelist.remove(nd)
+                            updatelist.remove(od)
                         else:
                             updatelist.append(nd)
+                    if not olddata:
+                        updatelist.append(nd)
             return updatelist
+
+        def isAttrValueSubCommand(vv, attr):
+            if 'value' in vv and type(vv['value']) is list and \
+                            len(vv) > 0:
+                for cmd in vv['value']:
+                    for v in cmd.values():
+                        if 'subcommand' in v and attr == v['subcommand']:
+                            return True
+            return False
+
+        def getSubCommandAttrType(vv, attr):
+            if 'value' in vv and type(vv['value']) is list and \
+                            len(vv) > 0:
+                for cmd in vv['value']:
+                    for v in cmd.values():
+                        if 'subcommand' in v and attr == v['subcommand']:
+                            return v['type']['type'], v['key']
+            return None, None
+
 
         newdict = {}
         if not rollback:
             for entry in self.getallconfig():
                 for kk, vv in copy.deepcopy(self.keysDict).iteritems():
-                    if kk == getEntryAttribute(entry):
+                    isMyAttr = kk == getEntryAttribute(entry)
+                    isMySubCommand = isAttrValueSubCommand(vv, kk)
+                    #if isMyAttr or \
+                    #        isMySubCommand:
+                    if isMyAttr:
                         # overwrite the default value
-                        attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
+                        if not isMySubCommand or vv['isarray']: # or (isMySubCommand and type(entry.val) in (dict, list)):
+                            attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
+                            key = vv['key']
+                        else:
+                            attrtype, key = getSubCommandAttrType(vv, kk)
+
                         if self.keysDict[kk]['isarray']:
                             if snapcliconst.isnumeric(attrtype):
-                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
+                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, key, entry))
                             elif snapcliconst.isboolean(attrtype):
-                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
+                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, key, entry))
                             elif attrtype in ('str', 'string'):
-                                value = snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry)
+                                value = snapcliconst.updateSpecialValueCases(self.cfgobj, key, entry)
                             else: # struct
                                 value = getDictEntryValue(entry, vv['value'][0])
 
-                            if readdata:
-                                value = handleListUpdate(attrtype, readdata[vv['key']], value)
+                            if readdata and type(value) is list and key in readdata:
+                                value = handleListUpdate(attrtype, readdata[key], value)
                         else:
                             if snapcliconst.isnumeric(attrtype):
-                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
+                                value = snapcliconst.convertStrNumToNum(snapcliconst.updateSpecialValueCases(self.cfgobj, key, entry))
                             elif snapcliconst.isboolean(attrtype):
-                                value = snapcliconst.convertStrBoolToBool(snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry))
+                                value = snapcliconst.convertStrBoolToBool(snapcliconst.updateSpecialValueCases(self.cfgobj, key, entry))
                             elif attrtype in ('str', 'string'):
-                                value = snapcliconst.updateSpecialValueCases(self.cfgobj, vv['key'], entry)
+                                value = snapcliconst.updateSpecialValueCases(self.cfgobj, key, entry)
                             else:
                                 value = getDictEntryValue(entry, vv['value'][0])
 
                         if readdata:
-                            del readdata[vv['key']]
+                            if key in readdata:
+                                del readdata[key]
 
                         #self.keysDict[kk].update({'value': value})
-                        newdict.update({vv['key']: value})
+                        newdict.update({key: value})
 
         # lets add the defaults for the rest of the attributes that are part of this
         # config object

@@ -21,7 +21,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address.", 
+            "default": "0-2147483647  For the purpose of easing the instancing of addressed and addressless interfaces; this variable takes the value 0 on interfaces with IP addresses and the corresponding value of ifIndex for interfaces having no IP address. default: 0", 
             "type": "string"
           }, 
           "islist": {
@@ -33,14 +33,16 @@
             "type": "string"
           }, 
           "argtype": {
-            "type": "int32"
+            "minimum": 0, 
+            "type": "int32", 
+            "maximum": 2147483647
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
-            "default": ""
+            "default": "0"
           }
         }
       }, 
@@ -93,7 +95,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " broadcast(1)/nbma(2)/pointToPoint(3)/pointToMultipoint(5)  The OSPF interface type. By way of a default", 
+            "default": "broadcast/nbma/pointToPoint/pointToMultipoint  The OSPF interface type. By way of a default", 
             "type": "string"
           }, 
           "islist": {
@@ -105,15 +107,13 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
-              1, 
-              2, 
-              3, 
-              5
+              "broadcast", 
+              "nbma", 
+              "pointToPoint", 
+              "pointToMultipoint"
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
@@ -136,7 +136,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " The IP address of this OSPF interface.", 
+            "default": "The IP address of this OSPF interface.", 
             "type": "string"
           }, 
           "islist": {
@@ -151,7 +151,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "defaultarg": {
@@ -208,7 +208,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " *** This element is added for future use. *** The cleartext password used as an OSPF authentication key when simplePassword security is enabled.  This object does not access any OSPF cryptogaphic (e.g.", 
+            "default": "*** This element is added for future use. *** The cleartext password used as an OSPF authentication key when simplePassword security is enabled.  This object does not access any OSPF cryptogaphic (e.g.", 
             "type": "string"
           }, 
           "islist": {
@@ -243,7 +243,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " The priority of this interface.  Used in multi-access networks", 
+            "default": "0-255  The priority of this interface.  Used in multi-access networks", 
             "type": "string"
           }, 
           "islist": {
@@ -255,10 +255,9 @@
             "type": "string"
           }, 
           "argtype": {
-            "minimum": -2147483648, 
-            "enum": [], 
+            "minimum": 0, 
             "type": "int32", 
-            "maximum": 2147483647
+            "maximum": 255
           }, 
           "isdefaultset": {
             "default": false, 
@@ -281,7 +280,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " A 32-bit integer uniquely identifying the area to which the interface connects.  Area ID 0.0.0.0 is used for the OSPF backbone.", 
+            "default": "A 32-bit integer uniquely identifying the area to which the interface connects.  Area ID 0.0.0.0 is used for the OSPF backbone.", 
             "type": "string"
           }, 
           "islist": {
@@ -293,7 +292,6 @@
             "type": "string"
           }, 
           "argtype": {
-            "enum": [], 
             "type": "string"
           }, 
           "isdefaultset": {
@@ -317,7 +315,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "The larger time interval", 
+            "default": "0-2147483647  The larger time interval", 
             "type": "string"
           }, 
           "islist": {
@@ -354,7 +352,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " none(0)/simplePassword(1)/md5(2)  The authentication type specified for an interface.  Note that this object can be used to engage in significant attacks against an OSPF router.", 
+            "default": "none(0)/simplePassword(1)/md5(2)  The authentication type specified for an interface.  Note that this object can be used to engage in significant attacks against an OSPF router.", 
             "type": "string"
           }, 
           "islist": {
@@ -372,7 +370,7 @@
               2
             ], 
             "type": "int32"
-          },
+          }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
@@ -394,7 +392,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-65535  The length of time", 
+            "default": "0-65535  The length of time default: 10", 
             "type": "string"
           }, 
           "islist": {
@@ -439,7 +437,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "iftransitdelay", 
+            "default": "IfTransitDelay", 
             "type": "string"
           }, 
           "argtype": {
@@ -468,7 +466,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": "0-2147483647  The number of seconds that a router's Hello packets have not been seen before its neighbors declare the router down. This should be some multiple of the Hello interval.  This value must be the same for all routers attached to a common network.", 
+            "default": "0-2147483647  The number of seconds that a router's Hello packets have not been seen before its neighbors declare the router down. This should be some multiple of the Hello interval.  This value must be the same for all routers attached to a common network. default: 40", 
             "type": "string"
           }, 
           "islist": {

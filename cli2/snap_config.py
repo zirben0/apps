@@ -24,17 +24,13 @@
 #
 # Class handles initial config command
 #
-import sys, os
+import os
 from sets import Set
 import json
 import pprint
 import inspect
-import string
-import snapcliconst
-from jsonref import JsonRef
-from jsonschema import Draft4Validator
 from commonCmdLine import CommonCmdLine, CmdFunc, SUBCOMMAND_VALUE_NOT_EXPECTED, \
-    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED
+    SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE, SUBCOMMAND_VALUE_EXPECTED, SUBCOMMAND_INVALID
 from snap_leaf import LeafCmd
 from cmdEntry import *
 
@@ -77,6 +73,13 @@ class ExitWithUnappliedConfig(CommonCmdLine):
         return argv
 
 class ConfigCmd(CommonCmdLine):
+
+    ERROR_RED = '\033[31m'
+    ERROR_RED_END = '\033[00m'
+    OK_GREEN = '\033[32m'
+    OK_GREEN_END = '\033[00m'
+    WARNING_YELLOW = '\033[93m'
+    WARNING_YELLOW_END = '\033[00m'
 
     def __init__(self, cmdtype, parent, objname, prompt, model, schema):
         '''
@@ -136,20 +139,21 @@ class ConfigCmd(CommonCmdLine):
                         # don't add the base key
                         if k not in ignoreKeys:
                             cmdname = self.getCliName(v)
-                            if '-' in cmdname:
-                                sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
-                                self.do_exit([])
-                                cmdname = cmdname.replace('-', '_')
+                            if cmdname:
+                                if '-' in cmdname:
+                                    sys.stdout.write("MODEL conflict invalid character '-' in name %s not supported by CLI" %(cmdname,))
+                                    self.do_exit([])
+                                    cmdname = cmdname.replace('-', '_')
 
-                            cmdNameList.append(cmdname)
-                            funcname = "do_" + cmdname
-                            if not teardown:
-                                setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
-                                setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
-                            else:
-                                if hasattr(self.__class__, funcname):
-                                    delattr(self.__class__, funcname)
-                                    delattr(self.__class__, "complete_" + cmdname)
+                                cmdNameList.append(cmdname)
+                                funcname = "do_" + cmdname
+                                if not teardown:
+                                    setattr(self.__class__, funcname, CmdFunc(self, cmdname, self._cmd_common))
+                                    setattr(self.__class__, "complete_" + cmdname, self._cmd_complete_common)
+                                else:
+                                    if hasattr(self.__class__, funcname):
+                                        delattr(self.__class__, funcname)
+                                        delattr(self.__class__, "complete_" + cmdname)
 
                 except Exception as e:
                         sys.stdout.write("EXCEPTION RAISED: %s" %(e,))
@@ -232,7 +236,11 @@ class ConfigCmd(CommonCmdLine):
                     subcommands.append(f.replace('do_', ''))
 
         # advance to next submodel and subschema
-        for i in range(1, mlineLength):
+        i = 1
+        for cmdIdx in range(1, mlineLength):
+            if i >= mlineLength:
+                continue
+
             #sys.stdout.write("%s submodel %s\n\n i subschema %s\n\n subcommands %s mline %s\n\n" %(i, submodel, subschema, subcommands, mline[i-1]))
             schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
             #sys.stdout.write("config complete: mline[i]=%s schemaname %s\n" %(mline[i], schemaname))
@@ -243,24 +251,51 @@ class ConfigCmd(CommonCmdLine):
                 if submodelList and subschemaList:
                     for submodel, subschema in zip(submodelList, subschemaList):
                         #sys.stdout.write("\ncomplete:  10 %s mline[i-1] %s mline[i] %s model %s\n" %(i, mline[i-i], mline[i], submodel))
-                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
-                        #if i == mlineLength -1:
+                        #(valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                        expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
+                        valueexpected = expectedInfo.getCmdValueExpected(mline[i])
+                        objname = expectedInfo.getCmdObjName(mline[i])
+                        keys = expectedInfo.getAllCliCmds()
+                        help = expectedInfo.getCmdHelp(mline[i])
                         #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
                         if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                            # we have reached a key command attribute
                             if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                values = self.getCommandValues(objname, keys)
-                                if not values:
-                                    values = self.getValueSelections(mline[i], submodel, subschema)
-
-                                # if we have the values we don't want to display any further information
-                                if i+1 < mlineLength and mline[i+1] in values:
+                                # from the key we know that number of keys * 2 is the expected length
+                                # keys always expect a value
+                                keyslength = len(expectedInfo) * 2
+                                # all key command have been entered
+                                if (i-1 + keyslength) == mlineLength - 1:
                                     return [snapcliconst.COMMAND_DISPLAY_ENTER]
 
-                                return values
+                                # current index is pointing to a key command
+                                for j in xrange(1, keyslength):
+                                    # get value
+                                    if j % 2 != 0:
+                                        # value not found, lets give the user some options
+                                        if i == mlineLength - 1:
+                                            objname = expectedInfo.getCmdObjName(mline[i])
+                                            key = expectedInfo.getCmdKey(mline[i])
+                                            values = self.getCommandValues(objname, key)
+                                            if not values:
+                                                values = self.getValueSelections(mline[i], submodel, subschema)
+
+                                            # if we have the values we don't want to display any further information
+                                            # unless there is multiple keys
+                                            if i+1 == mlineLength - 1 and mline[i+1] in values:
+                                                return [snapcliconst.COMMAND_DISPLAY_ENTER]
+                                            return values
+                                    else: # get command
+                                        subcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
+                                    # increment to the next command
+                                    i += 1
                         else:
                             subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
                 elif i == mlineLength - 1:
                     subcommands = self.getchildrencmds(mline[i-1], submodel, subschema, issubcmd=True)
+
+            # increment to the next command
+            i += 1
 
         # todo should look next command so that this is not 'sort of hard coded'
         # todo should to a getall at this point to get all of the interface types once a type is found
@@ -418,7 +453,7 @@ class ConfigCmd(CommonCmdLine):
                     usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
                     if usercmd not in subcommands and len(subcommands) > 0:
                         if usercmd is None:
-                            sys.stdout.write("ERROR: (11) Invalid or incomplete command\n")
+                            sys.stdout.write(self.ERROR_RED + "ERROR: (11) Invalid or incomplete command\n" + self.ERROR_RED_END)
                         snapcliconst.printErrorValueCmd(1, argv)
                         return ''
                     else:
@@ -427,7 +462,7 @@ class ConfigCmd(CommonCmdLine):
                 if newargv[0] not in subcommands and len(subcommands) > 0:
                     usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
                     if usercmd is None:
-                        sys.stdout.write("ERROR: (22) Invalid or incomplete command\n")
+                        sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
                         snapcliconst.printErrorValueCmd(0, argv)
                         return ''
                     else:
@@ -451,6 +486,7 @@ class ConfigCmd(CommonCmdLine):
 
             self.commandLen = 0
             try:
+                # lets walk the command line along with the model
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
@@ -461,33 +497,45 @@ class ConfigCmd(CommonCmdLine):
                                 mline[i] = usercmd
                                 newargv[i-1] = usercmd
                             else:
-                                sys.stdout.write("ERROR: (33) Invalid or incomplete command\n")
+                                sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
                                 snapcliconst.printErrorValueCmd(i, mline)
                                 return ''
-
+                        # now that we have the schema based on the previous command
+                        # lets get the list of sub commands
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
                         subschemaList = self.getSubCommand(mline[i], subschema[schemaname]["properties"]["commands"]["properties"], submodel[schemaname]["commands"])
                         if submodelList and subschemaList:
+                            # lets search among the sub commands to find the current command
                             for submodel, subschema in zip(submodelList, subschemaList):
-
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                                (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                                #(valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                                expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
+                                valueexpected = expectedInfo.getCmdValueExpected(mline[i])
+                                # set the current value expected for the actual command execution
+                                self.valueexpected = valueexpected
+
+                                # lets see if there is a value that is expected with this command
+                                # if there is lets do some additional processing on the value
                                 if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                                     if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
                                         if i+1 > mlineLength:
-                                            sys.stdout.write("\nERROR Value expected\n")
+                                            snapcliconst.printErrorValueCmd(i+1, mline)
+                                            sys.stdout.write(self.ERROR_RED + "\nERROR Value expected\n" + self.ERROR_RED_END)
                                             return ''
 
                                         cmdvalue = mline[i+1]
-                                        if len(frozenset(keys).intersection(snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST)) == 1:
-                                            if "/" in cmdvalue:
-                                                cmdvalue = cmdvalue.split('/')[1]
+                                        #if len(frozenset(keys).intersection(snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST)) == 1:
+                                        #    if "/" in cmdvalue:
+                                        #        cmdvalue = cmdvalue.split('/')[1]
 
+                                        # is the value by the user one of the selections?
                                         values = self.getValueSelections(mline[i], submodel, subschema)
                                         if i < mlineLength and values and cmdvalue not in values:
                                             snapcliconst.printErrorValueCmd(i, mline)
                                             sys.stdout.write("\nERROR: Invalid Selection %s, must be one of %s\n" % (cmdvalue, ",".join(values)))
                                             return ''
+
+                                        # is the value by the user between the min and max range
                                         min,max = self.getValueMinMax(mline[i], submodel, subschema)
                                         if min is not None and max is not None:
                                             try:
@@ -500,31 +548,55 @@ class ConfigCmd(CommonCmdLine):
                                                 sys.stdout.write("\nERROR: Invalid Value %s, must be beteween %s-%s\n" % (cmdvalue, min, max))
                                                 return ''
 
-                                        #values = self.getCommandValues(objname, keys)
-                                        #sys.stdout.write("FOUND values %s" %(values))
                                         self.commandLen = len(mline[:i]) + 1
-                                    else:
+                                        # lets check with the node what values exist
+                                        if not values:
+                                            # TODO need a way to know if a value is discovered
+                                            # so that we can validate it here
+                                            #self.getCommandValues(objname, expectedInfo.getAllCliCmds())
+                                            #values = self.getCommandValues(objname, keys)
+                                            #sys.stdout.write("FOUND values %s" %(values))
+                                            #self.commandLen = len(mline[:i]) + 1
+                                            pass
+
+                                        # we have reached all commands
+                                        if i == mlineLength - 2 and \
+                                                (len(frozenset(expectedInfo.getAllCliCmds()).intersection(newargv)) == len(expectedInfo)):
+                                            return newargv
+
+                                    else: # SUBCOMMAND_VALUE_EXPECTED_VALUE
                                         self.commandLen = len(mline[:i])
-                                    self.valueexpected = valueexpected
-                                    return newargv
+
+                                        # we have reached all commands
+                                        if i == mlineLength - 1:
+                                            if (len(frozenset(expectedInfo.getAllCliCmds()).intersection(newargv)) == len(expectedInfo)):
+                                                return newargv
+                                            else:
+                                                missingcmds = frozenset(expectedInfo.getAllCliCmds()).difference(newargv)
+                                                sys.stdout.write("\nERROR: Incomplete command %s, missing %s\n" % (" ".join(newargv), " ".join(missingcmds)))
+                                                return ''
+
                                 elif i < mlineLength - 1 and mline[i+1] in subcommands:
                                     schemaname = self.getSchemaCommandNameFromCliName(mline[i], submodel)
                                     if schemaname:
                                         for (submodelkey, submodel2), (subschemakey, subschema2) in zip(submodel[schemaname]["commands"].iteritems(),
                                                                                                       subschema[schemaname]['properties']["commands"]["properties"].iteritems()):
+                                            # might be multiple sub commands so lets find the one which contains
+                                            # our attribute
                                             if 'subcmd' in submodelkey:
                                                 if self.isCommandLeafAttrs(submodel2, subschema2):
                                                     #leaf attr model
                                                     (valueexpected, objname, keys, help, islist) = self.isLeafValueExpected(mline[i+1], submodel2, subschema2)
-                                                    if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                                        if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
-                                                            self.commandLen = len(mline[i:])
+                                                    if valueexpected != SUBCOMMAND_INVALID:
+                                                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
+                                                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                                                                self.commandLen = len(mline[i:])
+                                                            else:
+                                                                self.commandLen = len(mline[i:])
                                                         else:
                                                             self.commandLen = len(mline[i:])
-                                                    else:
-                                                        self.commandLen = len(mline[i:])
-                                                    self.valueexpected = valueexpected
-                                                    return newargv
+                                                        self.valueexpected = valueexpected
+                                                        return newargv
                         else:
                             subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                             if mline[i] not in subcommands:
@@ -684,23 +756,27 @@ class ConfigCmd(CommonCmdLine):
         for objname in delcfgorder:
             for config in self.configList:
                 if config.isValid() and config.objname == objname and config.delete:
-                    yield config
+                    if config.objname not in excludeObjs:
+                        yield config
 
         # remove non-ordered config
         for config in self.configList:
             if config.isValid() and config.delete and config.objname not in delcfgorder:
-                yield config
+                if config.objname not in excludeObjs:
+                    yield config
 
         # config the ordered config
         for objname in cfgorder:
             for config in self.configList:
                 if config.isValid() and config.objname == objname and not config.delete:
-                    yield config
+                    if config.objname not in excludeObjs:
+                        yield config
 
         # config the non-ordered config
         for config in self.configList:
             if config.isValid() and not config.delete and config.objname not in cfgorder:
-                yield config
+                if config.objname not in excludeObjs:
+                    yield config
 
         for config in self.configList:
             if config.objname in excludeObjs:
@@ -750,7 +826,6 @@ class ConfigCmd(CommonCmdLine):
             # get the combination of all config objects which are of the same type
             for c1,c2 in getSameConfigObjects(configList, configList):
 
-                newConfig = None
                 # lets combine any entries which have the same key values
                 # as the attributes may have been updated by two different config trees
                 if isAttrEqual(c1, c2):
@@ -806,7 +881,7 @@ class ConfigCmd(CommonCmdLine):
                     if not failurecfg:
                         continue
                     else:
-                        sys.stdout.write("*************CONFIG FAILED ROLLING BACK ANY SUCCESSFUL CONFIG*************\n")
+                        sys.stdout.write(self.ERROR_RED + "*************CONFIG FAILED ROLLING BACK ANY SUCCESSFUL CONFIG*************\n" + self.ERROR_RED_END)
 
                 # apply delete config before create
                 for config in self.getConfigOrder(self.configList):
@@ -886,6 +961,7 @@ class ConfigCmd(CommonCmdLine):
 
                             except Exception as e:
                                 sys.stdout.write("FAILED TO TO APPLY OBJECT CONFIG: (Exception caught) Reason: %s funcPostfix: %s\n" %(e, funcObjName))
+                                config.show()
 
             if clearAppliedList:
                 for config in clearAppliedList:
@@ -904,22 +980,23 @@ class ConfigCmd(CommonCmdLine):
                 r = create_func(*argumentList)
             errorStr = r.json()['Result']
             if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
-                sys.stdout.write("command create FAILED:\n%s %s\n" % (r.status_code, errorStr))
+                resultstr = self.ERROR_RED + "FAILED: %s %s\n" % (r.status_code, errorStr) + self.ERROR_RED_END
                 failurecfg = True
             else:
-                sys.stdout.write("create SUCCESS:   http status code: %s\n" % (r.status_code,))
+                resultstr = self.OK_GREEN + "SUCCESS: http status code: %s\n" % (r.status_code,) + self.OK_GREEN_END
                 if errorStr != "Success":
-                    sys.stdout.write("warning return code: %s\n" % (errorStr))
+                    resultstr += self.WARNING_YELLOW + "WARNING return: %s\n" % (errorStr) + self.WARNING_YELLOW_END
 
                 # set configuration to applied state
                 config.setPending(False)
                 config.show()
                 delconfigList.append(config)
-            sys.stdout.write("sdk:%s(%s,%s)\n\n" % (create_func.__name__,
+            sys.stdout.write("sdk:%s(%s,%s) result: %s\n\n" % (create_func.__name__,
                                                   ",".join(["%s" % (x) for x in argumentList]),
-                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
+                                                  resultstr))
         else:
-            sys.stdout.write("Incomplete config not applying for:\n missing fields %s", missingrequiredconfig)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\n missing fields %s\n" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
         return failurecfg, delconfigList
 
@@ -936,22 +1013,23 @@ class ConfigCmd(CommonCmdLine):
 
             errorStr = r.json()['Result']
             if r.status_code not in (sdk.httpSuccessCodes + [410]) and ('exists' and 'Nothing to be updated') not in errorStr: # 410 - Done
-                sys.stdout.write("command delete FAILED:\n%s %s\n" % (r.status_code, errorStr))
+                resultstr = self.ERROR_RED + "FAILED: %s %s\n" % (r.status_code, errorStr) + self.ERROR_RED_END
                 failurecfg = True
             else:
-                sys.stdout.write("delete SUCCESS:   http status code: %s\n" % (r.status_code,))
+                resultstr = self.OK_GREEN + "SUCCESS:   http status code: %s\n" % (r.status_code,) + self.OK_GREEN_END
                 if errorStr != "Success":
-                    sys.stdout.write("warning return code: %s\n" % (errorStr))
+                    resultstr += self.WARNING_YELLOW + "WARNING return: %s\n" % (errorStr) + self.WARNING_YELLOW_END
 
                 # set configuration to applied state
                 config.setPending(False)
                 config.show()
                 delconfigList.append(config)
-            sys.stdout.write("sdk:%s(%s,%s)\n\n" % (delete_func.__name__,
+            sys.stdout.write("sdk:%s(%s,%s) result: %s\n\n" % (delete_func.__name__,
                                                   ",".join(["%s" % (x) for x in argumentList]),
-                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+                                                  ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
+                                                  resultstr))
         else:
-            sys.stdout.write("Incomplete config not applying for:\nmissing arguments %s", missingrequiredconfig)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s\n" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
 
         return failurecfg, delconfigList
@@ -968,22 +1046,23 @@ class ConfigCmd(CommonCmdLine):
                 # succes
                 errorStr = r.json()['Result']
                 if r.status_code not in (sdk.httpSuccessCodes) and ('exists' and 'Nothing to be updated') not in errorStr:
-                    sys.stdout.write("command update FAILED:\n%s %s\n" % (r.status_code, errorStr))
+                    resultstr = self.ERROR_RED + "FAILED: %s %s\n" % (r.status_code, errorStr) + self.ERROR_RED_END
                     failurecfg = True
                 else:
-                    sys.stdout.write("update SUCCESS:   http status code: %s\n" % (r.status_code,))
+                    resultstr = self.OK_GREEN + "SUCCESS: http status code: %s\n" % (r.status_code,) + self.OK_GREEN_END
                     if errorStr != "Success":
-                        sys.stdout.write("warning return code: %s\n" % (errorStr))
+                        resultstr += self.WARNING_YELLOW + "WARNING return: %s\n" % (errorStr) + self.WARNING_YELLOW_END
 
                     # set configuration to applied state
                     config.setPending(False)
                     config.show()
                     delconfigList.append(config)
-                sys.stdout.write("sdk:%s(%s,%s)\n\n" % (update_func.__name__,
+                sys.stdout.write("sdk:%s(%s,%s) result: %s\n\n" % (update_func.__name__,
                                                       ",".join(["%s" % (x) for x in argumentList]),
-                                                      ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()])))
+                                                      ",".join(["%s=%s" % (x, y) for x, y in kwargs.iteritems()]),
+                                                      resultstr))
         else:
-            sys.stdout.write("Incomplete config not applying for:\nmissing arguments %s", missingrequiredconfig)
+            sys.stdout.write(self.WARNING_YELLOW + "Incomplete config not applying for:\nmissing arguments %s\n" %(missingrequiredconfig) + self.WARNING_YELLOW_END)
             config.show()
 
         return (failurecfg, delconfigList)

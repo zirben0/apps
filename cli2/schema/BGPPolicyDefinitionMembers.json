@@ -26,7 +26,7 @@
             "type": "string"
           }, 
           "help": {
-            "default": " All/Any  Match type for policy definition", 
+            "default": "All/Any  Match type for policy definition", 
             "type": "string"
           }, 
           "islist": {

@@ -63,6 +63,8 @@ class CmdLine(CommonCmdLine):
        and you want to know what arguments match the input
        (e.g. 'show pr?'.)
     """
+    ERROR_RED = '\033[31m'
+    ERROR_RED_END = '\033[00m'
     # name of schema and model
     name = 'base.json'
     objname = 'base'
@@ -229,10 +231,14 @@ class CmdLine(CommonCmdLine):
         ports = self.sdk.getAllPorts()
         for port in ports:
             p = port['Object']
-            ifIndex = p['IfIndex']
-            intfRef = p['IntfRef']
-            self.IfIndexToIntfRef[ifIndex] = intfRef
-            self.IntfRefToIfIndex[intfRef] = ifIndex
+            if p:
+                ifIndex = p['IfIndex']
+                intfRef = p['IntfRef']
+                self.IfIndexToIntfRef[ifIndex] = intfRef
+                self.IntfRefToIfIndex[intfRef] = ifIndex
+            else:
+                sys.stdout.write(self.ERROR_RED + "ERROR Failed To Discover Ports CLI will have inconsistent results\n" + self.ERROR_RED_END)
+                return
 
     def do_show_cli(self, arv):
         """Show all commands available within the CLI"""
@@ -376,13 +382,13 @@ class CmdLine(CommonCmdLine):
                         # describe physical ports
                         self.replace_cli_name('ethernet', snapcliconst.PORT_NAME_PREFIX)
                     else:
-                        sys.stdout.write("Failed to find ports in system, was DB deleted?\n")
+                        sys.stdout.write(self.ERROR_RED + "ERROR: Failed to find ports in system, was DB deleted?\n" + self.ERROR_RED_END)
                         self.do_exit([])
                 except jsonref.JsonRefError as e:
-                    sys.stdout.write("ERROR Failed Model/Schema out of sync: %s\n" %(e.message))
+                    sys.stdout.write(self.ERROR_RED + "ERROR Failed Model/Schema out of sync: %s\n" %(e.message) + self.ERROR_RED_END)
                 except Exception as e:
                     print e
-                    sys.stdout.write("Failed to find port prefix exiting CLI, is switch %s accessable? %s\n" %(self.switch_name, e))
+                    sys.stdout.write(self.ERROR_RED + "ERROR Failed to find port prefix exiting CLI, is switch %s accessable? %s\n" %(self.switch_name, e) + self.ERROR_RED_END)
                     # not going to exit as we want to keep things running
                     #self.do_exit([])
 
@@ -505,13 +511,17 @@ class CmdLine(CommonCmdLine):
         subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
         if submodelList and subschemaList:
             for submodel, subschema in zip(submodelList, subschemaList):
-                c = ShowCmd(self, submodel, subschema)
+                c = ShowCmd(self, submodel, subschema, 0)
 
                 specialCmds = []
                 if len(mline) == 1:
                     specialCmds = ["run"]
 
-                return [cmd for (cmd, help, x) in c.display_help(mline[1:], returnhelp=True)] + specialCmds
+                cmds, values = c.display_help(mline[1:], returnhelp=True)
+                subcommands = [cmd for (cmd, help, x) in cmds]
+                if subcommands and snapcliconst.COMMAND_DISPLAY_ENTER == subcommands[0]:
+                    subcommands += values
+                return subcommands + specialCmds
         return []
 
 
@@ -521,7 +531,7 @@ class CmdLine(CommonCmdLine):
         subschemaList = self.getSubCommand("show", self.schema["properties"]["commands"]["properties"], self.model["commands"])
         if submodelList and subschemaList:
             for submodel, subschema in zip(submodelList, subschemaList):
-                c = ShowCmd(self, submodel, subschema)
+                c = ShowCmd(self, submodel, subschema, 0)
                 c.display_help(mline[1:])
 
 
@@ -538,7 +548,7 @@ class CmdLine(CommonCmdLine):
                     [cmd[:i+1] for i, ch in enumerate(cmd) if i+1 >= 2 and cmd[:i+1] != cmd]).intersection([mline[1]])):
                 self.currentcmd = self.lastcmd
                 # TODO subcmd1 hard coded below is BAD!!!! cause what if schema/model changes then this will not work
-                c = ShowCmd(self, self.model['commands']['subcmd1'], self.schema['properties']['commands']['properties']['subcmd1'])
+                c = ShowCmd(self, self.model['commands']['subcmd1'], self.schema['properties']['commands']['properties']['subcmd1'], 0)
                 c.show(mline, all=True)
                 return
             else:
@@ -546,7 +556,9 @@ class CmdLine(CommonCmdLine):
                 subschemaList = self.getSubCommand(mline[0], self.schema["properties"]["commands"]["properties"], self.model["commands"])
                 if mlineLength > 0:
                     try:
-                        for i in range(1, mlineLength):
+                        i = 1
+                        for cmdIdx in range(1, mlineLength):
+
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
                                 if mline[i] not in subcommands and len(subcommands) > 0:
@@ -554,51 +566,82 @@ class CmdLine(CommonCmdLine):
                                     if usercmd is not None:
                                         mline[i] = usercmd
                                     else:
-                                        sys.stdout.write("ERROR: Invalid or incomplete command\n")
+                                        sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
                                         snapcliconst.printErrorValueCmd(i, mline)
                                         return ''
 
                                 schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
-                                submodelList = self.getSubCommand(mline[i],
-                                                                  submodel[schemaname]["commands"])
-                                subschemaList = self.getSubCommand(mline[i],
-                                                                   subschema[schemaname]["properties"]["commands"]["properties"],
-                                                                   submodel[schemaname]["commands"])
-                                if submodelList and subschemaList:
-                                    for submodel, subschema in zip(submodelList, subschemaList):
-                                        (valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
-                                        # we want to keep looping untill there are no more value commands
-                                        if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
-                                            if i == mlineLength - 1:
-                                                self.currentcmd = self.lastcmd
-                                                c = ShowCmd(self, submodel, subschema)
-                                                c.show(mline, all=True)
-                                                self.currentcmd = []
-                                            else:
+                                if schemaname:
+                                    submodelList = self.getSubCommand(mline[i],
+                                                                      submodel[schemaname]["commands"])
+                                    subschemaList = self.getSubCommand(mline[i],
+                                                                       subschema[schemaname]["properties"]["commands"]["properties"],
+                                                                       submodel[schemaname]["commands"])
+                                    if submodelList and subschemaList:
+                                        for submodel, subschema in zip(submodelList, subschemaList):
+                                            #(valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
+                                            expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
+                                            valueexpected = expectedInfo.getCmdValueExpected(mline[i])
+                                            # we want to keep looping untill there are no more value commands
+                                            if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED and i < mlineLength - 1:
+                                                processvalue = True
                                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
                                                 if mline[i+1] not in subcommands and len(subcommands) > 0:
                                                     usercmd = self.convertUserCmdToModelCmd(mline[i+1], subcommands)
                                                     if usercmd is not None:
                                                         mline[i+1] = usercmd
+                                                        if mline[i+1] in subcommands:
+                                                            processvalue = False
+                                                elif mline[i+1] in subcommands:
+                                                    processvalue = False
+
+
                                                     # this is preventing individual values from being set to show
                                                     #elif valueexpected != :
                                                     #    sys.stdout.write("ERROR: Invalid or incomplete command\n")
                                                     #    snapcliconst.printErrorValueCmd(i+1, mline)
                                                     #    return ''
 
-                                                if mline[i+1] not in subcommands:
-                                                    self.currentcmd = self.lastcmd
-                                                    c = ShowCmd(self, submodel, subschema)
-                                                    c.show(mline, all=False)
-                                                    self.currentcmd = []
-                                        elif i == mlineLength - 1:
-                                            if "commands" not in submodel:
-                                                for key, value in submodel.iteritems():
-                                                    if 'cliname' in value and value['cliname'] == mline[i]:
+                                                # at this point i+1 should be the value for the current command
+                                                # this logic here is such that when the first key value has been
+                                                # found this logic will check for the rest of the keys here
+                                                # since the expectedInfo holds all the valid keys
+                                                # are all expected keys entered?
+
+                                                if (len(frozenset(expectedInfo.getAllCliCmds()).intersection(mline)) == len(expectedInfo)) and \
+                                                    (i + (len(expectedInfo) * 2) - 1) == mlineLength - 1:
+                                                    if processvalue:
                                                         self.currentcmd = self.lastcmd
-                                                        c = ShowCmd(self, submodel, subschema)
-                                                        c.show(mline, all=True)
+                                                        c = ShowCmd(self, submodel, subschema, len(expectedInfo))
+                                                        c.show(mline, all=False)
                                                         self.currentcmd = []
+                                                        return
+                                                else:
+                                                    missingcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
+                                                    if missingcommands:
+                                                        sys.stdout.write("ERROR incomplete command missing %s" % (",".join(missingcommands)))
+                                                        return
+                                                    else:  # commands are present lets see if values are present
+                                                        # assumption is that all keys expect a value
+                                                        totalkeylength = len(expectedInfo)*2
+                                                        for j in range(0, totalkeylength):
+                                                            # skip back to first key command
+                                                            if (i-1) + j >= mlineLength:
+                                                                sys.stdout.write("ERROR incomplete command missing value")
+                                                                snapcliconst.printErrorValueCmd(i+j, mline)
+                                                                return
+
+                                            elif i == mlineLength - 1:
+                                                if "commands" not in submodel:
+                                                    for key, value in submodel.iteritems():
+                                                        if 'cliname' in value and value['cliname'] == mline[i]:
+                                                            self.currentcmd = self.lastcmd
+                                                            c = ShowCmd(self, submodel, subschema, 0)
+                                                            c.show(mline, all=True)
+                                                            self.currentcmd = []
+                                                            return
+                            #increment to next command
+                            i += 1
 
                     except Exception:
                         pass

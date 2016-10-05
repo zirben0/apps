@@ -1,0 +1,31 @@
+{
+  "showinterfacestatus": {
+    "type" : "object",
+    "properties" : {
+      "prompt": {
+        "type": "string",
+        "default": "interface"
+      },
+      "cliname": {
+        "type": "string",
+        "description": "Name used in cli to describe an interface",
+        "default": "status"
+      },
+      "help": {
+        "type": "string",
+        "default": "Show interface brief"
+      },
+      "commands": {
+        "type": "object",
+        "description": "holds all related commands related to the different interfaces",
+        "properties": {
+        }
+      },
+      "objname": {
+        "default": "InterfaceStatus",
+        "type": "string",
+        "description": "object name to which references these attributes"
+      }
+    }
+  }
+}
