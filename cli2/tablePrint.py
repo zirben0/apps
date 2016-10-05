@@ -1,4 +1,4 @@
-#!/user/lib/python
+#!/usr/lib/python
 import cStringIO,operator
 # Code taken from
 # http://code.activestate.com/recipes/267662-table-indentation/
