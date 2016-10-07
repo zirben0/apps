@@ -1,13 +1,14 @@
 {
   "ndpglobalstate": {
-    "prompt": "", 
+    "cliname": "ndpglobal", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/NDPGlobalStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show NDPGlobalState Info", 
+    "prompt": "", 
     "value": {
       "Vrf": {
-        "cliname": "vrf"
+        "cliname": "ndpglobal"
       }
     }
   }

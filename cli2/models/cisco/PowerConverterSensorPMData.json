@@ -1,8 +1,9 @@
 {
   "powerconvertersensorpmdata": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config PowerConverterSensorPMData Info", 
+    "prompt": "", 
     "value": {}
   }
 }

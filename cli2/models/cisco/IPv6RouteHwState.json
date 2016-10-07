@@ -1,13 +1,14 @@
 {
   "ipv6routehwstate": {
-    "prompt": "", 
+    "cliname": "ipv6routehw", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv6RouteHwStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show IPv6RouteHwState Info", 
+    "prompt": "", 
     "value": {
       "DestinationNw": {
-        "cliname": "destinationnw"
+        "cliname": "ipv6routehw"
       }
     }
   }

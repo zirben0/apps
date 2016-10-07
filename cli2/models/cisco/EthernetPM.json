@@ -1,0 +1,18 @@
+{
+  "ethernetpm": {
+    "cliname": "pm",
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/EthernetPMSubCmds.json"
+    }, 
+    "help": "Config EthernetPM Info", 
+    "prompt": "", 
+    "value": {
+      "IntfRef": {
+        "cliname": "ethernet"
+      }, 
+      "Resource": {
+        "cliname": "pm"
+      }
+    }
+  }
+}

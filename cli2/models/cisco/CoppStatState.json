@@ -1,13 +1,14 @@
 {
   "coppstatstate": {
-    "prompt": "", 
+    "cliname": "coppstat", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/CoppStatStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show CoppStatState Info", 
+    "prompt": "", 
     "value": {
       "Protocol": {
-        "cliname": "protocol"
+        "cliname": "coppstat"
       }
     }
   }

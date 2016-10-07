@@ -7,7 +7,7 @@
   ], 
   "commands": {
     "DestinationNw": {
-      "cliname": "destinationnw"
+      "cliname": "route"
     }, 
     "Cost": {
       "cliname": "cost"

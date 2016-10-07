@@ -1,25 +1,26 @@
 {
   "dwdmmodulenwintfpmstate": {
-    "prompt": "pm", 
+    "cliname": "pm", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleNwIntfPMStateSubCmds.json"
     }, 
-    "cliname": "pm", 
+    "help": "Show DWDMModuleNwIntfPMState Info", 
+    "prompt": "pm", 
     "value": {
-      "Type": {
-        "cliname": "type"
+      "Class": {
+        "cliname": "class"
       }, 
       "ModuleId": {
+        "cliname": "dwdm"
+      }, 
+      "NwIntfId": {
         "cliname": "dwdm"
       }, 
       "Resource": {
         "cliname": "resource"
       }, 
-      "NwIntfId": {
-        "cliname": "dwdm"
-      }, 
-      "Class": {
-        "cliname": "class"
+      "Type": {
+        "cliname": "type"
       }
     }
   }

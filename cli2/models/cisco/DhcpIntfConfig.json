@@ -1,10 +1,10 @@
 {
   "dhcpintfconfig": {
-    "prompt": "",
+    "cliname": "dhcp", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DhcpIntfConfigSubCmds.json"
-    },
-    "help" : "DHCP Interface Commands",
-    "cliname": "dhcp"
+    }, 
+    "help": "DHCP Interface Commands", 
+    "prompt": ""
   }
 }

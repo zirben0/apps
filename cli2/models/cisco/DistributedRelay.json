@@ -1,10 +1,11 @@
 {
   "distributedrelay": {
-    "prompt": "", 
+    "cliname": "distributedrelay", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DistributedRelaySubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config DistributedRelay Info", 
+    "prompt": "", 
     "value": {
       "Name": {
         "cliname": "name"

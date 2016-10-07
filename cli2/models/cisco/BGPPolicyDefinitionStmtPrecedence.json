@@ -1,8 +1,9 @@
 {
   "bgppolicydefinitionstmtprecedence": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config BGPPolicyDefinitionStmtPrecedence Info", 
+    "prompt": "", 
     "value": {}
   }
 }

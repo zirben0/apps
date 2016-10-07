@@ -1,13 +1,14 @@
 {
   "powerconvertersensorpmdatastate": {
-    "prompt": "", 
+    "cliname": "powerconvertersensorpmdata", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PowerConverterSensorPMDataStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show PowerConverterSensorPMDataState Info", 
+    "prompt": "", 
     "value": {
       "Class": {
-        "cliname": "class"
+        "cliname": "powerconvertersensorpmdata"
       }, 
       "Name": {
         "cliname": "name"

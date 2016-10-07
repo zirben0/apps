@@ -1,8 +1,9 @@
 {
   "bgpmessages": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config BGPMessages Info", 
+    "prompt": "", 
     "value": {}
   }
 }

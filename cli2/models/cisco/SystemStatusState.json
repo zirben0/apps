@@ -1,14 +1,14 @@
 {
   "systemstatusstate": {
-    "prompt": "", 
+    "cliname": "systemstatus", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemStatusStateSubCmds.json"
-    },
-    "help": "Show System Status",
-    "cliname": "system_status",
+    }, 
+    "help": "Show System Status", 
+    "prompt": "", 
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "systemstatus"
       }
     }
   }

@@ -1,5 +1,8 @@
 {
-  "listattrs": [], 
+  "cmd_to_subcmd": {
+    "subcmd1": "VirtualIPv4Addr"
+  },
+  "listattrs": [],
   "createwithdefault": {
     "default": true,
     "type": "boolean", 

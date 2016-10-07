@@ -1,13 +1,14 @@
 {
   "ipv4intf": {
-    "prompt": "", 
+    "cliname": "ipv4intf", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4IntfSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config IPv4Intf Info", 
+    "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "intfref"
+        "cliname": "ipv4intf"
       }
     }
   }

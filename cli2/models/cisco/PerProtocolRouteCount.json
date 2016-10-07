@@ -1,8 +1,9 @@
 {
   "perprotocolroutecount": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config PerProtocolRouteCount Info", 
+    "prompt": "", 
     "value": {}
   }
 }

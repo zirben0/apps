@@ -1,26 +1,26 @@
 {
   "alarmstate": {
-    "prompt": "", 
+    "cliname": "alarm", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/AlarmStateSubCmds.json"
     }, 
-    "cliname": "alarms", 
-    "help": "Command to query for all alarms in the system",
+    "help": "Command to query for all alarms in the system", 
+    "prompt": "", 
     "value": {
       "EventId": {
-        "cliname": "eventid"
+        "cliname": "alarm"
       }, 
       "EventName": {
         "cliname": "eventname"
       }, 
-      "SrcObjName": {
-        "cliname": "srcobjname"
+      "OwnerId": {
+        "cliname": "ownerid"
       }, 
       "OwnerName": {
         "cliname": "ownername"
       }, 
-      "OwnerId": {
-        "cliname": "ownerid"
+      "SrcObjName": {
+        "cliname": "srcobjname"
       }
     }
   }

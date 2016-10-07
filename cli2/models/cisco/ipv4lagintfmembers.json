@@ -1,7 +1,7 @@
 {
   "commands": {
     "IntfRef": {
-      "cliname": "ethernet"
+      "cliname": "port_channel"
     },
     "IpAddr": {
       "cliname": "address"

@@ -1,11 +1,11 @@
 {
   "bgpglobal": {
-    "prompt": "bgp",
+    "cliname": "bgp", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalSubCmds.json"
-    },
-    "help" : "Local AS for BGP global config",
-    "cliname": "bgp",
+    }, 
+    "help": "Local AS for BGP global config", 
+    "prompt": "bgp", 
     "value": {
       "ASNum": {
         "cliname": "bgp"

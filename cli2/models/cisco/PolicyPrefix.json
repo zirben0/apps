@@ -1,8 +1,9 @@
 {
   "policyprefix": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config PolicyPrefix Info", 
+    "prompt": "", 
     "value": {}
   }
 }

@@ -1,26 +1,26 @@
 {
   "faultstate": {
-    "prompt": "", 
+    "cliname": "fault", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/FaultStateSubCmds.json"
     }, 
-    "cliname": "faults", 
-    "help": "Command to query for all faults in the system",
+    "help": "Command to query for all faults in the system", 
+    "prompt": "", 
     "value": {
       "EventId": {
-        "cliname": "eventid"
+        "cliname": "fault"
       }, 
       "EventName": {
         "cliname": "eventname"
       }, 
-      "SrcObjName": {
-        "cliname": "srcobjname"
+      "OwnerId": {
+        "cliname": "ownerid"
       }, 
       "OwnerName": {
         "cliname": "ownername"
       }, 
-      "OwnerId": {
-        "cliname": "ownerid"
+      "SrcObjName": {
+        "cliname": "srcobjname"
       }
     }
   }

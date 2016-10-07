@@ -1,10 +1,11 @@
 {
   "daemonstate": {
-    "prompt": "", 
+    "cliname": "daemon", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DaemonStateSubCmds.json"
     }, 
-    "cliname": "daemon",
+    "help": "Show DaemonState Info", 
+    "prompt": "", 
     "value": {
       "Name": {
         "cliname": "daemon"

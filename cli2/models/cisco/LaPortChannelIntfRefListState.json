@@ -1,13 +1,14 @@
 {
   "laportchannelintfrefliststate": {
-    "prompt": "", 
+    "cliname": "ethernet", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannelIntfRefListStateSubCmds.json"
     }, 
-    "cliname": "Intfref", 
+    "help": "Show LaPortChannelIntfRefListState Info", 
+    "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "Intfref"
+        "cliname": "ethernet"
       }
     }
   }

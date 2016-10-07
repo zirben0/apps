@@ -1,14 +1,14 @@
 {
   "ipv4routestate": {
-    "prompt": "", 
+    "cliname": "route",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteStateSubCmds.json"
     }, 
-    "cliname": "route",
-    "help": "Show RIB IPv4 Routes",
+    "help": "Show RIB IPv4 Routes", 
+    "prompt": "", 
     "value": {
       "DestinationNw": {
-        "cliname": "destinationnw"
+        "cliname": "route"
       }
     }
   }

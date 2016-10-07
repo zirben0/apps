@@ -1,11 +1,11 @@
 {
   "sourcepolicylist": {
-    "prompt": "policy",
+    "cliname": "redistribute", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SourcePolicyListSubCmds.json"
     }, 
-    "cliname": "redistribute",
-    "help" : "Provide redistribution policies for BGP from different sources",
+    "help": "Provide redistribution policies for BGP from different sources", 
+    "prompt": "policy", 
     "value": {
       "Sources": {
         "cliname": "redistribute"

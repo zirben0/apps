@@ -1,0 +1,32 @@
+{
+  "commands": {
+    "HighAlarmThreshold": {
+      "cliname": "HighAlarmThreshold"
+    }, 
+    "HighWarnThreshold": {
+      "cliname": "HighWarnThreshold"
+    }, 
+    "LowAlarmThreshold": {
+      "cliname": "LowAlarmThreshold"
+    }, 
+    "LowWarnThreshold": {
+      "cliname": "LowWarnThreshold"
+    }, 
+    "ModuleId": {
+      "cliname": "ModuleId"
+    }, 
+    "PMClassAEnable": {
+      "cliname": "PMClassAEnable"
+    }, 
+    "PMClassBEnable": {
+      "cliname": "PMClassBEnable"
+    }, 
+    "PMClassCEnable": {
+      "cliname": "PMClassCEnable"
+    }, 
+    "Resource": {
+      "cliname": "global_pm"
+    }
+  }, 
+  "listattrs": []
+}

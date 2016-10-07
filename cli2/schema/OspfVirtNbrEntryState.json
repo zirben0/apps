@@ -2,78 +2,63 @@
   "ospfvirtnbrentrystate": {
     "createwithdefault": {
       "default": true, 
-      "type": "boolean", 
-      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+      "type": "boolean"
     }, 
-    "required": [
-      "value", 
-      "cliname"
-    ], 
-    "type": "object", 
     "properties": {
-      "commands": {
-        "type": "object", 
-        "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/OspfVirtNbrEntryStateSubCmds.json"
-        }
-      }, 
       "cliname": {
         "default": "", 
-        "type": "string", 
-        "description": "name used in cli to describe bfd"
+        "description": "name used in cli to describe bfd", 
+        "type": "string"
+      }, 
+      "commands": {
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/OspfVirtNbrEntryStateSubCmds.json"
+        }, 
+        "type": "object"
       }, 
       "help": {
         "default": "", 
         "type": "string"
       }, 
+      "objname": {
+        "default": "OspfVirtNbrEntryState", 
+        "description": "object name to which references these attributes", 
+        "type": "string"
+      }, 
       "prompt": {
         "default": "", 
+        "description": "what to display on the prompt when the user has entered a command", 
         "displayValue": false, 
-        "type": "string", 
-        "description": "what to display on the prompt when the user has entered a command"
+        "type": "string"
       }, 
       "value": {
-        "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
           "VirtNbrArea": {
-            "type": "object", 
             "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
+              "argtype": {
                 "type": "string"
+              }, 
+              "cliname": {
+                "default": "VirtNbrArea", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
               }, 
               "help": {
                 "default": "The Transit Area Identifier.", 
                 "type": "string"
               }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "virtnbrarea", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "type": "string"
-              }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }, 
-          "VirtNbrRtrId": {
-            "type": "object", 
-            "properties": {
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
               "key": {
                 "default": true, 
                 "type": "boolean"
@@ -81,38 +66,53 @@
               "prompt": {
                 "default": "", 
                 "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          "VirtNbrRtrId": {
+            "properties": {
+              "argtype": {
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "ospfvirtnbrentry", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
               }, 
               "help": {
                 "default": "A 32-bit integer uniquely identifying the neighboring router in the Autonomous System.", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "virtnbrrtrid", 
-                "type": "string"
-              }, 
-              "argtype": {
                 "type": "string"
               }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "defaultarg": {
-                "default": ""
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
               }
-            }
+            }, 
+            "type": "object"
           }
-        }
-      }, 
-      "objname": {
-        "default": "OspfVirtNbrEntryState", 
-        "type": "string", 
-        "description": "object name to which references these attributes"
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object"
   }
 }

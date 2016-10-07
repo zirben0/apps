@@ -1,13 +1,14 @@
 {
   "subipv6intf": {
-    "prompt": "", 
+    "cliname": "subipv6intf", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SubIPv6IntfSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config SubIPv6Intf Info", 
+    "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "intfref"
+        "cliname": "subipv6intf"
       }, 
       "IpAddr": {
         "cliname": "ipaddr"

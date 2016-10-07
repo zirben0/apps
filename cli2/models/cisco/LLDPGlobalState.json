@@ -1,13 +1,14 @@
 {
   "lldpglobalstate": {
-    "prompt": "", 
+    "cliname": "lldpglobal", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPGlobalStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show LLDPGlobalState Info", 
+    "prompt": "", 
     "value": {
       "Vrf": {
-        "cliname": "vrf"
+        "cliname": "lldpglobal"
       }
     }
   }

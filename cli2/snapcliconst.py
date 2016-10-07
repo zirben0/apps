@@ -100,7 +100,12 @@ def updateSpecialValueCases(cfgobj, k, v):
                 if "/" in str(v.val):
                     value = v.attr + v.val.split('/')[1]
                 elif v.attr not in str(v.val):
-                    value = v.attr + str(v.val)
+                    # only support Loopback, so if more logical interfaces are supported
+                    # this logic may need to change
+                    if v.attr == "logical":
+                        value = str(v.val)
+                    else:
+                        value = v.attr + str(v.val)
                 tmpval = str(value)
 
         # cli always expects the string name, but lets

@@ -1,0 +1,122 @@
+{
+  "qsfpchannelstate": {
+    "createwithdefault": {
+      "default": true, 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+      "type": "boolean"
+    }, 
+    "properties": {
+      "cliname": {
+        "default": "", 
+        "description": "name used in cli to describe bfd", 
+        "type": "string"
+      }, 
+      "commands": {
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/QsfpChannelStateSubCmds.json"
+        }, 
+        "type": "object"
+      }, 
+      "help": {
+        "default": "", 
+        "type": "string"
+      }, 
+      "objname": {
+        "default": "QsfpChannelState", 
+        "description": "object name to which references these attributes", 
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "", 
+        "description": "what to display on the prompt when the user has entered a command", 
+        "displayValue": false, 
+        "type": "string"
+      }, 
+      "value": {
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {
+          "ChannelNum": {
+            "properties": {
+              "argtype": {
+                "maximum": 2147483647, 
+                "minimum": -2147483648, 
+                "type": "int32"
+              }, 
+              "cliname": {
+                "default": "qsfpchannel", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }, 
+              "help": {
+                "default": "Qsfp Channel Number", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          "QsfpId": {
+            "properties": {
+              "argtype": {
+                "maximum": 2147483647, 
+                "minimum": -2147483648, 
+                "type": "int32"
+              }, 
+              "cliname": {
+                "default": "QsfpId", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }, 
+              "help": {
+                "default": "QSFP Id", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }
+        }, 
+        "type": "object"
+      }
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object"
+  }
+}

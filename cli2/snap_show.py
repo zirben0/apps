@@ -256,13 +256,13 @@ class ConfigElement(object):
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
         elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor")  and \
             m == "IntfRef":
-                self.objKeyVal = {'modelname': m,
-                                  'type': t,
-                                  'cliname': k,
-                                  'value': v,
-                                  'defaultvalue': df}
-                cmdList = self.cmd.split(' ')
-                self.cmd = " ".join( "%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
+            self.objKeyVal = {'modelname': m,
+                              'type': t,
+                              'cliname': k,
+                              'value': v,
+                              'defaultvalue': df}
+            cmdList = self.cmd.split(' ')
+            self.cmd = " ".join( "%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
         else:
             self.objKeyVal = {'modelname': m,
                               'type': t,
@@ -387,7 +387,7 @@ class ShowRun(object):
         if objname in 'Port':
             r = self.swtch.getPortState(cfgobj['IntfRef'])
             data = r.json()
-            if 'NO' in data['Object']['PresentInHW']:
+            if 'Object' in data and 'NO' in data['Object']['PresentInHW']:
                 ignoreobj = True
         return ignoreobj
 
@@ -721,10 +721,10 @@ class ShowCmd(CommonCmdLine):
             cmd = " ".join(argv)
             # TODO MOVE THESE TO NEW Cmdln objects
             if cmd in ("show run",):
-                print 'printing without defaluts'
+                print 'printing without defaults'
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_NO_DEFAULT)
             elif cmd in ("show run full",):
-                print 'printing with defaluts'
+                print 'printing with defaults'
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_FULL)
             elif cmd in ("show run json",):
                 ce.setFormat(ConfigElement.STRING_FORMAT_CLI_JSON_NO_DEFAULT)

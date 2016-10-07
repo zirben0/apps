@@ -1,8 +1,9 @@
 {
   "saveconfig": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config SaveConfig Info", 
+    "prompt": "", 
     "value": {}
   }
 }

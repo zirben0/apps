@@ -1,11 +1,11 @@
 {
   "logicalintf": {
-    "prompt": "", 
+    "cliname": "logical", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LogicalIntfSubCmds.json"
-    },
-    "help": "Logical Interface Comamnds.  Provide unique name for interface. (ex: lb1)",
-    "cliname": "logical",
+    }, 
+    "help": "Logical Interface Comamnds.  Provide unique name for interface. (ex: lb1)", 
+    "prompt": "", 
     "value": {
       "Name": {
         "cliname": "logical"

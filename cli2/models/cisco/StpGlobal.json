@@ -1,13 +1,14 @@
 {
   "stpglobal": {
-    "prompt": "", 
+    "cliname": "stpglobal", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/StpGlobalSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config StpGlobal Info", 
+    "prompt": "", 
     "value": {
       "Vrf": {
-        "cliname": "vrf"
+        "cliname": "stpglobal"
       }
     }
   }

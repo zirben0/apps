@@ -1,10 +1,11 @@
 {
   "bgpv6neighborstate": {
-    "prompt": "", 
+    "cliname": "neighbor", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv6NeighborStateSubCmds.json"
     }, 
-    "cliname": "neighbor", 
+    "help": "Show BGPv6NeighborState Info", 
+    "prompt": "", 
     "value": {
       "NeighborAddress": {
         "cliname": "neighbor"

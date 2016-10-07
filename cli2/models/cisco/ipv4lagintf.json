@@ -1,17 +1,11 @@
 {
   "ipv4lagintf": {
-    "cliname": "ethernet",
+    "cliname": "ip",
     "commands": {
       "subcmd1": {
         "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv4lagintfmembers.json"
-      }, 
-      "description": "Commands must be in the format of 'subcmd<x>' which should containa $ref keyword or the command an be just Attribute : Value"
-    }, 
-    "prompt": "", 
-    "value": {
-      "IntfRef": {
-        "cliname": "ethernet"
       }
-    }
+    },
+    "help": "Configure Ip Features"
   }
 }

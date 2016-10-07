@@ -1,10 +1,11 @@
 {
   "bgpv4neighbor": {
-    "prompt": "", 
+    "cliname": "ip", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4NeighborSubCmds.json"
     }, 
-    "cliname": "ip", 
+    "help": "Config BGPv4Neighbor Info", 
+    "prompt": "", 
     "value": {
       "NeighborAddress": {
         "cliname": "ip"

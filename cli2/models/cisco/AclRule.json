@@ -1,13 +1,14 @@
 {
   "aclrule": {
-    "prompt": "", 
+    "cliname": "aclrule", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/AclRuleSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config AclRule Info", 
+    "prompt": "", 
     "value": {
       "RuleName": {
-        "cliname": "rulename"
+        "cliname": "aclrule"
       }
     }
   }

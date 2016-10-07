@@ -1,20 +1,20 @@
 {
   "ospfipv4routestate": {
-    "prompt": "", 
+    "cliname": "ospf", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIPv4RouteStateSubCmds.json"
-    },
+    }, 
     "help": "Show OSPF Routes", 
-    "cliname": "ospf", 
+    "prompt": "", 
     "value": {
-      "DestType": {
-        "cliname": "desttype"
-      }, 
-      "DestId": {
-        "cliname": "destid"
-      }, 
       "AddrMask": {
         "cliname": "addrmask"
+      }, 
+      "DestId": {
+        "cliname": "ospf"
+      }, 
+      "DestType": {
+        "cliname": "DestType"
       }
     }
   }

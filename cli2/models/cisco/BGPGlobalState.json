@@ -1,11 +1,11 @@
 {
   "bgpglobalstate": {
-    "prompt": "", 
+    "cliname": "global", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPGlobalStateSubCmds.json"
-    },
-    "help": "Show BGP Global Info.  Router Id Ip Address",
-    "cliname": "global",
+    }, 
+    "help": "Show BGP Global Info.  Router Id Ip Address", 
+    "prompt": "", 
     "value": {
       "RouterId": {
         "cliname": "global"

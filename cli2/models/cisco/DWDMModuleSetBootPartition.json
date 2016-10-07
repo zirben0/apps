@@ -1,0 +1,9 @@
+{
+  "dwdmmodulesetbootpartition": {
+    "cliname": "", 
+    "commands": {}, 
+    "help": "Config DWDMModuleSetBootPartition Info", 
+    "prompt": "", 
+    "value": {}
+  }
+}

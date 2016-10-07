@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "ModuleId": {
+      "cliname": "ModuleId"
+    }, 
+    "Resource": {
+      "cliname": "asicglobalpm"
+    }
+  }, 
+  "listattrs": []
+}

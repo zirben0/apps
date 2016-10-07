@@ -1,11 +1,11 @@
 {
   "laportchannelstate": {
-    "prompt": "",
-    "help": "Show Link Aggregation Info",
+    "cliname": "port_channel", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannelStateSubCmds.json"
     }, 
-    "cliname": "port_channel",
+    "help": "Show Link Aggregation Info", 
+    "prompt": "", 
     "value": {
       "IntfRef": {
         "cliname": "port_channel"
