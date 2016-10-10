@@ -8,7 +8,7 @@
     "prompt": "vrrp", 
     "value": {
       "IfIndex": {
-        "cliname": "vlan"
+        "cliname": "ethernet"
       }, 
       "VRID": {
         "cliname": "vrrp"

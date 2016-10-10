@@ -484,7 +484,6 @@ class ConfigCmd(CommonCmdLine):
                 sys.stdout.write("\nERROR Invalid command entered\n")
                 snapcliconst.printErrorValueCmd(0, argv)
                 return ''
-
             for i, idx in enumerate(reversed(range(len(argv[1:])))):
                 line = newargv + argv[i+1:len(argv)-idx]
                 cmdlist = self.cmd_complete_get(argv[i+1], " ".join(line))
@@ -1109,6 +1108,10 @@ class ConfigCmd(CommonCmdLine):
             if config.isValid() or full:
                 config.show()
 
+    # warning if another command is similar this may cause conflicts with find_func_cmd_alias
+    do_showunapplied.aliases = ["showu", "showun", "showuna", "showunap", "showunapp",
+                                "showunappl", "showunappli", "showunapplie", ]
+
 
     def do_clearunapplied(self, argv):
         """Clear the current pending config."""
@@ -1117,6 +1120,9 @@ class ConfigCmd(CommonCmdLine):
             config.clear(all)
 
         self.configList = []
+    # warning if another command is similar this may cause conflicts with find_func_cmd_alias
+    do_clearunapplied.aliases = ["clearu", "clearun", "clearuna", "clearunap", "clearunapp",
+                                 "clearunappl", "clearunappli", "clearunapplie", ]
 
 
     '''

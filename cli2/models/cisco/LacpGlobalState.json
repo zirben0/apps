@@ -6,10 +6,5 @@
     }, 
     "help": "Show LacpGlobalState Info", 
     "prompt": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "lacpglobal"
-      }
-    }
   }
 }

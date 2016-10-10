@@ -5,11 +5,6 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/FMgrGlobalSubCmds.json"
     }, 
     "help": "Config FMgrGlobal Info", 
-    "prompt": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "fmgrglobal"
-      }
-    }
+    "prompt": "",
   }
 }

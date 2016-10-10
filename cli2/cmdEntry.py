@@ -327,16 +327,17 @@ class CmdEntry(object):
                             return v['type']['type'], v['key']
             return None, None
 
-
         newdict = {}
         if not rollback:
             for entry in self.getallconfig():
                 for kk, vv in copy.deepcopy(self.keysDict).iteritems():
+                    # attribute from model may be either an attribute
+                    # or a sub command attribute
                     isMyAttr = kk == getEntryAttribute(entry)
                     isMySubCommand = isAttrValueSubCommand(vv, kk)
-                    #if isMyAttr or \
-                    #        isMySubCommand:
-                    if isMyAttr:
+                    if isMyAttr or \
+                            isMySubCommand:
+                    #if isMyAttr:
                         # overwrite the default value
                         if not isMySubCommand or vv['isarray']: # or (isMySubCommand and type(entry.val) in (dict, list)):
                             attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
@@ -449,7 +450,7 @@ class CmdEntry(object):
                                 provattrlist.append(k)
                                 model_attr = subattrdict[attr]['key']
                                 required = subattrdict[attr]['value']['default']
-                                attr_value = subattrdict[attr]['value']['default']
+                                #attr_value = subattrdict[attr]['value']['default']
                                 is_attr_key = "%s" %(subattrdict[attr]['isattrkey'],)
 
             else:

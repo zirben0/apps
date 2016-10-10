@@ -6,10 +6,5 @@
     }, 
     "help": "Show IsisGlobalState Info", 
     "prompt": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "isisglobal"
-      }
-    }
   }
 }

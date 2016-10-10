@@ -1,6 +1,6 @@
 {
   "ipv4intfstate": {
-    "cliname": "ipv4intf", 
+    "cliname": "ethernet", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4IntfStateSubCmds.json"
     }, 
@@ -8,7 +8,7 @@
     "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "ipv4intf"
+        "cliname": "ethernet"
       }
     }
   }

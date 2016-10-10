@@ -201,12 +201,11 @@ class LeafCmd(CommonCmdLine):
                             config = getParentConfigEntry(configObj, objname+","+objkeys, keyvalueDict)
                         if not config:
                             config = CmdEntry(self, objname+","+objkeys, self.objDict[(objname, objkeys)])
-                        '''
-                        if self.parent:
-                            config = getParentConfigEntry(configObj, objname, keyvalueDict)
-                        if not config:
-                            config = CmdEntry(self, objname, self.objDict[objname])
-                        '''
+
+                        # only want to fill in config objects which have keys
+                        if objkeys == "":
+                            continue
+
                         if cliname in keyvalueDict:
                             # total keys must be provisioned for config to be valid
                             # the keyvalueDict may contain more tree keys than is applicable for the
@@ -289,7 +288,7 @@ class LeafCmd(CommonCmdLine):
                                         # values supplied may not be the object key but they were used
                                         # to create the object as is the case with router bgp
                                         config.setValid(isvalid)
-                                        config.set(cmd, delete, basekey, basevalue, isKey=True, isattrlist=objattrs[basekey]['isarray'] )
+                                        config.set(cmd, delete, basekey, basevalue, isKey=True, isattrlist=objattrs[basekey]['isarray'])
                     else:
                         config = CmdEntry(self, objname, self.objDict[(objname, objkeys)])
                         #config = CmdEntry(self, objname, self.objDict[objname])
@@ -961,6 +960,11 @@ class LeafCmd(CommonCmdLine):
                         else:
                             subcommands = self.getchildrencmds(mline[i], submodel, subschema, issubcmd=True)
                             subcommands = [x for x in subcommands if x[0] != mline[0]]
+                            # found the command we were looking for so lets return all the subcommands
+                            # to the user
+                            if complete:
+                                if text in subcommands:
+                                    return mline, subcommands
                 else:
                     tmpsubcommands = checkAttributevalues(mline, i, mlineLength, schemaname, submodel, subschema)
                     if tmpsubcommands:
@@ -1141,9 +1145,7 @@ class LeafCmd(CommonCmdLine):
         :param argv:
         :return:
         """
-        #import ipdb; ipdb.set_trace()
         #self._cmd_complete_common(argv[-1], " ".join(argv), 0, 0)
-        self._cmd_complete_common(argv[0], " ".join(argv), 0, 0)
         if len(argv) == 0:
             return ''
 

@@ -6,10 +6,5 @@
     }, 
     "help": "Config IsisGlobal Info", 
     "prompt": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "isisglobal"
-      }
-    }
   }
 }

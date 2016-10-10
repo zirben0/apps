@@ -1,6 +1,6 @@
 {
   "stpport": {
-    "cliname": "IntfRef", 
+    "cliname": "brg_vlan",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/StpPortSubCmds.json"
     }, 

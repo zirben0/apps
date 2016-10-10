@@ -8,7 +8,7 @@
     "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "subipv4intf"
+        "cliname": "ethernet"
       }, 
       "IpAddr": {
         "cliname": "ipaddr"

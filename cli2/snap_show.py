@@ -104,8 +104,6 @@ def convertCmdToSpecialFmt(modelname, v):
     #else: # struct, which in json/python world is a dict
     # TODO need to deal with struct return
 
-
-
     if line == '':
         line = " %s %s" %(cliname, value)
 
@@ -120,13 +118,16 @@ def convertRawConfigtoTreeCli(cls):
 
         if 'cliname' in c.objKeyVal:
             value = convertStrValueToValueType(c.objKeyVal['type'],
-                                               convertPortToSpecialFmt(c.objKeyVal['modelname'], c.objKeyVal['value']))
+                                               convertPortToSpecialFmt(c.objKeyVal['modelname'],
+                                                                       c.objKeyVal['value']))
             line += c.cmd + " %s" %(value)
             yield lvl, line
             lvl += (1 if len(line) > 0 else 0)
 
         for k, v in c.attributes.iteritems():
-            if convertStrValueToValueType(v['type'], v['value']) != convertStrValueToValueType(v['type'], v['defaultvalue']) and \
+            if convertStrValueToValueType(v['type'],
+                                          v['value']) != convertStrValueToValueType(v['type'],
+                                                                                    v['defaultvalue']) and \
                     (('cliname' not in c.objKeyVal) or (v['cliname'] != c.objKeyVal['cliname'])):
                 if lvl >= 1:
                     line = "  " * lvl
@@ -239,7 +240,7 @@ class ConfigElement(object):
         '''
         # special cases
         if self.objname == "StpBridgeInstance" and \
-            m == "Vlan" and v == 0:
+            m == "Vlan" and v in (0, 4095):
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
@@ -247,14 +248,23 @@ class ConfigElement(object):
                                   'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
         elif self.objname == 'StpPort' and \
-            m == "Vlan" and v == 0:
+            m == "Vlan" and v in (0, 4095):
                 self.objKeyVal = {'modelname': m,
                                   'type': 'string',
                                   'cliname': '',
                                   'value': '',
                                   'defaultvalue': 0}
                 self.cmd = self.cmd.split(' ')[0] + " rstp"
-        elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor")  and \
+        elif self.objname == 'LogicalIntf' and \
+            m == "Name":
+            self.objKeyVal = {'modelname': m,
+                              'type': t,
+                              'cliname': k,
+                              'value': v,
+                              'defaultvalue': df}
+            cmdList = self.cmd.split(' ')
+            self.cmd = " ".join("%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
+        elif self.objname in ("Port", "IPv4Intf", "IPv6Intf", "BGPv4Neighbor", "BGPv6Neighbor") and \
             m == "IntfRef":
             self.objKeyVal = {'modelname': m,
                               'type': t,
@@ -262,7 +272,7 @@ class ConfigElement(object):
                               'value': v,
                               'defaultvalue': df}
             cmdList = self.cmd.split(' ')
-            self.cmd = " ".join( "%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
+            self.cmd = " ".join("%s" % cmdList[i] for i in xrange(0, len(cmdList)-1))
         else:
             self.objKeyVal = {'modelname': m,
                               'type': t,
@@ -437,7 +447,6 @@ class ShowRun(object):
                     if isModelObj(mobj, sobj):
                         objname = sobj['properties']['objname']['default']
 
-
                         for cfgObj in self.getNewConfigObj(objname,
                                                            getModelAttrFromMatchAttr(matchattr, mobj, sobj),
                                                            convertStrValueToValueType(matchattrtype, matchvalue)):
@@ -479,10 +488,11 @@ class ShowRun(object):
                                         for mattr, mattrobj in mvalues['commands'].iteritems():
                                             if 'cliname' in mattrobj and \
                                                             mattrobj['cliname'] != matchattr:
+
                                                 defaultVal = svalues['commands']['properties'][mattr]['properties']['defaultarg']['default']
                                                 attrtype = svalues['commands']['properties'][mattr]['properties']['argtype']['type']
                                                 iskey = svalues['commands']['properties'][mattr]['properties']['key']['default']
-                                                if not iskey and (cfgObj and  mattr in cfgObj) or \
+                                                if not iskey and (cfgObj and mattr in cfgObj) or \
                                                         (subattrobj and mattr in subattrobj):
                                                     value = cfgObj[mattr] if cfgObj else subattrobj[mattr]
                                                     element.setAttributes(mattr,

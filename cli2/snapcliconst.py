@@ -84,7 +84,6 @@ def updateSpecialValueCases(cfgobj, k, v):
     '''
     tmpval = v.val if type(v) == CmdSet else v
     if k in DYNAMIC_MODEL_ATTR_NAME_LIST:
-
         if type(v) == CmdSet:
             if type(v.val) is list:
                 tmpvallist = []

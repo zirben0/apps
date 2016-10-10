@@ -45,10 +45,5 @@
         }
       }
     }
-  }, 
-  "objname": {
-    "default": "VrrpIntf", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
   }
 }

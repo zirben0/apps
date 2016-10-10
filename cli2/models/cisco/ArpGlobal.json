@@ -5,6 +5,6 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpGlobalSubCmds.json"
     }, 
     "help": "ARP Global Commands", 
-    "prompt": ""
+    "prompt": "arp"
   }
 }

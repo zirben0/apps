@@ -9,9 +9,6 @@
     "value": {
       "ClntIntfId": {
         "cliname": "clntIntf"
-      }, 
-      "ModuleId": {
-        "cliname": "ModuleId"
       }
     }
   }

@@ -5,11 +5,6 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/NDPGlobalSubCmds.json"
     }, 
     "help": "Config NDPGlobal Info", 
-    "prompt": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "ndpglobal"
-      }
-    }
+    "prompt": "",
   }
 }

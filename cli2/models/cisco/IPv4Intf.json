@@ -8,7 +8,7 @@
     "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "ipv4intf"
+        "cliname": "intfref"
       }
     }
   }
