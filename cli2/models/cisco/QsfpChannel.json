@@ -1,0 +1,18 @@
+{
+  "qsfpchannel": {
+    "cliname": "qsfpchannel", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/QsfpChannelSubCmds.json"
+    }, 
+    "help": "Config QsfpChannel Info", 
+    "prompt": "", 
+    "value": {
+      "ChannelNum": {
+        "cliname": "qsfpchannel"
+      }, 
+      "QsfpId": {
+        "cliname": "QsfpId"
+      }
+    }
+  }
+}

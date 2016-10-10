@@ -1,520 +1,10 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "HostTxEqDfe": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-63  Host interface TX deserializer equalization. s-DFE default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "HostTxEqDfe", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 63
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
-      "HostRxSerializerTap1Gain": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-7  Host RX Serializer tap 1 control default: 7", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "HostRxSerializerTap1Gain", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 7
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "7"
-          }
-        }
-      }, 
-      "RxPRBSPattern": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "2^7/2^15/2^23/2^31  RX PRBS generator pattern default: 2^31", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "RxPRBSPattern", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "enum": [
-              "2^7", 
-              "2^15", 
-              "2^23", 
-              "2^31"
-            ], 
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "2^31"
-          }
-        }
-      }, 
-      "HostRxSerializerTap2Delay": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-7  Host RX Serializer tap 2 control default: 5", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "HostRxSerializerTap2Delay", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 7
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "5"
-          }
-        }
-      }, 
-      "HostRxSerializerTap2Gain": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-15  Host RX Serializer tap 2 control default: 15", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "HostRxSerializerTap2Gain", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 15
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "15"
-          }
-        }
-      }, 
-      "HostRxSerializerTap0Delay": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-7  Host RX Serializer tap 0 control default: 7", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "HostRxSerializerTap0Delay", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 7
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "7"
-          }
-        }
-      }, 
-      "HostTxEqCtle": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-20  Host interface TX deserializer equalization. LELRC CTLE LE gain code. default: 18", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "HostTxEqCtle", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 20
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "18"
-          }
-        }
-      }, 
-      "TxPRBSPattern": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "2^7/2^15/2^23/2^31  PRBS pattern to use for checker default: 2^31", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "TxPRBSPattern", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "enum": [
-              "2^7", 
-              "2^15", 
-              "2^23", 
-              "2^31"
-            ], 
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "2^31"
-          }
-        }
-      }, 
-      "HostTxEqLfCtle": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-8  Host interface TX deserializer equalization. LELPZRC LF-CTLE LFPZ gain code. default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "HostTxEqLfCtle", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 8
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
-      "ClntIntfId": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "DWDM Module client interface identifier", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "ClntIntfId", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "EnableRxPRBS": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable/Disable RX PRBS generation for all lanes of this client interface default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "EnableRxPRBS", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "TXFECDecDisable": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  802.3bj FEC decoder enable/disable state for traffic from Host to DWDM Module default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "TXFECDecDisable", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "EnableHostLoopback": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable/Disable loopback on all host lanes of this client interface default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "EnableHostLoopback", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
       "AdminState": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "UP/DOWN  Administrative state of this client interface default: UP", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "AdminState", 
-            "type": "string"
-          }, 
           "argtype": {
             "enum": [
               "UP", 
@@ -522,53 +12,25 @@
             ], 
             "type": "string"
           }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
+          "cliname": {
+            "default": "AdminState", 
+            "type": "string"
           }, 
           "defaultarg": {
             "default": "UP"
-          }
-        }
-      }, 
-      "RXFECDecDisable": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
           }, 
           "help": {
-            "default": "True/False  802.3bj FEC decoder enable/disable state for traffic from DWDM module to Host default: false", 
+            "default": "UP/DOWN  Administrative state of this client interface default: UP", 
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "RXFECDecDisable", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "NwLaneTributaryToClntIntfMap": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -576,36 +38,71 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "0-3  Network lane/tributary id to map to client interface", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "ClntIntfId": {
+        "properties": {
+          "argtype": {
+            "maximum": 255, 
+            "minimum": 0, 
+            "type": "uint8"
           }, 
           "cliname": {
-            "default": "NwLaneTributaryToClntIntfMap", 
+            "default": "dwdmmoduleclntintf", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 3
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "DWDM Module client interface identifier", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
-      "EnableIntSerdesNWLoopback": {
-        "type": "object", 
+      "EnableHostLoopback": {
         "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "EnableHostLoopback", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable loopback on all host lanes of this client interface default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -613,34 +110,34 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable/Disable serdes internal loopback default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "EnableIntSerdesNWLoopback": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
           }, 
           "cliname": {
             "default": "EnableIntSerdesNWLoopback", 
             "type": "string"
           }, 
-          "argtype": {
-            "type": "bool"
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable serdes internal loopback default: false", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "EnableTxPRBSChecker": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -648,34 +145,69 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "EnableRxPRBS": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "EnableRxPRBS", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
           }, 
           "help": {
-            "default": "True/False  Enable/Disable TX PRBS checker for all lanes of this client interface default: false", 
+            "default": "True/False  Enable/Disable RX PRBS generation for all lanes of this client interface default: false", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "EnableTxPRBSChecker": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
           }, 
           "cliname": {
             "default": "EnableTxPRBSChecker", 
             "type": "string"
           }, 
-          "argtype": {
-            "type": "bool"
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable TX PRBS checker for all lanes of this client interface default: false", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "HostRxSerializerTap0Gain": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -683,36 +215,332 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HostRxSerializerTap0Delay": {
+        "properties": {
+          "argtype": {
+            "maximum": 7, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "HostRxSerializerTap0Delay", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "7"
           }, 
           "help": {
             "default": "0-7  Host RX Serializer tap 0 control default: 7", 
             "type": "string"
           }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
           "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HostRxSerializerTap0Gain": {
+        "properties": {
+          "argtype": {
+            "maximum": 7, 
+            "minimum": 0, 
+            "type": "uint8"
           }, 
           "cliname": {
             "default": "HostRxSerializerTap0Gain", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 7
+          "defaultarg": {
+            "default": "7"
+          }, 
+          "help": {
+            "default": "0-7  Host RX Serializer tap 0 control default: 7", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HostRxSerializerTap1Gain": {
+        "properties": {
+          "argtype": {
+            "maximum": 7, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "HostRxSerializerTap1Gain", 
+            "type": "string"
+          }, 
           "defaultarg": {
             "default": "7"
+          }, 
+          "help": {
+            "default": "0-7  Host RX Serializer tap 1 control default: 7", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
+      }, 
+      "HostRxSerializerTap2Delay": {
+        "properties": {
+          "argtype": {
+            "maximum": 7, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "HostRxSerializerTap2Delay", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "5"
+          }, 
+          "help": {
+            "default": "0-7  Host RX Serializer tap 2 control default: 5", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HostRxSerializerTap2Gain": {
+        "properties": {
+          "argtype": {
+            "maximum": 15, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "HostRxSerializerTap2Gain", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "15"
+          }, 
+          "help": {
+            "default": "0-15  Host RX Serializer tap 2 control default: 15", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HostTxEqCtle": {
+        "properties": {
+          "argtype": {
+            "maximum": 20, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "HostTxEqCtle", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "18"
+          }, 
+          "help": {
+            "default": "0-20  Host interface TX deserializer equalization. LELRC CTLE LE gain code. default: 18", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HostTxEqDfe": {
+        "properties": {
+          "argtype": {
+            "maximum": 63, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "HostTxEqDfe", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }, 
+          "help": {
+            "default": "0-63  Host interface TX deserializer equalization. s-DFE default: 0", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HostTxEqLfCtle": {
+        "properties": {
+          "argtype": {
+            "maximum": 8, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "HostTxEqLfCtle", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }, 
+          "help": {
+            "default": "0-8  Host interface TX deserializer equalization. LELPZRC LF-CTLE LFPZ gain code. default: 0", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
       }, 
       "ModuleId": {
-        "type": "object", 
         "properties": {
+          "argtype": {
+            "maximum": 255, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "ModuleId", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "DWDM Module identifier", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": true, 
             "type": "boolean"
@@ -720,43 +548,216 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "DWDM Module identifier", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "NwLaneTributaryToClntIntfMap": {
+        "properties": {
+          "argtype": {
+            "maximum": 3, 
+            "minimum": 0, 
+            "type": "uint8"
           }, 
           "cliname": {
-            "default": "ModuleId", 
+            "default": "NwLaneTributaryToClntIntfMap", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "0-3  Network lane/tributary id to map to client interface", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
+      }, 
+      "RXFECDecDisable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "RXFECDecDisable", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  802.3bj FEC decoder enable/disable state for traffic from DWDM module to Host default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "RxPRBSPattern": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              "2^7", 
+              "2^15", 
+              "2^23", 
+              "2^31"
+            ], 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "RxPRBSPattern", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "2^31"
+          }, 
+          "help": {
+            "default": "2^7/2^15/2^23/2^31  RX PRBS generator pattern default: 2^31", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TXFECDecDisable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "TXFECDecDisable", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  802.3bj FEC decoder enable/disable state for traffic from Host to DWDM Module default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TxPRBSPattern": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              "2^7", 
+              "2^15", 
+              "2^23", 
+              "2^31"
+            ], 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "TxPRBSPattern", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "2^31"
+          }, 
+          "help": {
+            "default": "2^7/2^15/2^23/2^31  PRBS pattern to use for checker default: 2^31", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": false, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "DWDMModuleClntIntf", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

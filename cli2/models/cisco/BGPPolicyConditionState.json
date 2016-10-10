@@ -1,13 +1,14 @@
 {
   "bgppolicyconditionstate": {
-    "prompt": "", 
+    "cliname": "bgppolicycondition", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPPolicyConditionStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show BGPPolicyConditionState Info", 
+    "prompt": "", 
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "bgppolicycondition"
       }
     }
   }

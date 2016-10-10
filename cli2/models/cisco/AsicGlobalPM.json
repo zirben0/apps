@@ -1,0 +1,15 @@
+{
+  "asicglobalpm": {
+    "cliname": "global_pm",
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/AsicGlobalPMSubCmds.json"
+    }, 
+    "help": "Config AsicGlobalPM Info", 
+    "prompt": "global-pm",
+    "value": {
+      "Resource": {
+        "cliname": "global_pm"
+      }
+    }
+  }
+}

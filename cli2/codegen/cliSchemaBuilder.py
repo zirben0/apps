@@ -39,6 +39,7 @@ import os
 import string
 import errno
 from optparse import OptionParser
+from snapcliconst import DYNAMIC_MODEL_ATTR_NAME_LIST
 
 
 GENERATED_SCHEMA_PATH = 'file:/tmp/snaproute/cli/schema/'
@@ -46,6 +47,18 @@ GENERATED_MODEL_PATH = 'file:/tmp/snaproute/cli/model/cisco/'
 
 SUBCMD_TEMPLATE = {
 }
+
+def convertObjnameIntfRefToDisplayName(objname):
+    if objname in ("Port", "PortState", "IPv4Intf", "IPv4IntfState",
+                   "IPv6Intf", "IPv6IntfState", "VrrpIntf", "VrrpIntfState",
+                   "LLDPIntf", "LLDPIntfState", "Vlan", "VlanState",
+                   "StpPort", "StpPortState", "OspfIfEntry", "OspfIfEntryState"):
+        return "ethernet"
+    elif objname in ("LaPortChannel", "LaPortChannelState"):
+        return "port_channel"
+
+    return "FILL_ME_IN"
+
 
 def isboolean(v):
     return v.lower() in ('bool', 'boolean')
@@ -401,7 +414,7 @@ class ModelToLeaf(object):
 
             if overwrite or not os.path.exists(filename):
                 with open(filename, 'w') as f:
-                    json.dump(data, f, indent=2)
+                    json.dump(data, f, indent=2, sort_keys=True)
 
     def setTemplate(self):
         if self.modeltype == self.SCHEMA_TYPE:
@@ -450,8 +463,8 @@ class ModelToLeaf(object):
             if iskey:
 
                 displayname = name
-                if not clinameset:
-                    displayname = self.modelname.lower().rstrip("state")
+                if not clinameset and iskey:
+                    displayname = self.modelname.lower().replace("state", "")
                     self.setCliName(displayname)
                     clinameset = True
 
@@ -524,12 +537,13 @@ class ModelToLeafMember(ModelToLeaf):
                     json.dump(self.clidata, f, indent=2)
         '''
         with open(self.clidatapath, 'w') as f:
-            json.dump(self.clidata, f, indent=2)
+            json.dump(self.clidata, f, indent=2, sort_keys=True)
 
     def build(self):
         self.open()
         self.setModelName()
         self.setDefaultRef()
+        self.setCmdToSubCmd()
         self.setCommands()
 
     def setTemplate(self):
@@ -550,6 +564,16 @@ class ModelToLeafMember(ModelToLeaf):
     def setCliData(self):
         self.clidata = {}
         self.clisubcmddata = {}
+
+    def setCmdToSubCmd(self):
+        """
+        Attributed used by model merge to ignore add/delete of attributes which were edited by
+        the user manually to extend the command.
+        :return:
+        """
+        if self.modeltype == self.SCHEMA_TYPE:
+            self.clidata.update({
+                 "cmd_to_subcmd": {}})
 
     def setDefaultRef(self):
         '''
@@ -608,10 +632,6 @@ class ModelToLeafMember(ModelToLeaf):
         clinameset = False
         for name, member in self.model.iteritems():
 
-            displayname = name
-            if not clinameset:
-                displayname = self.modelname.lower().rstrip("state")
-                clinameset = True
 
             type = member['type']
             iskey = member['isKey']
@@ -624,6 +644,11 @@ class ModelToLeafMember(ModelToLeaf):
             min = member['min'] if member['max'] else None
             max = member['max'] if member['max'] else None
             len = member['len'] if member['len'] else None
+            displayname = name
+            if not clinameset and iskey:
+                displayname = self.modelname.lower().replace("state", "")
+                clinameset = True
+
             # state objects only require the keys for argument purposes
             if 'State' not in self.modelname or \
                 iskey and 'State' in self.modelname:

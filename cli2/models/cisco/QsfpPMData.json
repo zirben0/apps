@@ -1,8 +1,9 @@
 {
   "qsfppmdata": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config QsfpPMData Info", 
+    "prompt": "", 
     "value": {}
   }
 }

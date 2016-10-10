@@ -2,115 +2,63 @@
   "configlogstate": {
     "createwithdefault": {
       "default": true, 
-      "type": "boolean", 
-      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+      "type": "boolean"
     }, 
-    "required": [
-      "value", 
-      "cliname"
-    ], 
-    "type": "object", 
     "properties": {
-      "commands": {
-        "type": "object", 
-        "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/ConfigLogStateSubCmds.json"
-        }
-      }, 
       "cliname": {
         "default": "", 
-        "type": "string", 
-        "description": "name used in cli to describe bfd"
+        "description": "name used in cli to describe bfd", 
+        "type": "string"
+      }, 
+      "commands": {
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/ConfigLogStateSubCmds.json"
+        }, 
+        "type": "object"
       }, 
       "help": {
         "default": "", 
         "type": "string"
       }, 
+      "objname": {
+        "default": "ConfigLogState", 
+        "description": "object name to which references these attributes", 
+        "type": "string"
+      }, 
       "prompt": {
         "default": "", 
+        "description": "what to display on the prompt when the user has entered a command", 
         "displayValue": false, 
-        "type": "string", 
-        "description": "what to display on the prompt when the user has entered a command"
+        "type": "string"
       }, 
       "value": {
-        "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "SeqNum": {
-            "type": "object", 
+          "API": {
             "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
+              "argtype": {
                 "type": "string"
-              }, 
-              "help": {
-                "default": "Sequence number of the API call", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
               }, 
               "cliname": {
-                "default": "seqnum", 
+                "default": "API", 
                 "type": "string"
-              }, 
-              "argtype": {
-                "minimum": 0, 
-                "type": "uint32", 
-                "maximum": 4294967296
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
               }, 
               "defaultarg": {
                 "default": ""
-              }
-            }
-          }, 
-          "API": {
-            "type": "object", 
-            "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
-                "type": "string"
               }, 
               "help": {
                 "default": "Name of the API called", 
                 "type": "string"
               }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "api", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "type": "string"
-              }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }, 
-          "Time": {
-            "type": "object", 
-            "properties": {
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
               "key": {
                 "default": true, 
                 "type": "boolean"
@@ -118,38 +66,90 @@
               "prompt": {
                 "default": "", 
                 "type": "string"
-              }, 
-              "help": {
-                "default": "When the API was called", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
+              }
+            }, 
+            "type": "object"
+          }, 
+          "SeqNum": {
+            "properties": {
+              "argtype": {
+                "maximum": 4294967296, 
+                "minimum": 0, 
+                "type": "uint32"
               }, 
               "cliname": {
-                "default": "time", 
+                "default": "configlog", 
                 "type": "string"
               }, 
-              "argtype": {
+              "defaultarg": {
+                "default": ""
+              }, 
+              "help": {
+                "default": "Sequence number of the API call", 
                 "type": "string"
               }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          "Time": {
+            "properties": {
+              "argtype": {
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "Time", 
+                "type": "string"
+              }, 
               "defaultarg": {
                 "default": ""
+              }, 
+              "help": {
+                "default": "When the API was called", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
               }
-            }
+            }, 
+            "type": "object"
           }
-        }
-      }, 
-      "objname": {
-        "default": "ConfigLogState", 
-        "type": "string", 
-        "description": "object name to which references these attributes"
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object"
   }
 }

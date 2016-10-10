@@ -1,11 +1,11 @@
 {
   "ndpentrystate": {
-    "prompt": "", 
+    "cliname": "ndp_entry", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/NDPEntryStateSubCmds.json"
     }, 
-    "help": "Show IPv6 NDP entries",
-    "cliname": "ndp_entry", 
+    "help": "Show IPv6 NDP entries", 
+    "prompt": "", 
     "value": {
       "IpAddr": {
         "cliname": "ndp_entry"

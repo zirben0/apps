@@ -1,14 +1,10 @@
 {
   "lacpglobalstate": {
-    "prompt": "", 
+    "cliname": "lacpglobal", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LacpGlobalStateSubCmds.json"
     }, 
-    "cliname": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "vrf"
-      }
-    }
+    "help": "Show LacpGlobalState Info", 
+    "prompt": "", 
   }
 }

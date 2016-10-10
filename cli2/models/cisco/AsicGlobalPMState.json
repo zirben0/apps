@@ -1,0 +1,18 @@
+{
+  "asicglobalpmstate": {
+    "cliname": "asicglobalpm", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/AsicGlobalPMStateSubCmds.json"
+    }, 
+    "help": "Show AsicGlobalPMState Info", 
+    "prompt": "", 
+    "value": {
+      "ModuleId": {
+        "cliname": "ModuleId"
+      }, 
+      "Resource": {
+        "cliname": "asicglobalpm"
+      }
+    }
+  }
+}

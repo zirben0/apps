@@ -1,8 +1,9 @@
 {
   "arprefreshbyifname": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config ArpRefreshByIfName Info", 
+    "prompt": "", 
     "value": {}
   }
 }

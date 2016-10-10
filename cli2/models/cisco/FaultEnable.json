@@ -1,8 +1,9 @@
 {
   "faultenable": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config FaultEnable Info", 
+    "prompt": "", 
     "value": {}
   }
 }

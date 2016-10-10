@@ -1,54 +1,32 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "RequiredMinRxInterval": {
-        "type": "object", 
+      "AuthData": {
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
+          "argtype": {
             "type": "string"
-          }, 
-          "help": {
-            "default": "Required minimum rx interval in ms default: 1000", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
-            "default": "RequiredMinRxInterval", 
+            "default": "AuthData", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+          "defaultarg": {
+            "default": "snaproute"
+          }, 
+          "help": {
+            "default": "Authentication password default: snaproute", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "1000"
-          }
-        }
-      }, 
-      "AuthType": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -56,19 +34,49 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "AuthKeyId": {
+        "properties": {
+          "argtype": {
+            "maximum": 4294967296, 
+            "minimum": 0, 
+            "type": "uint32"
+          }, 
+          "cliname": {
+            "default": "AuthKeyId", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "1"
           }, 
           "help": {
-            "default": "metmd5/keyedmd5/metsha1/keyedsha1/simple  Authentication type default: simple", 
+            "default": "Authentication key id default: 1", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "cliname": {
-            "default": "AuthType", 
-            "type": "string"
+          "key": {
+            "default": false, 
+            "type": "boolean"
           }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "AuthType": {
+        "properties": {
           "argtype": {
             "enum": [
               "metmd5", 
@@ -79,18 +87,25 @@
             ], 
             "type": "string"
           }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
+          "cliname": {
+            "default": "AuthType", 
+            "type": "string"
           }, 
           "defaultarg": {
             "default": "simple"
-          }
-        }
-      }, 
-      "DemandEnabled": {
-        "type": "object", 
-        "properties": {
+          }, 
+          "help": {
+            "default": "metmd5/keyedmd5/metsha1/keyedsha1/simple  Authentication type default: simple", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -98,106 +113,69 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable or disable demand mode default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "DemandEnabled", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
           }
-        }
-      }, 
-      "DesiredMinTxInterval": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Desired minimum tx interval in ms default: 1000", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "DesiredMinTxInterval", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "1000"
-          }
-        }
+        }, 
+        "type": "object"
       }, 
       "AuthenticationEnabled": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable or disable authentication default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          "argtype": {
+            "type": "bool"
           }, 
           "cliname": {
             "default": "AuthenticationEnabled", 
             "type": "string"
           }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable or disable authentication default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "DemandEnabled": {
+        "properties": {
           "argtype": {
             "type": "bool"
           }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
+          "cliname": {
+            "default": "DemandEnabled", 
+            "type": "string"
           }, 
           "defaultarg": {
             "default": "false"
-          }
-        }
-      }, 
-      "AuthKeyId": {
-        "type": "object", 
-        "properties": {
+          }, 
+          "help": {
+            "default": "True/False  Enable or disable demand mode default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -205,36 +183,36 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Authentication key id default: 1", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "DesiredMinTxInterval": {
+        "properties": {
+          "argtype": {
+            "maximum": 4294967296, 
+            "minimum": 0, 
+            "type": "uint32"
           }, 
           "cliname": {
-            "default": "AuthKeyId", 
+            "default": "DesiredMinTxInterval", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+          "defaultarg": {
+            "default": "1000"
+          }, 
+          "help": {
+            "default": "Desired minimum tx interval in ms default: 1000", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "1"
-          }
-        }
-      }, 
-      "RequiredMinEchoRxInterval": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -242,150 +220,173 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Required minimum echo rx interval in ms default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "RequiredMinEchoRxInterval", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
           }
-        }
+        }, 
+        "type": "object"
       }, 
       "LocalMultiplier": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Detection multiplier default: 3", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          "argtype": {
+            "maximum": 4294967296, 
+            "minimum": 0, 
+            "type": "uint32"
           }, 
           "cliname": {
             "default": "LocalMultiplier", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint32", 
-            "maximum": 4294967296
+          "defaultarg": {
+            "default": "3"
+          }, 
+          "help": {
+            "default": "Detection multiplier default: 3", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "3"
-          }
-        }
-      }, 
-      "AuthData": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Authentication password default: snaproute", 
-            "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "cliname": {
-            "default": "AuthData", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "snaproute"
-          }
-        }
-      }, 
-      "Name": {
-        "type": "object", 
-        "properties": {
           "key": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "Name": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "bfdsessionparam", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
           }, 
           "help": {
             "default": "Session parameters", 
             "type": "string"
           }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "Name", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
+      }, 
+      "RequiredMinEchoRxInterval": {
+        "properties": {
+          "argtype": {
+            "maximum": 4294967296, 
+            "minimum": 0, 
+            "type": "uint32"
+          }, 
+          "cliname": {
+            "default": "RequiredMinEchoRxInterval", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }, 
+          "help": {
+            "default": "Required minimum echo rx interval in ms default: 0", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "RequiredMinRxInterval": {
+        "properties": {
+          "argtype": {
+            "maximum": 4294967296, 
+            "minimum": 0, 
+            "type": "uint32"
+          }, 
+          "cliname": {
+            "default": "RequiredMinRxInterval", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "1000"
+          }, 
+          "help": {
+            "default": "Required minimum rx interval in ms default: 1000", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": true, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "BfdSessionParam", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

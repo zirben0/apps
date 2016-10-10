@@ -2,41 +2,41 @@
   "arpglobal": {
     "createwithdefault": {
       "default": true, 
-      "type": "boolean", 
-      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+      "type": "boolean"
     }, 
-    "required": [
-      "value", 
-      "cliname"
-    ], 
-    "type": "object", 
     "properties": {
-      "commands": {
-        "type": "object", 
-        "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/ArpGlobalSubCmds.json"
-        }
-      }, 
       "cliname": {
         "default": "", 
-        "type": "string", 
-        "description": "name used in cli to describe bfd"
+        "description": "name used in cli to describe bfd", 
+        "type": "string"
+      }, 
+      "commands": {
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/ArpGlobalSubCmds.json"
+        }, 
+        "type": "object"
       }, 
       "help": {
         "default": "", 
         "type": "string"
       }, 
-      "prompt": {
-        "default": "", 
-        "displayValue": false, 
-        "type": "string", 
-        "description": "what to display on the prompt when the user has entered a command"
-      }, 
       "objname": {
         "default": "ArpGlobal", 
-        "type": "string", 
-        "description": "object name to which references these attributes"
+        "description": "object name to which references these attributes", 
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "", 
+        "description": "what to display on the prompt when the user has entered a command", 
+        "displayValue": false, 
+        "type": "string"
       }
-    }
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object"
   }
 }

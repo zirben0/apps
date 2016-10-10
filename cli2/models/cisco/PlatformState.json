@@ -1,13 +1,14 @@
 {
   "platformstate": {
-    "prompt": "", 
+    "cliname": "platform", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PlatformStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show PlatformState Info", 
+    "prompt": "", 
     "value": {
       "ObjName": {
-        "cliname": "objname"
+        "cliname": "platform"
       }
     }
   }

@@ -1,8 +1,9 @@
 {
   "voltagesensorpmdata": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config VoltageSensorPMData Info", 
+    "prompt": "", 
     "value": {}
   }
 }

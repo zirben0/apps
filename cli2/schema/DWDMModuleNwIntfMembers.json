@@ -1,397 +1,10 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "ClntIntfIdToTributary0Map": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-3  Client interface ID to map to network interface tributary 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "ClntIntfIdToTributary0Map", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 3
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "EnableRxPRBSChecker": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable RX PRBS checker default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "EnableRxPRBSChecker", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "RxPRBSPattern": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "2^7/2^15/2^23/2^31  PRBS pattern to use for checker default: 2^31", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "RxPRBSPattern", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "enum": [
-              "2^7", 
-              "2^15", 
-              "2^23", 
-              "2^31"
-            ], 
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "2^31"
-          }
-        }
-      }, 
-      "TxPulseShapeFltrRollOff": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: float64.  TX pulse shape filter roll off factor default: 0.301", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "TxPulseShapeFltrRollOff", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "float64"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0.301"
-          }
-        }
-      }, 
-      "ClntIntfIdToTributary1Map": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "0-3  Client interface ID to map to network interface tributary 1", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "ClntIntfIdToTributary1Map", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 3
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "RxPRBSInvertPattern": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Check against inverted PRBS polynomial pattern default: true", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "RxPRBSInvertPattern", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "true"
-          }
-        }
-      }, 
-      "TxPRBSInvertPattern": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Generate inverted PRBS polynomial pattern default: true", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "TxPRBSInvertPattern", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "true"
-          }
-        }
-      }, 
-      "TxPowerRampdBmPerSec": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: float64.  Rate of change of tx power on this network interface default: 1", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "TxPowerRampdBmPerSec", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "float64"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "1"
-          }
-        }
-      }, 
-      "EnableTxPRBS": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable TX PRBS generation on this network interface default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "EnableTxPRBS", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "TxPower": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "type: float64.  Transmit output power for this network interface in dBm default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "TxPower", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "float64"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
       "AdminState": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "UP/DOWN  Administrative state of this network interface default: UP", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "AdminState", 
-            "type": "string"
-          }, 
           "argtype": {
             "enum": [
               "UP", 
@@ -399,18 +12,25 @@
             ], 
             "type": "string"
           }, 
+          "cliname": {
+            "default": "AdminState", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "UP"
+          }, 
+          "help": {
+            "default": "UP/DOWN  Administrative state of this network interface default: UP", 
+            "type": "string"
+          }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "UP"
-          }
-        }
-      }, 
-      "ChannelNumber": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -418,36 +38,36 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "1-100  TX Channel number to use for this network interface default: 48", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "ChannelNumber": {
+        "properties": {
+          "argtype": {
+            "maximum": 100, 
+            "minimum": 1, 
+            "type": "uint8"
           }, 
           "cliname": {
             "default": "ChannelNumber", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 1, 
-            "type": "uint8", 
-            "maximum": 100
+          "defaultarg": {
+            "default": "48"
+          }, 
+          "help": {
+            "default": "1-100  TX Channel number to use for this network interface default: 48", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "48"
-          }
-        }
-      }, 
-      "FECMode": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -455,19 +75,191 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "ClntIntfIdToTributary0Map": {
+        "properties": {
+          "argtype": {
+            "maximum": 3, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "ClntIntfIdToTributary0Map", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
           }, 
           "help": {
-            "default": "15%SDFEC/15%OvrHeadSDFEC/25%OvrHeadSDFEC  DWDM Module network interface FEC mode default: 15%SDFEC", 
+            "default": "0-3  Client interface ID to map to network interface tributary 0", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "ClntIntfIdToTributary1Map": {
+        "properties": {
+          "argtype": {
+            "maximum": 3, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
           "cliname": {
-            "default": "FECMode", 
+            "default": "ClntIntfIdToTributary1Map", 
             "type": "string"
           }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "0-3  Client interface ID to map to network interface tributary 1", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "DiffEncoding": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "DiffEncoding", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true"
+          }, 
+          "help": {
+            "default": "True/False  Control to enable/disable DWDM Module network interface encoding type default: true", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "EnableRxPRBSChecker": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "EnableRxPRBSChecker", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable RX PRBS checker default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "EnableTxPRBS": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "EnableTxPRBS", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable TX PRBS generation on this network interface default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "FECMode": {
+        "properties": {
           "argtype": {
             "enum": [
               "15%SDFEC", 
@@ -476,55 +268,25 @@
             ], 
             "type": "string"
           }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
+          "cliname": {
+            "default": "FECMode", 
+            "type": "string"
           }, 
           "defaultarg": {
             "default": "15%SDFEC"
-          }
-        }
-      }, 
-      "NwIntfId": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
           }, 
           "help": {
-            "default": "DWDM Module network interface identifier", 
+            "default": "15%SDFEC/15%OvrHeadSDFEC/25%OvrHeadSDFEC  DWDM Module network interface FEC mode default: 15%SDFEC", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "cliname": {
-            "default": "NwIntfId", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "DiffEncoding": {
-        "type": "object", 
-        "properties": {
           "key": {
             "default": false, 
             "type": "boolean"
@@ -532,71 +294,148 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Control to enable/disable DWDM Module network interface encoding type default: true", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "ModulationFmt": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              "QPSK", 
+              "8QAM", 
+              "16QAM"
+            ], 
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
-            "default": "DiffEncoding", 
+            "default": "ModulationFmt", 
             "type": "string"
           }, 
-          "argtype": {
-            "type": "bool"
+          "defaultarg": {
+            "default": "16QAM"
+          }, 
+          "help": {
+            "default": "QPSK/8QAM/16QAM  Modulation format to use for this network interface default: 16QAM", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "true"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
       "ModuleId": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "DWDM Module identifier", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          "argtype": {
+            "maximum": 255, 
+            "minimum": 0, 
+            "type": "uint8"
           }, 
           "cliname": {
             "default": "ModuleId", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "DWDM Module identifier", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "NwIntfId": {
+        "properties": {
+          "argtype": {
+            "maximum": 255, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "dwdmmodulenwintf", 
+            "type": "string"
+          }, 
           "defaultarg": {
             "default": ""
+          }, 
+          "help": {
+            "default": "DWDM Module network interface identifier", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
-      "TxPRBSPattern": {
-        "type": "object", 
+      "RxPRBSInvertPattern": {
         "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "RxPRBSInvertPattern", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true"
+          }, 
+          "help": {
+            "default": "True/False  Check against inverted PRBS polynomial pattern default: true", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -604,19 +443,12 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "2^7/2^15/2^23/2^31  Pattern to use for TX PRBS generation default: 2^31", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "TxPRBSPattern", 
-            "type": "string"
-          }, 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "RxPRBSPattern": {
+        "properties": {
           "argtype": {
             "enum": [
               "2^7", 
@@ -626,58 +458,25 @@
             ], 
             "type": "string"
           }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
+          "cliname": {
+            "default": "RxPRBSPattern", 
+            "type": "string"
           }, 
           "defaultarg": {
             "default": "2^31"
-          }
-        }
-      }, 
-      "ModulationFmt": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
           }, 
           "help": {
-            "default": "QPSK/8QAM/16QAM  Modulation format to use for this network interface default: 16QAM", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "ModulationFmt", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "enum": [
-              "QPSK", 
-              "8QAM", 
-              "16QAM"
-            ], 
+            "default": "2^7/2^15/2^23/2^31  PRBS pattern to use for checker default: 2^31", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "16QAM"
-          }
-        }
-      }, 
-      "TxPulseShapeFltrType": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -685,19 +484,193 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TxPRBSInvertPattern": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "TxPRBSInvertPattern", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true"
           }, 
           "help": {
-            "default": "RootRaisedCos/RaisedCos/Gaussian  TX pulse shaping filter type default: RootRaisedCos", 
+            "default": "True/False  Generate inverted PRBS polynomial pattern default: true", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "cliname": {
-            "default": "TxPulseShapeFltrType", 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TxPRBSPattern": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              "2^7", 
+              "2^15", 
+              "2^23", 
+              "2^31"
+            ], 
             "type": "string"
           }, 
+          "cliname": {
+            "default": "TxPRBSPattern", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "2^31"
+          }, 
+          "help": {
+            "default": "2^7/2^15/2^23/2^31  Pattern to use for TX PRBS generation default: 2^31", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TxPower": {
+        "properties": {
+          "argtype": {
+            "type": "float64"
+          }, 
+          "cliname": {
+            "default": "TxPower", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }, 
+          "help": {
+            "default": "type: float64.  Transmit output power for this network interface in dBm default: 0", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TxPowerRampdBmPerSec": {
+        "properties": {
+          "argtype": {
+            "type": "float64"
+          }, 
+          "cliname": {
+            "default": "TxPowerRampdBmPerSec", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "1"
+          }, 
+          "help": {
+            "default": "type: float64.  Rate of change of tx power on this network interface default: 1", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TxPulseShapeFltrRollOff": {
+        "properties": {
+          "argtype": {
+            "type": "float64"
+          }, 
+          "cliname": {
+            "default": "TxPulseShapeFltrRollOff", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0.301"
+          }, 
+          "help": {
+            "default": "type: float64.  TX pulse shape filter roll off factor default: 0.301", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "TxPulseShapeFltrType": {
+        "properties": {
           "argtype": {
             "enum": [
               "RootRaisedCos", 
@@ -706,25 +679,53 @@
             ], 
             "type": "string"
           }, 
+          "cliname": {
+            "default": "TxPulseShapeFltrType", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "RootRaisedCos"
+          }, 
+          "help": {
+            "default": "RootRaisedCos/RaisedCos/Gaussian  TX pulse shaping filter type default: RootRaisedCos", 
+            "type": "string"
+          }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "RootRaisedCos"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": false, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "DWDMModuleNwIntf", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

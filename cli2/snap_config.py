@@ -25,7 +25,6 @@
 # Class handles initial config command
 #
 import os
-from sets import Set
 import json
 import pprint
 import inspect
@@ -218,9 +217,7 @@ class ConfigCmd(CommonCmdLine):
         self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
         self._cmd_common(argv[1:])
 
-    def _cmd_complete_common(self, text, line, begidx, endidx):
-        #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
-        # remove spacing/tab
+    def get_cmd_subcommands(self, text, line, complete=False):
         argv = [x for x in line.split(' ') if x != '' and x != 'no']
         mline = [self.objname] + argv
         mlineLength = len(mline)
@@ -260,7 +257,7 @@ class ConfigCmd(CommonCmdLine):
                         #sys.stdout.write("valueexpeded %s, objname %s, keys %s, help %s\n" %(valueexpected, objname, keys, help))
                         if valueexpected != SUBCOMMAND_VALUE_NOT_EXPECTED:
                             # we have reached a key command attribute
-                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE:
+                            if valueexpected == SUBCOMMAND_VALUE_EXPECTED_WITH_VALUE and not complete:
                                 # from the key we know that number of keys * 2 is the expected length
                                 # keys always expect a value
                                 keyslength = len(expectedInfo) * 2
@@ -274,7 +271,6 @@ class ConfigCmd(CommonCmdLine):
                                     if j % 2 != 0:
                                         # value not found, lets give the user some options
                                         if i == mlineLength - 1:
-                                            objname = expectedInfo.getCmdObjName(mline[i])
                                             key = expectedInfo.getCmdKey(mline[i])
                                             values = self.getCommandValues(objname, key)
                                             if not values:
@@ -284,7 +280,7 @@ class ConfigCmd(CommonCmdLine):
                                             # unless there is multiple keys
                                             if i+1 == mlineLength - 1 and mline[i+1] in values:
                                                 return [snapcliconst.COMMAND_DISPLAY_ENTER]
-                                            return values
+                                            return mline, values
                                     else: # get command
                                         subcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
                                     # increment to the next command
@@ -297,12 +293,34 @@ class ConfigCmd(CommonCmdLine):
             # increment to the next command
             i += 1
 
-        # todo should look next command so that this is not 'sort of hard coded'
-        # todo should to a getall at this point to get all of the interface types once a type is found
+        return mline, subcommands
+
+    def cmd_complete_get(self, text, line):
+
+        mline, subcommands = self.get_cmd_subcommands(text, line, complete=True)
+        if list(frozenset(subcommands).intersection([mline[-1]])) == [mline[-1]]:
+            returncommands = mline
+        else:
+            # lets remove any duplicates
+            returncommands = list(frozenset(subcommands).difference(mline))
+
+            if len(text) == 0 and len(returncommands) == len(subcommands):
+                #sys.stdout.write("just before return %s" %(returncommands))
+                return returncommands
+
+        returncommands = [k for k in returncommands if k.startswith(text)]
+
+        return returncommands
+
+    def _cmd_complete_common(self, text, line, begidx, endidx):
+        #sys.stdout.write("\n%s line: %s text: %s %s\n" %(self.objname, line, text, not text))
+        # remove spacing/tab
+        mline, subcommands = self.get_cmd_subcommands(text, line)
+
         #sys.stdout.write("3: subcommands: %s\n\n" %(subcommands,))
 
         # lets remove any duplicates
-        returncommands = list(Set(subcommands).difference(mline))
+        returncommands = list(frozenset(subcommands).difference(mline))
 
         if len(text) == 0 and len(returncommands) == len(subcommands):
             #sys.stdout.write("just before return %s" %(returncommands))
@@ -322,7 +340,6 @@ class ConfigCmd(CommonCmdLine):
                 self.cmdloop()
             else:
                 return
-
         # reset the command len
         self.commandLen = 0
         endprompt = ''
@@ -431,75 +448,68 @@ class ConfigCmd(CommonCmdLine):
         :param argv:
         :return:
         """
+        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
+        delete = argv[0] == 'no' if argv else False
+        if delete:
+            argv = argv[1:]
+            self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
 
+        cmd = argv[-1] if argv else ''
+        if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
+            self.display_help(argv if argv[0] != 'no' else argv[1:])
+            return ''
+        if cmd in ('!', ):
+            self.do_exit(argv if argv[0] != 'no' else argv[1:])
+            return ''
+        if cmd in ('exit',):
+            self.do_exit(argv if argv[0] != 'no' else argv[1:])
+            return ''
+
+        newargv = []
         if len(argv) == 0:
             return ''
         elif len(argv) == 1:
-            newargv = [self.find_func_cmd_alias(argv[0])]
-        elif len(argv) == 2:
-            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])]
-        else:
-            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
-
-        parentcmd = self.parent.lastcmd[-2] if len(self.parent.lastcmd) > 1 else self.parent.lastcmd[-1]
-        subcommands = self.getchildrencmds(parentcmd, self.model, self.schema)
-        delete = True if 'no' == argv[0] else False
-        if delete:
-            self.cmdtype = snapcliconst.COMMAND_TYPE_DELETE
-        
-        if len(argv) > 0:
-            if 'no' == argv[0]:
-                if len(argv) > 1:
-                    usercmd = self.convertUserCmdToModelCmd(newargv[1], subcommands)
-                    if usercmd not in subcommands and len(subcommands) > 0:
-                        if usercmd is None:
-                            sys.stdout.write(self.ERROR_RED + "ERROR: (11) Invalid or incomplete command\n" + self.ERROR_RED_END)
-                        snapcliconst.printErrorValueCmd(1, argv)
-                        return ''
-                    else:
-                        newargv = [usercmd] + newargv[2:]
+            newcmd = self.find_func_cmd_alias(argv[0])
+            if newcmd is not None:
+                newargv = [newcmd]
             else:
-                if newargv[0] not in subcommands and len(subcommands) > 0:
-                    usercmd = self.convertUserCmdToModelCmd(newargv[0], subcommands)
-                    if usercmd is None:
-                        sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
-                        snapcliconst.printErrorValueCmd(0, argv)
-                        return ''
-                    else:
-                        newargv = [usercmd] + newargv[1:]
+                sys.stdout.write("\nERROR Invalid command entered\n")
+                snapcliconst.printErrorValueCmd(0, argv)
+                return ''
+        else:
+            newcmd = self.find_func_cmd_alias(argv[0])
+            if newcmd is not None:
+                newargv = [newcmd]
+            else:
+                sys.stdout.write("\nERROR Invalid command entered\n")
+                snapcliconst.printErrorValueCmd(0, argv)
+                return ''
+            for i, idx in enumerate(reversed(range(len(argv[1:])))):
+                line = newargv + argv[i+1:len(argv)-idx]
+                cmdlist = self.cmd_complete_get(argv[i+1], " ".join(line))
+                if not cmdlist and i < len(argv) - 2 and not self.is_attribute_with_spaces_in_value(newargv[-1]):
+                    sys.stdout.write("\nERROR Invalid command entered\n")
+                    snapcliconst.printErrorValueCmd(i+1, argv)
+                    return ''
+                if cmdlist:
+                    newargv += cmdlist
+                elif len(newargv) == len(argv) - 1:
+                    newargv += [argv[-1]]
 
-        mline = [parentcmd] + [x for x in newargv if x != 'no']
+            if newargv[-1] in ("?", "help"):
+                newargv = argv
+
+        mline = [parentcmd] + newargv
         mlineLength = len(mline)
         subschema = self.schema
         submodel = self.model
         if mlineLength > 1:
-            cmd = newargv[-1]
-            if cmd in ('?', 'help') and cmd not in ('exit', 'end', 'no', '!'):
-                self.display_help(newargv if 'no' not in newargv[0] else newargv[1:])
-                return ''
-            if cmd in ('!',):
-                self.do_exit(newargv if 'no' not in newargv[0] else newargv[1:])
-                return ''
-            if cmd in ('exit',):
-                self.do_exit(newargv if 'no' not in newargv[0] else newargv[1:])
-                return ''
-
             self.commandLen = 0
             try:
                 # lets walk the command line along with the model
                 for i in range(1, mlineLength):
                     schemaname = self.getSchemaCommandNameFromCliName(mline[i-1], submodel)
                     if schemaname:
-                        subcommands = self.getchildrencmds(mline[i-1], submodel, subschema)
-                        if mline[i] not in subcommands and len(subcommands) > 0:
-                            usercmd = self.convertUserCmdToModelCmd(mline[i], subcommands)
-                            if usercmd is not None:
-                                mline[i] = usercmd
-                                newargv[i-1] = usercmd
-                            else:
-                                sys.stdout.write(self.ERROR_RED + "ERROR: Invalid or incomplete command\n" + self.ERROR_RED_END)
-                                snapcliconst.printErrorValueCmd(i, mline)
-                                return ''
                         # now that we have the schema based on the previous command
                         # lets get the list of sub commands
                         submodelList = self.getSubCommand(mline[i], submodel[schemaname]["commands"])
@@ -508,7 +518,6 @@ class ConfigCmd(CommonCmdLine):
                             # lets search among the sub commands to find the current command
                             for submodel, subschema in zip(submodelList, subschemaList):
                                 subcommands = self.getchildrencmds(mline[i], submodel, subschema)
-                                #(valueexpected, objname, keys, help, islist) = self.isValueExpected(mline[i], submodel, subschema)
                                 expectedInfo = self.isValueExpected(mline[i], submodel, subschema)
                                 valueexpected = expectedInfo.getCmdValueExpected(mline[i])
                                 # set the current value expected for the actual command execution
@@ -553,11 +562,15 @@ class ConfigCmd(CommonCmdLine):
                                         if not values:
                                             # TODO need a way to know if a value is discovered
                                             # so that we can validate it here
-                                            #self.getCommandValues(objname, expectedInfo.getAllCliCmds())
-                                            #values = self.getCommandValues(objname, keys)
-                                            #sys.stdout.write("FOUND values %s" %(values))
-                                            #self.commandLen = len(mline[:i]) + 1
-                                            pass
+                                            if self.cmdtype == snapcliconst.COMMAND_TYPE_DELETE:
+                                                key = expectedInfo.getCmdKey(mline[i])
+                                                objname = expectedInfo.getCmdObjName(mline[i])
+                                                values = self.getCommandValues(objname, key)
+                                                if i < mlineLength-1 and \
+                                                    mline[i+1] not in values:
+                                                    snapcliconst.printErrorValueCmd(i+1, mline)
+                                                    sys.stdout.write("\nERROR: Invalid Value for deletion\n")
+                                                    return ''
 
                                         # we have reached all commands
                                         if i == mlineLength - 2 and \
@@ -855,7 +868,6 @@ class ConfigCmd(CommonCmdLine):
             newConfigList += tmpCmdEntryList
             return newConfigList
 
-
         PROCESS_CONFIG = 1
         ROLLBACK_CONFIG = 2
         ROLLBACK_UPDATE = 1
@@ -865,7 +877,6 @@ class ConfigCmd(CommonCmdLine):
         root = self.getRootObj()
         if self.configList and \
                 root.isSystemReady():
-
 
             # create new list where come config is combined because they
             # are acting on the same object
@@ -901,8 +912,14 @@ class ConfigCmd(CommonCmdLine):
                         if hasattr(sdk, 'get' + funcObjName):
                             get_func = getattr(sdk, 'get' + funcObjName)
                             update_func = getattr(sdk, 'update' + funcObjName)
-                            create_func = getattr(sdk, 'create' + funcObjName)
-                            delete_func = getattr(sdk, 'delete' + funcObjName)
+                            try:
+                                create_func = getattr(sdk, 'create' + funcObjName)
+                                delete_func = getattr(sdk, 'delete' + funcObjName)
+                            except AttributeError:
+                                # auto created objects won't have create and delete
+                                # sck commands
+                                create_func = None
+                                delete_func = None
                             try:
                                 origData = None
                                 if stage != ROLLBACK_CONFIG:
@@ -944,15 +961,16 @@ class ConfigCmd(CommonCmdLine):
                                         clearAppliedList += delList
                                         rollbackData[config] = (ROLLBACK_UPDATE, origData)
 
-                                elif status_code in (404, ROLLBACK_DELETE):
+                                elif status_code in (404, ROLLBACK_DELETE) and create_func:
                                     # create
                                     (failurecfg, delList) = self.applyCreateNodeConfig(sdk, config, create_func)
                                     if not failurecfg and stage == PROCESS_CONFIG:
                                         clearAppliedList += delList
                                         rollbackData[config] = (ROLLBACK_CREATE, origData)
 
-                                elif status_code in (ROLLBACK_CREATE,) or \
-                                    config.delete:
+                                elif (status_code in (ROLLBACK_CREATE,) or \
+                                    config.delete) and \
+                                        delete_func:
                                     # delete
                                     (failurecfg, delList) = self.applyDeleteNodeConfig(sdk, config, delete_func)
                                     if not failurecfg and stage == PROCESS_CONFIG:
@@ -1080,10 +1098,19 @@ class ConfigCmd(CommonCmdLine):
         full = False
         if argv and argv[-1] == 'full':
             full = True
-
+        sys.stdout.write(self.WARNING_YELLOW +
+                         "NOTE: If attribute is not user provisioned default values shown, when config is applied a\n" +
+                         self.WARNING_YELLOW_END)
+        sys.stdout.write(self.WARNING_YELLOW +
+                         "read before write action will occur to fill in values of attributes not set by user.\n\n" +
+                         self.WARNING_YELLOW_END)
         for config in self.configList:
             if config.isValid() or full:
                 config.show()
+
+    # warning if another command is similar this may cause conflicts with find_func_cmd_alias
+    do_showunapplied.aliases = ["showu", "showun", "showuna", "showunap", "showunapp",
+                                "showunappl", "showunappli", "showunapplie", ]
 
 
     def do_clearunapplied(self, argv):
@@ -1093,6 +1120,9 @@ class ConfigCmd(CommonCmdLine):
             config.clear(all)
 
         self.configList = []
+    # warning if another command is similar this may cause conflicts with find_func_cmd_alias
+    do_clearunapplied.aliases = ["clearu", "clearun", "clearuna", "clearunap", "clearunapp",
+                                 "clearunappl", "clearunappli", "clearunapplie", ]
 
 
     '''

@@ -1,4 +1,27 @@
 {
+  "cmd_to_subcmd": {}, 
+  "commands": {
+    "description": "", 
+    "properties": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/schema/BGPCounters.json"
+      }, 
+      "subcmd2": {
+        "$ref": "file:/tmp/snaproute/cli/schema/BGPCounters.json"
+      }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": false, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
+  }, 
+  "defaultref": {
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
+    "properties": {}, 
+    "type": "object"
+  }, 
   "listattrs": [
     [
       "subcmd1", 
@@ -9,31 +32,9 @@
       "Sent"
     ]
   ], 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
-  "commands": {
-    "type": "object", 
-    "description": "", 
-    "properties": {
-      "subcmd1": {
-        "$ref": "file:/tmp/snaproute/cli/schema/BGPCounters.json"
-      }, 
-      "subcmd2": {
-        "$ref": "file:/tmp/snaproute/cli/schema/BGPCounters.json"
-      }
-    }
-  }, 
-  "defaultref": {
-    "type": "object", 
-    "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
-  }, 
   "objname": {
     "default": "BGPMessages", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

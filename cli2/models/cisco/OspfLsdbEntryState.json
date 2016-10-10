@@ -1,15 +1,12 @@
 {
   "ospflsdbentrystate": {
-    "prompt": "", 
+    "cliname": "ospflsdbentry", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfLsdbEntryStateSubCmds.json"
-    },
-    "help": "OSPF Data Regarding Link State",
-    "cliname": "database",
+    }, 
+    "help": "OSPF Data Regarding Link State", 
+    "prompt": "", 
     "value": {
-      "LsdbType": {
-        "cliname": "lsdbtype"
-      }, 
       "LsdbAreaId": {
         "cliname": "lsdbareaid"
       }, 
@@ -18,6 +15,9 @@
       }, 
       "LsdbRouterId": {
         "cliname": "lsdbrouterid"
+      }, 
+      "LsdbType": {
+        "cliname": "ospflsdbentry"
       }
     }
   }

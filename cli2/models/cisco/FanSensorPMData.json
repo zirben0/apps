@@ -1,8 +1,9 @@
 {
   "fansensorpmdata": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config FanSensorPMData Info", 
+    "prompt": "", 
     "value": {}
   }
 }

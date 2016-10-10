@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "FileName": {
+      "cliname": "FileName"
+    }, 
+    "ModuleId": {
+      "cliname": "ModuleId"
+    }
+  }, 
+  "listattrs": []
+}

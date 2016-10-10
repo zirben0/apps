@@ -1,11 +1,11 @@
 {
   "arpentrystate": {
-    "prompt": "", 
+    "cliname": "arp_entry", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpEntryStateSubCmds.json"
-    },
-    "help": "Show Arp Entry By IP",
-    "cliname": "arp_entry",
+    }, 
+    "help": "Show Arp Entry By IP", 
+    "prompt": "", 
     "value": {
       "IpAddr": {
         "cliname": "arp_entry"

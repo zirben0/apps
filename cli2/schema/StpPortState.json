@@ -2,78 +2,63 @@
   "stpportstate": {
     "createwithdefault": {
       "default": true, 
-      "type": "boolean", 
-      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+      "type": "boolean"
     }, 
-    "required": [
-      "value", 
-      "cliname"
-    ], 
-    "type": "object", 
     "properties": {
-      "commands": {
-        "type": "object", 
-        "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/StpPortStateSubCmds.json"
-        }
-      }, 
       "cliname": {
         "default": "", 
-        "type": "string", 
-        "description": "name used in cli to describe bfd"
+        "description": "name used in cli to describe bfd", 
+        "type": "string"
+      }, 
+      "commands": {
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/StpPortStateSubCmds.json"
+        }, 
+        "type": "object"
       }, 
       "help": {
         "default": "", 
         "type": "string"
       }, 
+      "objname": {
+        "default": "StpPortState", 
+        "description": "object name to which references these attributes", 
+        "type": "string"
+      }, 
       "prompt": {
         "default": "", 
+        "description": "what to display on the prompt when the user has entered a command", 
         "displayValue": false, 
-        "type": "string", 
-        "description": "what to display on the prompt when the user has entered a command"
+        "type": "string"
       }, 
       "value": {
-        "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
           "IntfRef": {
-            "type": "object", 
             "properties": {
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
+              "argtype": {
                 "type": "string"
+              }, 
+              "cliname": {
+                "default": "stpport", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
               }, 
               "help": {
                 "default": "The port number of the port for which this entry contains Spanning Tree Protocol management information.", 
                 "type": "string"
               }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "intfref", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "type": "string"
-              }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "defaultarg": {
-                "default": ""
-              }
-            }
-          }, 
-          "Vlan": {
-            "type": "object", 
-            "properties": {
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
               "key": {
                 "default": true, 
                 "type": "boolean"
@@ -81,40 +66,55 @@
               "prompt": {
                 "default": "", 
                 "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          "Vlan": {
+            "properties": {
+              "argtype": {
+                "maximum": 4094, 
+                "minimum": 0, 
+                "type": "int32"
+              }, 
+              "cliname": {
+                "default": "Vlan", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
               }, 
               "help": {
                 "default": "0-4094  The value of instance of the vlan object", 
                 "type": "string"
               }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "vlan", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "minimum": 0, 
-                "type": "int32", 
-                "maximum": 4094
-              }, 
               "isdefaultset": {
                 "default": false, 
                 "type": "boolean"
               }, 
-              "defaultarg": {
-                "default": ""
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
               }
-            }
+            }, 
+            "type": "object"
           }
-        }
-      }, 
-      "objname": {
-        "default": "StpPortState", 
-        "type": "string", 
-        "description": "object name to which references these attributes"
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object"
   }
 }

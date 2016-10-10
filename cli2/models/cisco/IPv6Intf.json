@@ -1,14 +1,14 @@
 {
   "ipv6intf": {
-    "prompt": "",
-    "help": "IPv6 Ethernet Interface Commands",
+    "cliname": "ethernet", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv6IntfSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "IPv6 Ethernet Interface Commands", 
+    "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "intfref"
+        "cliname": "ethernet"
       }
     }
   }

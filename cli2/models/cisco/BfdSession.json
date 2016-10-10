@@ -1,11 +1,11 @@
 {
   "bfdsession": {
-    "prompt": "session",
+    "cliname": "session", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionSubCmds.json"
-    },
-    "help": "Session",
-    "cliname": "session",
+    }, 
+    "help": "Session", 
+    "prompt": "session", 
     "value": {
       "IpAddr": {
         "cliname": "neighbor"

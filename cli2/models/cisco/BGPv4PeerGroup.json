@@ -1,10 +1,11 @@
 {
   "bgpv4peergroup": {
-    "prompt": "peer_ip", 
+    "cliname": "peer_ip_group", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4PeerGroupSubCmds.json"
     }, 
-    "cliname": "peer_ip_group", 
+    "help": "Config BGPv4PeerGroup Info", 
+    "prompt": "peer_ip", 
     "value": {
       "Name": {
         "cliname": "peer_ip_group"

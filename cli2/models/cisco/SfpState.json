@@ -1,13 +1,14 @@
 {
   "sfpstate": {
-    "prompt": "", 
+    "cliname": "sfp", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SfpStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show SfpState Info", 
+    "prompt": "", 
     "value": {
       "SfpId": {
-        "cliname": "sfpid"
+        "cliname": "sfp"
       }
     }
   }

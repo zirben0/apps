@@ -14,7 +14,7 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/vrrpip.json"
     },
     "IfIndex": {
-      "cliname": "ethernet"
+      "cliname": "vlan"
     }, 
     "VRID": {
       "cliname": "vrrp"

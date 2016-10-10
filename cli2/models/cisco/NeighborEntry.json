@@ -1,0 +1,9 @@
+{
+  "neighborentry": {
+    "cliname": "", 
+    "commands": {}, 
+    "help": "Config NeighborEntry Info", 
+    "prompt": "", 
+    "value": {}
+  }
+}

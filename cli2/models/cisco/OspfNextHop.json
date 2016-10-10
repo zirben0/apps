@@ -1,8 +1,9 @@
 {
   "ospfnexthop": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config OspfNextHop Info", 
+    "prompt": "", 
     "value": {}
   }
 }

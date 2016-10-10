@@ -1,11 +1,11 @@
 {
   "bgpv4aggregate": {
-    "prompt": "", 
+    "cliname": "aggregate", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BGPv4AggregateSubCmds.json"
-    },
+    }, 
     "help": "Configure IPv4 Aggregate", 
-    "cliname": "aggregate", 
+    "prompt": "", 
     "value": {
       "IpPrefix": {
         "cliname": "aggregate"

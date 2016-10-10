@@ -1,8 +1,9 @@
 {
   "routeinfosummary": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config RouteInfoSummary Info", 
+    "prompt": "", 
     "value": {}
   }
 }

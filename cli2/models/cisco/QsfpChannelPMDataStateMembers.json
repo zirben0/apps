@@ -1,0 +1,17 @@
+{
+  "commands": {
+    "ChannelNum": {
+      "cliname": "qsfpchannelpmdata"
+    }, 
+    "Class": {
+      "cliname": "Class"
+    }, 
+    "QsfpId": {
+      "cliname": "QsfpId"
+    }, 
+    "Resource": {
+      "cliname": "Resource"
+    }
+  }, 
+  "listattrs": []
+}

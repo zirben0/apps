@@ -1,13 +1,14 @@
 {
   "vxlanvtepinstance": {
-    "prompt": "", 
+    "cliname": "ethernet", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/VxlanVtepInstanceSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config VxlanVtepInstance Info", 
+    "prompt": "", 
     "value": {
       "Intf": {
-        "cliname": "intf"
+        "cliname": "ethernet"
       }
     }
   }

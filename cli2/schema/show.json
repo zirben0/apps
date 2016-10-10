@@ -1,113 +1,127 @@
 {
-  "show" : {
-    "type": "object",
+  "show": {
     "properties": {
-      "cliname" : {
-        "type" : "string",
-        "description" : "config name used",
-        "default" : "show"
-      },
-      "help" : {
-        "type" : "string",
-        "default" : "Show commands"
-      },
-      "commands" : {
-        "type": "object",
-        "description": "holds all related commands related to ethernet port",
+      "cliname": {
+        "default": "show", 
+        "description": "config name used", 
+        "type": "string"
+      }, 
+      "commands": {
+        "description": "holds all related commands related to ethernet port", 
         "properties": {
           "subcmd1": {
             "$ref": "file:/tmp/snaproute/cli/schema/showinterface.json"
-          },
-          "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/VlanState.json"
-          },
-          "subcmd4": {
-            "$ref": "file:/tmp/snaproute/cli/schema/bfdshow.json"
-          },
-          "subcmd6": {
-            "$ref": "file:/tmp/snaproute/cli/schema/feature.json"
-          },
-          "subcmd7": {
-            "$ref": "file:/tmp/snaproute/cli/schema/ipshow.json"
-          },
-          "subcmd8": {
-            "$ref": "file:/tmp/snaproute/cli/schema/stpshow.json"
-          },
-          "subcmd9": {
-            "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinitionState.json"
-          },
+          }, 
           "subcmd10": {
             "$ref": "file:/tmp/snaproute/cli/schema/PolicyStmtState.json"
-          },
+          }, 
           "subcmd11": {
             "$ref": "file:/tmp/snaproute/cli/schema/PolicyConditionState.json"
-          },
+          }, 
           "subcmd12": {
             "$ref": "file:/tmp/snaproute/cli/schema/RouteDistanceState.json"
-          },
+          }, 
           "subcmd13": {
             "$ref": "file:/tmp/snaproute/cli/schema/DaemonState.json"
-          },
+          }, 
           "subcmd14": {
             "$ref": "file:/tmp/snaproute/cli/schema/ArpEntryState.json"
-          },
+          }, 
           "subcmd15": {
             "$ref": "file:/tmp/snaproute/cli/schema/ArpEntryHwState.json"
-          },
+          }, 
           "subcmd16": {
             "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayHostDhcpState.json"
-          },
+          }, 
           "subcmd17": {
             "$ref": "file:/tmp/snaproute/cli/schema/OspfGlobalState.json"
-          },
+          }, 
           "subcmd18": {
             "$ref": "file:/tmp/snaproute/cli/schema/mac.json"
-          },
+          }, 
           "subcmd19": {
             "$ref": "file:/tmp/snaproute/cli/schema/SystemSwVersionState.json"
-          },
+          }, 
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/VlanState.json"
+          }, 
           "subcmd20": {
             "$ref": "file:/tmp/snaproute/cli/schema/LaPortChannelState.json"
-          },
+          }, 
           "subcmd21": {
             "$ref": "file:/tmp/snaproute/cli/schema/VrrpVridState.json"
-          },
+          }, 
           "subcmd22": {
             "$ref": "file:/tmp/snaproute/cli/schema/SystemStatusState.json"
-          },
+          }, 
           "subcmd23": {
             "$ref": "file:/tmp/snaproute/cli/schema/lldpshow.json"
-          },
+          }, 
           "subcmd24": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleState.json"
-		  },
-		  "subcmd25": {
+          }, 
+          "subcmd25": {
             "$ref": "file:/tmp/snaproute/cli/schema/ipv6show.json"
-          },
-		  "subcmd26": {
+          }, 
+          "subcmd26": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleNwIntfState.json"
-          },
-		  "subcmd27": {
+          }, 
+          "subcmd27": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleClntIntfState.json"
-          },
+          }, 
           "subcmd28": {
             "$ref": "file:/tmp/snaproute/cli/schema/XponderGlobalState.json"
-          },
+          }, 
           "subcmd29": {
             "$ref": "file:/tmp/snaproute/cli/schema/FaultState.json"
-          },
+          }, 
+          "subcmd3": {
+            "$ref": "file:/tmp/snaproute/cli/schema/QsfpChannelState.json"
+          }, 
           "subcmd30": {
             "$ref": "file:/tmp/snaproute/cli/schema/AlarmState.json"
-          },
+          }, 
           "subcmd31": {
             "$ref": "file:/tmp/snaproute/cli/schema/NDPEntryState.json"
-          },
+          }, 
           "subcmd32": {
             "$ref": "file:/tmp/snaproute/cli/schema/NdpEntryHwState.json"
+          }, 
+          "subcmd33": {
+            "$ref": "file:/tmp/snaproute/cli/schema/EthernetPMState.json"
+          }, 
+          "subcmd34": {
+            "$ref": "file:/tmp/snaproute/cli/schema/AsicGlobalPMState.json"
+          }, 
+          "subcmd35": {
+            "$ref": "file:/tmp/snaproute/cli/schema/CoppStatState.json"
+          }, 
+          "subcmd4": {
+            "$ref": "file:/tmp/snaproute/cli/schema/bfdshow.json"
+          }, 
+          "subcmd5": {
+            "$ref": "file:/tmp/snaproute/cli/schema/QsfpChannelPMDataState.json"
+          }, 
+          "subcmd6": {
+            "$ref": "file:/tmp/snaproute/cli/schema/feature.json"
+          }, 
+          "subcmd7": {
+            "$ref": "file:/tmp/snaproute/cli/schema/ipshow.json"
+          }, 
+          "subcmd8": {
+            "$ref": "file:/tmp/snaproute/cli/schema/stpshow.json"
+          }, 
+          "subcmd9": {
+            "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinitionState.json"
           }
-
-        }
+        }, 
+        "type": "object"
+      }, 
+      "help": {
+        "default": "Show commands", 
+        "type": "string"
       }
-    }
+    }, 
+    "type": "object"
   }
 }

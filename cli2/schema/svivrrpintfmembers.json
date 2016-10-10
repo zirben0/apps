@@ -1,5 +1,8 @@
 {
-  "listattrs": [], 
+  "cmd_to_subcmd": {
+    "subcmd1": "VirtualIPv4Addr"
+  },
+  "listattrs": [],
   "createwithdefault": {
     "default": true,
     "type": "boolean", 
@@ -141,7 +144,7 @@
             "type": "boolean"
           }, 
           "cliname": {
-            "default": "ifindex", 
+            "default": "ifindex",
             "type": "string"
           }, 
           "argtype": {

@@ -1,11 +1,11 @@
 {
   "bfdsessionstate": {
-    "prompt": "", 
+    "cliname": "session", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BfdSessionStateSubCmds.json"
-    },
-    "help": "Show Bfd Session Info.  By Ip Address",
-    "cliname": "session",
+    }, 
+    "help": "Show Bfd Session Info.  By Ip Address", 
+    "prompt": "", 
     "value": {
       "IpAddr": {
         "cliname": "session"

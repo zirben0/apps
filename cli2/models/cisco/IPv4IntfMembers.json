@@ -2,7 +2,7 @@
   "listattrs": [], 
   "commands": {
     "IntfRef": {
-      "cliname": "intfref"
+      "cliname": "ethernet"
     }, 
     "IpAddr": {
       "cliname": "ipaddr"

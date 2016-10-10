@@ -1,13 +1,14 @@
 {
   "bufferportstatstate": {
-    "prompt": "", 
+    "cliname": "bufferportstat", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/BufferPortStatStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show BufferPortStatState Info", 
+    "prompt": "", 
     "value": {
       "IntfRef": {
-        "cliname": "intfref"
+        "cliname": "ethernet"
       }
     }
   }

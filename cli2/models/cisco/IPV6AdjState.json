@@ -1,11 +1,11 @@
 {
   "ipv6adjstate": {
-    "prompt": "", 
+    "cliname": "adj", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPV6AdjStateSubCmds.json"
     }, 
-    "help": "Show IPv6 adjacencies",
-    "cliname": "adj", 
+    "help": "Show IPv6 adjacencies", 
+    "prompt": "", 
     "value": {
       "IntfRef": {
         "cliname": "intfref"
@@ -13,4 +13,3 @@
     }
   }
 }
-

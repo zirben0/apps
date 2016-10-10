@@ -1,0 +1,357 @@
+{
+  "cmd_to_subcmd": {}, 
+  "commands": {
+    "description": "", 
+    "properties": {
+      "HighAlarmThreshold": {
+        "properties": {
+          "argtype": {
+            "type": "float64"
+          }, 
+          "cliname": {
+            "default": "HighAlarmThreshold", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "100000"
+          }, 
+          "help": {
+            "default": "type: float64.  High alarm threshold value for this PM default: 100000", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "HighWarnThreshold": {
+        "properties": {
+          "argtype": {
+            "type": "float64"
+          }, 
+          "cliname": {
+            "default": "HighWarnThreshold", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "100000"
+          }, 
+          "help": {
+            "default": "type: float64.  High warning threshold value for this PM default: 100000", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "IntfRef": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "IntfRef", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Interface name of port", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "LowAlarmThreshold": {
+        "properties": {
+          "argtype": {
+            "type": "float64"
+          }, 
+          "cliname": {
+            "default": "LowAlarmThreshold", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "-100000"
+          }, 
+          "help": {
+            "default": "type: float64.  Low alarm threshold value for this PM default: -100000", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "LowWarnThreshold": {
+        "properties": {
+          "argtype": {
+            "type": "float64"
+          }, 
+          "cliname": {
+            "default": "LowWarnThreshold", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "-100000"
+          }, 
+          "help": {
+            "default": "type: float64.  Low warning threshold value for this PM default: -100000", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "PMClassAEnable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "PMClassAEnable", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable control for CLASS-A PM default: true", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "PMClassBEnable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "PMClassBEnable", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable control for CLASS-B PM default: true", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "PMClassCEnable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "PMClassCEnable", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "true"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable control for CLASS-C PM default: true", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "Resource": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              "StatUnderSizePkts", 
+              "StatOverSizePkts", 
+              "StatFragments", 
+              "StatCRCAlignErrors", 
+              "StatJabber", 
+              "StatEtherPkts", 
+              "StatMCPkts", 
+              "StatBCPkts", 
+              "Stat64OctOrLess", 
+              "Stat65OctTo126Oct", 
+              "Stat128OctTo255Oct", 
+              "Stat128OctTo255Oct", 
+              "Stat256OctTo511Oct", 
+              "Stat512OctTo1023Oct", 
+              "Statc1024OctTo1518Oct"
+            ], 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "ethernetpm", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "StatUnderSizePkts/StatOverSizePkts/StatFragments/StatCRCAlignErrors/StatJabber/StatEtherPkts/StatMCPkts/StatBCPkts/Stat64OctOrLess/Stat65OctTo126Oct/Stat128OctTo255Oct/Stat128OctTo255Oct/Stat256OctTo511Oct/Stat512OctTo1023Oct/Statc1024OctTo1518Oct  Resource identifier", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": true, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
+  }, 
+  "defaultref": {
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
+    "properties": {}, 
+    "type": "object"
+  }, 
+  "listattrs": [], 
+  "objname": {
+    "default": "EthernetPM", 
+    "description": "object name to which references these attributes", 
+    "type": "string"
+  }
+}

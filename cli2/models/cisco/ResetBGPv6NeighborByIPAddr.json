@@ -1,8 +1,9 @@
 {
   "resetbgpv6neighborbyipaddr": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config ResetBGPv6NeighborByIPAddr Info", 
+    "prompt": "", 
     "value": {}
   }
 }
