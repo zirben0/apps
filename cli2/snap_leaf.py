@@ -365,6 +365,15 @@ class LeafCmd(CommonCmdLine):
                     if cmdname:
                         yield cmdname
 
+        def get_leaf_clinames(cmd):
+            clinames = []
+            if isLeaf(cmd):
+                for attr, val in cmd['commands'].iteritems():
+                    if 'cliname' in val:
+                        clinames.append(val['cliname'])
+
+            return clinames
+
         # keep track of each of the commands being added as we will use
         # this list to add the aliases
         cmdNameList = []
@@ -379,10 +388,17 @@ class LeafCmd(CommonCmdLine):
             for subcmds, cmd in self.modelCmdsLoop(model[self.objname]):
                 if subcmds is None:
                     continue
+
                 # handle the subcmd links links
                 if isSubCmd(subcmds):
                     # sub commands typically attr and attr attributes
                     if isLeaf(cmd):
+
+                        # if command is part of parent commands lets ignore because we don't want to process
+                        # the key
+                        if self.parent and frozenset(get_leaf_clinames(cmd)).intersection(self.parent.lastcmd):
+                            ignoreKeys = []
+
                         for cmdname in getAllSubCmdCommands(cmd, ignoreKeys):
                             if cmdname:
                                 # Note needed for show
