@@ -35,41 +35,6 @@
       "value": {
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
-          "IntfRef": {
-            "properties": {
-              "argtype": {
-                "type": "string"
-              }, 
-              "cliname": {
-                "default": "bgpv4neighbor", 
-                "type": "string"
-              }, 
-              "defaultarg": {
-                "default": ""
-              }, 
-              "help": {
-                "default": "Interface of the BGP neighbor", 
-                "type": "string"
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "key": {
-                "default": true, 
-                "type": "boolean"
-              }, 
-              "prompt": {
-                "default": "", 
-                "type": "string"
-              }
-            }, 
-            "type": "object"
-          }, 
           "NeighborAddress": {
             "properties": {
               "argtype": {
