@@ -236,7 +236,11 @@ class LeafCmd(CommonCmdLine):
                             if isValidKeyConfig:
                                 for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
                                     if basekey in objattrs:
-                                        if objattrs[basekey]['isattrkey']:
+                                        if objattrs[basekey]['isattrkey'] and \
+                                                ('value' in objattrs[basekey] and
+                                                         type(objattrs[basekey]['value']) != list and
+                                                         'default' in objattrs[basekey] and
+                                                     not objattrs[basekey]['value']['default']):
                                             config.setDelete(delete)
 
                                         # all keys for an object must be set and
@@ -245,7 +249,7 @@ class LeafCmd(CommonCmdLine):
                                         # ready to be provisioned.
                                         config.setValid(isvalid)
                                         # no was stripped before
-                                        if delete and 'no' != cmd[0]:
+                                        if delete and cmd and 'no' != cmd[0]:
                                             cmd = ['no'] + cmd
                                         config.set(cmd, delete, basekey, basevalue, isKey=objattrs[basekey]['isattrkey'], isattrlist=objattrs[basekey]['isarray'])
                             '''
@@ -283,7 +287,11 @@ class LeafCmd(CommonCmdLine):
                             if isvalid:
                                 for basekey, (basevalue, cmd) in keyvalueDict.iteritems():
                                     if basekey in objattrs:
-                                        if objattrs[basekey]['isattrkey']:
+                                        if objattrs[basekey]['isattrkey'] and  \
+                                                ('value' in objattrs[basekey] and
+                                                         type(objattrs[basekey]['value']) != list and
+                                                         'default' in objattrs[basekey] and
+                                                     not objattrs[basekey]['value']['default']):
                                             config.setDelete(delete)
                                         # values supplied may not be the object key but they were used
                                         # to create the object as is the case with router bgp
@@ -301,13 +309,20 @@ class LeafCmd(CommonCmdLine):
                     elif cfg and snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                         # let remove the previous command if it was set
                         # or lets delete the config
-                        if len(config.attrList) == len(keyvalueDict):
+                        if len(cfg.attrList) == len(keyvalueDict):
                             try:
                                 # lets remove this command
                                 # because basically the user cleared
                                 # the previous unapplied command
-                                configObj.configList.remove(cfg)
-                                return False
+                                if cfg.isValid() and \
+                                        cfg.isDelete():
+                                    configObj.configList.remove(cfg)
+                                    configObj.configList.append(config)
+
+                                else:
+                                    configObj.configList.remove(cfg)
+                                    return False
+
                             except ValueError:
                                 pass
         return True if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else False

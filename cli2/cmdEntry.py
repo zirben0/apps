@@ -209,6 +209,9 @@ class CmdEntry(object):
     def setDelete(self, d):
         self.delete = d
 
+    def isDelete(self):
+        return self.delete
+
     def isAttrSet(self, attr):
 
         for entry in self.attrList:
