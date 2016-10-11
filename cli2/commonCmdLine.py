@@ -990,9 +990,15 @@ class CommonCmdLine(cmdln.Cmdln):
                             expected = SUBCOMMAND_VALUE_EXPECTED
 
                     objname = snapcliconst.getSchemaObjName(schemaname, schema)
-                    help += snapcliconst.getHelp(schemaname, model, schema)
+                    #help += snapcliconst.getHelp(schemaname, model, schema)
                     if k in modelValues:
                         clikey = modelValues[k]["cliname"]
+                        if clikey == cmd:
+                            if "help" in modelValues[k]:
+                                help += modelValues[k]["help"]
+                            else:
+                                help += schemaValues[k]['properties']['help']['default']
+
                         expectedInfo.updateObjInfo(clikey, expected, objname, k, help, islist)
 
         if len(expectedInfo) == 0:
@@ -1051,6 +1057,10 @@ class CommonCmdLine(cmdln.Cmdln):
         if key in snapcliconst.DYNAMIC_MODEL_ATTR_NAME_LIST:
             # lets strip the string name prepended
             returnval = returnval.replace(snapcliconst.PORT_NAME_PREFIX, "")
+            returnval = returnval.replace("agg", "")
+            returnval = returnval.replace("bond", "")
+            returnval = returnval.replace("vlan", "")
+            returnval = returnval.replace("lo", "")
             # TODO not working when this is enabled so going have to look into this later
             #returnval = '1/' + returnval
         return str(returnval)
@@ -1139,10 +1149,10 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     if min is not None and max is not None:
                                                         strvalues += "%s-%s" %(min, max)
                                             helpcommands = [[cmd, strvalues + "\n" + help, self.MODEL_COMMAND]]
-                                            helpcommands += self.getchildrenhelpcmds(mline[i],
-                                                                                     submodel,
-                                                                                     subschema,
-                                                                                     issubcmd=True)
+                                            #helpcommands += self.getchildrenhelpcmds(mline[i],
+                                            #                                         submodel,
+                                            #                                         subschema,
+                                            #                                         issubcmd=True)
                                     else:
                                         key = expectedInfo.getCmdKey(mline[i])
                                         objname = expectedInfo.getCmdObjName(mline[i])
@@ -1162,10 +1172,10 @@ class CommonCmdLine(cmdln.Cmdln):
                                                     if min is not None and max is not None:
                                                         strvalues += "%s-%s" %(min, max)
                                             helpcommands = [[cmd, strvalues + "\n" + help, self.MODEL_COMMAND]]
-                                            helpcommands += self.getchildrenhelpcmds(mline[i],
-                                                                                     submodel,
-                                                                                     subschema,
-                                                                                     issubcmd=True)
+                                            #helpcommands += self.getchildrenhelpcmds(mline[i],
+                                            #                                         submodel,
+                                            #                                         subschema,
+                                            #                                         issubcmd=True)
                                 else:
                                     helpcommands = self.getchildrenhelpcmds(mline[i],
                                                                             submodel,

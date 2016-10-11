@@ -20,7 +20,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": true, 
+            "default": true,
             "type": "boolean"
           }, 
           "islist": {
@@ -55,7 +55,7 @@
             "type": "string"
           }, 
           "isdefaultset": {
-            "default": true, 
+            "default": false,
             "type": "boolean"
           }, 
           "islist": {

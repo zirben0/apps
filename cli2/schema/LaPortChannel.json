@@ -48,7 +48,7 @@
                 "default": ""
               }, 
               "help": {
-                "default": "Id of the lag group", 
+                "default": "Id number of the lag group, id will be prefixed with agg for IntfRef value",
                 "type": "string"
               }, 
               "isdefaultset": {
