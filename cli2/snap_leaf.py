@@ -301,13 +301,20 @@ class LeafCmd(CommonCmdLine):
                     elif cfg and snapcliconst.COMMAND_TYPE_DELETE in self.cmdtype:
                         # let remove the previous command if it was set
                         # or lets delete the config
-                        if len(config.attrList) == len(keyvalueDict):
+                        if len(cfg.attrList) == len(keyvalueDict):
                             try:
                                 # lets remove this command
                                 # because basically the user cleared
                                 # the previous unapplied command
-                                configObj.configList.remove(cfg)
-                                return False
+                                if cfg.isValid() and \
+                                        cfg.isDelete():
+                                    configObj.configList.remove(cfg)
+                                    configObj.configList.append(config)
+
+                                else:
+                                    configObj.configList.remove(cfg)
+                                    return False
+
                             except ValueError:
                                 pass
         return True if snapcliconst.COMMAND_TYPE_CONFIG_NOW not in self.cmdtype else False
