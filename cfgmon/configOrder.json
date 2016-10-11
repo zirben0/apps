@@ -20,6 +20,7 @@
 	"LLDPGlobal",
         "LLDPIntf",
         "Vlan",
+	"StpGlobal",
         "StpBridgeInstance",
         "StpPort",
 	"ArpGlobal",
