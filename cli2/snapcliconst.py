@@ -102,7 +102,10 @@ def updateSpecialValueCases(cfgobj, k, v):
                     # only support Loopback, so if more logical interfaces are supported
                     # this logic may need to change
                     if v.attr in ("logical",):
-                        value = str(v.val)
+                        if "lo" in v.val:
+                            value = str(v.val)
+                        else:
+                            value = "lo" + str(v.val)
                     elif v.attr in ("port_channel",):
                         value = "agg" + str(v.val)
                     else:
