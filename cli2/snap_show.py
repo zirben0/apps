@@ -22,15 +22,16 @@
 # |__|     |_______||_______/__/ \__\ |_______/        \__/  \__/     |__|     |__|      \______||__|  |__|
 #
 # This is class handles the action of the show command
-import sys, os
+import sys
+import os
 import json
 import pprint
 import inspect
-import snapcliconst
 import jsonref
 
 from commonCmdLine import CommonCmdLine
 from cmdEntry import CmdEntry
+from showRunModelObjToSortFuncCfg import sorted_object_sort_func_dict
 import snapcliconst
 MODELS_DIR = os.path.dirname(os.path.realpath(__file__)) + "/"
 
@@ -327,7 +328,12 @@ class ShowRun(object):
                         continue
                     if cfgList != None and len(cfgList):
                         self.currRawCfg [objName] = []
-                        for cfg in cfgList:
+
+                        sorted_cfg_list = cfgList
+                        if objName == sorted_object_sort_func_dict.keys():
+                            sorted_cfg_list = sorted(cfgList, key=sorted_object_sort_func_dict[objName])
+
+                        for cfg in sorted_cfg_list:
                             currentObj = json.loads(json.dumps(cfg['Object']))
                             self.currRawCfg[objName].append((self.UNUSED_CONFIG, currentObj))
 
