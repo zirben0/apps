@@ -1,8 +1,9 @@
 {
   "forceapplyconfig": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config ForceApplyConfig Info", 
+    "prompt": "", 
     "value": {}
   }
 }

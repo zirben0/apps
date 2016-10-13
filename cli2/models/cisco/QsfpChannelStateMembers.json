@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "ChannelNum": {
+      "cliname": "qsfpchannel"
+    }, 
+    "QsfpId": {
+      "cliname": "QsfpId"
+    }
+  }, 
+  "listattrs": []
+}

@@ -1,13 +1,14 @@
 {
   "distributedrelaystate": {
-    "prompt": "", 
+    "cliname": "distributedrelay", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DistributedRelayStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show DistributedRelayState Info", 
+    "prompt": "", 
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "distributedrelay"
       }
     }
   }

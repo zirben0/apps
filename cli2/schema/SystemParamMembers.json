@@ -1,87 +1,32 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "Hostname": {
-        "type": "object", 
+      "Description": {
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "System Host Name", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "Hostname", 
-            "type": "string"
-          }, 
           "argtype": {
             "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "Description": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "System Description", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "Description", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "System Description", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "MgmtIp": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -89,34 +34,69 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "Hostname": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "Hostname", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
           }, 
           "help": {
-            "default": "Management Ip of System", 
+            "default": "System Host Name", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "MgmtIp": {
+        "properties": {
+          "argtype": {
+            "type": "string"
           }, 
           "cliname": {
             "default": "MgmtIp", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Management Ip of System", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "SwVersion": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -124,34 +104,34 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "FlexSwitch Version Information", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "SwVersion": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "SwVersion", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "FlexSwitch Version Information", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "SwitchMac": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -159,34 +139,69 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Switch Mac Address", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "SwitchMac": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "SwitchMac", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Switch Mac Address", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
       "Vrf": {
-        "type": "object", 
         "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "systemparam", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "default"
+          }, 
+          "help": {
+            "default": "System Vrf default: default", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": true, 
             "type": "boolean"
@@ -194,41 +209,27 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "System Vrf default: default", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "Vrf", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "default"
           }
-        }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": false, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "SystemParam", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

@@ -1,11 +1,11 @@
 {
   "ipv4routehwstate": {
-    "prompt": "", 
+    "cliname": "hw_route",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteHwStateSubCmds.json"
     }, 
-    "cliname": "hw",
-    "help": "Show HW IPv4 Routes",
+    "help": "Show HW IPv4 Routes", 
+    "prompt": "", 
     "value": {
       "DestinationNw": {
         "cliname": "hw_route"

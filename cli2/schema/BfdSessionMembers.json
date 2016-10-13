@@ -1,157 +1,102 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
       "Interface": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
+          "argtype": {
             "type": "string"
-          }, 
-          "help": {
-            "default": "Name of the interface this session has to be established on default: None", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "Interface", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": "None"
+          }, 
+          "help": {
+            "default": "Name of the interface this session has to be established on default: None", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "None"
-          }
-        }
-      }, 
-      "Owner": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Module requesting BFD session configuration default: user", 
-            "type": "string"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "cliname": {
-            "default": "Owner", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "user"
-          }
-        }
-      }, 
-      "IpAddr": {
-        "type": "object", 
-        "properties": {
           "key": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "IpAddr": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "bfdsession", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
           }, 
           "help": {
             "default": "BFD neighbor IP address", 
             "type": "string"
           }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "IpAddr", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "PerLink": {
-        "type": "object", 
-        "properties": {
-          "key": {
+          "islist": {
             "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Run BFD sessions on individual link of a LAG if the neighbor is reachable through LAG default: false", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "Owner": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
-            "default": "PerLink", 
+            "default": "Owner", 
             "type": "string"
           }, 
-          "argtype": {
-            "type": "bool"
+          "defaultarg": {
+            "default": "user"
+          }, 
+          "help": {
+            "default": "Module requesting BFD session configuration default: user", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "ParamName": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -159,41 +104,97 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Name of the session parameters object to be applied on this session default: default", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "ParamName": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "ParamName", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": "default"
+          }, 
+          "help": {
+            "default": "Name of the session parameters object to be applied on this session default: default", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "default"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
+      }, 
+      "PerLink": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "PerLink", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Run BFD sessions on individual link of a LAG if the neighbor is reachable through LAG default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": true, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "BfdSession", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

@@ -1,11 +1,11 @@
 {
   "listattrs": [],
   "commands": {
-    "LagId": {
+    "IntfRef": {
       "cliname": "port_channel"
     },
-    "Members": {
-    "cliname": "ethernet"
+    "IntfRefList": {
+      "cliname": "ethernet"
     }
   }
 }

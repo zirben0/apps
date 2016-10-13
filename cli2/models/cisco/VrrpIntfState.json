@@ -1,17 +1,17 @@
 {
   "vrrpintfstate": {
-    "prompt": "", 
+    "cliname": "vrrp", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/VrrpIntfStateSubCmds.json"
-    },
-    "help": "Show VRRP Interface",
-    "cliname": "interface",
+    }, 
+    "help": "Show VRRP Interface", 
+    "prompt": "", 
     "value": {
       "IfIndex": {
-        "cliname": "ifindex"
+        "cliname": "vlan"
       }, 
       "VRID": {
-        "cliname": "vrid"
+        "cliname": "vrrp"
       }
     }
   }

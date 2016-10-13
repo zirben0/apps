@@ -1,72 +1,10 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "IntfRefList": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "List of current member interfaces for the aggregate", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "IntfRefList", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
       "AdminState": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "UP/DOWN  Convenient way to disable/enable a lag group.  The behaviour should be such that all traffic should stop.  LACP frames should continue to be processed default: UP", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "AdminState", 
-            "type": "string"
-          }, 
           "argtype": {
             "enum": [
               "UP", 
@@ -74,18 +12,25 @@
             ], 
             "type": "string"
           }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
+          "cliname": {
+            "default": "AdminState", 
+            "type": "string"
           }, 
           "defaultarg": {
             "default": "UP"
-          }
-        }
-      }, 
-      "LagType": {
-        "type": "object", 
-        "properties": {
+          }, 
+          "help": {
+            "default": "UP/DOWN  Convenient way to disable/enable a lag group.  The behaviour should be such that all traffic should stop.  LACP frames should continue to be processed default: UP", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -93,225 +38,38 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "LACP(0)/STATIC(1)  Sets the type of LAG default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "LagType", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": -2147483648, 
-            "enum": [
-              0, 
-              1
-            ], 
-            "type": "int32", 
-            "maximum": 2147483647
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "0"
           }
-        }
-      }, 
-      "IntfRef": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Id of the lag group", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "IntfRef", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "SystemIdMac": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "The MAC address portion of the nodes System ID. This is combined with the system priority to construct the 8-octet system-id default: 00-00-00-00-00-00", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "SystemIdMac", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "00-00-00-00-00-00"
-          }
-        }
-      }, 
-      "MinLinks": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Specifies the mininum number of member interfaces that must be active for the aggregate interface to be available default: 1", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "MinLinks", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint16", 
-            "maximum": 65536
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "1"
-          }
-        }
-      }, 
-      "SystemPriority": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Sytem priority used by the node on this LAG interface. Lower value is higher priority for determining which node is the controlling system. default: 32768", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "SystemPriority", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint16", 
-            "maximum": 65536
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "32768"
-          }
-        }
+        }, 
+        "type": "object"
       }, 
       "Interval": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "SLOW(1)/FAST(0)  Set the period between LACP messages -- uses the lacp-period-type enumeration. default: 1", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
+          "argtype": {
+            "enum": [
+              1, 
+              0
+            ], 
+            "type": "int32"
           }, 
           "cliname": {
             "default": "Interval", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": -2147483648, 
-            "enum": [
-              1, 
-              0
-            ], 
-            "type": "int32", 
-            "maximum": 2147483647
+          "defaultarg": {
+            "default": "1"
+          }, 
+          "help": {
+            "default": "SLOW(1)/FAST(0)  Set the period between LACP messages -- uses the lacp-period-type enumeration. default: 1", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "1"
-          }
-        }
-      }, 
-      "LacpMode": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -319,40 +77,108 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "IntfRef": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "laportchannel", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
           }, 
           "help": {
-            "default": "ACTIVE(0)/PASSIVE(1)  ACTIVE is to initiate the transmission of LACP packets. PASSIVE is to wait for peer to initiate the transmission of LACP packets. default: 0", 
+            "default": "Id number of the lag group, id will be prefixed with agg for IntfRef value",
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "IntfRefList": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "IntfRefList", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "List of current member interfaces for the aggregate", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "LacpMode": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              0, 
+              1
+            ], 
+            "type": "int32"
           }, 
           "cliname": {
             "default": "LacpMode", 
             "type": "string"
           }, 
-          "argtype": {
-            "minimum": -2147483648, 
-            "enum": [
-              0, 
-              1
-            ], 
-            "type": "int32", 
-            "maximum": 2147483647
+          "defaultarg": {
+            "default": "0"
+          }, 
+          "help": {
+            "default": "ACTIVE(0)/PASSIVE(1)  ACTIVE is to initiate the transmission of LACP packets. PASSIVE is to wait for peer to initiate the transmission of LACP packets. default: 0", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
-      "LagHash": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -360,48 +186,215 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "LAYER2(0)/LAYER3_4(2)/LAYER2_3(1)  The tx hashing algorithm used by the lag group default: 0", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "LagHash", 
-            "type": "string"
-          }, 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "LagHash": {
+        "properties": {
           "argtype": {
-            "minimum": -2147483648, 
             "enum": [
               0, 
               2, 
               1
             ], 
-            "type": "int32", 
-            "maximum": 2147483647
+            "type": "int32"
+          }, 
+          "cliname": {
+            "default": "LagHash", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0"
+          }, 
+          "help": {
+            "default": "LAYER2(0)/LAYER3_4(2)/LAYER2_3(1)  The tx hashing algorithm used by the lag group default: 0", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "LagType": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              0, 
+              1
+            ], 
+            "type": "int32"
+          }, 
+          "cliname": {
+            "default": "LagType", 
+            "type": "string"
+          }, 
           "defaultarg": {
             "default": "0"
+          }, 
+          "help": {
+            "default": "LACP(0)/STATIC(1)  Sets the type of LAG default: 0", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
+      }, 
+      "MinLinks": {
+        "properties": {
+          "argtype": {
+            "maximum": 65536, 
+            "minimum": 0, 
+            "type": "uint16"
+          }, 
+          "cliname": {
+            "default": "MinLinks", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "1"
+          }, 
+          "help": {
+            "default": "Specifies the mininum number of member interfaces that must be active for the aggregate interface to be available default: 1", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "SystemIdMac": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "SystemIdMac", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "00-00-00-00-00-00"
+          }, 
+          "help": {
+            "default": "The MAC address portion of the nodes System ID. This is combined with the system priority to construct the 8-octet system-id default: 00-00-00-00-00-00", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "SystemPriority": {
+        "properties": {
+          "argtype": {
+            "maximum": 65536, 
+            "minimum": 0, 
+            "type": "uint16"
+          }, 
+          "cliname": {
+            "default": "SystemPriority", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "32768"
+          }, 
+          "help": {
+            "default": "Sytem priority used by the node on this LAG interface. Lower value is higher priority for determining which node is the controlling system. default: 32768", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": false, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "LaPortChannel", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

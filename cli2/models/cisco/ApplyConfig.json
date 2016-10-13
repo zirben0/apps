@@ -1,8 +1,9 @@
 {
   "applyconfig": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config ApplyConfig Info", 
+    "prompt": "", 
     "value": {}
   }
 }

@@ -1,13 +1,14 @@
 {
   "aclstate": {
-    "prompt": "", 
+    "cliname": "acl", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/AclStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show AclState Info", 
+    "prompt": "", 
     "value": {
       "AclName": {
-        "cliname": "aclname"
+        "cliname": "acl"
       }, 
       "Direction": {
         "cliname": "direction"

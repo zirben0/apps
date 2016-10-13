@@ -1,13 +1,14 @@
 {
   "systemlogging": {
-    "prompt": "", 
+    "cliname": "systemlogging", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/SystemLoggingSubCmds.json"
     }, 
-    "cliname": "logging",
+    "help": "Config SystemLogging Info", 
+    "prompt": "", 
     "value": {
       "Vrf": {
-        "cliname": "vrf"
+        "cliname": "systemlogging"
       }
     }
   }

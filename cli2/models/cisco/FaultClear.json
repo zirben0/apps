@@ -1,8 +1,9 @@
 {
   "faultclear": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config FaultClear Info", 
+    "prompt": "", 
     "value": {}
   }
 }

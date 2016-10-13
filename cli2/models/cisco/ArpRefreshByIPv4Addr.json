@@ -1,8 +1,9 @@
 {
   "arprefreshbyipv4addr": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config ArpRefreshByIPv4Addr Info", 
+    "prompt": "", 
     "value": {}
   }
 }

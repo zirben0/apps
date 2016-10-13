@@ -1,0 +1,24 @@
+{
+  "qsfpchannelpmdatastate": {
+    "cliname": "qsfpchannelpmdata", 
+    "commands": {
+      "$ref": "file:/tmp/snaproute/cli/model/cisco/QsfpChannelPMDataStateSubCmds.json"
+    }, 
+    "help": "Show QsfpChannelPMDataState Info", 
+    "prompt": "", 
+    "value": {
+      "ChannelNum": {
+        "cliname": "qsfpchannelpmdata"
+      }, 
+      "Class": {
+        "cliname": "Class"
+      }, 
+      "QsfpId": {
+        "cliname": "QsfpId"
+      }, 
+      "Resource": {
+        "cliname": "Resource"
+      }
+    }
+  }
+}

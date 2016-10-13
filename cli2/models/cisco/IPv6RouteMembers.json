@@ -7,7 +7,7 @@
   ], 
   "commands": {
     "DestinationNw": {
-      "cliname": "destinationnw"
+      "cliname": "hw_route_v6"
     }, 
     "Cost": {
       "cliname": "cost"

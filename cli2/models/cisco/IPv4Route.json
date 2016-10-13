@@ -1,14 +1,14 @@
 {
   "ipv4route": {
-    "prompt": "route",
+    "cliname": "route",
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/IPv4RouteSubCmds.json"
-    },
-    "help": "IP Route Commands\nIP address of the route",
-    "cliname": "route",
+    }, 
+    "help": "IP Route Commands\nIP address of the route", 
+    "prompt": "route", 
     "value": {
       "DestinationNw": {
-        "cliname": "destinationnw"
+        "cliname": "route"
       }
     }
   }

@@ -1,13 +1,14 @@
 {
   "ledstate": {
-    "prompt": "", 
+    "cliname": "led", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LedStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show LedState Info", 
+    "prompt": "", 
     "value": {
       "LedId": {
-        "cliname": "ledid"
+        "cliname": "led"
       }
     }
   }

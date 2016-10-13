@@ -209,6 +209,9 @@ class CmdEntry(object):
     def setDelete(self, d):
         self.delete = d
 
+    def isDelete(self):
+        return self.delete
+
     def isAttrSet(self, attr):
 
         for entry in self.attrList:
@@ -327,16 +330,17 @@ class CmdEntry(object):
                             return v['type']['type'], v['key']
             return None, None
 
-
         newdict = {}
         if not rollback:
             for entry in self.getallconfig():
                 for kk, vv in copy.deepcopy(self.keysDict).iteritems():
+                    # attribute from model may be either an attribute
+                    # or a sub command attribute
                     isMyAttr = kk == getEntryAttribute(entry)
                     isMySubCommand = isAttrValueSubCommand(vv, kk)
-                    #if isMyAttr or \
-                    #        isMySubCommand:
-                    if isMyAttr:
+                    if isMyAttr or \
+                            isMySubCommand:
+                    #if isMyAttr:
                         # overwrite the default value
                         if not isMySubCommand or vv['isarray']: # or (isMySubCommand and type(entry.val) in (dict, list)):
                             attrtype =  self.keysDict[kk]['type']['type'] if type(self.keysDict[kk]['type']) == dict else self.keysDict[kk]['type']
@@ -419,6 +423,7 @@ class CmdEntry(object):
     def applyconfig(self):
         pass
 
+
     def show(self):
         '''
         Display the output of a commands as entered by a user
@@ -430,10 +435,72 @@ class CmdEntry(object):
 
         sys.stdout.write('\tobject: %s   status: %s  valid: %s\n' %(self.objname, pending, self.valid))
 
-        labels = ('command', 'attr', 'value', 'iskey', 'time provisioned')
+        labels = ('command', 'attr', 'value', 'model attr', 'iskey', 'required', 'userprov', 'time provisioned')
         rows = []
+        provattrlist = []
         for entry in self.attrList:
-            rows.append((getEntryCmd(entry), getEntryAttribute(entry), getEntryValue(entry), "%s" %(entry.iskey), getEntrytime(entry)))
+
+            attr = getEntryAttribute(entry)
+            attr_value = getEntryValue(entry)
+            is_attr_key = "%s" % (entry.iskey)
+            model_attr = ""
+            required = ""
+            if attr not in self.keysDict:
+                for k, v in self.keysDict.iteritems():
+                    if type(v['value']) == list:
+                        for subattrdict in v['value']:
+                            if attr in subattrdict:
+                                provattrlist.append(k)
+                                model_attr = subattrdict[attr]['key']
+                                required = subattrdict[attr]['value']['default']
+                                #attr_value = subattrdict[attr]['value']['default']
+                                is_attr_key = "%s" %(subattrdict[attr]['isattrkey'],)
+
+            else:
+                provattrlist.append(entry.attr)
+                model_attr = self.keysDict[attr]['key']
+                required = "X" if entry.iskey or \
+                                'value' in self.keysDict[attr] and \
+                                    self.keysDict[attr]['value']['default'] == '' else ""
+
+            rows.append((getEntryCmd(entry),
+                         attr,
+                         attr_value,
+                         model_attr,
+                         is_attr_key,
+                         required,
+                         "X",
+                         getEntrytime(entry)))
+        for k, data in self.keysDict.iteritems():
+            if k not in provattrlist:
+                attr = k
+                model_attr = ""
+                required = ""
+                attr_value = ""
+                is_attr_key = "False"
+                if type(data['value']) == list:
+                    for subattrdict in data['value']:
+                        if attr in subattrdict:
+                            model_attr = subattrdict[attr]['key']
+                            required = "" if subattrdict[attr]['value']['default'] != "" else "X"
+                            attr_value = subattrdict[attr]['value']['default']
+                            is_attr_key = "%s" % (subattrdict[attr]['isattrkey'])
+                else:
+                    model_attr = data['key']
+                    required = "X" if 'value' in data and \
+                                      'default' in data['value'] and \
+                                      data['value']['default'] == '' else ""
+                    attr_value = data['value']['default']
+                    is_attr_key = "%s" % (data['isattrkey'])
+                rows.append(("",
+                             attr,
+                             attr_value,
+                             model_attr,
+                             is_attr_key,
+                             required,
+                             "",
+                             ""))
+
         width = 30
         print indent([labels]+rows, hasHeader=True, separateRows=False,
                      prefix=' ', postfix=' ', headerChar= '-', delim='    ',

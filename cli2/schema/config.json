@@ -1,84 +1,90 @@
 {
-  "config" : {
-    "type": "object",
+  "config": {
     "properties": {
-      "prompt" : {
-        "type" : "string",
-        "description" : "attribute to show what to display at the command line prompt",
-        "default" : "(config)"
-      },
-      "cliname" : {
-        "type" : "string",
-        "description" : "config name used",
-        "default" : "config"
-      },
-      "help" : {
-        "type" : "string",
-        "default" : "Configuration commands"
-      },
-      "commands" : {
-        "type": "object",
-        "description": "holds all related commands related to ethernet port",
+      "cliname": {
+        "default": "config", 
+        "description": "config name used", 
+        "type": "string"
+      }, 
+      "commands": {
+        "description": "holds all related commands related to ethernet port", 
         "properties": {
           "subcmd1": {
             "$ref": "file:/tmp/snaproute/cli/schema/interface.json"
-          },
-          "subcmd2": {
-            "$ref": "file:/tmp/snaproute/cli/schema/Vlan.json"
-          },
-          "subcmd3": {
-            "$ref": "file:/tmp/snaproute/cli/schema/router.json"
-          },
-          "subcmd4": {
-            "$ref": "file:/tmp/snaproute/cli/schema/bfd.json"
-          },
-          "subcmd5": {
-            "$ref": "file:/tmp/snaproute/cli/schema/stp.json"
-          },
-          "subcmd6": {
-            "$ref": "file:/tmp/snaproute/cli/schema/feature.json"
-          },
-          "subcmd7": {
-            "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinition.json"
-          },
-          "subcmd8": {
-            "$ref": "file:/tmp/snaproute/cli/schema/PolicyStmt.json"
-          },
-          "subcmd9": {
-            "$ref": "file:/tmp/snaproute/cli/schema/PolicyCondition.json"
-          },
+          }, 
           "subcmd10": {
             "$ref": "file:/tmp/snaproute/cli/schema/ArpGlobal.json"
-          },
+          }, 
+          "subcmd11": {
+            "$ref": "file:/tmp/snaproute/cli/schema/QsfpChannel.json"
+          }, 
           "subcmd12": {
             "$ref": "file:/tmp/snaproute/cli/schema/DhcpGlobalConfig.json"
-          },
+          }, 
           "subcmd13": {
             "$ref": "file:/tmp/snaproute/cli/schema/ip.json"
-          },
+          }, 
           "subcmd14": {
             "$ref": "file:/tmp/snaproute/cli/schema/LLDPGlobal.json"
-          },
+          }, 
           "subcmd16": {
             "$ref": "file:/tmp/snaproute/cli/schema/DhcpRelayGlobal.json"
-          },
+          }, 
           "subcmd17": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModule.json"
-          },
+          }, 
           "subcmd18": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleNwIntf.json"
-          },
+          }, 
           "subcmd19": {
             "$ref": "file:/tmp/snaproute/cli/schema/DWDMModuleClntIntf.json"
-          },
+          }, 
+          "subcmd2": {
+            "$ref": "file:/tmp/snaproute/cli/schema/Vlan.json"
+          }, 
           "subcmd20": {
             "$ref": "file:/tmp/snaproute/cli/schema/XponderGlobal.json"
-          },
+          }, 
           "subcmd21": {
             "$ref": "file:/tmp/snaproute/cli/schema/LacpGlobal.json"
+          }, 
+          "subcmd23": {
+            "$ref": "file:/tmp/snaproute/cli/schema/AsicGlobalPM.json"
+          }, 
+          "subcmd3": {
+            "$ref": "file:/tmp/snaproute/cli/schema/router.json"
+          }, 
+          "subcmd4": {
+            "$ref": "file:/tmp/snaproute/cli/schema/bfd.json"
+          }, 
+          "subcmd5": {
+            "$ref": "file:/tmp/snaproute/cli/schema/stp.json"
+          }, 
+          "subcmd6": {
+            "$ref": "file:/tmp/snaproute/cli/schema/feature.json"
+          }, 
+          "subcmd7": {
+            "$ref": "file:/tmp/snaproute/cli/schema/PolicyDefinition.json"
+          }, 
+          "subcmd8": {
+            "$ref": "file:/tmp/snaproute/cli/schema/PolicyStmt.json"
+          }, 
+          "subcmd9": {
+            "$ref": "file:/tmp/snaproute/cli/schema/PolicyCondition.json"
           }
-        }
+        }, 
+        "type": "object"
+      }, 
+      "help": {
+        "default": "Configuration commands", 
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "(config)", 
+        "description": "attribute to show what to display at the command line prompt", 
+        "type": "string"
       }
-    }
+    }, 
+    "type": "object"
   }
 }

@@ -1,5 +1,11 @@
 {
   "subcmd1": {
     "$ref": "file:/tmp/snaproute/cli/model/cisco/LogicalIntfMembers.json"
+  },
+  "subcmd2": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv4logicalintf.json"
+  },
+  "subcmd3": {
+    "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6logicalintf.json"
   }
 }

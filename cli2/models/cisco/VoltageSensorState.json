@@ -1,13 +1,14 @@
 {
   "voltagesensorstate": {
-    "prompt": "", 
+    "cliname": "voltagesensor", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/VoltageSensorStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show VoltageSensorState Info", 
+    "prompt": "", 
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "voltagesensor"
       }
     }
   }

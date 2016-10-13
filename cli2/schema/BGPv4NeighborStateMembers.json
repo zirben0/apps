@@ -1,52 +1,32 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
       "IntfRef": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
+          "argtype": {
             "type": "string"
+          }, 
+          "cliname": {
+            "default": "bgpv4neighbor", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
           }, 
           "help": {
             "default": "Interface of the BGP neighbor", 
             "type": "string"
           }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "IntfRef", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "NeighborAddress": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": true, 
             "type": "boolean"
@@ -54,41 +34,62 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Address of the BGP neighbor", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "NeighborAddress": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "NeighborAddress", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Address of the BGP neighbor", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": false, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "BGPv4NeighborState", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

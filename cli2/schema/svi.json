@@ -48,7 +48,7 @@
                 "type": "string"
               }, 
               "help": {
-                "default": "Front panel port name or system assigned interface id", 
+                "default": "vlan-id associated with svi, will be IntfRef will be prefixed with vlan",
                 "type": "string"
               }, 
               "islist": {

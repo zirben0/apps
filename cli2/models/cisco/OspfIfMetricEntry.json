@@ -1,19 +1,20 @@
 {
   "ospfifmetricentry": {
-    "prompt": "", 
+    "cliname": "ospfifmetricentry", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfIfMetricEntrySubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config OspfIfMetricEntry Info", 
+    "prompt": "", 
     "value": {
       "IfMetricAddressLessIf": {
-        "cliname": "ifmetricaddresslessif"
-      }, 
-      "IfMetricTOS": {
-        "cliname": "ifmetrictos"
+        "cliname": "ospfifmetricentry"
       }, 
       "IfMetricIpAddress": {
         "cliname": "ifmetricipaddress"
+      }, 
+      "IfMetricTOS": {
+        "cliname": "ifmetrictos"
       }
     }
   }

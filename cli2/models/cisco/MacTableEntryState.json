@@ -1,11 +1,11 @@
 {
   "mactableentrystate": {
-    "prompt": "", 
+    "cliname": "address_table", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/MacTableEntryStateSubCmds.json"
-    },
-    "help": "Show mac address table entries",
-    "cliname": "address_table",
+    }, 
+    "help": "Show mac address table entries", 
+    "prompt": "", 
     "value": {
       "MacAddr": {
         "cliname": "macaddr"

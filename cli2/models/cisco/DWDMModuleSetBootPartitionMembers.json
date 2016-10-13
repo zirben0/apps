@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "ModuleId": {
+      "cliname": "ModuleId"
+    }, 
+    "Partition": {
+      "cliname": "Partition"
+    }
+  }, 
+  "listattrs": []
+}

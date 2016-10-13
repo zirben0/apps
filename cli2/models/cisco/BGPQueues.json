@@ -1,8 +1,9 @@
 {
   "bgpqueues": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config BGPQueues Info", 
+    "prompt": "", 
     "value": {}
   }
 }

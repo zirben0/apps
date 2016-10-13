@@ -1,0 +1,59 @@
+{
+  "commands": {
+    "AdminState": {
+      "cliname": "AdminState"
+    }, 
+    "ChannelNum": {
+      "cliname": "qsfpchannel"
+    }, 
+    "HigherAlarmRXPower": {
+      "cliname": "HigherAlarmRXPower"
+    }, 
+    "HigherAlarmTXBias": {
+      "cliname": "HigherAlarmTXBias"
+    }, 
+    "HigherAlarmTXPower": {
+      "cliname": "HigherAlarmTXPower"
+    }, 
+    "HigherWarningRXPower": {
+      "cliname": "HigherWarningRXPower"
+    }, 
+    "HigherWarningTXBias": {
+      "cliname": "HigherWarningTXBias"
+    }, 
+    "HigherWarningTXPower": {
+      "cliname": "HigherWarningTXPower"
+    }, 
+    "LowerAlarmRXPower": {
+      "cliname": "LowerAlarmRXPower"
+    }, 
+    "LowerAlarmTXBias": {
+      "cliname": "LowerAlarmTXBias"
+    }, 
+    "LowerAlarmTXPower": {
+      "cliname": "LowerAlarmTXPower"
+    }, 
+    "LowerWarningRXPower": {
+      "cliname": "LowerWarningRXPower"
+    }, 
+    "LowerWarningTXBias": {
+      "cliname": "LowerWarningTXBias"
+    }, 
+    "LowerWarningTXPower": {
+      "cliname": "LowerWarningTXPower"
+    }, 
+    "PMClassAAdminState": {
+      "cliname": "PMClassAAdminState"
+    }, 
+    "PMClassBAdminState": {
+      "cliname": "PMClassBAdminState"
+    }, 
+    "PMClassCAdminState": {
+      "cliname": "PMClassCAdminState"
+    }, 
+    "QsfpId": {
+      "cliname": "QsfpId"
+    }
+  }, 
+  "listattrs": []
+}

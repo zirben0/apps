@@ -1,10 +1,11 @@
 {
   "nexthopinfo": {
-    "prompt": "", 
+    "cliname": "", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/NextHopInfoSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Config NextHopInfo Info", 
+    "prompt": "", 
     "value": {
       "NextHopIp": {
         "cliname": "nexthop_ip"

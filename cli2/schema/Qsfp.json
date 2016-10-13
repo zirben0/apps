@@ -2,43 +2,65 @@
   "qsfp": {
     "createwithdefault": {
       "default": true, 
-      "type": "boolean", 
-      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+      "type": "boolean"
     }, 
-    "required": [
-      "value", 
-      "cliname"
-    ], 
-    "type": "object", 
     "properties": {
-      "commands": {
-        "type": "object", 
-        "properties": {
-          "$ref": "file:/tmp/snaproute/cli/schema/QsfpSubCmds.json"
-        }
-      }, 
       "cliname": {
         "default": "", 
-        "type": "string", 
-        "description": "name used in cli to describe bfd"
+        "description": "name used in cli to describe bfd", 
+        "type": "string"
+      }, 
+      "commands": {
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/QsfpSubCmds.json"
+        }, 
+        "type": "object"
       }, 
       "help": {
         "default": "", 
         "type": "string"
       }, 
+      "objname": {
+        "default": "Qsfp", 
+        "description": "object name to which references these attributes", 
+        "type": "string"
+      }, 
       "prompt": {
         "default": "", 
+        "description": "what to display on the prompt when the user has entered a command", 
         "displayValue": false, 
-        "type": "string", 
-        "description": "what to display on the prompt when the user has entered a command"
+        "type": "string"
       }, 
       "value": {
-        "type": "object", 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
         "properties": {
           "QsfpId": {
-            "type": "object", 
             "properties": {
+              "argtype": {
+                "maximum": 2147483647, 
+                "minimum": -2147483648, 
+                "type": "int32"
+              }, 
+              "cliname": {
+                "default": "qsfp", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }, 
+              "help": {
+                "default": "Qsfp Id", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
               "key": {
                 "default": true, 
                 "type": "boolean"
@@ -46,40 +68,18 @@
               "prompt": {
                 "default": "", 
                 "type": "string"
-              }, 
-              "help": {
-                "default": "Qsfp Id", 
-                "type": "string"
-              }, 
-              "islist": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "cliname": {
-                "default": "qsfpid", 
-                "type": "string"
-              }, 
-              "argtype": {
-                "minimum": -2147483648, 
-                "type": "int32", 
-                "maximum": 2147483647
-              }, 
-              "isdefaultset": {
-                "default": false, 
-                "type": "boolean"
-              }, 
-              "defaultarg": {
-                "default": ""
               }
-            }
+            }, 
+            "type": "object"
           }
-        }
-      }, 
-      "objname": {
-        "default": "Qsfp", 
-        "type": "string", 
-        "description": "object name to which references these attributes"
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object"
   }
 }

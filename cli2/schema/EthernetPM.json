@@ -1,0 +1,135 @@
+{
+  "ethernetpm": {
+    "createwithdefault": {
+      "default": true, 
+      "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+      "type": "boolean"
+    }, 
+    "properties": {
+      "cliname": {
+        "default": "", 
+        "description": "name used in cli to describe bfd", 
+        "type": "string"
+      }, 
+      "commands": {
+        "properties": {
+          "$ref": "file:/tmp/snaproute/cli/schema/EthernetPMSubCmds.json"
+        }, 
+        "type": "object"
+      }, 
+      "help": {
+        "default": "", 
+        "type": "string"
+      }, 
+      "objname": {
+        "default": "EthernetPM", 
+        "description": "object name to which references these attributes", 
+        "type": "string"
+      }, 
+      "prompt": {
+        "default": "", 
+        "description": "what to display on the prompt when the user has entered a command", 
+        "displayValue": false, 
+        "type": "string"
+      }, 
+      "value": {
+        "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
+        "properties": {
+          "IntfRef": {
+            "properties": {
+              "argtype": {
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "IntfRef", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }, 
+              "help": {
+                "default": "Interface name of port", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          "Resource": {
+            "properties": {
+              "argtype": {
+                "enum": [
+                  "StatUnderSizePkts", 
+                  "StatOverSizePkts", 
+                  "StatFragments", 
+                  "StatCRCAlignErrors", 
+                  "StatJabber", 
+                  "StatEtherPkts", 
+                  "StatMCPkts", 
+                  "StatBCPkts", 
+                  "Stat64OctOrLess", 
+                  "Stat65OctTo126Oct", 
+                  "Stat128OctTo255Oct", 
+                  "Stat128OctTo255Oct", 
+                  "Stat256OctTo511Oct", 
+                  "Stat512OctTo1023Oct", 
+                  "Statc1024OctTo1518Oct"
+                ], 
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "ethernetpm", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }, 
+              "help": {
+                "default": "StatUnderSizePkts/StatOverSizePkts/StatFragments/StatCRCAlignErrors/StatJabber/StatEtherPkts/StatMCPkts/StatBCPkts/Stat64OctOrLess/Stat65OctTo126Oct/Stat128OctTo255Oct/Stat128OctTo255Oct/Stat256OctTo511Oct/Stat512OctTo1023Oct/Statc1024OctTo1518Oct  Resource identifier", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }
+        }, 
+        "type": "object"
+      }
+    }, 
+    "required": [
+      "value", 
+      "cliname"
+    ], 
+    "type": "object"
+  }
+}

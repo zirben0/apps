@@ -1,109 +1,82 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
       "XponderDescription": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
+          "argtype": {
             "type": "string"
-          }, 
-          "help": {
-            "default": "User configurable description string for the xponder module default: This is a Voyager platform", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "XponderDescription", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": "This is a Voyager platform"
+          }, 
+          "help": {
+            "default": "User configurable description string for the xponder module default: This is a Voyager platform", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "This is a Voyager platform"
-          }
-        }
-      }, 
-      "XponderId": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
-            "default": true, 
+            "default": false, 
             "type": "boolean"
           }, 
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "XponderId": {
+        "properties": {
+          "argtype": {
+            "maximum": 255, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "xponderglobal", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "0"
           }, 
           "help": {
             "default": "Xponder module identifier default: 0", 
             "type": "string"
           }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "XponderId", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
-          }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "0"
-          }
-        }
-      }, 
-      "XponderMode": {
-        "type": "object", 
-        "properties": {
-          "key": {
+          "islist": {
             "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "InServiceWire/InServiceRegen/InServiceOverSub/InServicePacketOptical/OutOfService  Global operational mode of Xponder module default: OutOfService", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "XponderMode", 
-            "type": "string"
-          }, 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "XponderMode": {
+        "properties": {
           "argtype": {
             "enum": [
               "InServiceWire", 
@@ -114,25 +87,53 @@
             ], 
             "type": "string"
           }, 
+          "cliname": {
+            "default": "XponderMode", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "OutOfService"
+          }, 
+          "help": {
+            "default": "InServiceWire/InServiceRegen/InServiceOverSub/InServicePacketOptical/OutOfService  Global operational mode of Xponder module default: OutOfService", 
+            "type": "string"
+          }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "OutOfService"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": true, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "XponderGlobal", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

@@ -84,7 +84,6 @@ def updateSpecialValueCases(cfgobj, k, v):
     '''
     tmpval = v.val if type(v) == CmdSet else v
     if k in DYNAMIC_MODEL_ATTR_NAME_LIST:
-
         if type(v) == CmdSet:
             if type(v.val) is list:
                 tmpvallist = []
@@ -100,7 +99,17 @@ def updateSpecialValueCases(cfgobj, k, v):
                 if "/" in str(v.val):
                     value = v.attr + v.val.split('/')[1]
                 elif v.attr not in str(v.val):
-                    value = v.attr + str(v.val)
+                    # only support Loopback, so if more logical interfaces are supported
+                    # this logic may need to change
+                    if v.attr in ("logical",):
+                        if "lo" in v.val:
+                            value = str(v.val)
+                        else:
+                            value = "lo" + str(v.val)
+                    elif v.attr in ("port_channel",):
+                        value = "agg" + str(v.val)
+                    else:
+                        value = v.attr + str(v.val)
                 tmpval = str(value)
 
         # cli always expects the string name, but lets

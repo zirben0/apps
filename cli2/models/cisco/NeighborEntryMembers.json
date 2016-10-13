@@ -1,0 +1,23 @@
+{
+  "commands": {
+    "ExpiryTimeLeft": {
+      "cliname": "ExpiryTimeLeft"
+    }, 
+    "IpAddr": {
+      "cliname": "IpAddr"
+    }, 
+    "MacAddr": {
+      "cliname": "MacAddr"
+    }, 
+    "ReceivedPackets": {
+      "cliname": "ReceivedPackets"
+    }, 
+    "SendPackets": {
+      "cliname": "SendPackets"
+    }, 
+    "State": {
+      "cliname": "State"
+    }
+  }, 
+  "listattrs": []
+}

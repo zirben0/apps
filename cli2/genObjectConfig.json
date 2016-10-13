@@ -911,6 +911,18 @@
   "linkedObjects": null,
   "parent": ""
  },
+ "IPV6AdjState": {
+  "access": "r",
+  "owner": "ndpd",
+  "srcfile": "ndpObjects.go",
+  "multiplicity": "*",
+  "accelerated": false,
+  "usesStateDB": false,
+  "autoCreate": false,
+  "autoDiscover": false,
+  "linkedObjects": null,
+  "parent": ""
+ },
  "IPv4Intf": {
   "access": "w",
   "owner": "asicd",
@@ -1291,18 +1303,6 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": true,
-  "autoDiscover": false,
-  "linkedObjects": null,
-  "parent": ""
- },
- "NDPIntfState": {
-  "access": "r",
-  "owner": "ndpd",
-  "srcfile": "ndpObjects.go",
-  "multiplicity": "*",
-  "accelerated": false,
-  "usesStateDB": false,
-  "autoCreate": false,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""
@@ -2119,18 +2119,6 @@
   "accelerated": false,
   "usesStateDB": false,
   "autoCreate": false,
-  "autoDiscover": false,
-  "linkedObjects": null,
-  "parent": ""
- },
- "SystemLogging": {
-  "access": "w",
-  "owner": "sysd",
-  "srcfile": "sysObjects.go",
-  "multiplicity": "1",
-  "accelerated": false,
-  "usesStateDB": false,
-  "autoCreate": true,
   "autoDiscover": false,
   "linkedObjects": null,
   "parent": ""

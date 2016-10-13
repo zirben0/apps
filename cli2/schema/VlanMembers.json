@@ -1,87 +1,104 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "UntagIntfList": {
-        "type": "object", 
+      "IntfList": {
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "List of interface names or ifindex values to  be added as untagged members of the vlan", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "UntagIntfList", 
-            "type": "string"
-          }, 
           "argtype": {
             "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "IntfList": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "List of interface names or ifindex values to  be added as tagged members of the vlan", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "IntfList", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "List of interface names or ifindex values to  be added as tagged members of the vlan", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
+          "islist": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "UntagIntfList": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "UntagIntfList", 
+            "type": "string"
+          }, 
           "defaultarg": {
             "default": ""
+          }, 
+          "help": {
+            "default": "List of interface names or ifindex values to  be added as untagged members of the vlan", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
       "VlanId": {
-        "type": "object", 
         "properties": {
+          "argtype": {
+            "maximum": 4094, 
+            "minimum": 1, 
+            "type": "int32"
+          }, 
+          "cliname": {
+            "default": "vlan", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "1-4094  802.1Q tag/Vlan ID for vlan being provisioned", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": true, 
             "type": "boolean"
@@ -89,43 +106,27 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "1-4094  802.1Q tag/Vlan ID for vlan being provisioned", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "VlanId", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 1, 
-            "type": "int32", 
-            "maximum": 4094
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
           }
-        }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": true,
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "Vlan", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

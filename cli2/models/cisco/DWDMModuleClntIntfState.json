@@ -1,11 +1,11 @@
 {
   "dwdmmoduleclntintfstate": {
-    "prompt": "clntIntf", 
+    "cliname": "clntIntf", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/DWDMModuleClntIntfStateSubCmds.json"
     }, 
-    "cliname": "clntIntf", 
-    "help": "Command to view state of DWDM module client interface",
+    "help": "Command to view state of DWDM module client interface", 
+    "prompt": "clntIntf", 
     "value": {
       "ClntIntfId": {
         "cliname": "clntIntf"

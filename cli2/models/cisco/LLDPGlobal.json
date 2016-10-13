@@ -1,10 +1,10 @@
 {
   "lldpglobal": {
-    "prompt": "", 
+    "cliname": "lldp", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LLDPGlobalSubCmds.json"
-    },
-    "help": "LLDP Global Commands",
-    "cliname": "lldp"
+    }, 
+    "help": "LLDP Global Commands", 
+    "prompt": ""
   }
 }

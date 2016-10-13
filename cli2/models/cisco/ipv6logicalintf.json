@@ -1,0 +1,12 @@
+{
+  "ipv6logicalintf": {
+    "cliname": "ipv6",
+    "commands": {
+      "subcmd1": {
+        "$ref": "file:/tmp/snaproute/cli/model/cisco/ipv6logicalintfmembers.json"
+      }
+    },
+    "help": "Configure IPv6 Features",
+    "prompt": ""
+  }
+}

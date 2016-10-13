@@ -1,14 +1,10 @@
 {
   "routestatstate": {
-    "prompt": "", 
+    "cliname": "routestat", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/RouteStatStateSubCmds.json"
     }, 
-    "cliname": "", 
-    "value": {
-      "Vrf": {
-        "cliname": "vrf"
-      }
-    }
+    "help": "Show RouteStatState Info", 
+    "prompt": "",
   }
 }

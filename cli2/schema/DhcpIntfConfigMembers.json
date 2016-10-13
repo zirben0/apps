@@ -1,87 +1,32 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": false, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "DNSServerAddr": {
-        "type": "object", 
+      "BroadcastAddr": {
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Comma seperated List of DNS Server Address DEFAULT", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "DNSServerAddr", 
-            "type": "string"
-          }, 
           "argtype": {
             "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "BroadcastAddr": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Broadcast Address DEFAULT", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "BroadcastAddr", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Broadcast Address DEFAULT", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "IPAddrRange": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -89,34 +34,34 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Range of IP Addresses DEFAULT", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "DNSServerAddr": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
-            "default": "IPAddrRange", 
+            "default": "DNSServerAddr", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Comma seperated List of DNS Server Address DEFAULT", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "Enable": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -124,34 +69,69 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "DomainName": {
+        "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "DomainName", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
           }, 
           "help": {
-            "default": "True/False  Enable and Disable Control DEFAULT", 
+            "default": "Domain Name Address DEFAULT", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "Enable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
           }, 
           "cliname": {
             "default": "Enable", 
             "type": "string"
           }, 
-          "argtype": {
-            "type": "bool"
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "True/False  Enable and Disable Control DEFAULT", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "RouterAddr": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -159,34 +139,69 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Router Address DEFAULT", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "IPAddrRange": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
-            "default": "RouterAddr", 
+            "default": "IPAddrRange", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Range of IP Addresses DEFAULT", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
       "IntfRef": {
-        "type": "object", 
         "properties": {
+          "argtype": {
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "dhcpintfconfig", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Interface name or ifindex of L3 interface object on which Dhcp Server need to be configured", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": true, 
             "type": "boolean"
@@ -194,34 +209,34 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Interface name or ifindex of L3 interface object on which Dhcp Server need to be configured", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "RouterAddr": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
-            "default": "IntfRef", 
+            "default": "RouterAddr", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Router Address DEFAULT", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "DomainName": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -229,69 +244,69 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Domain Name Address DEFAULT", 
+          }
+        }, 
+        "type": "object"
+      }, 
+      "Subnet": {
+        "properties": {
+          "argtype": {
             "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
-            "default": "DomainName", 
+            "default": "Subnet", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Subnet", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
       "SubnetMask": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
+          "argtype": {
             "type": "string"
-          }, 
-          "help": {
-            "default": "Subnet Mask", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
           }, 
           "cliname": {
             "default": "SubnetMask", 
             "type": "string"
           }, 
-          "argtype": {
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "Subnet Mask", 
             "type": "string"
           }, 
           "isdefaultset": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
-      "Subnet": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -299,41 +314,27 @@
           "prompt": {
             "default": "", 
             "type": "string"
-          }, 
-          "help": {
-            "default": "Subnet", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "Subnet", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
           }
-        }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": false, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "DhcpIntfConfig", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

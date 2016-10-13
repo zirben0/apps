@@ -1,7 +1,7 @@
 {
   "listattrs": [], 
   "createwithdefault": {
-    "default": false, 
+    "default": true,
     "type": "boolean", 
     "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
   }, 
@@ -9,76 +9,41 @@
     "type": "object", 
     "description": "", 
     "properties": {
-      "UntagIntfList": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "List of interface names or ifindex values to  be added as untagged members of the vlan", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "untagintflist", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "string"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": ""
-          }
-        }
-      }, 
       "IntfList": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "key": {
-            "default": true, 
+            "default": true,
             "type": "boolean"
-          }, 
+          },
           "prompt": {
-            "default": "", 
+            "default": "",
             "type": "string"
-          }, 
+          },
           "help": {
-            "default": "List of interface names or ifindex values to  be added as tagged members of the vlan", 
+            "default": "List of interface names or ifindex values to  be added as tagged members of the vlan",
             "type": "string"
-          }, 
+          },
           "islist": {
-            "default": true, 
+            "default": true,
             "type": "boolean"
-          }, 
+          },
           "cliname": {
-            "default": "intflist", 
+            "default": "intflist",
             "type": "string"
-          }, 
+          },
           "argtype": {
             "type": "string"
-          }, 
+          },
           "isdefaultset": {
-            "default": true, 
+            "default": true,
             "type": "boolean"
-          }, 
+          },
           "defaultarg": {
             "default": ""
           }
         }
-      }, 
+      },
       "VlanId": {
         "type": "object", 
         "properties": {

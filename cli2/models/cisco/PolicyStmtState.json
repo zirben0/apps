@@ -1,13 +1,14 @@
 {
   "policystmtstate": {
-    "prompt": "", 
+    "cliname": "route_policy_statement", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyStmtStateSubCmds.json"
     }, 
-    "cliname": "route_policy_statement",
+    "help": "Show PolicyStmtState Info", 
+    "prompt": "", 
     "value": {
       "Name": {
-        "cliname": "name"
+        "cliname": "route_policy_statement"
       }
     }
   }

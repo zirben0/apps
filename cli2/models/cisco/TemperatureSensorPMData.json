@@ -1,8 +1,9 @@
 {
   "temperaturesensorpmdata": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config TemperatureSensorPMData Info", 
+    "prompt": "", 
     "value": {}
   }
 }

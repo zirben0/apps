@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "IntfRef": {
+      "cliname": "ethernetpm"
+    }, 
+    "Resource": {
+      "cliname": "Resource"
+    }
+  }, 
+  "listattrs": []
+}

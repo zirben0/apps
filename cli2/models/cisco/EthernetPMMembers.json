@@ -1,0 +1,32 @@
+{
+  "commands": {
+    "HighAlarmThreshold": {
+      "cliname": "HighAlarmThreshold"
+    }, 
+    "HighWarnThreshold": {
+      "cliname": "HighWarnThreshold"
+    }, 
+    "IntfRef": {
+      "cliname": "ethernet"
+    }, 
+    "LowAlarmThreshold": {
+      "cliname": "LowAlarmThreshold"
+    }, 
+    "LowWarnThreshold": {
+      "cliname": "LowWarnThreshold"
+    }, 
+    "PMClassAEnable": {
+      "cliname": "PMClassAEnable"
+    }, 
+    "PMClassBEnable": {
+      "cliname": "PMClassBEnable"
+    }, 
+    "PMClassCEnable": {
+      "cliname": "PMClassCEnable"
+    }, 
+    "Resource": {
+      "cliname": "pm"
+    }
+  }, 
+  "listattrs": []
+}

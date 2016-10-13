@@ -440,8 +440,7 @@ class CmdLine(CommonCmdLine):
     # match for schema cmd object
     def _cmd_config(self, args):
         """Global configuration mode"""
-
-        newargs = [self.find_func_cmd_alias(args[0])] + args[1:]
+        newargs = args
         self.cmdtype = snapcliconst.COMMAND_TYPE_CONFIG
 
         if self.privilege is False:
@@ -538,7 +537,7 @@ class CmdLine(CommonCmdLine):
     def _cmd_show(self, argv):
         """ Show running system information """
         RUNNING_CONFIG = "running_config"
-        newargs = [self.find_func_cmd_alias(argv[0])] + argv[1:]
+        newargs = argv
         mline = newargs
         self.cmdtype = snapcliconst.COMMAND_TYPE_SHOW
         mlineLength = len(mline)
@@ -619,7 +618,7 @@ class CmdLine(CommonCmdLine):
                                                 else:
                                                     missingcommands = frozenset(expectedInfo.getAllCliCmds()).difference(mline)
                                                     if missingcommands:
-                                                        sys.stdout.write("ERROR incomplete command missing %s" % (",".join(missingcommands)))
+                                                        sys.stdout.write("ERROR incomplete command missing %s\n" % (",".join(missingcommands)))
                                                         return
                                                     else:  # commands are present lets see if values are present
                                                         # assumption is that all keys expect a value
@@ -627,7 +626,7 @@ class CmdLine(CommonCmdLine):
                                                         for j in range(0, totalkeylength):
                                                             # skip back to first key command
                                                             if (i-1) + j >= mlineLength:
-                                                                sys.stdout.write("ERROR incomplete command missing value")
+                                                                sys.stdout.write("ERROR incomplete command missing value\n")
                                                                 snapcliconst.printErrorValueCmd(i+j, mline)
                                                                 return
 
@@ -668,9 +667,9 @@ class CmdLine(CommonCmdLine):
         if len(argv) == 1:
             newargv = [self.find_func_cmd_alias(argv[0])]
         elif len(argv) == 2:
-            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])]
+            newargv = [self.find_func_cmd_alias(argv[0])] + [argv[1]]
         elif len(argv) > 2:
-            newargv = [argv[0]] + [self.find_func_cmd_alias(argv[1])] + argv[2:]
+            newargv = [self.find_func_cmd_alias(argv[0])] + argv[1:]
         else:
             return ''
         if len(newargv) > 1 and 'help' in newargv or '?' in newargv:
@@ -682,7 +681,7 @@ class CmdLine(CommonCmdLine):
                 # strip the last command and display the help for current position
                 self.display_help(newargv)
                 return ''
-        if newargv and '!' in newargv[-1]:
+        if newargv and '!' == newargv[0]:
             self.do_exit(newargv)
             return ''
 

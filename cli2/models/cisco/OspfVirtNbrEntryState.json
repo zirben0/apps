@@ -1,13 +1,14 @@
 {
   "ospfvirtnbrentrystate": {
-    "prompt": "", 
+    "cliname": "VirtNbrArea", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/OspfVirtNbrEntryStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show OspfVirtNbrEntryState Info", 
+    "prompt": "", 
     "value": {
       "VirtNbrArea": {
-        "cliname": "virtnbrarea"
+        "cliname": "VirtNbrArea"
       }, 
       "VirtNbrRtrId": {
         "cliname": "virtnbrrtrid"

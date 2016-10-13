@@ -1,10 +1,10 @@
 {
   "arpglobal": {
-    "prompt": "arp",
+    "cliname": "arp", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ArpGlobalSubCmds.json"
-    },
-    "help": "ARP Global Commands",
-    "cliname": "arp"
+    }, 
+    "help": "ARP Global Commands", 
+    "prompt": "arp"
   }
 }

@@ -1,109 +1,10 @@
 {
-  "listattrs": [], 
-  "createwithdefault": {
-    "default": true, 
-    "type": "boolean", 
-    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called."
-  }, 
+  "cmd_to_subcmd": {}, 
   "commands": {
-    "type": "object", 
     "description": "", 
     "properties": {
-      "EnableExtPMTickSrc": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "True/False  Enable/Disable external tick source for performance monitoring default: false", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "EnableExtPMTickSrc", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "type": "bool"
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "false"
-          }
-        }
-      }, 
-      "PMInterval": {
-        "type": "object", 
-        "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "Performance monitoring interval default: 1", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "PMInterval", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
-          }, 
-          "isdefaultset": {
-            "default": true, 
-            "type": "boolean"
-          }, 
-          "defaultarg": {
-            "default": "1"
-          }
-        }
-      }, 
       "AdminState": {
-        "type": "object", 
         "properties": {
-          "key": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "prompt": {
-            "default": "", 
-            "type": "string"
-          }, 
-          "help": {
-            "default": "UP/DOWN  Reset state of this dwdm module (false (Reset deasserted) default: DOWN", 
-            "type": "string"
-          }, 
-          "islist": {
-            "default": false, 
-            "type": "boolean"
-          }, 
-          "cliname": {
-            "default": "AdminState", 
-            "type": "string"
-          }, 
           "argtype": {
             "enum": [
               "UP", 
@@ -111,18 +12,25 @@
             ], 
             "type": "string"
           }, 
+          "cliname": {
+            "default": "AdminState", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "DOWN"
+          }, 
+          "help": {
+            "default": "UP/DOWN  Reset state of this dwdm module (false (Reset deasserted) default: DOWN", 
+            "type": "string"
+          }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "DOWN"
-          }
-        }
-      }, 
-      "IndependentLaneMode": {
-        "type": "object", 
-        "properties": {
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": false, 
             "type": "boolean"
@@ -130,34 +38,106 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "EnableExtPMTickSrc": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "EnableExtPMTickSrc", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
           }, 
           "help": {
-            "default": "True/False  Network lane configuration for the DWDM Module. true-Independent lanes default: true", 
+            "default": "True/False  Enable/Disable external tick source for performance monitoring default: false", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "IndependentLaneMode": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
           }, 
           "cliname": {
             "default": "IndependentLaneMode", 
             "type": "string"
           }, 
-          "argtype": {
-            "type": "bool"
+          "defaultarg": {
+            "default": "true"
+          }, 
+          "help": {
+            "default": "True/False  Network lane configuration for the DWDM Module. true-Independent lanes default: true", 
+            "type": "string"
           }, 
           "isdefaultset": {
             "default": true, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": "true"
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }, 
       "ModuleId": {
-        "type": "object", 
         "properties": {
+          "argtype": {
+            "maximum": 255, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "dwdmmodule", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": ""
+          }, 
+          "help": {
+            "default": "DWDM Module identifier", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
           "key": {
             "default": true, 
             "type": "boolean"
@@ -165,43 +145,64 @@
           "prompt": {
             "default": "", 
             "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "PMInterval": {
+        "properties": {
+          "argtype": {
+            "maximum": 255, 
+            "minimum": 0, 
+            "type": "uint8"
+          }, 
+          "cliname": {
+            "default": "PMInterval", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "1"
           }, 
           "help": {
-            "default": "DWDM Module identifier", 
+            "default": "Performance monitoring interval default: 1", 
             "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
           }, 
           "islist": {
             "default": false, 
             "type": "boolean"
           }, 
-          "cliname": {
-            "default": "ModuleId", 
-            "type": "string"
-          }, 
-          "argtype": {
-            "minimum": 0, 
-            "type": "uint8", 
-            "maximum": 255
-          }, 
-          "isdefaultset": {
+          "key": {
             "default": false, 
             "type": "boolean"
           }, 
-          "defaultarg": {
-            "default": ""
+          "prompt": {
+            "default": "", 
+            "type": "string"
           }
-        }
+        }, 
+        "type": "object"
       }
-    }
+    }, 
+    "type": "object"
+  }, 
+  "createwithdefault": {
+    "default": true, 
+    "description": "Attribute used to tell the cli whether an object can be created withdefaultref and/or default settings.  If this is false, all attributes must be set by user in order for create to be called.", 
+    "type": "boolean"
   }, 
   "defaultref": {
-    "type": "object", 
+    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default", 
     "properties": {}, 
-    "description": "Object which contains defaults for the given object, the common case will be a global object.  Flexswitch Model may have defaults set in model they will be overwriten by what is defined here. If default is not set in model or defaultref, then a 0 (int), true (bool) and '' (string) will be used. This attribute will also be used on a deletion of an attribute within an object.  A 'no attribute' will set the attribute back to default"
+    "type": "object"
   }, 
+  "listattrs": [], 
   "objname": {
     "default": "DWDMModule", 
-    "type": "string", 
-    "description": "object name to which references these attributes"
+    "description": "object name to which references these attributes", 
+    "type": "string"
   }
 }

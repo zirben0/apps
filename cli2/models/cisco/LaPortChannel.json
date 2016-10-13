@@ -1,11 +1,11 @@
 {
   "laportchannel": {
-    "prompt": "port-channel",
+    "cliname": "port_channel", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/LaPortChannelSubCmds.json"
-    },
-    "help": "Port Channel Interface",
-    "cliname": "port_channel",
+    }, 
+    "help": "Port Channel Interface", 
+    "prompt": "port-channel", 
     "value": {
       "IntfRef": {
         "cliname": "port_channel"

@@ -1,8 +1,9 @@
 {
   "dwdmmodulepmdata": {
-    "prompt": "", 
-    "commands": {}, 
     "cliname": "", 
+    "commands": {}, 
+    "help": "Config DWDMModulePMData Info", 
+    "prompt": "", 
     "value": {}
   }
 }

@@ -1,13 +1,14 @@
 {
   "apiinfostate": {
-    "prompt": "", 
+    "cliname": "apiinfo", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ApiInfoStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show ApiInfoState Info", 
+    "prompt": "", 
     "value": {
       "Url": {
-        "cliname": "url"
+        "cliname": "apiinfo"
       }
     }
   }

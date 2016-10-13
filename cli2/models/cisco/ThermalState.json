@@ -1,13 +1,14 @@
 {
   "thermalstate": {
-    "prompt": "", 
+    "cliname": "thermal", 
     "commands": {
       "$ref": "file:/tmp/snaproute/cli/model/cisco/ThermalStateSubCmds.json"
     }, 
-    "cliname": "", 
+    "help": "Show ThermalState Info", 
+    "prompt": "", 
     "value": {
       "ThermalId": {
-        "cliname": "thermalid"
+        "cliname": "thermal"
       }
     }
   }

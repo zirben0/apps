@@ -1,0 +1,9 @@
+{
+  "qsfpchannelpmdata": {
+    "cliname": "", 
+    "commands": {}, 
+    "help": "Config QsfpChannelPMData Info", 
+    "prompt": "", 
+    "value": {}
+  }
+}

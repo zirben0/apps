@@ -1,0 +1,10 @@
+{
+  "commands": {
+    "IntfRef": {
+      "cliname": "logical"
+    },
+    "IpAddr": {
+      "cliname": "address"
+    }
+  }
+}
