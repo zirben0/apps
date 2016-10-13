@@ -239,7 +239,7 @@ class LeafCmd(CommonCmdLine):
                                         if objattrs[basekey]['isattrkey'] and \
                                                 ('value' in objattrs[basekey] and
                                                          type(objattrs[basekey]['value']) != list and
-                                                         'default' in objattrs[basekey] and
+                                                         'default' in objattrs[basekey]['value'] and
                                                      not objattrs[basekey]['value']['default']):
                                             config.setDelete(delete)
 
