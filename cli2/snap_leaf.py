@@ -158,6 +158,20 @@ class LeafCmd(CommonCmdLine):
 
             return keyvalueDict
 
+        def isConfigValid(keyvalueDict, objattrs, config):
+            """
+            Valid config is determine by the by whether a config has all the required fields set
+            Required fields are fields which don't have a default value, or are a key for a given object
+            Which in a majority of cases don't have a default value.
+
+            :param keyvalueDict:
+            :param objattrs:
+            :param config:
+            :return:
+            """
+            pass
+
+
         self.objDict = {}
         configObj = self.getConfigObj()
         for model, schema in zip(self.modelList, self.schemaList):
@@ -216,12 +230,16 @@ class LeafCmd(CommonCmdLine):
                             # 1) common case where user provisions key
                             # 2) default key is provided, like global objects
                             objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
-                                                                if v['isattrkey'] and not v['value'].get('default') and (v['createwithdefaults'] or delete)])
+                                                                if v['isattrkey'] and
+                                              not v['value'].get('default') and
+                                              (v['createwithdefaults'] or delete)])
                             # check if this is an object with default keys
                             # in this case users may not need to enter the value.  As is the case for Global objects
                             if objkeyslen == 0:
                                 objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
-                                                                if v['isattrkey'] and v['value'].get('default') and (v['createwithdefaults'] or delete)])
+                                                                if v['isattrkey'] and
+                                                  v['value'].get('default') and
+                                                  (v['createwithdefaults'] or delete)])
                                 if objkeyslen > 0:
                                     for k, v in objattrs.iteritems():
                                         if v['isattrkey'] and v['value'].get('default') and k not in keyvalueDict:
@@ -906,6 +924,7 @@ class LeafCmd(CommonCmdLine):
                                             data.update({kk: self.convertStrValueToType(vv['type']['type'],
                                                                                         vv['value']['default'])})
 
+                                config.setValid(True)
                                 # store the attribute into the config
                                 config.setDict(self.lastcmd, delete, attrkey, data, isKey=v['isattrkey'] or self.subcommand,
                                                isattrlist=v['isarray'])

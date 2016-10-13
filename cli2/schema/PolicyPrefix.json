@@ -14,7 +14,7 @@
       "commands": {
         "type": "object", 
         "properties": {
-          "$ref": ""
+          "$ref": "file:/tmp/snaproute/cli/schema/PolicyPrefixSubCmds.json"
         }
       }, 
       "cliname": {
@@ -32,11 +32,48 @@
         "type": "string", 
         "description": "what to display on the prompt when the user has entered a command"
       }, 
-      "value": {
-        "type": "object", 
+      "value": { 
         "description": "this is a trigger to cli that a command needs one of the attribute values contained in the properties commands LeafMemberTemplate", 
-        "properties": {}
-      }, 
+        "properties": {
+          "Prefix": {
+            "properties": {
+              "argtype": {
+                "type": "string"
+              }, 
+              "cliname": {
+                "default": "prefix", 
+                "type": "string"
+              }, 
+              "defaultarg": {
+                "default": ""
+              }, 
+              "help": {
+                "default": "IP Prefix to match, e.g. 10.1.10.0", 
+                "type": "string"
+              }, 
+              "isdefaultset": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "islist": {
+                "default": false, 
+                "type": "boolean"
+              }, 
+              "key": {
+                "default": true, 
+                "type": "boolean"
+              }, 
+              "prompt": {
+                "default": "", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }
+        }, 
+        "type": "object"
+      },
+
       "objname": {
         "default": "PolicyPrefix", 
         "type": "string", 

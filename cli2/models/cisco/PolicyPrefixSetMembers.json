@@ -10,7 +10,7 @@
       "$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyPrefix.json"
     }, 
     "Name": {
-      "cliname": "name"
+      "cliname": "route_policy_prefix_set"
     }
   }
 }

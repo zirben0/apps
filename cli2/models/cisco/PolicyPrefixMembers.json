@@ -5,7 +5,7 @@
       "cliname": "prefix"
     }, 
     "MaskLengthRange": {
-      "cliname": "masklengthrange"
+      "cliname": "mask_length_range"
     }
   }
 }
