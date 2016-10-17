@@ -1216,7 +1216,6 @@ class LeafCmd(CommonCmdLine):
         if cmd in ('exit',):
             self.do_exit(argv if argv[0] != 'no' else argv[1:])
             return ''
-        #import ipdb; ipdb.set_trace()
         #newargv = []
         if len(argv) == 0:
             return ''
@@ -1317,7 +1316,6 @@ class LeafCmd(CommonCmdLine):
                                             return ''
                                     '''
                                     elif i == mlineLength - 2 and not islist and not issubcommandalist:
-                                        import ipdb; ipdb.set_trace()
                                         erroridx = i+1 if not delete else i+2
                                         errcmd = mline if not delete else ['no'] + mline
                                         snapcliconst.printErrorValueCmd(erroridx, errcmd)
