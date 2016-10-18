@@ -63,7 +63,7 @@
             "type": "boolean"
           }, 
           "key": {
-            "default": false, 
+            "default": true, 
             "type": "boolean"
           }, 
           "prompt": {

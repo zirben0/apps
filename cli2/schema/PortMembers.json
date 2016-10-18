@@ -448,6 +448,116 @@
         }, 
         "type": "object"
       }, 
+      "PRBSPolynomial": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              "2^7", 
+              "2^23", 
+              "2^31"
+            ], 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "PRBSPolynomial", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "2^7"
+          }, 
+          "help": {
+            "default": "2^7/2^23/2^31  PRBS polynomial to use for generation/checking default: 2^7", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "PRBSRxEnable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "PRBSRxEnable", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable PRBS checker on this port default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "PRBSTxEnable": {
+        "properties": {
+          "argtype": {
+            "type": "bool"
+          }, 
+          "cliname": {
+            "default": "PRBSTxEnable", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "false"
+          }, 
+          "help": {
+            "default": "True/False  Enable/Disable generation of PRBS on this port default: false", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
       "PhyIntfType": {
         "properties": {
           "argtype": {

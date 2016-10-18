@@ -3,6 +3,45 @@
   "commands": {
     "description": "", 
     "properties": {
+      "AdminState": {
+        "properties": {
+          "argtype": {
+            "enum": [
+              "UP", 
+              "DOWN"
+            ], 
+            "type": "string"
+          }, 
+          "cliname": {
+            "default": "AdminState", 
+            "type": "string"
+          }, 
+          "defaultarg": {
+            "default": "UP"
+          }, 
+          "help": {
+            "default": "UP/DOWN  Administrative state of this IP interface default: UP", 
+            "type": "string"
+          }, 
+          "isdefaultset": {
+            "default": true, 
+            "type": "boolean"
+          }, 
+          "islist": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "key": {
+            "default": false, 
+            "type": "boolean"
+          }, 
+          "prompt": {
+            "default": "", 
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
       "IntfRef": {
         "properties": {
           "argtype": {
