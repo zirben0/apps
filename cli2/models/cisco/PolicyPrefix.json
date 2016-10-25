@@ -1,9 +1,15 @@
 {
   "policyprefix": {
-    "cliname": "", 
-    "commands": {}, 
+    "cliname": "prefix", 
+    "commands": {
+		"$ref": "file:/tmp/snaproute/cli/model/cisco/PolicyPrefixSubCmds.json"
+	}, 
     "help": "Config PolicyPrefix Info", 
-    "prompt": "", 
-    "value": {}
+    "prompt": "prefix", 
+    "value": {
+      "Prefix": {
+        "cliname": "prefix"
+      }   
+    }   
   }
 }

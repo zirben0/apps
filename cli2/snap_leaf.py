@@ -158,6 +158,20 @@ class LeafCmd(CommonCmdLine):
 
             return keyvalueDict
 
+        def isConfigValid(keyvalueDict, objattrs, config):
+            """
+            Valid config is determine by the by whether a config has all the required fields set
+            Required fields are fields which don't have a default value, or are a key for a given object
+            Which in a majority of cases don't have a default value.
+
+            :param keyvalueDict:
+            :param objattrs:
+            :param config:
+            :return:
+            """
+            pass
+
+
         self.objDict = {}
         configObj = self.getConfigObj()
         for model, schema in zip(self.modelList, self.schemaList):
@@ -216,12 +230,16 @@ class LeafCmd(CommonCmdLine):
                             # 1) common case where user provisions key
                             # 2) default key is provided, like global objects
                             objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
-                                                                if v['isattrkey'] and not v['value'].get('default') and (v['createwithdefaults'] or delete)])
+                                                                if v['isattrkey'] and
+                                              not v['value'].get('default') and
+                                              (v['createwithdefaults'] or delete)])
                             # check if this is an object with default keys
                             # in this case users may not need to enter the value.  As is the case for Global objects
                             if objkeyslen == 0:
                                 objkeyslen = len([(k, v) for k, v in objattrs.iteritems()
-                                                                if v['isattrkey'] and v['value'].get('default') and (v['createwithdefaults'] or delete)])
+                                                                if v['isattrkey'] and
+                                                  v['value'].get('default') and
+                                                  (v['createwithdefaults'] or delete)])
                                 if objkeyslen > 0:
                                     for k, v in objattrs.iteritems():
                                         if v['isattrkey'] and v['value'].get('default') and k not in keyvalueDict:
@@ -239,7 +257,7 @@ class LeafCmd(CommonCmdLine):
                                         if objattrs[basekey]['isattrkey'] and \
                                                 ('value' in objattrs[basekey] and
                                                          type(objattrs[basekey]['value']) != list and
-                                                         'default' in objattrs[basekey] and
+                                                         'default' in objattrs[basekey]['value'] and
                                                      not objattrs[basekey]['value']['default']):
                                             config.setDelete(delete)
 
@@ -906,6 +924,7 @@ class LeafCmd(CommonCmdLine):
                                             data.update({kk: self.convertStrValueToType(vv['type']['type'],
                                                                                         vv['value']['default'])})
 
+                                config.setValid(True)
                                 # store the attribute into the config
                                 config.setDict(self.lastcmd, delete, attrkey, data, isKey=v['isattrkey'] or self.subcommand,
                                                isattrlist=v['isarray'])
@@ -1197,7 +1216,6 @@ class LeafCmd(CommonCmdLine):
         if cmd in ('exit',):
             self.do_exit(argv if argv[0] != 'no' else argv[1:])
             return ''
-        #import ipdb; ipdb.set_trace()
         #newargv = []
         if len(argv) == 0:
             return ''
@@ -1298,7 +1316,6 @@ class LeafCmd(CommonCmdLine):
                                             return ''
                                     '''
                                     elif i == mlineLength - 2 and not islist and not issubcommandalist:
-                                        import ipdb; ipdb.set_trace()
                                         erroridx = i+1 if not delete else i+2
                                         errcmd = mline if not delete else ['no'] + mline
                                         snapcliconst.printErrorValueCmd(erroridx, errcmd)

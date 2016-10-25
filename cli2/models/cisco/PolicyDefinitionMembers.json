@@ -17,6 +17,9 @@
     }, 
     "Name": {
       "cliname": "route_policy"
+    },
+    "Priority": {
+      "cliname": "priority"
     }
   }
 }
